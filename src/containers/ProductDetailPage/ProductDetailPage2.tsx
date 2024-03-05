@@ -14,7 +14,7 @@ import detail21JPG from "../../images/products/detail3-1.webp";
 import detail22JPG from "../../images/products/detail3-2.webp";
 import detail23JPG from "../../images/products/detail3-3.webp";
 import detail24JPG from "../../images/products/detail3-4.webp";
-import { PRODUCTS } from "../../data/data";
+import { ALMA_PRODUCTS, PRODUCTS } from "../../data/data";
 import IconDiscount from "../../components/IconDiscount";
 import NcInputNumber from "../../components/NcInputNumber";
 import BagIcon from "../../components/BagIcon";
@@ -25,6 +25,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import SectionSliderProductCard from "../../components/SectionSliderProductCard";
 import ModalViewAllReviews from "./ModalViewAllReviews";
 import NotifyAddTocart from "../../components/NotifyAddTocart";
+import { useParams } from "react-router-dom";
 
 export interface ProductDetailPage2Props {
   className?: string;
@@ -33,7 +34,10 @@ export interface ProductDetailPage2Props {
 const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   className = "",
 }) => {
-  const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
+  const { id } = useParams();
+  const product = ALMA_PRODUCTS.find((p) => p.id === +id);
+  console.log(product);
+  const { sizes, variants, status, allOfSizes, price, image } = product;
   const LIST_IMAGES_DEMO: string[] = [
     detail21JPG,
     detail22JPG,
@@ -43,7 +47,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     detail24JPG,
     detail24JPG,
   ];
-  const PRICE = 108;
+  // const PRICE = 108;
 
   const [variantActive, setVariantActive] = React.useState(0);
   const [sizeSelected, setSizeSelected] = React.useState(sizes ? sizes[0] : "");
@@ -106,7 +110,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     toast.custom(
       (t) => (
         <NotifyAddTocart
-          productImage={LIST_IMAGES_DEMO[0]}
+          productImage={image}
           qualitySelected={qualitySelected}
           show={t.visible}
           sizeSelected={sizeSelected}
@@ -222,7 +226,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             {/* ---------- 1 HEADING ----------  */}
             <div className="flex items-center justify-between space-x-5">
               <div className="flex text-2xl font-semibold">
-                ${PRICE.toFixed(2)}
+                ${price.toFixed(2)}
               </div>
 
               <a
@@ -270,12 +274,12 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             <div className="space-y-2.5">
               <div className="flex justify-between text-slate-600 dark:text-slate-300">
                 <span className="flex">
-                  <span>{`$${PRICE.toFixed(2)}  `}</span>
+                  <span>{`$${price.toFixed(2)}  `}</span>
                   <span className="mx-2">x</span>
                   <span>{`${qualitySelected} `}</span>
                 </span>
 
-                <span>{`$${(PRICE * qualitySelected).toFixed(2)}`}</span>
+                <span>{`$${(price * qualitySelected).toFixed(2)}`}</span>
               </div>
               <div className="flex justify-between text-slate-600 dark:text-slate-300">
                 <span>Tax estimate</span>
@@ -285,7 +289,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             <div className="border-b border-slate-200 dark:border-slate-700"></div>
             <div className="flex justify-between font-semibold">
               <span>Total</span>
-              <span>{`$${(PRICE * qualitySelected).toFixed(2)}`}</span>
+              <span>{`$${(price * qualitySelected).toFixed(2)}`}</span>
             </div>
           </div>
         </div>
