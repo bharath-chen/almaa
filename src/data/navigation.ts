@@ -21,7 +21,7 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
     children: [
       { id: ncNanoId(), href: "/page-collection", name: "Category Page 1" },
       { id: ncNanoId(), href: "/page-collection-2", name: "Category Page 2" },
-      { id: ncNanoId(), href: "/product-detail", name: "Product Page 1" },
+      { id: ncNanoId(), href: "/product-detail/:id", name: "Product Page 1" },
       { id: ncNanoId(), href: "/product-detail-2", name: "Product Page 2" },
       { id: ncNanoId(), href: "/cart", name: "Cart Page" },
       { id: ncNanoId(), href: "/checkout", name: "Checkout Page" },
@@ -86,13 +86,13 @@ const OTHER_PAGE_CHILD: NavItemType[] = [
   },
   {
     id: ncNanoId(),
-    href: "/product-detail",
+    href: "/product-detail/:id",
     name: "Product Pages",
     type: "dropdown",
     children: [
       {
         id: ncNanoId(),
-        href: "/product-detail",
+        href: "/product-detail/:id",
         name: "Product detail 1",
       },
       {
@@ -187,15 +187,15 @@ const DOCTORS_TEAM_CHILD: NavItemType[] = [
 export const NAVIGATION_DEMO_2: NavItemType[] = [
   {
     id: ncNanoId(),
-    href: "/page-collection",
-    name: "About",
+    href: "/",
+    name: "Home",
   },
   {
     id: ncNanoId(),
-    href: "/page-collection",
-    name: "Doctors Team",
-    type: "subMenu",
-    children: DOCTORS_TEAM_CHILD,
+    href: "/products",
+    name: "Products",
+    // type: "subMenu",
+    // children: DOCTORS_TEAM_CHILD,
   },
   {
     id: ncNanoId(),
