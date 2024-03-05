@@ -4,44 +4,82 @@ import Checkbox from "../shared/Checkbox/Checkbox";
 import Slider from "rc-slider";
 import Radio from "../shared/Radio/Radio";
 import MySwitch from "../components/MySwitch";
+import AppFilterTabs from "../components/AppFilterTabs/AppFilterTabs";
 
 // DEMO DATA
 const DATA_categories = [
   {
-    name: "Backpacks",
+    name: "Powders",
+    checked: false,
   },
   {
-    name: "Travel Bags",
+    name: "Capsules",
+    checked: false,
   },
   {
-    name: "Laptop Sleeves",
+    name: "Juices",
+    checked: false,
   },
   {
-    name: "Organization",
+    name: "Cosmetics",
+    checked: false,
   },
   {
-    name: "Accessories",
+    name: "Food",
+    checked: false,
+  },
+  {
+    name: "Special Products",
+    checked: false,
+  },
+  {
+    name: "Chooranam",
+    checked: false,
+  },
+  {
+    name: "Books & CDs",
+    checked: false,
+  },
+  {
+    name: "Child Care",
+    checked: false,
+  },
+  {
+    name: "Combo Packs",
+    checked: false,
+  },
+  {
+    name: "Spiritual",
+    checked: false,
+  },
+  {
+    name: "Organic",
+    checked: false,
+  },
+  {
+    name: "Country Drugs",
+    checked: false,
   },
 ];
 
-const DATA_colors = [
-  { name: "White" },
-  { name: "Beige" },
-  { name: "Blue" },
-  { name: "Black" },
-  { name: "Brown" },
-  { name: "Green" },
-  { name: "Navy" },
-];
+// const DATA_colors = [
+//   { name: "White" },
+//   { name: "Beige" },
+//   { name: "Blue" },
+//   { name: "Black" },
+//   { name: "Brown" },
+//   { name: "Green" },
+//   { name: "Navy" },
+// ];
 
-const DATA_sizes = [
-  { name: "XS" },
-  { name: "S" },
-  { name: "M" },
-  { name: "L" },
-  { name: "XL" },
-  { name: "2XL" },
-];
+// const DATA_sizes = [
+//   { name: "XS" },
+//   { name: "S" },
+//   { name: "M" },
+//   { name: "L" },
+//   { name: "XL" },
+//   { name: "2XL" },
+// ];
 
 const DATA_sortOrderRadios = [
   { name: "Most Popular", id: "Most-Popular" },
@@ -58,93 +96,99 @@ const SidebarFilters = () => {
   const [isOnSale, setIsIsOnSale] = useState(true);
   const [rangePrices, setRangePrices] = useState([100, 500]);
   const [categoriesState, setCategoriesState] = useState<string[]>([]);
-  const [colorsState, setColorsState] = useState<string[]>([]);
-  const [sizesState, setSizesState] = useState<string[]>([]);
+  // const [colorsState, setColorsState] = useState<string[]>([]);
+  // const [sizesState, setSizesState] = useState<string[]>([]);
   const [sortOrderStates, setSortOrderStates] = useState<string>("");
 
   //
-  const handleChangeCategories = (checked: boolean, name: string) => {
-    checked
-      ? setCategoriesState([...categoriesState, name])
-      : setCategoriesState(categoriesState.filter((i) => i !== name));
+  const handleChangeCategories = (category: {
+    name: string;
+    checked: boolean;
+  }) => {
+    const categories = [...categoriesState];
+    const checked = categories.includes(category.name);
+
+    if (checked)
+      setCategoriesState(categories.filter((c) => c !== category.name));
+    else setCategoriesState([...categories, category.name]);
   };
 
-  const handleChangeColors = (checked: boolean, name: string) => {
-    checked
-      ? setColorsState([...colorsState, name])
-      : setColorsState(colorsState.filter((i) => i !== name));
-  };
+  // const handleChangeColors = (checked: boolean, name: string) => {
+  //   checked
+  //     ? setColorsState([...colorsState, name])
+  //     : setColorsState(colorsState.filter((i) => i !== name));
+  // };
 
-  const handleChangeSizes = (checked: boolean, name: string) => {
-    checked
-      ? setSizesState([...sizesState, name])
-      : setSizesState(sizesState.filter((i) => i !== name));
-  };
+  // const handleChangeSizes = (checked: boolean, name: string) => {
+  //   checked
+  //     ? setSizesState([...sizesState, name])
+  //     : setSizesState(sizesState.filter((i) => i !== name));
+  // };
 
   //
 
   // OK
-  const renderTabsCategories = () => {
-    return (
-      <div className="relative flex flex-col pb-8 space-y-4">
-        <h3 className="font-semibold mb-2.5">Categories</h3>
-        {DATA_categories.map((item) => (
-          <div key={item.name} className="">
-            <Checkbox
-              name={item.name}
-              label={item.name}
-              defaultChecked={categoriesState.includes(item.name)}
-              sizeClassName="w-5 h-5"
-              labelClassName="text-sm font-normal"
-              onChange={(checked) => handleChangeCategories(checked, item.name)}
-            />
-          </div>
-        ))}
-      </div>
-    );
-  };
+  // const renderTabsCategories = () => {
+  //   return (
+  //     <div className="relative flex flex-col pb-8 space-y-4">
+  //       <h3 className="font-semibold mb-2.5">Categories</h3>
+  //       {DATA_categories.map((item) => (
+  //         <div key={item.name} className="">
+  //           <Checkbox
+  //             name={item.name}
+  //             label={item.name}
+  //             defaultChecked={categoriesState.includes(item.name)}
+  //             sizeClassName="w-5 h-5"
+  //             labelClassName="text-sm font-normal"
+  //             onChange={(checked) => handleChangeCategories(checked, item.name)}
+  //           />
+  //         </div>
+  //       ))}
+  //     </div>
+  //   );
+  // };
 
-  // OK
-  const renderTabsColor = () => {
-    return (
-      <div className="relative flex flex-col py-8 space-y-4">
-        <h3 className="font-semibold mb-2.5">Colors</h3>
-        {DATA_colors.map((item) => (
-          <div key={item.name} className="">
-            <Checkbox
-              sizeClassName="w-5 h-5"
-              labelClassName="text-sm font-normal"
-              name={item.name}
-              label={item.name}
-              defaultChecked={colorsState.includes(item.name)}
-              onChange={(checked) => handleChangeColors(checked, item.name)}
-            />
-          </div>
-        ))}
-      </div>
-    );
-  };
+  // // OK
+  // const renderTabsColor = () => {
+  //   return (
+  //     <div className="relative flex flex-col py-8 space-y-4">
+  //       <h3 className="font-semibold mb-2.5">Colors</h3>
+  //       {DATA_colors.map((item) => (
+  //         <div key={item.name} className="">
+  //           <Checkbox
+  //             sizeClassName="w-5 h-5"
+  //             labelClassName="text-sm font-normal"
+  //             name={item.name}
+  //             label={item.name}
+  //             defaultChecked={colorsState.includes(item.name)}
+  //             onChange={(checked) => handleChangeColors(checked, item.name)}
+  //           />
+  //         </div>
+  //       ))}
+  //     </div>
+  //   );
+  // };
 
-  // OK
-  const renderTabsSize = () => {
-    return (
-      <div className="relative flex flex-col py-8 space-y-4">
-        <h3 className="font-semibold mb-2.5">Sizes</h3>
-        {DATA_sizes.map((item) => (
-          <div key={item.name} className="">
-            <Checkbox
-              name={item.name}
-              label={item.name}
-              defaultChecked={sizesState.includes(item.name)}
-              onChange={(checked) => handleChangeSizes(checked, item.name)}
-              sizeClassName="w-5 h-5"
-              labelClassName="text-sm font-normal"
-            />
-          </div>
-        ))}
-      </div>
-    );
-  };
+  // // OK
+  // const renderTabsSize = () => {
+  //   return (
+  //     <div className="relative flex flex-col py-8 space-y-4">
+  //       <h3 className="font-semibold mb-2.5">Sizes</h3>
+  //       {DATA_sizes.map((item) => (
+  //         <div key={item.name} className="">
+  //           <Checkbox
+  //             name={item.name}
+  //             label={item.name}
+  //             defaultChecked={sizesState.includes(item.name)}
+  //             onChange={(checked) => handleChangeSizes(checked, item.name)}
+  //             sizeClassName="w-5 h-5"
+  //             labelClassName="text-sm font-normal"
+  //           />
+  //         </div>
+  //       ))}
+  //     </div>
+  //   );
+  // };
 
   // OK
   const renderTabsPriceRage = () => {
@@ -175,7 +219,7 @@ const SidebarFilters = () => {
             </label>
             <div className="mt-1 relative rounded-md">
               <span className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-neutral-500 sm:text-sm">
-                $
+                ₹
               </span>
               <input
                 type="text"
@@ -196,7 +240,7 @@ const SidebarFilters = () => {
             </label>
             <div className="mt-1 relative rounded-md">
               <span className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-neutral-500 sm:text-sm">
-                $
+                ₹
               </span>
               <input
                 type="text"
@@ -236,9 +280,14 @@ const SidebarFilters = () => {
 
   return (
     <div className="divide-y divide-slate-200 dark:divide-slate-700">
-      {renderTabsCategories()}
-      {renderTabsColor()}
-      {renderTabsSize()}
+      {/* {renderTabsCategories()} */}
+      <AppFilterTabs
+        heading="Categories"
+        items={DATA_categories}
+        onItemCheck={handleChangeCategories}
+      />
+      {/* {renderTabsColor()}
+      {renderTabsSize()} */}
       {renderTabsPriceRage()}
       <div className="py-8 pr-2">
         <MySwitch
