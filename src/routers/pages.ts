@@ -22,15 +22,17 @@ import CartPage from "../containers/ProductDetailPage/CartPage";
 import CheckoutPage from "../containers/PageCheckout/CheckoutPage";
 import PageCollection2 from "../containers/PageCollection2";
 import Home from "../pages/Home/Home";
+import Products from "../pages/Products/Products";
 
 export const pages: Page[] = [
-  { path: "/", component: PageHome },
+  { path: "/", component: Home },
+  { path: "/products", component: Products },
+  { path: "/product-detail/:id", component: ProductDetailPage2 },
   { path: "/home2", component: PageHome2 },
   { path: "/home3", component: PageHome3 },
   //
   { path: "/home-header-2", component: PageHome },
-  { path: "/product-detail", component: ProductDetailPage },
-  { path: "/product-detail-2", component: ProductDetailPage2 },
+  { path: "/product-detail-2", component: ProductDetailPage },
   //
   { path: "/page-collection-2", component: PageCollection2 },
   { path: "/page-collection", component: PageCollection },

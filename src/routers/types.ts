@@ -2,9 +2,10 @@ import { ComponentType } from "react";
 
 export interface LocationStates {
   "/"?: {};
+  "/products"?: {};
   "/home2"?: {};
   "/home3"?: {};
-  "/product-detail"?: {};
+  "/product-detail/:id"?: {};
   "/product-detail-2"?: {};
   "/page-collection"?: {};
   "/page-collection-2"?: {};
