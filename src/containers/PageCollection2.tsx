@@ -16,14 +16,14 @@ const PageCollection2: FC<PageCollection2Props> = ({ className = "" }) => {
       className={`nc-PageCollection2 ${className}`}
       data-nc-id="PageCollection2"
     >
-      <Helmet>
+      {/* <Helmet>
         <title>Category || Ciseco Ecommerce Template</title>
-      </Helmet>
+      </Helmet> */}
 
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 sm:space-y-20 lg:space-y-28">
         <div className="space-y-10 lg:space-y-14">
           {/* HEADING */}
-          <div className="max-w-screen-sm">
+          {/* <div className="max-w-screen-sm">
             <h2 className="block text-2xl sm:text-3xl lg:text-4xl font-semibold">
               Man collection
             </h2>
@@ -33,7 +33,7 @@ const PageCollection2: FC<PageCollection2Props> = ({ className = "" }) => {
             </span>
           </div>
 
-          <hr className="border-slate-200 dark:border-slate-700" />
+          <hr className="border-slate-200 dark:border-slate-700" /> */}
           <main>
             {/* LOOP ITEMS */}
             <div className="flex flex-col lg:flex-row">
