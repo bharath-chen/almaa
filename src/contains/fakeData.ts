@@ -34,6 +34,20 @@ import product22 from "../images/products/22.png";
 import product23 from "../images/products/23.png";
 import product24 from "../images/products/24.png";
 //
+
+// Almaa Product Images
+import almaaProduct1 from "../assets/PRODUCT DETAIL/8-relatedproducts-1.png";
+import almaaProduct2 from "../assets/PRODUCT DETAIL/8-relatedproducts-2.png";
+import almaaProduct3 from "../assets/PRODUCT DETAIL/8-relatedproducts-3.png";
+import almaaProduct4 from "../assets/PRODUCT DETAIL/8-relatedproducts-4.png";
+
+export const almaaProductImages = [
+  almaaProduct1,
+  almaaProduct2,
+  almaaProduct3,
+  almaaProduct4,
+];
+
 export const productImgs = [
   product1,
   product2,

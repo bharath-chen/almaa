@@ -1,4 +1,4 @@
-import { productImgs } from "../contains/fakeData";
+import { productImgs, almaaProductImages } from "../contains/fakeData";
 import productVariantImg2 from "../images/products/v2.jpg";
 import productVariantImg3 from "../images/products/v3.jpg";
 import productVariantImg4 from "../images/products/v4.jpg";
@@ -325,5 +325,48 @@ export const SPORT_PRODUCTS: Product[] = [
     allOfSizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL"],
     link: "/product-detail/",
     status: "limited edition",
+  },
+];
+
+export const ALMA_PRODUCTS: Product[] = [
+  {
+    id: 1,
+    name: "Murungaipoo Elagam",
+    description: "Immune Booster",
+    image: almaaProductImages[0],
+    category: "Powders",
+    link: "/product-detail/",
+    price: 672,
+    tags: ["murungai", "Elagam"],
+  },
+  {
+    id: 2,
+    name: "Adathodai Syrup",
+    description: "Best for cough",
+    image: almaaProductImages[1],
+    category: "Chooranam",
+    link: "/product-detail/",
+    price: 320,
+    tags: ["Syrup", "Adathodai"],
+  },
+  {
+    id: 3,
+    name: "Aswaganthi Elagam",
+    description: "Boosts Sleep",
+    image: almaaProductImages[2],
+    category: "Capsules",
+    link: "/product-detail/",
+    price: 250,
+    tags: ["Elagam", "Aswaganthi"],
+  },
+  {
+    id: 4,
+    name: "Ayul Plus",
+    description: "Good for Heart",
+    image: almaaProductImages[3],
+    category: "Powder",
+    link: "/product-detail/",
+    price: 672,
+    tags: ["plus", "ayul"],
   },
 ];
