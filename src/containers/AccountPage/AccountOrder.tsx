@@ -1,10 +1,13 @@
 import Prices from "../../components/Prices";
-import { PRODUCTS } from "../../data/data";
+import { PRODUCTS, Product } from "../../data/data";
 import ButtonSecondary from "../../shared/Button/ButtonSecondary";
+import { useShoppingCartContext } from "../../store/shopping-cart-context";
 import CommonLayout from "./CommonLayout";
 
 const AccountOrder = () => {
-  const renderProductItem = (product: any, index: number) => {
+  const { placedOrders } = useShoppingCartContext();
+
+  const renderProductItem = (product: Product, index: number) => {
     const { image, name } = product;
     return (
       <div key={index} className="flex py-4 sm:py-7 last:pb-0 first:pt-0">
@@ -27,7 +30,7 @@ const AccountOrder = () => {
                   <span>{"XL"}</span>
                 </p>
               </div>
-              <Prices className="mt-0.5 ml-2" />
+              <Prices price={product.price} className="mt-0.5 ml-2" />
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
@@ -60,7 +63,7 @@ const AccountOrder = () => {
             <p className="text-slate-500 dark:text-slate-400 text-sm mt-1.5 sm:mt-2">
               <span>Aug 8, 2023</span>
               <span className="mx-2">·</span>
-              <span className="text-primary-500">Delivered</span>
+              <span className="text-primary-500">Order Placed</span>
             </p>
           </div>
           <div className="mt-3 sm:mt-0">
@@ -73,7 +76,9 @@ const AccountOrder = () => {
           </div>
         </div>
         <div className="border-t border-slate-200 dark:border-slate-700 p-2 sm:p-8 divide-y divide-y-slate-200 dark:divide-slate-700">
-          {[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]].map(renderProductItem)}
+          {placedOrders.map((item, index) =>
+            renderProductItem(item.product, index)
+          )}
         </div>
       </div>
     );
@@ -86,7 +91,7 @@ const AccountOrder = () => {
           {/* HEADING */}
           <h2 className="text-2xl sm:text-3xl font-semibold">Order History</h2>
           {renderOrder()}
-          {renderOrder()}
+          {/* {renderOrder()} */}
         </div>
       </CommonLayout>
     </div>
