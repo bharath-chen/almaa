@@ -8,17 +8,12 @@ import ButtonSecondary from "../../../shared/Button/ButtonSecondary";
 import { useShoppingCartContext } from "../../../store/shopping-cart-context";
 
 export default function CartDropdown() {
-  const { cart } = useShoppingCartContext();
-
-  const totalItemsCount = cart.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
-
-  const subTotal = cart.reduce(
-    (total, item) => total + item.quantity * item.product.price,
-    0
-  );
+  const {
+    cart,
+    totalItemsCount: itemsCount,
+    totalPrice: subTotal,
+    removeItemFromCart,
+  } = useShoppingCartContext();
 
   const renderProduct = (item: Product, index: number, close: () => void) => {
     const { name, price, image } = item;
@@ -62,6 +57,7 @@ export default function CartDropdown() {
               <button
                 type="button"
                 className="font-medium text-primary-6000 dark:text-primary-500 "
+                onClick={() => removeItemFromCart(item.id)}
               >
                 Remove
               </button>
@@ -83,7 +79,7 @@ export default function CartDropdown() {
           >
             {cart.length > 0 && (
               <div className="w-3.5 h-3.5 flex items-center justify-center bg-primary-900 absolute top-1.5 right-1.5 rounded-full text-[10px] leading-none text-white font-medium">
-                <span className="mt-[1px]">{totalItemsCount}</span>
+                <span className="mt-[1px]">{itemsCount}</span>
               </div>
             )}
             <svg
@@ -143,38 +139,45 @@ export default function CartDropdown() {
                   <div className="max-h-[60vh] p-5 overflow-y-auto hiddenScrollbar">
                     <h3 className="text-xl font-semibold">Shopping cart</h3>
                     <div className="divide-y divide-slate-100 dark:divide-slate-700">
+                      {cart.length === 0 && (
+                        <p className="text-md font-normal text-center my-5">
+                          No Items were added in the cart
+                        </p>
+                      )}
                       {cart.map((item, index) =>
                         renderProduct(item.product, index, close)
                       )}
                     </div>
                   </div>
-                  <div className="bg-neutral-50 dark:bg-slate-900 p-5">
-                    <p className="flex justify-between font-semibold text-slate-900 dark:text-slate-100">
-                      <span>
-                        <span>Subtotal</span>
-                        <span className="block text-sm text-slate-500 dark:text-slate-400 font-normal">
-                          Shipping and taxes calculated at checkout.
+                  {cart.length > 0 && (
+                    <div className="bg-neutral-50 dark:bg-slate-900 p-5">
+                      <p className="flex justify-between font-semibold text-slate-900 dark:text-slate-100">
+                        <span>
+                          <span>Subtotal</span>
+                          <span className="block text-sm text-slate-500 dark:text-slate-400 font-normal">
+                            Shipping and taxes calculated at checkout.
+                          </span>
                         </span>
-                      </span>
-                      <span className="">₹{subTotal.toFixed(2)}</span>
-                    </p>
-                    <div className="flex space-x-2 mt-5">
-                      <ButtonSecondary
-                        href="/cart"
-                        className="flex-1 border border-slate-200 dark:border-slate-700"
-                        onClick={close}
-                      >
-                        View cart
-                      </ButtonSecondary>
-                      <ButtonPrimary
-                        href="/checkout"
-                        onClick={close}
-                        className="flex-1"
-                      >
-                        Check out
-                      </ButtonPrimary>
+                        <span className="">₹{subTotal.toFixed(2)}</span>
+                      </p>
+                      <div className="flex space-x-2 mt-5">
+                        <ButtonSecondary
+                          href="/cart"
+                          className="flex-1 border border-slate-200 dark:border-slate-700"
+                          onClick={close}
+                        >
+                          View cart
+                        </ButtonSecondary>
+                        <ButtonPrimary
+                          href="/checkout"
+                          onClick={close}
+                          className="flex-1"
+                        >
+                          Check out
+                        </ButtonPrimary>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </Popover.Panel>
