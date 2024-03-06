@@ -2,10 +2,10 @@
 import { createContext, useContext, useReducer, ReactNode } from "react";
 import { Product } from "../data/data";
 
-interface CartItem {
+type CartItem = {
   product: Product;
   quantity: number;
-}
+};
 
 // Define the actions that can be dispatched
 type CartAction =
@@ -14,29 +14,50 @@ type CartAction =
   | {
       type: "UPDATE_QUANTITY";
       payload: { productId: number; quantity: number };
+    }
+  | {
+      type: "ORDER_PLACED";
     };
 
 // Define the initial state
-interface ShoppingCartState {
+type ShoppingCartState = {
   cart: CartItem[];
-}
+  totalItemsCount: number;
+  totalPrice: number;
+  placedOrders: CartItem[];
+};
 
 type CartContextValue = ShoppingCartState & {
   addItemToCart: (product: Product) => void;
   removeItemFromCart: (id: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
+  orderPlaced: () => void;
+};
+
+type ShoppingCartProviderProps = {
+  children: ReactNode;
 };
 
 const initialState: ShoppingCartState = {
   cart: [],
+  totalItemsCount: 0,
+  totalPrice: 0,
+  placedOrders: [],
 };
 
 // Create the context
 const ShoppingCartContext = createContext<CartContextValue | null>(null);
 
-type ShoppingCartProviderProps = {
-  children: ReactNode;
-};
+function calculateTotalItemsCount(cartItems: CartItem[]) {
+  return cartItems.reduce((total, item) => total + item.quantity, 0);
+}
+
+function calculateTotalPrice(cartItems: CartItem[]) {
+  return cartItems.reduce(
+    (total, item) => total + item.product.price * item.quantity,
+    0
+  );
+}
 
 function CartReducer(state: ShoppingCartState, action: CartAction) {
   switch (action.type) {
@@ -78,6 +99,15 @@ function CartReducer(state: ShoppingCartState, action: CartAction) {
         ),
       };
 
+    case "ORDER_PLACED":
+      const placedOrders = [...state.cart];
+
+      return {
+        ...state,
+        cart: [],
+        placedOrders: placedOrders,
+      };
+
     default:
       return state;
   }
@@ -89,6 +119,9 @@ function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
 
   const ctx: CartContextValue = {
     cart: cartState.cart,
+    placedOrders: cartState.placedOrders,
+    totalItemsCount: calculateTotalItemsCount(cartState.cart),
+    totalPrice: calculateTotalPrice(cartState.cart),
     addItemToCart(product) {
       dispatch({ type: "ADD_TO_CART", payload: product });
     },
@@ -97,6 +130,9 @@ function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     },
     updateQuantity(productId, quantity = 0) {
       dispatch({ type: "UPDATE_QUANTITY", payload: { productId, quantity } });
+    },
+    orderPlaced() {
+      dispatch({ type: "ORDER_PLACED" });
     },
   };
 
