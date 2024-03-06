@@ -6,22 +6,25 @@ import AppHeader from "../components/AppHeader";
 import { pages } from "./pages";
 import { Toaster } from "react-hot-toast";
 import MiniOfferBanner from "../components/MiniOfferBanner";
+import { ShoppingCartProvider } from "../store/shopping-cart-context";
 
 const MyRoutes = () => {
   return (
     <BrowserRouter>
-      <Toaster />
-      <ScrollToTop />
-      <MiniOfferBanner />
-      {/* <SiteHeader /> */}
-      <AppHeader />
-      <Routes>
-        {pages.map(({ component: Component, path }, index) => {
-          return <Route key={index} element={<Component />} path={path} />;
-        })}
-        <Route element={<Page404 />} />
-      </Routes>
-      <Footer />
+      <ShoppingCartProvider>
+        <Toaster />
+        <ScrollToTop />
+        <MiniOfferBanner />
+        {/* <SiteHeader /> */}
+        <AppHeader />
+        <Routes>
+          {pages.map(({ component: Component, path }, index) => {
+            return <Route key={index} element={<Component />} path={path} />;
+          })}
+          <Route element={<Page404 />} />
+        </Routes>
+        <Footer />
+      </ShoppingCartProvider>
     </BrowserRouter>
   );
 };
