@@ -10,6 +10,16 @@ import { useShoppingCartContext } from "../../../store/shopping-cart-context";
 export default function CartDropdown() {
   const { cart } = useShoppingCartContext();
 
+  const totalItemsCount = cart.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+
+  const subTotal = cart.reduce(
+    (total, item) => total + item.quantity * item.product.price,
+    0
+  );
+
   const renderProduct = (item: Product, index: number, close: () => void) => {
     const { name, price, image } = item;
     return (
@@ -73,7 +83,7 @@ export default function CartDropdown() {
           >
             {cart.length > 0 && (
               <div className="w-3.5 h-3.5 flex items-center justify-center bg-primary-900 absolute top-1.5 right-1.5 rounded-full text-[10px] leading-none text-white font-medium">
-                <span className="mt-[1px]">{cart.length}</span>
+                <span className="mt-[1px]">{totalItemsCount}</span>
               </div>
             )}
             <svg
@@ -133,8 +143,8 @@ export default function CartDropdown() {
                   <div className="max-h-[60vh] p-5 overflow-y-auto hiddenScrollbar">
                     <h3 className="text-xl font-semibold">Shopping cart</h3>
                     <div className="divide-y divide-slate-100 dark:divide-slate-700">
-                      {[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]].map(
-                        (item, index) => renderProduct(item, index, close)
+                      {cart.map((item, index) =>
+                        renderProduct(item.product, index, close)
                       )}
                     </div>
                   </div>
@@ -146,7 +156,7 @@ export default function CartDropdown() {
                           Shipping and taxes calculated at checkout.
                         </span>
                       </span>
-                      <span className="">$299.00</span>
+                      <span className="">₹{subTotal.toFixed(2)}</span>
                     </p>
                     <div className="flex space-x-2 mt-5">
                       <ButtonSecondary
