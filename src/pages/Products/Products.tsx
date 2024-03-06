@@ -2,14 +2,21 @@ import ProductCard from "../../components/ProductCard";
 import SectionPromo1 from "../../components/SectionPromo1";
 import SidebarFilters from "../../containers/SidebarFilters";
 import SectionSliderCollections from "../../components/SectionSliderLargeProduct";
-import { ALMA_PRODUCTS, PRODUCTS } from "../../data/data";
-import { FC } from "react";
+import productsService from "../../service/products-service";
+import { FC, useEffect, useState } from "react";
+import { Product } from "../../data/data";
 
 interface Props {
   className?: string;
 }
 
 const Products: FC<Props> = ({ className = "" }) => {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    setProducts(productsService.getAllProducts());
+  }, []);
+
   return (
     <div
       className={`nc-PageCollection2 ${className}`}
@@ -42,7 +49,7 @@ const Products: FC<Props> = ({ className = "" }) => {
               <div className="flex-shrink-0 mb-10 lg:mb-0 lg:mx-4 border-t lg:border-t-0"></div>
               <div className="flex-1 ">
                 <div className="flex-1 grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 ">
-                  {ALMA_PRODUCTS.map((item, index) => (
+                  {products.map((item, index) => (
                     <ProductCard data={item} key={index} />
                   ))}
                 </div>
@@ -52,13 +59,13 @@ const Products: FC<Props> = ({ className = "" }) => {
         </div>
 
         {/* === SECTION 5 === */}
-        <hr className="border-slate-200 dark:border-slate-700" />
+        {/* <hr className="border-slate-200 dark:border-slate-700" /> */}
 
-        <SectionSliderCollections />
-        <hr className="border-slate-200 dark:border-slate-700" />
+        {/* <SectionSliderCollections /> */}
+        {/* <hr className="border-slate-200 dark:border-slate-700" /> */}
 
         {/* SUBCRIBES */}
-        <SectionPromo1 />
+        {/* <SectionPromo1 /> */}
       </div>
     </div>
   );
