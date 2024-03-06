@@ -10,8 +10,12 @@ import Input from "../../shared/Input/Input";
 import ContactInfo from "./ContactInfo";
 import PaymentMethod from "./PaymentMethod";
 import ShippingAddress from "./ShippingAddress";
+import { useShoppingCartContext } from "../../store/shopping-cart-context";
 
 const CheckoutPage = () => {
+  const { cart, totalPrice, removeItemFromCart, updateQuantity, orderPlaced } =
+    useShoppingCartContext();
+
   const [tabActive, setTabActive] = useState<
     "ContactInfo" | "ShippingAddress" | "PaymentMethod"
   >("ShippingAddress");
@@ -156,12 +160,15 @@ const CheckoutPage = () => {
 
           <div className="flex mt-auto pt-4 items-end justify-between text-sm">
             <div className="hidden sm:block text-center relative">
-              <NcInputNumber className="relative z-10" />
+              <NcInputNumber
+                onChange={(value) => updateQuantity(item.id, value)}
+                className="relative z-10"
+              />
             </div>
 
             <a
-              href="##"
-              className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
+              className="cursor-pointer relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
+              onClick={() => removeItemFromCart(item.id)}
             >
               <span>Remove</span>
             </a>
@@ -218,9 +225,9 @@ const CheckoutPage = () => {
 
   return (
     <div className="nc-CheckoutPage">
-      <Helmet>
+      {/* <Helmet>
         <title>Checkout || Ciseco Ecommerce Template</title>
-      </Helmet>
+      </Helmet> */}
 
       <main className="container py-16 lg:pb-28 lg:pt-20 ">
         <div className="mb-16">
@@ -228,12 +235,12 @@ const CheckoutPage = () => {
             Checkout
           </h2>
           <div className="block mt-3 sm:mt-5 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-400">
-            <Link to={"/#"} className="">
+            <Link to={"/"} className="">
               Homepage
             </Link>
             <span className="text-xs mx-1 sm:mx-1.5">/</span>
-            <Link to={"/#"} className="">
-              Clothing Categories
+            <Link to={"/products"} className="">
+              Products
             </Link>
             <span className="text-xs mx-1 sm:mx-1.5">/</span>
             <span className="underline">Checkout</span>
@@ -248,98 +255,116 @@ const CheckoutPage = () => {
           <div className="w-full lg:w-[36%] ">
             <h3 className="text-lg font-semibold">Order summary</h3>
             <div className="mt-8 divide-y divide-slate-200/70 dark:divide-slate-700 ">
-              {[PRODUCTS[0], PRODUCTS[2], PRODUCTS[3]].map(renderProduct)}
+              {cart && cart.length <= 0 && (
+                <>
+                  <p className="text-md font-semibold text-center">
+                    No Items were added in the cart
+                  </p>
+                  <ButtonPrimary href="/products" className="mt-8 w-full">
+                    Back To Products
+                  </ButtonPrimary>
+                </>
+              )}
+              {cart.map((item, index) => renderProduct(item.product, index))}
             </div>
 
-            <div className="mt-10 pt-6 text-sm text-slate-500 dark:text-slate-400 border-t border-slate-200/70 dark:border-slate-700 ">
-              <div>
-                <Label className="text-sm">Discount code</Label>
-                <div className="flex mt-1.5">
-                  <Input sizeClass="h-10 px-4 py-3" className="flex-1" />
-                  <button className="text-neutral-700 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-100 rounded-2xl px-4 ml-3 font-medium text-sm bg-neutral-200/70 dark:bg-neutral-700 dark:hover:bg-neutral-800 w-24 flex justify-center items-center transition-colors">
-                    Apply
-                  </button>
+            {cart.length > 0 && (
+              <>
+                <div className="mt-10 pt-6 text-sm text-slate-500 dark:text-slate-400 border-t border-slate-200/70 dark:border-slate-700 ">
+                  <div>
+                    <Label className="text-sm">Discount code</Label>
+                    <div className="flex mt-1.5">
+                      <Input sizeClass="h-10 px-4 py-3" className="flex-1" />
+                      <button className="text-neutral-700 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-100 rounded-2xl px-4 ml-3 font-medium text-sm bg-neutral-200/70 dark:bg-neutral-700 dark:hover:bg-neutral-800 w-24 flex justify-center items-center transition-colors">
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex justify-between py-2.5">
+                    <span>Subtotal</span>
+                    <span className="font-semibold text-slate-900 dark:text-slate-200">
+                      ₹{totalPrice.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between py-2.5">
+                    <span>Shipping estimate</span>
+                    <span className="font-semibold text-slate-900 dark:text-slate-200">
+                      ₹5.00
+                    </span>
+                  </div>
+                  <div className="flex justify-between py-2.5">
+                    <span>Tax estimate</span>
+                    <span className="font-semibold text-slate-900 dark:text-slate-200">
+                      ₹24.90
+                    </span>
+                  </div>
+                  <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
+                    <span>Order total</span>
+                    <span>₹{(totalPrice + 5 + 24.9).toFixed(2)}</span>
+                  </div>
                 </div>
-              </div>
-
-              <div className="mt-4 flex justify-between py-2.5">
-                <span>Subtotal</span>
-                <span className="font-semibold text-slate-900 dark:text-slate-200">
-                  $249.00
-                </span>
-              </div>
-              <div className="flex justify-between py-2.5">
-                <span>Shipping estimate</span>
-                <span className="font-semibold text-slate-900 dark:text-slate-200">
-                  $5.00
-                </span>
-              </div>
-              <div className="flex justify-between py-2.5">
-                <span>Tax estimate</span>
-                <span className="font-semibold text-slate-900 dark:text-slate-200">
-                  $24.90
-                </span>
-              </div>
-              <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
-                <span>Order total</span>
-                <span>$276.00</span>
-              </div>
-            </div>
-            <ButtonPrimary href="/account-my-order" className="mt-8 w-full">
-              Confirm order
-            </ButtonPrimary>
-            <div className="mt-5 text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center">
-              <p className="block relative pl-5">
-                <svg
-                  className="w-4 h-4 absolute -left-1 top-0.5"
-                  viewBox="0 0 24 24"
-                  fill="none"
+                <ButtonPrimary
+                  onClick={orderPlaced}
+                  href="/account-my-order"
+                  className="mt-8 w-full"
                 >
-                  <path
-                    d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M12 8V13"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M11.9945 16H12.0035"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                Learn more{` `}
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="##"
-                  className="text-slate-900 dark:text-slate-200 underline font-medium"
-                >
-                  Taxes
-                </a>
-                <span>
-                  {` `}and{` `}
-                </span>
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="##"
-                  className="text-slate-900 dark:text-slate-200 underline font-medium"
-                >
-                  Shipping
-                </a>
-                {` `} infomation
-              </p>
-            </div>
+                  Confirm order
+                </ButtonPrimary>
+                <div className="mt-5 text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center">
+                  <p className="block relative pl-5">
+                    <svg
+                      className="w-4 h-4 absolute -left-1 top-0.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path
+                        d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M12 8V13"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M11.9945 16H12.0035"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    Learn more{` `}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href="##"
+                      className="text-slate-900 dark:text-slate-200 underline font-medium"
+                    >
+                      Taxes
+                    </a>
+                    <span>
+                      {` `}and{` `}
+                    </span>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href="##"
+                      className="text-slate-900 dark:text-slate-200 underline font-medium"
+                    >
+                      Shipping
+                    </a>
+                    {` `} infomation
+                  </p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </main>
