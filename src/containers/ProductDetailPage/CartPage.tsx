@@ -8,12 +8,12 @@ import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import { useShoppingCartContext } from "../../store/shopping-cart-context";
 
 const CartPage = () => {
-  const { cart, removeItemFromCart, updateQuantity } = useShoppingCartContext();
-
-  const subTotal = cart.reduce(
-    (total, item) => total + item.quantity * item.product.price,
-    0
-  );
+  const {
+    cart,
+    totalPrice: subTotal,
+    removeItemFromCart,
+    updateQuantity,
+  } = useShoppingCartContext();
 
   const renderStatusSoldout = () => {
     return (
@@ -175,9 +175,12 @@ const CartPage = () => {
           </div>
 
           <div className="flex mt-auto pt-4 items-end justify-between text-sm">
-            {Math.random() > 0.6
-              ? renderStatusSoldout()
-              : renderStatusInstock()}
+            {
+              // Math.random() > 0.6
+              //   ? renderStatusSoldout()
+              //   :
+              renderStatusInstock()
+            }
 
             <a
               onClick={() => removeItemFromCart(item.id)}
@@ -215,7 +218,7 @@ const CartPage = () => {
           </div>
         </div>
         {cart && cart.length <= 0 && (
-          <p className="text-lg font-semibold text-center">
+          <p className="text-md font-semibold text-center">
             No Items were added in the cart
           </p>
         )}
