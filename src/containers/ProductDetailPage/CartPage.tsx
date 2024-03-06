@@ -5,8 +5,10 @@ import { Product, PRODUCTS } from "../../data/data";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
+import { useShoppingCartContext } from "../../store/shopping-cart-context";
 
 const CartPage = () => {
+  const { cart, removeItemFromCart } = useShoppingCartContext();
   const renderStatusSoldout = () => {
     return (
       <div className="rounded-full flex items-center justify-center px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
@@ -169,8 +171,8 @@ const CartPage = () => {
               : renderStatusInstock()}
 
             <a
-              href="##"
-              className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
+              onClick={() => removeItemFromCart(item.id)}
+              className="cursor-pointer relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
             >
               <span>Remove</span>
             </a>
@@ -182,9 +184,9 @@ const CartPage = () => {
 
   return (
     <div className="nc-CartPage">
-      <Helmet>
+      {/* <Helmet>
         <title>Shopping Cart || Ciseco Ecommerce Template</title>
-      </Helmet>
+      </Helmet> */}
 
       <main className="container py-16 lg:pb-28 lg:pt-20 ">
         <div className="mb-12 sm:mb-16">
@@ -208,13 +210,7 @@ const CartPage = () => {
 
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-[60%] xl:w-[55%] divide-y divide-slate-200 dark:divide-slate-700 ">
-            {[
-              PRODUCTS[0],
-              PRODUCTS[1],
-              PRODUCTS[2],
-              PRODUCTS[3],
-              PRODUCTS[4],
-            ].map(renderProduct)}
+            {cart.map((c, index: number) => renderProduct(c.product, index))}
           </div>
           <div className="border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:mx-16 2xl:mx-20 flex-shrink-0"></div>
           <div className="flex-1">

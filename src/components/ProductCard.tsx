@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { Transition } from "@headlessui/react";
 import ModalQuickView from "./ModalQuickView";
 import ProductStatus from "./ProductStatus";
+import { useShoppingCartContext } from "../store/shopping-cart-context";
 
 export interface ProductCardProps {
   className?: string;
@@ -38,6 +39,7 @@ const ProductCard: FC<ProductCardProps> = ({
   } = data;
   const [variantActive, setVariantActive] = React.useState(0);
   const [showModalQuickView, setShowModalQuickView] = React.useState(false);
+  const { addItemToCart } = useShoppingCartContext();
 
   const notifyAddTocart = ({ size }: { size?: string }) => {
     toast.custom(
@@ -194,7 +196,10 @@ const ProductCard: FC<ProductCardProps> = ({
           className="shadow-lg"
           fontSize="text-xs"
           sizeClass="py-2 px-4"
-          onClick={() => notifyAddTocart({ size: "XL" })}
+          onClick={() => {
+            addItemToCart(data);
+            notifyAddTocart({ size: "XL" });
+          }}
         >
           <BagIcon className="w-3.5 h-3.5 mb-0.5" />
           <span className="ml-1">Add to bag</span>
@@ -224,7 +229,10 @@ const ProductCard: FC<ProductCardProps> = ({
             <div
               key={index}
               className="nc-shadow-lg w-10 h-10 rounded-xl bg-white hover:bg-slate-900 hover:text-white transition-colors cursor-pointer flex items-center justify-center uppercase font-semibold tracking-tight text-sm text-slate-900"
-              onClick={() => notifyAddTocart({ size })}
+              onClick={() => {
+                addItemToCart(data);
+                notifyAddTocart({ size });
+              }}
             >
               {size}
             </div>
