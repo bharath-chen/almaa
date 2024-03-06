@@ -1,11 +1,5 @@
 // src/context/ShoppingCartContext.tsx
-import React, {
-  createContext,
-  useContext,
-  useReducer,
-  Dispatch,
-  ReactNode,
-} from "react";
+import { createContext, useContext, useReducer, ReactNode } from "react";
 import { Product } from "../data/data";
 
 interface CartItem {
@@ -47,6 +41,7 @@ type ShoppingCartProviderProps = {
 function CartReducer(state: ShoppingCartState, action: CartAction) {
   switch (action.type) {
     case "ADD_TO_CART":
+      // eslint-disable-next-line no-case-declarations
       const existingCartItem = state.cart.find(
         (item) => item.product.id === action.payload.id
       );
@@ -123,4 +118,5 @@ function useShoppingCartContext() {
   return context;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { ShoppingCartProvider, useShoppingCartContext };
