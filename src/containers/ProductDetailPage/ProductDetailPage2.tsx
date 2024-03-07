@@ -10,10 +10,6 @@ import NcImage from "../../shared/NcImage/NcImage";
 import LikeSaveBtns from "./LikeSaveBtns";
 import ModalPhotos from "./ModalPhotos";
 import ReviewItem from "../../components/ReviewItem";
-// import detail21JPG from "../../images/products/detail3-1.webp";
-// import detail22JPG from "../../images/products/detail3-2.webp";
-// import detail23JPG from "../../images/products/detail3-3.webp";
-// import detail24JPG from "../../images/products/detail3-4.webp";
 import IconDiscount from "../../components/IconDiscount";
 import NcInputNumber from "../../components/NcInputNumber";
 import BagIcon from "../../components/BagIcon";
@@ -30,16 +26,17 @@ import product1Img from "../../assets/PRODUCT DETAIL/1-product-pic-1.jpg";
 import product2Img from "../../assets/PRODUCT DETAIL/1-product-pic-2.jpg";
 import product3Img from "../../assets/PRODUCT DETAIL/1-product-pic-3.jpg";
 import product4Img from "../../assets/PRODUCT DETAIL/1-product-pic-4.jpg";
-import backgroundLineSvg from "../../images/Moon.svg";
 import AppProductChip from "../../components/AppProductChip/AppProductChip";
 import { useShoppingCartContext } from "../../store/shopping-cart-context";
-import Logo from "../../shared/Logo/Logo";
 import benefitsImage from "../../assets/PRODUCT DETAIL/2-benefits.png";
 import faqImg from "../../assets/PRODUCT DETAIL/7-FAQ.jpg";
 import ingredient1 from "../../assets/PRODUCT DETAIL/3-ingredient-1.jpg";
 import ingredient2 from "../../assets/PRODUCT DETAIL/3-ingredient-2.jpg";
 import ingredient3 from "../../assets/PRODUCT DETAIL/3-ingredient-3.jpg";
 import ingredient4 from "../../assets/PRODUCT DETAIL/3-ingredient-4.jpg";
+import Expert from "../../assets/PRODUCT DETAIL/4-Expert.jpg";
+import video from "../../assets/PRODUCT DETAIL/5-video.jpg";
+import videoIcon from "../../assets/PRODUCT DETAIL/5-video-icon.png";
 
 export interface ProductDetailPage2Props {
   className?: string;
@@ -101,7 +98,6 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     id: 1,
     label: "100 g",
   });
-  // const PRICE = 108;
   const { addItemToCartWithQuantity } = useShoppingCartContext();
   const [variantActive, setVariantActive] = React.useState(0);
   const [sizeSelected, setSizeSelected] = React.useState(sizes ? sizes[0] : "");
@@ -755,6 +751,54 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       {/* EXPERT TALK */}
       <section className="container mb-10">
         <h4 className="text-3xl font-semibold mb-10">Expert Talk</h4>
+        {[{ ...product, image: Expert, id: 1 }].map((item, index) => (
+          <div
+            key={item.id}
+            className="bg-slate-100 rounded-3xl grid grid-cols-1 gap-y-10 sm:grid-cols-4 py-6 px-10 mb-20"
+          >
+            <div>
+              <img
+                className="sm:w-full md:w-56 h-auto rounded-2xl"
+                src={item.image}
+                alt={item.name}
+              />
+            </div>
+            <div className="col-span-3">
+              <h3 className="text-2xl font-semibold pt-2">
+                Dr.Manikandan B.A.M.S
+              </h3>
+              <h4 className="text-zinc-500 font-medium mt-1 mb-2">
+                Ayurveda Doctor, General Medicine
+              </h4>
+              <p className="text-black leading-7">
+                Was going through post partum hair fall, I was so depressed as
+                no oils were showing result. This was my final hope & honestly
+                it stands true to its benefits. Was going through post partum
+                hair fall, I was so depressed as no oils were showing result.
+                Was going through post partum hair fall, I was so depressed as
+                no oils were showing result. This was my final hope & honestly
+                it stands true to its benefits. Was going through post partum
+                hair fall, I was so depressed as no oils were showing result.
+              </p>
+            </div>
+          </div>
+        ))}
+
+        <div
+          className="group aspect-w-16 aspect-h-16 sm:aspect-h-9 bg-neutral-800 rounded-3xl overflow-hidden border-4 border-white dark:border-neutral-900 sm:rounded-[50px] sm:border-[10px] z-0"
+          title={"expert Meditating"}
+        >
+          <div className="cursor-pointer absolute inset-0 flex items-center justify-center z-10">
+            <img src={videoIcon} alt="icon" />
+          </div>
+          <NcImage
+            containerClassName="absolute inset-0 rounded-3xl overflow-hidden z-0"
+            className="object-cover w-full h-full transition-transform group-hover:scale-105 duration-300  "
+            src={video}
+            title={"expert Meditating"}
+            alt={"expert Meditating"}
+          />
+        </div>
       </section>
 
       {/* OTHER SECTION */}
@@ -804,3 +848,9 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 };
 
 export default ProductDetailPage2;
+function useEffect(
+  arg0: () => () => void,
+  arg1: (string | React.MutableRefObject<any>)[]
+) {
+  throw new Error("Function not implemented.");
+}
