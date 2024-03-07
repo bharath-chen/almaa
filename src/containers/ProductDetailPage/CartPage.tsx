@@ -34,7 +34,7 @@ const CartPage = () => {
   };
 
   const renderProduct = (item: Product, index: number) => {
-    const { id, image, price, name } = item;
+    const { id, image, price, name, quantity } = item;
 
     return (
       <div
@@ -163,6 +163,7 @@ const CartPage = () => {
 
               <div className="hidden sm:block text-center relative">
                 <NcInputNumber
+                  defaultValue={quantity}
                   onChange={(value) => updateQuantity(id, value)}
                   className="relative z-10"
                 />
@@ -230,7 +231,7 @@ const CartPage = () => {
             <div className="flex flex-col lg:flex-row">
               <div className="w-full lg:w-[60%] xl:w-[55%] divide-y divide-slate-200 dark:divide-slate-700 ">
                 {cart.map((c, index: number) =>
-                  renderProduct(c.product, index)
+                  renderProduct({ ...c.product, quantity: c.quantity }, index)
                 )}
               </div>
               <div className="border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:mx-16 2xl:mx-20 flex-shrink-0"></div>
