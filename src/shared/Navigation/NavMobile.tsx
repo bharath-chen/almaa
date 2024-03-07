@@ -9,6 +9,7 @@ import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import SocialsList from "../../shared/SocialsList/SocialsList";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import SwitchDarkMode from "../../shared/SwitchDarkMode/SwitchDarkMode";
+import almaaLogo from "../../assets/almaa-logo-small.png";
 
 export interface NavMobileProps {
   data?: NavItemType[];
@@ -173,7 +174,9 @@ const NavMobile: React.FC<NavMobileProps> = ({
       <div className="py-6 px-5">
         {/* <Logo /> */}
         <h1>
-          <NavLink to="/">Almaa</NavLink>
+          <NavLink to="/">
+            <img src={almaaLogo} alt="logo" />
+          </NavLink>
         </h1>
         {/* <div className="flex flex-col mt-5 text-slate-600 dark:text-slate-300 text-sm">
           <span>
