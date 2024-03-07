@@ -56,7 +56,7 @@ export default function CartDropdown() {
             <div className="flex">
               <button
                 type="button"
-                className="font-medium text-primary-6000 dark:text-primary-500 "
+                className="font-medium text-primary-900 dark:text-primary-500 "
                 onClick={() => removeItemFromCart(item.id)}
               >
                 Remove
