@@ -40,12 +40,14 @@ import almaaProduct1 from "../assets/PRODUCT DETAIL/8-relatedproducts-1.png";
 import almaaProduct2 from "../assets/PRODUCT DETAIL/8-relatedproducts-2.png";
 import almaaProduct3 from "../assets/PRODUCT DETAIL/8-relatedproducts-3.png";
 import almaaProduct4 from "../assets/PRODUCT DETAIL/8-relatedproducts-4.png";
+import almaaProduct5 from "../assets/PRODUCT DETAIL/1-product-pic-1.jpg";
 
 export const almaaProductImages = [
   almaaProduct1,
   almaaProduct2,
   almaaProduct3,
   almaaProduct4,
+  almaaProduct5,
 ];
 
 export const productImgs = [
