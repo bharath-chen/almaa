@@ -10,6 +10,10 @@ type CartItem = {
 // Define the actions that can be dispatched
 type CartAction =
   | { type: "ADD_TO_CART"; payload: Product }
+  | {
+      type: "ADD_TO_CART_WITH_QUANTITY";
+      payload: { product: Product; quantity: number };
+    }
   | { type: "REMOVE_FROM_CART"; payload: number }
   | {
       type: "UPDATE_QUANTITY";
@@ -29,6 +33,7 @@ type ShoppingCartState = {
 
 type CartContextValue = ShoppingCartState & {
   addItemToCart: (product: Product) => void;
+  addItemToCartWithQuantity: (product: Product, quantity: number) => void;
   removeItemFromCart: (id: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
   orderPlaced: () => void;
@@ -83,6 +88,34 @@ function CartReducer(state: ShoppingCartState, action: CartAction) {
         };
       }
 
+    case "ADD_TO_CART_WITH_QUANTITY":
+      // eslint-disable-next-line no-case-declarations
+      const isExisting = state.cart.find(
+        (item) => item.product.id === action.payload.product.id
+      );
+
+      if (isExisting) {
+        return {
+          ...state,
+          cart: state.cart.map((item) =>
+            item.product.id === action.payload.product.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          ),
+        };
+      } else {
+        return {
+          ...state,
+          cart: [
+            ...state.cart,
+            {
+              product: action.payload.product,
+              quantity: action.payload.quantity,
+            },
+          ],
+        };
+      }   
+
     case "REMOVE_FROM_CART":
       return {
         ...state,
@@ -100,6 +133,7 @@ function CartReducer(state: ShoppingCartState, action: CartAction) {
       };
 
     case "ORDER_PLACED":
+      // eslint-disable-next-line no-case-declarations
       const placedOrders = [...state.cart];
 
       return {
@@ -124,6 +158,12 @@ function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     totalPrice: calculateTotalPrice(cartState.cart),
     addItemToCart(product) {
       dispatch({ type: "ADD_TO_CART", payload: product });
+    },
+    addItemToCartWithQuantity(product, quantity) {
+      dispatch({
+        type: "ADD_TO_CART_WITH_QUANTITY",
+        payload: { product, quantity },
+      });
     },
     removeItemFromCart(id) {
       dispatch({ type: "REMOVE_FROM_CART", payload: id });
