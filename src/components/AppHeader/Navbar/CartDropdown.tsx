@@ -1,6 +1,6 @@
 import { Popover, Transition } from "@headlessui/react";
 import Prices from "../../../components/Prices";
-import { Product, PRODUCTS } from "../../../data/data";
+import { Product } from "../../../data/data";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "../../../shared/Button/ButtonPrimary";
@@ -16,7 +16,7 @@ export default function CartDropdown() {
   } = useShoppingCartContext();
 
   const renderProduct = (item: Product, index: number, close: () => void) => {
-    const { name, price, image } = item;
+    const { name, price, image, quantity } = item;
     return (
       <div key={index} className="flex py-5 last:pb-0">
         <div className="relative h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
@@ -51,7 +51,7 @@ export default function CartDropdown() {
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
-            <p className="text-gray-500 dark:text-slate-400">{`Qty 1`}</p>
+            <p className="text-gray-500 dark:text-slate-400">{`Qty ${quantity}`}</p>
 
             <div className="flex">
               <button
@@ -145,7 +145,11 @@ export default function CartDropdown() {
                         </p>
                       )}
                       {cart.map((item, index) =>
-                        renderProduct(item.product, index, close)
+                        renderProduct(
+                          { ...item.product, quantity: item.quantity },
+                          index,
+                          close
+                        )
                       )}
                     </div>
                   </div>
