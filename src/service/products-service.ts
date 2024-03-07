@@ -1,7 +1,7 @@
-import { ALMA_PRODUCTS, Product } from "../data/data";
+import { ALMAA_PRODUCTS, Product } from "../data/data";
 
 class ProductsService {
-  private products = ALMA_PRODUCTS;
+  private products = ALMAA_PRODUCTS;
 
   getAllProducts(): Product[] {
     return this.products.slice();
