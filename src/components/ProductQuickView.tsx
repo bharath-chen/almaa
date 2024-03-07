@@ -20,19 +20,31 @@ import NotifyAddTocart from "./NotifyAddTocart";
 import AccordionInfo from "../containers/ProductDetailPage/AccordionInfo";
 import { Link } from "react-router-dom";
 import { useShoppingCartContext } from "../store/shopping-cart-context";
+import AppProductChip from "./AppProductChip/AppProductChip";
 
 export interface ProductQuickViewProps {
   className?: string;
   product: Product;
 }
 
-const ProductQuickView: FC<ProductQuickViewProps> = ({ product, className = "" }) => {
+const ProductQuickView: FC<ProductQuickViewProps> = ({
+  product,
+  className = "",
+}) => {
   const { name, image, price, sizes, variants, status, allOfSizes } = product;
   const LIST_IMAGES_DEMO = [image, detail2JPG, detail3JPG];
   const { addItemToCartWithQuantity } = useShoppingCartContext();
   const [variantActive, setVariantActive] = React.useState(0);
   const [sizeSelected, setSizeSelected] = React.useState(sizes ? sizes[0] : "");
   const [quantitySelected, setQuantitySelected] = React.useState(1);
+  const [buyingOption, setBuyingOption] = React.useState({
+    id: 1,
+    label: "One Time",
+  });
+  const [quantityOption, setQuantityOption] = React.useState({
+    id: 1,
+    label: "100 g",
+  });
 
   const addToCart = () => {
     notifyAddTocart();
@@ -191,6 +203,16 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ product, className = "" }
   };
 
   const renderSectionContent = () => {
+    const quantityOptions = [
+      { id: 1, label: "100 g" },
+      { id: 2, label: "200 g" },
+    ];
+
+    const buyingOptions = [
+      { id: 1, label: "One Time" },
+      { id: 2, label: "6 Months" },
+      { id: 3, label: "1 Year" },
+    ];
     return (
       <div className="space-y-8">
         {/* ---------- 1 HEADING ----------  */}
@@ -200,7 +222,9 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ product, className = "" }
           </h2>
 
           <div className="flex items-center mt-5 space-x-4 sm:space-x-5">
-            {/* <div className="flex text-xl font-semibold">$112.00</div> */}
+            {/* <div className="flex text-xl font-semibold">
+              <h4>Rs.{price.toFixed(2)}</h4>
+            </div> */}
             <Prices
               contentClass="py-1 px-2 md:py-1.5 md:px-3 text-lg font-semibold"
               price={price}
@@ -231,9 +255,50 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ product, className = "" }
           </div>
         </div>
 
+        <AppProductChip
+          label="Select Quantity"
+          items={quantityOptions}
+          selectedItem={quantityOption}
+          onItemChange={setQuantityOption}
+        />
+        <AppProductChip
+          label="Buying Option"
+          items={buyingOptions}
+          selectedItem={buyingOption}
+          onItemChange={setBuyingOption}
+        />
+
         {/* ---------- 3 VARIANTS AND SIZE LIST ----------  */}
         {/* <div className="">{renderVariants()}</div>
         <div className="">{renderSizeList()}</div> */}
+
+        {/* <div>
+          <h4 className="text-sm font-semibold">Select Quantity</h4>
+          <ul className="flex gap-3 my-3">
+            {["100 g", "200 g"].map((item) => (
+              <li key={item}>
+                <span className="bg-white-100 border-2 border-primary-900 text-green-800 text-md font-medium me-2 px-3.5 py-1 rounded-full dark:bg-green-900 dark:text-green-300">
+                  {item}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-semibold">Buying Option</h4>
+          <ul className="flex gap-3 my-3">
+            {["One time", "6 Months", "1 Year"].map((item) => (
+              <li key={item}>
+                <span className="bg-white-100 border-2 border-primary-900 text-green-800 text-md font-medium me-2 px-3.5 py-1 rounded-full dark:bg-green-900 dark:text-green-300">
+                  {item}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div> */}
+
+        {}
 
         {/*  ---------- 4  QTY AND ADD TO CART BUTTON */}
         <div className="flex space-x-3.5">
@@ -243,10 +308,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ product, className = "" }
               onChange={setQuantitySelected}
             />
           </div>
-          <ButtonPrimary
-            className="flex-1 flex-shrink-0"
-            onClick={addToCart}
-          >
+          <ButtonPrimary className="flex-1 flex-shrink-0" onClick={addToCart}>
             <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
             <span className="ml-3">Add to cart</span>
           </ButtonPrimary>
