@@ -7,6 +7,7 @@ import CartDropdown from "./CartDropdown";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import almaaLogo from "../../../assets/almaa-logo-small.png";
 
 export interface NavbarProps {}
 
@@ -79,7 +80,9 @@ const Navbar: FC<NavbarProps> = () => {
         <div className="flex flex-1 items-center justify-center">
           {/* <Logo className="flex-shrink-0" /> */}
           <h1>
-            <NavLink to="/">Almaa</NavLink>
+            <NavLink to="/">
+              <img src={almaaLogo} alt="Almaa logo" />
+            </NavLink>
           </h1>
         </div>
 
