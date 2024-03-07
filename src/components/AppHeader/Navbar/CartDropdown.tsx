@@ -16,7 +16,7 @@ export default function CartDropdown() {
   } = useShoppingCartContext();
 
   const renderProduct = (item: Product, index: number, close: () => void) => {
-    const { name, price, image, quantity } = item;
+    const { id, name, price, image, quantity } = item;
     return (
       <div key={index} className="flex py-5 last:pb-0">
         <div className="relative h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
@@ -28,7 +28,7 @@ export default function CartDropdown() {
           <Link
             onClick={close}
             className="absolute inset-0"
-            to={"/product-detail"}
+            to={"/product-detail/" + id}
           />
         </div>
 
@@ -37,7 +37,7 @@ export default function CartDropdown() {
             <div className="flex justify-between ">
               <div>
                 <h3 className="text-base font-medium ">
-                  <Link onClick={close} to={"/product-detail"}>
+                  <Link onClick={close} to={"/product-detail/" + id}>
                     {name}
                   </Link>
                 </h3>
