@@ -30,7 +30,16 @@ import product1Img from "../../assets/PRODUCT DETAIL/1-product-pic-1.jpg";
 import product2Img from "../../assets/PRODUCT DETAIL/1-product-pic-2.jpg";
 import product3Img from "../../assets/PRODUCT DETAIL/1-product-pic-3.jpg";
 import product4Img from "../../assets/PRODUCT DETAIL/1-product-pic-4.jpg";
+import backgroundLineSvg from "../../images/Moon.svg";
 import AppProductChip from "../../components/AppProductChip/AppProductChip";
+import { useShoppingCartContext } from "../../store/shopping-cart-context";
+import Logo from "../../shared/Logo/Logo";
+import benefitsImage from "../../assets/PRODUCT DETAIL/2-benefits.png";
+import faqImg from "../../assets/PRODUCT DETAIL/7-FAQ.jpg";
+import ingredient1 from "../../assets/PRODUCT DETAIL/3-ingredient-1.jpg";
+import ingredient2 from "../../assets/PRODUCT DETAIL/3-ingredient-2.jpg";
+import ingredient3 from "../../assets/PRODUCT DETAIL/3-ingredient-3.jpg";
+import ingredient4 from "../../assets/PRODUCT DETAIL/3-ingredient-4.jpg";
 
 export interface ProductDetailPage2Props {
   className?: string;
@@ -40,6 +49,9 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   className = "",
 }) => {
   const { id } = useParams();
+  const relatedProducts = productsService
+    .getAllProducts()
+    .filter((_, i) => i < 8 && i > 2);
   const product = productsService.getProduct(+id);
   const { name, sizes, variants, status, allOfSizes, price, image } = product;
   const LIST_IMAGES_DEMO: string[] = [
@@ -55,6 +67,32 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     // detail24JPG,
     // detail24JPG,
   ];
+  const ingredients = [
+    {
+      id: 1,
+      title: "Vengaram",
+      shortDesc: "Strengthens gums",
+      src: ingredient1,
+    },
+    {
+      id: 2,
+      title: "Milagu",
+      shortDesc: "Anti Immunity Property",
+      src: ingredient2,
+    },
+    {
+      id: 3,
+      title: "Induppu",
+      shortDesc: "Controls Teeth Erosion",
+      src: ingredient3,
+    },
+    {
+      id: 4,
+      title: "Kaluppu",
+      shortDesc: "Cleanse & Anti fungal",
+      src: ingredient4,
+    },
+  ];
   const [buyingOption, setBuyingOption] = React.useState({
     id: 1,
     label: "One Time",
@@ -64,10 +102,10 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     label: "100 g",
   });
   // const PRICE = 108;
-
+  const { addItemToCartWithQuantity } = useShoppingCartContext();
   const [variantActive, setVariantActive] = React.useState(0);
   const [sizeSelected, setSizeSelected] = React.useState(sizes ? sizes[0] : "");
-  const [qualitySelected, setQualitySelected] = React.useState(1);
+  const [quantitySelected, setQuantitySelected] = React.useState(1);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenModalViewAllReviews, setIsOpenModalViewAllReviews] =
@@ -80,6 +118,11 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   };
 
   const handleCloseModal = () => setIsOpen(false);
+
+  const addToCart = () => {
+    notifyAddTocart();
+    addItemToCartWithQuantity(product, quantitySelected);
+  };
 
   //
   const renderVariants = () => {
@@ -127,7 +170,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       (t) => (
         <NotifyAddTocart
           productImage={image}
-          qualitySelected={qualitySelected}
+          qualitySelected={quantitySelected}
           show={t.visible}
           sizeSelected={sizeSelected}
           variantActive={variantActive}
@@ -300,14 +343,11 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
           <div className="flex space-x-3.5">
             <div className="flex items-center justify-center bg-slate-100/70 dark:bg-slate-800/70 px-2 py-3 sm:p-3.5 rounded-full">
               <NcInputNumber
-                defaultValue={qualitySelected}
-                onChange={setQualitySelected}
+                defaultValue={quantitySelected}
+                onChange={setQuantitySelected}
               />
             </div>
-            <ButtonPrimary
-              className="flex-1 flex-shrink-0"
-              onClick={notifyAddTocart}
-            >
+            <ButtonPrimary className="flex-1 flex-shrink-0" onClick={addToCart}>
               <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
               <span className="ml-3">Add to cart</span>
             </ButtonPrimary>
@@ -315,15 +355,21 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
           {/* SUM */}
           <div className="hidden sm:flex flex-col space-y-4 ">
-            <div className="space-y-2.5">
+            <p className="text-md text-slate-500 dark:text-slate-300">
+              Free shipping above ₹2000
+            </p>
+            <p className="text-md text-slate-500 dark:text-slate-300">
+              Cash on delivery available at ₹50 COD Charges
+            </p>
+            {/* <div className="space-y-2.5">
               <div className="flex justify-between text-slate-600 dark:text-slate-300">
                 <span className="flex">
                   <span>{`Rs.${price.toFixed(2)}  `}</span>
                   <span className="mx-2">x</span>
-                  <span>{`${qualitySelected} `}</span>
+                  <span>{`${quantitySelected} `}</span>
                 </span>
 
-                <span>{`$${(price * qualitySelected).toFixed(2)}`}</span>
+                <span>{`$${(price * quantitySelected).toFixed(2)}`}</span>
               </div>
               <div className="flex justify-between text-slate-600 dark:text-slate-300">
                 <span>Tax estimate</span>
@@ -333,8 +379,8 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             <div className="border-b border-slate-200 dark:border-slate-700"></div>
             <div className="flex justify-between font-semibold">
               <span>Total</span>
-              <span>{`$${(price * qualitySelected).toFixed(2)}`}</span>
-            </div>
+              <span>{`$${(price * quantitySelected).toFixed(2)}`}</span>
+            </div> */}
           </div>
         </div>
       </div>
@@ -438,32 +484,24 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   const renderSection2 = () => {
     return (
       <div className="listingSection__wrap !border-b-0 !pb-0">
-        <h2 className="text-2xl font-semibold">Product details</h2>
+        <h2 className="text-3xl font-semibold">Product details</h2>
         {/* <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div> */}
         <div className="prose prose-sm sm:prose dark:prose-invert sm:max-w-4xl">
-          <p>
-            The patented eighteen-inch hardwood Arrowhead deck --- finely
-            mortised in, makes this the strongest and most rigid canoe ever
-            built. You cannot buy a canoe that will afford greater satisfaction.
+          <p className="text-slate-700 font-normal">
+            Apart from usual tooth cleansing, the palpodi is indicated to treat
+            45 types of tooth disorders. A miraculous combinations of herbs in
+            pal podi magically clears sore throat, sinus, headache, running
+            nose, sneezing, improves vision and clears the discolouration of
+            facial skin.
           </p>
-          <p>
-            The St. Louis Meramec Canoe Company was founded by Alfred Wickett in
-            1922. Wickett had previously worked for the Old Town Canoe Co from
-            1900 to 1914. Manufacturing of the classic wooden canoes in Valley
-            Park, Missouri ceased in 1978.
-          </p>
-          <ul>
-            <li>Regular fit, mid-weight t-shirt</li>
-            <li>Natural color, 100% premium combed organic cotton</li>
-            <li>
-              Quality cotton grown without the use of herbicides or pesticides -
-              GOTS certified
-            </li>
-            <li>Soft touch water based printed in the USA</li>
+          <ul className="list-inside leading-7">
+            <li>Essential to control plaque of teeth</li>
+            <li>Removes odour from teeth</li>
+            <li>Brushing your teeth twice a day is good for health</li>
+            <li>Enhances Immunity</li>
           </ul>
         </div>
         {/* ---------- 6 ----------  */}
-        <Policy />
       </div>
     );
   };
@@ -627,21 +665,133 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
           </div>
         </div>
       </main>
+      {/* KEY BENEFITS SECTION */}
+      <div className="container mb-10 lg:pb-28 pt-48 space-y-14">
+        <div className={`nc-SectionPromo2 ${className}`}>
+          <div className="relative flex flex-col lg:flex-row lg:justify-end bg-yellow-50 dark:bg-slate-800 rounded-2xl sm:rounded-[40px] p-4 pb-0 sm:p-5 sm:pb-0 lg:p-24">
+            {/* <div className="absolute inset-0">
+              <img
+                className="absolute w-full h-full object-contain dark:opacity-5"
+                src={backgroundLineSvg}
+                alt="backgroundLineSvg"
+              />
+            </div> */}
+
+            <div className="lg:w-[50%] max-w-lg relative">
+              <p className="font-semibold text-2xl">Key Benefits</p>
+              <h2 className="font-semibold text-2xl sm:text-4xl xl:text-5xl 2xl:text-6xl mt-2 sm:mt-2 !leading-[1.13] tracking-tight">
+                Herbal Tooth Powder
+                {/* Special offer <br />
+                in kids products */}
+              </h2>
+              {/* <span className="block mt-6 text-slate-500 dark:text-slate-400">
+                Fashion is a form of self-expression and autonomy at a
+                particular period and place.
+              </span> */}
+              <ul className="text-lg list-disc list-inside leading-7 text-yellow-950 mt-3">
+                <li>Essential to control plaque of teeth</li>
+                <li>Removes odour from teeth</li>
+                <li>Brushing your teeth twice a day is good for health</li>
+                <li>Enhances Immunity</li>
+              </ul>
+              <div className="flex space-x-2 sm:space-x-5 mt-6 sm:mt-12">
+                <ButtonPrimary
+                  href="/page-search"
+                  className="md:px-14 md:py-5 md:text-2xl bg-primary-700 dark:bg-slate-200 dark:text-slate-900"
+                >
+                  Buy Now
+                </ButtonPrimary>
+                <span className="self-center">
+                  <svg
+                    className="w-14 h-14 text-primary-700 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </div>
+
+            <NcImage
+              containerClassName="relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(55%-40px)]"
+              src={benefitsImage}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* KEY INGREDIENTS */}
+      <section className="container mb-24">
+        <h4 className="text-3xl font-semibold mb-10">Key Ingredients</h4>
+        <div className="grid grid-cols-1 gap-y-10 gap-x-5 md:grid-cols-2 lg:grid-cols-4 mb-10">
+          {ingredients.map((ing) => (
+            <div key={ing.id}>
+              <img className="rounded-2xl " src={ing.src} alt={ing.title} />
+              <div className="grid justify-items-stretch">
+                <h5 className="font-semibold justify-self-center text-dark-900 dark:text-white text-2xl mt-2">
+                  {ing.title}
+                </h5>
+                <p className="justify-self-center text-sm font-semibold text-slate-500 dark:text-white">
+                  {ing.shortDesc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <ButtonSecondary className="border border-slate-300 dark:border-slate-700 md:text-lg md:px-20 md:py-4">
+          Show all ingredients
+        </ButtonSecondary>
+      </section>
+
+      {/* EXPERT TALK */}
+      <section className="container mb-10">
+        <h4 className="text-3xl font-semibold mb-10">Expert Talk</h4>
+      </section>
 
       {/* OTHER SECTION */}
-      <div className="container pb-24 lg:pb-28 pt-14 space-y-14">
-        <hr className="border-slate-200 dark:border-slate-700" />
-
+      <div className="container pb-24 lg:pb-28 mb-10 space-y-14">
+        {/* <hr className="border-slate-200 dark:border-slate-700" /> */}
+        <h4 className="text-3xl font-semibold mb-10">Customer Reviews</h4>
         {renderReviews()}
 
-        <hr className="border-slate-200 dark:border-slate-700" />
+        {/* FAQ */}
+        <section>
+          <h4 className="text-3xl font-semibold mb-10">
+            Frequently Asked Questions
+          </h4>
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+            <div>
+              <img src={faqImg} alt="FAQ" />
+            </div>
+            <div className="col-span-2">
+              <AccordionInfo />
+            </div>
+          </div>
+        </section>
+
+        {/* <hr className="border-slate-200 dark:border-slate-700" /> */}
 
         <SectionSliderProductCard
-          heading="Customers also purchased"
+          heading="Related Products"
           subHeading=""
-          headingFontClassName="text-2xl font-semibold"
+          headingFontClassName="text-3xl font-semibold"
           headingClassName="mb-10 text-neutral-900 dark:text-neutral-50"
+          data={relatedProducts}
         />
+      </div>
+
+      {/* POLICY SECTION */}
+      <div className="container mb-20">
+        <Policy />
       </div>
 
       {/* MODAL VIEW ALL REVIEW */}
