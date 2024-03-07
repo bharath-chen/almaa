@@ -32,7 +32,7 @@ export interface Product {
   category: string;
   tags: string[];
   link: "/product-detail/";
-  quantity?:number;
+  quantity?: number;
   variants?: ProductVariant[];
   variantType?: "color" | "image";
   sizes?: string[];
@@ -329,7 +329,7 @@ export const SPORT_PRODUCTS: Product[] = [
   },
 ];
 
-export const ALMA_PRODUCTS: Product[] = [
+export const ALMAA_PRODUCTS: Product[] = [
   {
     id: 1,
     name: "Murungaipoo Elagam",
@@ -362,6 +362,86 @@ export const ALMA_PRODUCTS: Product[] = [
   },
   {
     id: 4,
+    name: "Ayul Plus",
+    description: "Good for Heart",
+    image: almaaProductImages[3],
+    category: "Powder",
+    link: "/product-detail/",
+    price: 672,
+    tags: ["plus", "ayul"],
+  },
+  {
+    id: 5,
+    name: "Herbal Tooth Powder",
+    description: "Strong Teeth",
+    image: almaaProductImages[4],
+    category: "Powders",
+    link: "/product-detail/",
+    price: 672,
+    tags: ["murungai", "Elagam"],
+  },
+  {
+    id: 6,
+    name: "Adathodai Syrup",
+    description: "Best for cough",
+    image: almaaProductImages[1],
+    category: "Chooranam",
+    link: "/product-detail/",
+    price: 320,
+    tags: ["Syrup", "Adathodai"],
+  },
+  {
+    id: 7,
+    name: "Aswaganthi Elagam",
+    description: "Boosts Sleep",
+    image: almaaProductImages[2],
+    category: "Capsules",
+    link: "/product-detail/",
+    price: 250,
+    tags: ["Elagam", "Aswaganthi"],
+  },
+  {
+    id: 8,
+    name: "Ayul Plus",
+    description: "Good for Heart",
+    image: almaaProductImages[3],
+    category: "Powder",
+    link: "/product-detail/",
+    price: 672,
+    tags: ["plus", "ayul"],
+  },
+  {
+    id: 9,
+    name: "Murungaipoo Elagam",
+    description: "Immune Booster",
+    image: almaaProductImages[0],
+    category: "Powders",
+    link: "/product-detail/",
+    price: 672,
+    tags: ["murungai", "Elagam"],
+  },
+  {
+    id: 10,
+    name: "Adathodai Syrup",
+    description: "Best for cough",
+    image: almaaProductImages[1],
+    category: "Chooranam",
+    link: "/product-detail/",
+    price: 320,
+    tags: ["Syrup", "Adathodai"],
+  },
+  {
+    id: 11,
+    name: "Aswaganthi Elagam",
+    description: "Boosts Sleep",
+    image: almaaProductImages[2],
+    category: "Capsules",
+    link: "/product-detail/",
+    price: 250,
+    tags: ["Elagam", "Aswaganthi"],
+  },
+  {
+    id: 12,
     name: "Ayul Plus",
     description: "Good for Heart",
     image: almaaProductImages[3],
