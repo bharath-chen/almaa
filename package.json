@@ -13,6 +13,7 @@
     "@glidejs/glide": "^3.6.0",
     "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^2.0.13",
+    "@rollup/rollup-darwin-arm64": "^4.12.1",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/line-clamp": "^0.4.2",
@@ -57,5 +58,10 @@
     "tailwindcss": "^3.2.4",
     "typescript": "^5.2.2",
     "vite": "^5.1.4"
+  },
+  "overrides": {
+    "vite": {
+      "rollup": "npm:@rollup/wasm-node"
+    }
   }
 }
