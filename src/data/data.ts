@@ -32,6 +32,7 @@ export interface Product {
   category: string;
   tags: string[];
   link: "/product-detail/";
+  quantity?:number;
   variants?: ProductVariant[];
   variantType?: "color" | "image";
   sizes?: string[];
