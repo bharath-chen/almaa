@@ -8,13 +8,14 @@ import ProductQuickView2 from "./ProductQuickView2";
 export interface ModalQuickViewProps {
   show: boolean;
   onCloseModalQuickView: () => void;
+  children: ReactNode;
 }
 
 const ModalQuickView: FC<ModalQuickViewProps> = ({
   show,
   onCloseModalQuickView,
+  children
 }) => {
-  const location = useLocation();
 
   return (
     <Transition appear show={show} as={Fragment}>
@@ -59,11 +60,12 @@ const ModalQuickView: FC<ModalQuickViewProps> = ({
                 </span>
 
                 <div className="flex-1 overflow-y-auto rounded-xl hiddenScrollbar">
-                  {location.pathname.includes("home2") ? (
+                  {/* {location.pathname.includes("home2") ? (
                     <ProductQuickView2 />
                   ) : (
                     <ProductQuickView />
-                  )}
+                  )} */}
+                  { children }
                 </div>
               </div>
             </div>
