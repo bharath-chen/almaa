@@ -12,6 +12,7 @@ import BagIcon from "./BagIcon";
 import toast from "react-hot-toast";
 import { Transition } from "@headlessui/react";
 import ModalQuickView from "./ModalQuickView";
+import ProductQuickView from "./ProductQuickView";
 import ProductStatus from "./ProductStatus";
 import { useShoppingCartContext } from "../store/shopping-cart-context";
 
@@ -297,7 +298,9 @@ const ProductCard: FC<ProductCardProps> = ({
       <ModalQuickView
         show={showModalQuickView}
         onCloseModalQuickView={() => setShowModalQuickView(false)}
-      />
+      >
+        <ProductQuickView product={data} />
+      </ModalQuickView>
     </>
   );
 };
