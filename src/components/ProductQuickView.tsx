@@ -232,8 +232,8 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ product, className = "" }
         </div>
 
         {/* ---------- 3 VARIANTS AND SIZE LIST ----------  */}
-        <div className="">{renderVariants()}</div>
-        <div className="">{renderSizeList()}</div>
+        {/* <div className="">{renderVariants()}</div>
+        <div className="">{renderSizeList()}</div> */}
 
         {/*  ---------- 4  QTY AND ADD TO CART BUTTON */}
         <div className="flex space-x-3.5">
