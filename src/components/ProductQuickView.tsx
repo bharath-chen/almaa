@@ -260,22 +260,52 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ product, className = "" }
         <AccordionInfo
           data={[
             {
-              name: "Description",
+              name: "Product Info",
               content:
-                "Fashion is a form of self-expression and autonomy at a particular period and place and in a specific context, of clothing, footwear, lifestyle, accessories, makeup, hairstyle, and body posture.",
+                "A miraculous combination of herbs in pal podi magically clears sore throat, sinus headache, running nose, sneezing, improves vision and clears the discolourization of facial skin",
             },
             {
-              name: "Features",
+              name: `Benefits of ${name}`,
               content: `<ul class="list-disc list-inside leading-7">
-            <li>Material: 43% Sorona Yarn + 57% Stretch Polyester</li>
+            <li>Essential to control plaque of teeth</li>
             <li>
-             Casual pants waist with elastic elastic inside
+             Removes odour from teeth
             </li>
             <li>
-              The pants are a bit tight so you always feel comfortable
+              Brushing your teeth twice a day is good for health
             </li>
             <li>
-              Excool technology application 4-way stretch
+              Enhances immunity
+            </li>
+          </ul>`,
+            },
+            {
+              name: `How to Use?`,
+              content: `<ul class="list-disc list-inside leading-7">
+            <li>Essential to control plaque of teeth</li>
+            <li>
+             Removes odour from teeth
+            </li>
+            <li>
+              Brushing your teeth twice a day is good for health
+            </li>
+            <li>
+              Enhances immunity
+            </li>
+          </ul>`,
+            },
+            {
+              name: `Suitable For`,
+              content: `<ul class="list-disc list-inside leading-7">
+            <li>Essential to control plaque of teeth</li>
+            <li>
+             Removes odour from teeth
+            </li>
+            <li>
+              Brushing your teeth twice a day is good for health
+            </li>
+            <li>
+              Enhances immunity
             </li>
           </ul>`,
             },
