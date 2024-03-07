@@ -4,7 +4,7 @@ import LikeButton from "../components/LikeButton";
 import { StarIcon } from "@heroicons/react/24/solid";
 import BagIcon from "../components/BagIcon";
 import NcInputNumber from "../components/NcInputNumber";
-import { PRODUCTS } from "../data/data";
+import { Product } from "../data/data";
 import {
   NoSymbolIcon,
   ClockIcon,
@@ -13,31 +13,38 @@ import {
 import IconDiscount from "../components/IconDiscount";
 import Prices from "../components/Prices";
 import toast from "react-hot-toast";
-import detail1JPG from "../images/products/detail1.jpg";
-import detail2JPG from "../images/products/detail2.jpg";
-import detail3JPG from "../images/products/detail3.jpg";
+import detail1JPG from "../assets/PRODUCT DETAIL/1-product-pic-1.jpg";
+import detail2JPG from "../assets/PRODUCT DETAIL/1-product-pic-2.jpg";
+import detail3JPG from "../assets/PRODUCT DETAIL/1-product-pic-3.jpg";
 import NotifyAddTocart from "./NotifyAddTocart";
 import AccordionInfo from "../containers/ProductDetailPage/AccordionInfo";
 import { Link } from "react-router-dom";
+import { useShoppingCartContext } from "../store/shopping-cart-context";
 
 export interface ProductQuickViewProps {
   className?: string;
+  product: Product;
 }
 
-const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
-  const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
-  const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
-
+const ProductQuickView: FC<ProductQuickViewProps> = ({ product, className = "" }) => {
+  const { name, image, price, sizes, variants, status, allOfSizes } = product;
+  const LIST_IMAGES_DEMO = [image, detail2JPG, detail3JPG];
+  const { addItemToCartWithQuantity } = useShoppingCartContext();
   const [variantActive, setVariantActive] = React.useState(0);
   const [sizeSelected, setSizeSelected] = React.useState(sizes ? sizes[0] : "");
-  const [qualitySelected, setQualitySelected] = React.useState(1);
+  const [quantitySelected, setQuantitySelected] = React.useState(1);
+
+  const addToCart = () => {
+    notifyAddTocart();
+    addItemToCartWithQuantity(product, quantitySelected);
+  };
 
   const notifyAddTocart = () => {
     toast.custom(
       (t) => (
         <NotifyAddTocart
-          productImage={LIST_IMAGES_DEMO[0]}
-          qualitySelected={qualitySelected}
+          productImage={image}
+          qualitySelected={quantitySelected}
           show={t.visible}
           sizeSelected={sizeSelected}
           variantActive={variantActive}
@@ -189,14 +196,14 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
         {/* ---------- 1 HEADING ----------  */}
         <div>
           <h2 className="text-2xl font-semibold hover:text-primary-6000 transition-colors">
-            <Link to="/product-detail">Heavy Weight Shoes</Link>
+            <Link to="/product-detail">{name}</Link>
           </h2>
 
           <div className="flex items-center mt-5 space-x-4 sm:space-x-5">
             {/* <div className="flex text-xl font-semibold">$112.00</div> */}
             <Prices
               contentClass="py-1 px-2 md:py-1.5 md:px-3 text-lg font-semibold"
-              price={112}
+              price={price}
             />
 
             <div className="h-6 border-l border-slate-300 dark:border-slate-700"></div>
@@ -232,13 +239,13 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
         <div className="flex space-x-3.5">
           <div className="flex items-center justify-center bg-slate-100/70 dark:bg-slate-800/70 px-2 py-3 sm:p-3.5 rounded-full">
             <NcInputNumber
-              defaultValue={qualitySelected}
-              onChange={setQualitySelected}
+              defaultValue={quantitySelected}
+              onChange={setQuantitySelected}
             />
           </div>
           <ButtonPrimary
             className="flex-1 flex-shrink-0"
-            onClick={notifyAddTocart}
+            onClick={addToCart}
           >
             <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
             <span className="ml-3">Add to cart</span>
