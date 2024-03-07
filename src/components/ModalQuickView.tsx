@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { FC, Fragment } from "react";
+import React, {ReactNode, FC, Fragment } from "react";
 import { useLocation } from "react-router-dom";
 import ButtonClose from "../shared/ButtonClose/ButtonClose";
 import ProductQuickView from "./ProductQuickView";
