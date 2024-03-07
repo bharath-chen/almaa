@@ -10,11 +10,10 @@ import NcImage from "../../shared/NcImage/NcImage";
 import LikeSaveBtns from "./LikeSaveBtns";
 import ModalPhotos from "./ModalPhotos";
 import ReviewItem from "../../components/ReviewItem";
-import detail21JPG from "../../images/products/detail3-1.webp";
-import detail22JPG from "../../images/products/detail3-2.webp";
-import detail23JPG from "../../images/products/detail3-3.webp";
-import detail24JPG from "../../images/products/detail3-4.webp";
-import { ALMA_PRODUCTS, PRODUCTS } from "../../data/data";
+// import detail21JPG from "../../images/products/detail3-1.webp";
+// import detail22JPG from "../../images/products/detail3-2.webp";
+// import detail23JPG from "../../images/products/detail3-3.webp";
+// import detail24JPG from "../../images/products/detail3-4.webp";
 import IconDiscount from "../../components/IconDiscount";
 import NcInputNumber from "../../components/NcInputNumber";
 import BagIcon from "../../components/BagIcon";
@@ -26,6 +25,12 @@ import SectionSliderProductCard from "../../components/SectionSliderProductCard"
 import ModalViewAllReviews from "./ModalViewAllReviews";
 import NotifyAddTocart from "../../components/NotifyAddTocart";
 import { useParams } from "react-router-dom";
+import productsService from "../../service/products-service";
+import product1Img from "../../assets/PRODUCT DETAIL/1-product-pic-1.jpg";
+import product2Img from "../../assets/PRODUCT DETAIL/1-product-pic-2.jpg";
+import product3Img from "../../assets/PRODUCT DETAIL/1-product-pic-3.jpg";
+import product4Img from "../../assets/PRODUCT DETAIL/1-product-pic-4.jpg";
+import AppProductChip from "../../components/AppProductChip/AppProductChip";
 
 export interface ProductDetailPage2Props {
   className?: string;
@@ -35,18 +40,29 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   className = "",
 }) => {
   const { id } = useParams();
-  const product = ALMA_PRODUCTS.find((p) => p.id === +id);
-  console.log(product);
-  const { sizes, variants, status, allOfSizes, price, image } = product;
+  const product = productsService.getProduct(+id);
+  const { name, sizes, variants, status, allOfSizes, price, image } = product;
   const LIST_IMAGES_DEMO: string[] = [
-    detail21JPG,
-    detail22JPG,
-    detail23JPG,
-    detail24JPG,
-    detail24JPG,
-    detail24JPG,
-    detail24JPG,
+    product1Img,
+    product2Img,
+    product3Img,
+    product4Img,
+    // detail21JPG,
+    // detail22JPG,
+    // detail23JPG,
+    // detail24JPG,
+    // detail24JPG,
+    // detail24JPG,
+    // detail24JPG,
   ];
+  const [buyingOption, setBuyingOption] = React.useState({
+    id: 1,
+    label: "One Time",
+  });
+  const [quantityOption, setQuantityOption] = React.useState({
+    id: 1,
+    label: "100 g",
+  });
   // const PRICE = 108;
 
   const [variantActive, setVariantActive] = React.useState(0);
@@ -218,6 +234,17 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   };
 
   const renderSectionSidebar = () => {
+    const quantityOptions = [
+      { id: 1, label: "100 g" },
+      { id: 2, label: "200 g" },
+    ];
+
+    const buyingOptions = [
+      { id: 1, label: "One Time" },
+      { id: 2, label: "6 Months" },
+      { id: 3, label: "1 Year" },
+    ];
+
     return (
       <div className="listingSectionSidebar__wrap lg:shadow-lg">
         <div className="space-y-7 lg:space-y-8">
@@ -226,7 +253,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             {/* ---------- 1 HEADING ----------  */}
             <div className="flex items-center justify-between space-x-5">
               <div className="flex text-2xl font-semibold">
-                ${price.toFixed(2)}
+                Rs.{price.toFixed(2)}
               </div>
 
               <a
@@ -252,6 +279,23 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
               <div className="">{renderSizeList()}</div>
             </div>
           </div>
+
+          {/* QUANTITY OPTION */}
+          <AppProductChip
+            label="Select Quantity"
+            items={quantityOptions}
+            selectedItem={quantityOption}
+            onItemChange={setQuantityOption}
+          />
+
+          {/* BUYING OPTION */}
+          <AppProductChip
+            label="Buying Option"
+            items={buyingOptions}
+            selectedItem={buyingOption}
+            onItemChange={setBuyingOption}
+          />
+
           {/*  ---------- 4  QTY AND ADD TO CART BUTTON */}
           <div className="flex space-x-3.5">
             <div className="flex items-center justify-center bg-slate-100/70 dark:bg-slate-800/70 px-2 py-3 sm:p-3.5 rounded-full">
@@ -274,7 +318,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             <div className="space-y-2.5">
               <div className="flex justify-between text-slate-600 dark:text-slate-300">
                 <span className="flex">
-                  <span>{`$${price.toFixed(2)}  `}</span>
+                  <span>{`Rs.${price.toFixed(2)}  `}</span>
                   <span className="mx-2">x</span>
                   <span>{`${qualitySelected} `}</span>
                 </span>
@@ -301,9 +345,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     return (
       <div className="listingSection__wrap !space-y-6">
         <div>
-          <h2 className="text-2xl md:text-3xl font-semibold">
-            Heavy Weight Hoodie
-          </h2>
+          <h2 className="text-2xl md:text-3xl font-semibold">{name}</h2>
           <div className="flex items-center mt-4 sm:mt-5">
             <a
               href="#reviews"
@@ -334,7 +376,61 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
         {/*  */}
         <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
         {/*  */}
-        <AccordionInfo panelClassName="p-4 pt-3.5 text-slate-600 text-base dark:text-slate-300 leading-7" />
+        <AccordionInfo
+          data={[
+            {
+              name: "Product Info",
+              content:
+                "A miraculous combination of herbs in pal podi magically clears sore throat, sinus headache, running nose, sneezing, improves vision and clears the discolourization of facial skin",
+            },
+            {
+              name: `Benefits of ${name}`,
+              content: `<ul class="list-disc list-inside leading-7">
+            <li>Essential to control plaque of teeth</li>
+            <li>
+             Removes odour from teeth
+            </li>
+            <li>
+              Brushing your teeth twice a day is good for health
+            </li>
+            <li>
+              Enhances immunity
+            </li>
+          </ul>`,
+            },
+            {
+              name: `How to Use?`,
+              content: `<ul class="list-disc list-inside leading-7">
+            <li>Essential to control plaque of teeth</li>
+            <li>
+             Removes odour from teeth
+            </li>
+            <li>
+              Brushing your teeth twice a day is good for health
+            </li>
+            <li>
+              Enhances immunity
+            </li>
+          </ul>`,
+            },
+            {
+              name: `Suitable For`,
+              content: `<ul class="list-disc list-inside leading-7">
+            <li>Essential to control plaque of teeth</li>
+            <li>
+             Removes odour from teeth
+            </li>
+            <li>
+              Brushing your teeth twice a day is good for health
+            </li>
+            <li>
+              Enhances immunity
+            </li>
+          </ul>`,
+            },
+          ]}
+          panelClassName="p-4 pt-3.5 text-slate-600 text-base dark:text-slate-300 leading-7"
+        />
       </div>
     );
   };
