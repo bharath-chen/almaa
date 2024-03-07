@@ -99,7 +99,7 @@ function CartReducer(state: ShoppingCartState, action: CartAction) {
           ...state,
           cart: state.cart.map((item) =>
             item.product.id === action.payload.product.id
-              ? { ...item, quantity: item.quantity + 1 }
+              ? { ...item, quantity: item.quantity + action.payload.quantity }
               : item
           ),
         };
@@ -114,7 +114,7 @@ function CartReducer(state: ShoppingCartState, action: CartAction) {
             },
           ],
         };
-      }   
+      }
 
     case "REMOVE_FROM_CART":
       return {
