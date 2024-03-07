@@ -99,7 +99,7 @@ const ProductCard: FC<ProductCardProps> = ({
             <div className="flex">
               <Link
                 to={"/cart"}
-                className="font-medium text-primary-6000 dark:text-primary-500 "
+                className="font-medium text-primary-900 dark:text-primary-500 "
               >
                 View cart
               </Link>
