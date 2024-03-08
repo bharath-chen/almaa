@@ -3,6 +3,7 @@ import NcImage from "../../shared/NcImage/NcImage";
 import { Link } from "react-router-dom";
 import SocialsShare from "../../shared/SocialsShare/SocialsShare";
 import { imgHigtQualitys, _getTitleRd } from "../../contains/fakeData";
+import articles1Img from "../../assets/HOME PAGE/13-articles-1.jpg";
 import PostCardMeta from "../../components/PostCardMeta/PostCardMeta";
 
 export interface Card12Props {
@@ -20,7 +21,7 @@ const Card12: FC<Card12Props> = ({ className = "h-full" }) => {
         className="block flex-shrink-0 flex-grow relative w-full h-0 aspect-w-4 aspect-h-3 rounded-3xl overflow-hidden"
       >
         <NcImage
-          src={imgHigtQualitys[0]}
+          src={articles1Img}
           containerClassName="absolute inset-0"
           alt={"title"}
         />

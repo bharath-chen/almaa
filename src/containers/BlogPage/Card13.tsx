@@ -6,12 +6,13 @@ import PostCardMeta from "../../components/PostCardMeta/PostCardMeta";
 
 export interface Card13Props {
   className?: string;
+  src?: string;
 }
 
-const Card13: FC<Card13Props> = ({ className = "" }) => {
+const Card13: FC<Card13Props> = ({ className = "", src }) => {
   return (
     <div className={`nc-Card13 relative flex ${className}`} data-nc-id="Card13">
-      <div className="flex flex-col h-full py-2">
+      <div className="flex flex-col h-full py-2 px-4 order-last">
         <h2 className={`nc-card-title block font-semibold text-base`}>
           <Link
             to={"/blog-single"}
@@ -40,7 +41,7 @@ const Card13: FC<Card13Props> = ({ className = "" }) => {
         className={`block relative h-full flex-shrink-0 w-2/5 sm:w-1/3 ml-3 sm:ml-5`}
       >
         <NcImage
-          src={_getImgRd()}
+          src={src}
           containerClassName="absolute inset-0 "
           className="object-cover w-full h-full rounded-xl sm:rounded-3xl"
         />

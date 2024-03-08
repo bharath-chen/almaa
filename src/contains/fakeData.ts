@@ -42,6 +42,10 @@ import almaaProduct3 from "../assets/PRODUCT DETAIL/8-relatedproducts-3.png";
 import almaaProduct4 from "../assets/PRODUCT DETAIL/8-relatedproducts-4.png";
 import almaaProduct5 from "../assets/PRODUCT DETAIL/1-product-pic-1.jpg";
 
+import articles2 from "../assets/HOME PAGE/13-articles-2.jpg";
+import articles3 from "../assets/HOME PAGE/13-articles-3.jpg";
+import articles4 from "../assets/HOME PAGE/13-articles-4.jpg";
+
 export const almaaProductImages = [
   almaaProduct1,
   almaaProduct2,
@@ -161,13 +165,16 @@ export const tagNames = [
 ];
 
 export const featuredImgs = [
-  "https://images.pexels.com/photos/10343244/pexels-photo-10343244.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
-  "https://images.pexels.com/photos/5843990/pexels-photo-5843990.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
-  "https://images.pexels.com/photos/10343245/pexels-photo-10343245.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
-  "https://images.pexels.com/photos/3579484/pexels-photo-3579484.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
-  "https://images.pexels.com/photos/7655908/pexels-photo-7655908.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
-  "https://images.pexels.com/photos/13270364/pexels-photo-13270364.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
-  "https://images.pexels.com/photos/12699167/pexels-photo-12699167.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
+  articles2,
+  articles3,
+  articles4,
+  // "https://images.pexels.com/photos/10343244/pexels-photo-10343244.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
+  // "https://images.pexels.com/photos/5843990/pexels-photo-5843990.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
+  // "https://images.pexels.com/photos/10343245/pexels-photo-10343245.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
+  // "https://images.pexels.com/photos/3579484/pexels-photo-3579484.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
+  // "https://images.pexels.com/photos/7655908/pexels-photo-7655908.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
+  // "https://images.pexels.com/photos/13270364/pexels-photo-13270364.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
+  // "https://images.pexels.com/photos/12699167/pexels-photo-12699167.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
 ];
 
 export const imgHigtQualitys = [
@@ -207,6 +214,7 @@ function _getPersonNameRd() {
 
 function _getImgRd() {
   return featuredImgs[Math.floor(Math.random() * featuredImgs.length)];
+  // return featuredImgs;
 }
 
 function _getImgHightQualityRd() {

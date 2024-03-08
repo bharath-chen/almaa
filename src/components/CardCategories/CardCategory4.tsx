@@ -11,6 +11,8 @@ export interface CardCategory4Props {
   name: string;
   desc: string;
   color?: string;
+  btnLabel?: string;
+  quantityText?: string;
 }
 
 const CardCategory4: FC<CardCategory4Props> = ({
@@ -20,6 +22,8 @@ const CardCategory4: FC<CardCategory4Props> = ({
   name,
   desc,
   color = "bg-rose-50",
+  btnLabel = "",
+  quantityText = "",
 }) => {
   return (
     <div
@@ -38,7 +42,8 @@ const CardCategory4: FC<CardCategory4Props> = ({
               containerClassName={`w-20 h-20 rounded-full overflow-hidden z-0 ${color}`}
             />
             <span className="text-xs text-slate-700 dark:text-neutral-300 font-medium">
-              {Math.floor(Math.random() * 200 + 125)} products
+              {/* {Math.floor(Math.random() * 200 + 125)} products */}
+              {quantityText}
             </span>
           </div>
 
@@ -55,7 +60,7 @@ const CardCategory4: FC<CardCategory4Props> = ({
             to={"/page-collection"}
             className="flex items-center text-sm font-medium group-hover:text-primary-500 transition-colors"
           >
-            <span>See Collection</span>
+            <span>{btnLabel}</span>
             <ArrowRightIcon className="w-4 h-4 ml-2.5" />
           </Link>
         </div>

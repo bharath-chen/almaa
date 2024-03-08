@@ -46,6 +46,7 @@ export interface SectionSliderCategoriesProps {
   heading?: string;
   subHeading?: string;
   data?: CardCategoryData[];
+  rightDescText?: string;
 }
 
 const SectionSliderCategories: FC<SectionSliderCategoriesProps> = ({
@@ -53,6 +54,7 @@ const SectionSliderCategories: FC<SectionSliderCategoriesProps> = ({
   subHeading = "",
   className = "",
   itemClassName = "",
+  rightDescText = "",
   data = CATS,
 }) => {
   const id = useId();
@@ -97,7 +99,7 @@ const SectionSliderCategories: FC<SectionSliderCategoriesProps> = ({
   return (
     <div className={`nc-SectionSliderCategories ${className}`}>
       <div className={`${UNIQUE_CLASS} flow-root`}>
-        <Heading desc={subHeading} hasNextPrev>
+        <Heading desc={subHeading} rightDescText={rightDescText} hasNextPrev>
           {heading}
         </Heading>
         <div className="glide__track" data-glide-el="track">

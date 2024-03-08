@@ -199,32 +199,32 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
   },
   {
     id: ncNanoId(),
-    href: "/page-collection-2",
+    href: "/products",
     name: "Wellness Center",
   },
 
   {
     id: ncNanoId(),
-    href: "/page-collection-2",
+    href: "/products",
     name: "Production Unit",
   },
   {
     id: ncNanoId(),
-    href: "/page-search",
+    href: "/products",
     name: "Resources",
     type: "subMenu",
     children: DOCTORS_TEAM_CHILD,
   },
   {
     id: ncNanoId(),
-    href: "/page-search",
+    href: "/products",
     name: "Library",
     type: "subMenu",
     children: OTHER_PAGE_CHILD,
   },
   {
     id: ncNanoId(),
-    href: "/page-search",
+    href: "/products",
     name: "Support",
     type: "subMenu",
     children: DOCTORS_TEAM_CHILD,

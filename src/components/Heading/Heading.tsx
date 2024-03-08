@@ -54,7 +54,7 @@ const Heading: React.FC<HeadingProps> = ({
           {children || `Section Heading`}
           {rightDescText && (
             <>
-              <span className="">{`. `}</span>
+              <span className="">{` `}</span>
               <span className="text-neutral-500 dark:text-neutral-400">
                 {rightDescText}
               </span>

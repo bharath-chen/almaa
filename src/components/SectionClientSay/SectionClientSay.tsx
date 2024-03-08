@@ -20,19 +20,22 @@ export interface SectionClientSayProps {
 const DEMO_DATA = [
   {
     id: 1,
-    clientName: "Tiana Abie",
+    clientName: "Mr.Ragavan",
+    profession: "IAS Officer",
     content:
       "Great quality products, affordable prices, fast and friendly delivery. I very recommend.",
   },
   {
     id: 2,
-    clientName: "Lennie Swiffan",
+    clientName: "Ms.Lennie Swiffan",
+    profession: "Enterpruner",
     content:
       "Great quality products, affordable prices, fast and friendly delivery. I very recommend.",
   },
   {
     id: 3,
-    clientName: "Berta Emili",
+    clientName: "Ms.Berta Emili",
+    profession: "Software Consultant",
     content:
       "Great quality products, affordable prices, fast and friendly delivery. I very recommend.",
   },
@@ -89,8 +92,12 @@ const SectionClientSay: FC<SectionClientSayProps> = ({ className = "" }) => {
       className={`nc-SectionClientSay relative flow-root ${className} `}
       data-nc-id="SectionClientSay"
     >
-      <Heading desc="Let's see what people think of Ciseco" isCenter>
-        Good news from far away 🥇
+      <Heading
+        desc="Trust towards Almaa is our"
+        rightDescText="from our Customers"
+        isCenter
+      >
+        Golden Words
       </Heading>
       <div className="relative md:mb-16 max-w-2xl mx-auto">
         {renderBg()}
@@ -117,6 +124,9 @@ const SectionClientSay: FC<SectionClientSayProps> = ({ className = "" }) => {
                   <span className="block text-2xl">{item.content}</span>
                   <span className="block mt-8 text-2xl font-semibold">
                     {item.clientName}
+                  </span>
+                  <span className="block mt-1 text-lg text-slate-400 font-semibold">
+                    {item.profession}
                   </span>
                   <div className="flex items-center space-x-0.5 mt-3.5 text-yellow-500">
                     <StarIcon className="w-6 h-6" />

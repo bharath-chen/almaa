@@ -32,6 +32,8 @@ interface ExploreType {
   image: string;
   svgBg: string;
   color?: string;
+  btnLabel?: string;
+  quantityText?: string;
 }
 
 export interface SectionGridMoreExploreProps {
@@ -145,6 +147,8 @@ const SectionGridMoreExplore: FC<SectionGridMoreExploreProps> = ({
             featuredImage={item.image}
             key={item.id}
             color={item.color}
+            btnLabel={item.btnLabel}
+            quantityText={item.quantityText}
           />
         );
       case "box6":
@@ -181,10 +185,11 @@ const SectionGridMoreExplore: FC<SectionGridMoreExploreProps> = ({
           fontClass="text-3xl md:text-4xl 2xl:text-5xl font-semibold"
           isCenter
           desc=""
+          rightDescText="Concepts"
         >
-          Start exploring.
+          Explore Almaa's
         </Heading>
-        <Nav
+        {/* <Nav
           className="p-1 bg-white dark:bg-neutral-800 rounded-full shadow-lg overflow-x-auto hiddenScrollbar"
           containerClassName="mb-12 lg:mb-14 relative flex justify-center w-full text-sm md:text-base"
         >
@@ -260,7 +265,7 @@ const SectionGridMoreExplore: FC<SectionGridMoreExploreProps> = ({
               </div>
             </NavItem2>
           ))}
-        </Nav>
+        </Nav> */}
       </div>
     );
   };

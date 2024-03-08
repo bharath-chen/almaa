@@ -12,11 +12,28 @@ import categoryImg2 from "../../assets/HOME PAGE/8-carousal-2.png";
 import categoryImg3 from "../../assets/HOME PAGE/8-carousal-3.png";
 import categoryImg4 from "../../assets/HOME PAGE/8-carousal-4.png";
 import whyAlmaaImg from "../../assets/HOME PAGE/10-why-section.jpg";
+import certification1Img from "../../assets/HOME PAGE/11-certificates.jpg";
 import Glide from "@glidejs/glide";
 import { useId, useEffect, FC } from "react";
 import Heading from "../../components/Heading/Heading";
 import CardCategory3 from "../../components/CardCategories/CardCategory3";
 import AccordionInfo from "../../containers/ProductDetailPage/AccordionInfo";
+import NcImage from "../../shared/NcImage/NcImage";
+import SectionClientSay from "../../components/SectionClientSay/SectionClientSay";
+import BackgroundSection from "../../components/BackgroundSection/BackgroundSection";
+import SectionMagazine5 from "../../containers/BlogPage/SectionMagazine5";
+import SectionSliderCategories from "../../components/SectionSliderCategories/SectionSliderCategories";
+import medicalConsultant1 from "../../assets/HOME PAGE/7-doctor-1.jpg";
+import medicalConsultant2 from "../../assets/HOME PAGE/7-doctor-2.jpg";
+import medicalConsultant3 from "../../assets/HOME PAGE/7-doctor-3.jpg";
+import medicalConsultant4 from "../../assets/HOME PAGE/7-doctor-4.jpg";
+import SectionGridMoreExplore from "../../components/SectionGridMoreExplore/SectionGridMoreExplore";
+import exploreImg1 from "../../assets/HOME PAGE/6-explore-1.png";
+import exploreImg2 from "../../assets/HOME PAGE/6-explore-2.png";
+import exploreImg3 from "../../assets/HOME PAGE/6-explore-3.png";
+import exploreImg4 from "../../assets/HOME PAGE/6-explore-4.png";
+import exploreImg5 from "../../assets/HOME PAGE/6-explore-5.png";
+import exploreImg6 from "../../assets/HOME PAGE/6-explore-6.png";
 
 interface SliderProps {
   heading: {
@@ -242,6 +259,120 @@ const Home = () => {
     },
   ];
 
+  const medicalConsultants = [
+    {
+      name: "Dr.Manikandan B.A.M.S",
+      desc: "Ortho Specialist",
+      img: medicalConsultant1,
+      color: "",
+    },
+    {
+      name: "Dr.Sowmya B.A.M.S",
+      desc: "Varma Specialist",
+      img: medicalConsultant2,
+      color: "",
+    },
+    {
+      name: "Dr.Kumaravel M.D(s).",
+      desc: "Senior Consultant (General)",
+      img: medicalConsultant3,
+      color: "",
+    },
+    {
+      name: "Dr.Sankar Anand M.D(s)",
+      desc: "Doctor, General Medicine",
+      img: medicalConsultant4,
+      color: "",
+    },
+  ];
+
+  const DEMO_MORE_EXPLORE_DATA = [
+    {
+      id: 1,
+      name: "Talk to Doctor",
+      desc: "Free Consulting",
+      image: exploreImg1,
+      svgBg: "",
+      color: "bg-indigo-50",
+      btnLabel: "Explore Doctors",
+      quantityText: "25 Doctors",
+    },
+    {
+      id: 2,
+      name: "Wellness theraphy",
+      desc: "Varma Treatments",
+      image: exploreImg2,
+      svgBg: "",
+      color: "bg-slate-100/80",
+      btnLabel: "Explore Now",
+      quantityText: "35 Therapies",
+    },
+    {
+      id: 3,
+      name: "Library",
+      desc: "Books & Resource materials",
+      image: exploreImg3,
+      svgBg: "",
+      color: "bg-violet-50",
+      btnLabel: "Explore Now",
+      quantityText: "15 Books",
+    },
+    {
+      id: 4,
+      name: "Siddhar Pooja",
+      desc: "Amavasai & Pournami",
+      image: exploreImg4,
+      svgBg: "",
+      color: "bg-orange-50",
+      btnLabel: "Explore Now",
+      quantityText: "2 Locations",
+    },
+    {
+      id: 5,
+      name: "Production Unit",
+      desc: "We Manufacture We Serve",
+      image: exploreImg5,
+      svgBg: "",
+      color: "bg-blue-50",
+      btnLabel: "Explore Now",
+      quantityText: "200 Products",
+    },
+    {
+      id: 6,
+      name: "For Your Health",
+      desc: "Awarness & Social Responsibility",
+      image: exploreImg6,
+      svgBg: "",
+      color: "bg-orange-50",
+      btnLabel: "Explore Now",
+      quantityText: "500 Resources",
+    },
+    // {
+    //   id: 7,
+    //   name: "Sunglasses",
+    //   desc: "Manufacturar",
+    //   image: explore7Png,
+    //   svgBg: explore7Svg,
+    //   color: "bg-stone-100",
+    // },
+    // {
+    //   id: 8,
+    //   name: "kid hats",
+    //   desc: "Manufacturar",
+    //   image: explore8Png,
+    //   svgBg: explore8Svg,
+    //   color: "bg-blue-50",
+    // },
+    // {
+    //   id: 9,
+    //   name: "Wool Jacket",
+    //   desc: "Manufacturar",
+    //   image: explore4Png,
+    //   svgBg: explore4Svg,
+    //   color: "bg-slate-100/80",
+    // },
+  ];
+
   return (
     <main className="relative overflow-hidden">
       {/* HERO SECTION */}
@@ -257,16 +388,16 @@ const Home = () => {
               "container absolute top-1/2 md:top-[40%] md:left-[15%] lg:top-[40%] lg:left-[17%] transform -translate-y-1/2 text-white text-center md:text-left "
             }
           >
-            <h2 className="text-sm md:text-2xl font-semibold leading-7 tracking-wide">
+            <h2 className="text-sm md:text-4xl font-semibold leading-7 tracking-wide">
               Live a Healthy Life with Siddha
             </h2>
-            <h3 className="text-md md:text-4xl mt-3 md:mt-6 mb-3 font-thin">
+            <h3 className="text-md md:text-7xl mt-3 md:mt-6 mb-3 font-thin">
               <span className="pacifico-regular">Herbal for a</span> <br />
               <span className="font-bold">HEALTHY WELLBEING</span>
             </h3>
             <ButtonSecondary
               onClick={() => navigate("/products")}
-              className="md:my-6 lg:my-10 text-xs md:px-8 xl:px-24"
+              className="md:my-6 lg:my-10 text-xs md:px-8 md:py-5 xl:px-24"
             >
               Explore Now
             </ButtonSecondary>
@@ -302,7 +433,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-10">
           {abouts.map((about) => (
             <div className="p-4 bg-slate-100 rounded-lg" key={about.id}>
               <h4 className="text-lg font-semibold mb-1">{about.label}</h4>
@@ -325,6 +456,26 @@ const Home = () => {
         />
       </section>
 
+      {/* EXPLORE SECTIONS */}
+      <section className="container mb-40">
+        <div className="relative py-24 lg:py-32">
+          <BackgroundSection className="bg-neutral-100/70 dark:bg-black/20" />
+          <SectionGridMoreExplore
+            data={DEMO_MORE_EXPLORE_DATA}
+            // className="bg-neutral-100/70 dark:bg-black/20 rounded-2xl px-16 py-20"
+          />
+        </div>
+      </section>
+
+      {/* MEDICAL CONSULTATIONS SECTION */}
+      <section className="container mb-40">
+        <SectionSliderCategories
+          heading="Almaa's"
+          rightDescText="Medical Consultants"
+          data={medicalConsultants}
+        />
+      </section>
+
       {/* EXPLORE PRODUCTS BY CATEGORIES SECTION  */}
       <section className="mb-40">
         <Slider
@@ -334,7 +485,7 @@ const Home = () => {
       </section>
 
       {/* WHY SHOULD YOU BE WITH ALMA SECTION */}
-      <section className="container">
+      <section className="container mb-40">
         <Heading
           className="mb-8"
           rightDescText="be with Almaa"
@@ -350,10 +501,44 @@ const Home = () => {
               alt="Almaa Greatness"
             />
           </div>
-          <div className="self-center">
+          <div>
             <AccordionInfo data={accordionInfo} />
           </div>
         </div>
+      </section>
+
+      {/* CERTIFICATIONS SECTION */}
+      <section className="container mb-40">
+        <Heading
+          isCenter={true}
+          className="mb-10"
+          rightDescText=" & Awards"
+          fontClass="text-2xl md:text-4xl font-bold"
+        >
+          Certifications, Liceneses
+        </Heading>
+        <div className="grid grid-cols-1 gap-4">
+          {<NcImage src={certification1Img} />}
+        </div>
+      </section>
+
+      {/* ARTICLES DOCTORS TEAM SECTION */}
+      <section className="container mb-40">
+        <div className="relative py-24 lg:py-32">
+          <BackgroundSection />
+          <div>
+            <Heading rightDescText="Doctors Team">Articles from our</Heading>
+            <SectionMagazine5 />
+            <div className="flex mt-16 justify-center">
+              <ButtonSecondary>Show all Blogs</ButtonSecondary>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CLIENTS SECTION */}
+      <section className="container mb-40">
+        <SectionClientSay />
       </section>
     </main>
   );
