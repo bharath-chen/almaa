@@ -10,6 +10,9 @@ export interface CardCategory3Props {
   name?: string;
   desc?: string;
   color?: string;
+  href?: string;
+  btnText?: string;
+  onBtnClick?: () => void;
 }
 
 const CardCategory3: FC<CardCategory3Props> = ({
@@ -18,10 +21,12 @@ const CardCategory3: FC<CardCategory3Props> = ({
   name = CATS_DISCOVER[2].name,
   desc = CATS_DISCOVER[2].desc,
   color = CATS_DISCOVER[2].color,
+  btnText = "Show me all",
+  href = "/page-collection",
 }) => {
   return (
     <Link
-      to={"/page-collection"}
+      to={href}
       className={`nc-CardCategory3 block ${className}`}
       data-nc-id="CardCategory3"
     >
@@ -56,7 +61,7 @@ const CardCategory3: FC<CardCategory3Props> = ({
                 fontSize="text-sm font-medium"
                 className="nc-shadow-lg"
               >
-                Show me all
+                {btnText}
               </ButtonSecondary>
             </div>
           </div>
