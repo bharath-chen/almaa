@@ -34,6 +34,8 @@ import exploreImg3 from "../../assets/HOME PAGE/6-explore-3.png";
 import exploreImg4 from "../../assets/HOME PAGE/6-explore-4.png";
 import exploreImg5 from "../../assets/HOME PAGE/6-explore-5.png";
 import exploreImg6 from "../../assets/HOME PAGE/6-explore-6.png";
+import ButtonPrimary from "../../shared/Button/ButtonPrimary";
+import mdSectionImg from "../../assets/HOME PAGE/5-md-section.png";
 
 interface SliderProps {
   heading: {
@@ -454,6 +456,52 @@ const Home = () => {
           }}
           data={medicSliders}
         />
+      </section>
+
+      {/* MD SECTION */}
+      <section className="container mb-40">
+        <div className={`nc-SectionPromo2`}>
+          <div className="relative flex flex-col justify-center lg:flex-row lg:justify-end bg-slate-50 dark:bg-slate-800 rounded-2xl sm:rounded-[40px] p-4 pb-0 sm:p-5 sm:pb-0 lg:p-24">
+            <div className="lg:w-[45%] max-w-lg relative lg:top-14">
+              <h2 className="text-2xl tracking-normal font-medium">
+                Let's Understand
+              </h2>
+              <h3 className="font-semibold text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl mt-2 sm:mt-2 !leading-[1.13] tracking-tight">
+                Siddhargal &<br />
+                Siddha Medicine
+              </h3>
+              <div className="block mt-6">
+                <ul className="pl-5 leading-relaxed dashed list-inside leading-7 text-xl text-slate-500 dark:text-slate-400">
+                  <li>2000 Years Tradition</li>
+                  <li>100% Scientific</li>
+                  <li>Solutions for 4448 diseases</li>
+                  <li>Completely written in Tamil literature</li>
+                </ul>
+              </div>
+              <div className="flex space-x-2 sm:space-x-5 mt-6 mb-10 sm:mt-12">
+                <ButtonPrimary className="sm:bg-primary-900 sm:hover:bg-white sm:hover:text-primary-900 dark:bg-slate-200 dark:text-slate-900">
+                  Watch Video
+                </ButtonPrimary>
+                <ButtonPrimary className="sm:bg-primary-900 sm:hover:bg-white sm:hover:text-primary-900 dark:bg-slate-200 dark:text-slate-900">
+                  Listen Audio
+                </ButtonPrimary>
+              </div>
+              <div className="pl-3">
+                <h3 className="font-bold text-xl sm:text-3xl mt-2 sm:mt-2 !leading-[1.13] tracking-tight">
+                  Almaa Velayudham
+                </h3>
+                <p className="text-slate-600 font-medium">Founder & Chairman</p>
+                <p className="text-slate-600 font-medium">Almaa Groups</p>
+              </div>
+            </div>
+
+            <NcImage
+              containerClassName="relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(55%-40px)]"
+              src={mdSectionImg}
+              alt="Almaa Groups Founder"
+            />
+          </div>
+        </div>
       </section>
 
       {/* EXPLORE SECTIONS */}
