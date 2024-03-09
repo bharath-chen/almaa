@@ -27,6 +27,7 @@ export interface LocationStates {
   "/forgot-pass"?: {};
   "/page404"?: {};
   "/subscription"?: {};
+  "/page-not-found"?: {};
 }
 
 export type PathName = keyof LocationStates;
