@@ -3,9 +3,18 @@
 @tailwind utilities;
 @tailwind variants;
 
-
 .pacifico-regular {
   font-family: "Pacifico", cursive;
   font-weight: 400;
   font-style: normal;
+}
+
+ul.dashed {
+  list-style-type: none;
+}
+
+ul.dashed li:before {
+  content: "-";
+  position: absolute;
+  margin-left: -20px;
 }
