@@ -22,6 +22,7 @@ const MyRoutes = () => {
             return <Route key={index} element={<Component />} path={path} />;
           })}
           <Route element={<Page404 />} />
+          <Route path="*" Component={Page404} />
         </Routes>
         <Footer />
       </ShoppingCartProvider>
