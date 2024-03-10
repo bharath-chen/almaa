@@ -38,6 +38,7 @@ export interface Product {
   sizes?: string[];
   allOfSizes?: string[];
   status?: "New in" | "limited edition" | "Sold Out" | "50% Discount";
+  liked?: boolean;
 }
 
 const DEMO_VARIANTS: ProductVariant[] = [
