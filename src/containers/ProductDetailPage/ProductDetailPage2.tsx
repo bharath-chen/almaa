@@ -37,6 +37,8 @@ import ingredient4 from "../../assets/PRODUCT DETAIL/3-ingredient-4.jpg";
 import Expert from "../../assets/PRODUCT DETAIL/4-Expert.jpg";
 import video from "../../assets/PRODUCT DETAIL/5-video.jpg";
 import videoIcon from "../../assets/PRODUCT DETAIL/5-video-icon.png";
+import AppSlider from "../../components/AppSlider/AppSlider";
+import Heading from "../../components/Heading/Heading";
 
 export interface ProductDetailPage2Props {
   className?: string;
@@ -555,117 +557,199 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     );
   };
 
+  const renderExperts = (item) => {
+    return (
+      <div
+        key={item.id}
+        className="bg-slate-100 rounded-3xl grid grid-cols-1 gap-y-10 sm:grid-cols-4 py-6 px-10 mb-20"
+      >
+        <div>
+          <img
+            className="sm:w-full md:w-56 h-auto rounded-2xl"
+            src={item.src}
+            alt={item.name}
+          />
+        </div>
+        <div className="col-span-3">
+          <h3 className="text-2xl font-semibold pt-2">{item.name}</h3>
+          <h4 className="text-zinc-500 font-medium mt-1 mb-2">
+            {item.profession}
+          </h4>
+          <p className="text-black leading-7">{item.content}</p>
+        </div>
+      </div>
+    );
+  };
+
+  const expertTalkItems = [
+    {
+      id: 1,
+      src: Expert,
+      name: "Dr.Manikandan B.A.M.S",
+      profession: "Ayurveda Doctor, General Medicine",
+      content:
+        "Was going through post partum hair fall, I was so depressed as no oils were showing result. This was my final hope & honestly it stands true to its benefits. Was going through post partum hair fall, I was so depressed as no oils were showing result. Was going through post partum hair fall, I was so depressed as no oils were showing result. This was my final hope & honestly it stands true to its benefits. Was going through post partum hair fall, I was so depressed as no oils were showing result.",
+    },
+    {
+      id: 2,
+      src: Expert,
+      name: "Dr.Manikandan B.A.M.S",
+      profession: "Ayurveda Doctor, General Medicine",
+      content:
+        "Was going through post partum hair fall, I was so depressed as no oils were showing result. This was my final hope & honestly it stands true to its benefits. Was going through post partum hair fall, I was so depressed as no oils were showing result. Was going through post partum hair fall, I was so depressed as no oils were showing result. This was my final hope & honestly it stands true to its benefits. Was going through post partum hair fall, I was so depressed as no oils were showing result.",
+    },
+    {
+      id: 3,
+      src: Expert,
+      name: "Dr.Manikandan B.A.M.S",
+      profession: "Ayurveda Doctor, General Medicine",
+      content:
+        "Was going through post partum hair fall, I was so depressed as no oils were showing result. This was my final hope & honestly it stands true to its benefits. Was going through post partum hair fall, I was so depressed as no oils were showing result. Was going through post partum hair fall, I was so depressed as no oils were showing result. This was my final hope & honestly it stands true to its benefits. Was going through post partum hair fall, I was so depressed as no oils were showing result.",
+    },
+  ];
+
+  const expertSlideGlideOptions: Glide.Options | any = {
+    perView: 1,
+    gap: 32,
+    bound: true,
+    breakpoints: {
+      1280: {
+        gap: 28,
+        perView: 1,
+      },
+      1279: {
+        gap: 20,
+        perView: 1,
+      },
+      1023: {
+        gap: 20,
+        perView: 1,
+      },
+      768: {
+        gap: 20,
+        perView: 1,
+      },
+      500: {
+        gap: 20,
+        perView: 1,
+      },
+    },
+  };
+
   return (
-    <div
-      className={`ListingDetailPage nc-ProductDetailPage2 ${className}`}
-      data-nc-id="ProductDetailPage2"
-    >
-      {/* SINGLE HEADER */}
-      <>
-        <header className="container mt-8 sm:mt-10">
-          <div className="relative ">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 lg:gap-6">
-              <div
-                className="col-span-2 md:col-span-1 row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
-                onClick={() => handleOpenModal(0)}
-              >
-                <NcImage
-                  containerClassName="aspect-w-3 aspect-h-4 md:absolute md:inset-0"
-                  className="object-cover w-full h-full rounded-md sm:rounded-xl"
-                  src={LIST_IMAGES_DEMO[0]}
-                />
-                <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
-              </div>
-
-              {/*  */}
-              <div
-                className="col-span-1 row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
-                onClick={() => handleOpenModal(1)}
-              >
-                <NcImage
-                  containerClassName="absolute inset-0"
-                  className="object-cover w-full h-full rounded-md sm:rounded-xl"
-                  src={LIST_IMAGES_DEMO[1]}
-                />
-                <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
-              </div>
-
-              {/*  */}
-              {[LIST_IMAGES_DEMO[2], LIST_IMAGES_DEMO[3]].map((item, index) => (
+    <section className="relative overflow-hidden">
+      <div
+        className={`ListingDetailPage nc-ProductDetailPage2 ${className}`}
+        data-nc-id="ProductDetailPage2"
+      >
+        {/* SINGLE HEADER */}
+        <>
+          <header className="container mt-8 sm:mt-10">
+            <div className="relative ">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 lg:gap-6">
                 <div
-                  key={index}
-                  className={`relative rounded-md sm:rounded-xl overflow-hidden ${
-                    index >= 2 ? "block" : ""
-                  }`}
+                  className="col-span-2 md:col-span-1 row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
+                  onClick={() => handleOpenModal(0)}
                 >
                   <NcImage
-                    containerClassName="aspect-w-6 aspect-h-5 lg:aspect-h-4"
-                    className="object-cover w-full h-full rounded-md sm:rounded-xl "
-                    src={item || ""}
+                    containerClassName="aspect-w-3 aspect-h-4 md:absolute md:inset-0"
+                    className="object-cover w-full h-full rounded-md sm:rounded-xl"
+                    src={LIST_IMAGES_DEMO[0]}
                   />
-
-                  {/* OVERLAY */}
-                  <div
-                    className="absolute inset-0 bg-slate-900 bg-opacity-20 opacity-0 hover:opacity-60 transition-opacity cursor-pointer"
-                    onClick={() => handleOpenModal(index + 2)}
-                  />
+                  <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
                 </div>
-              ))}
-            </div>
-            <div
-              className="absolute hidden md:flex md:items-center md:justify-center left-3 bottom-3 px-4 py-2 rounded-xl bg-white text-slate-500 cursor-pointer hover:bg-slate-200 z-10"
-              onClick={() => handleOpenModal(0)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+
+                {/*  */}
+                <div
+                  className="col-span-1 row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
+                  onClick={() => handleOpenModal(1)}
+                >
+                  <NcImage
+                    containerClassName="absolute inset-0"
+                    className="object-cover w-full h-full rounded-md sm:rounded-xl"
+                    src={LIST_IMAGES_DEMO[1]}
+                  />
+                  <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
+                </div>
+
+                {/*  */}
+                {[LIST_IMAGES_DEMO[2], LIST_IMAGES_DEMO[3]].map(
+                  (item, index) => (
+                    <div
+                      key={index}
+                      className={`relative rounded-md sm:rounded-xl overflow-hidden ${
+                        index >= 2 ? "block" : ""
+                      }`}
+                    >
+                      <NcImage
+                        containerClassName="aspect-w-6 aspect-h-5 lg:aspect-h-4"
+                        className="object-cover w-full h-full rounded-md sm:rounded-xl "
+                        src={item || ""}
+                      />
+
+                      {/* OVERLAY */}
+                      <div
+                        className="absolute inset-0 bg-slate-900 bg-opacity-20 opacity-0 hover:opacity-60 transition-opacity cursor-pointer"
+                        onClick={() => handleOpenModal(index + 2)}
+                      />
+                    </div>
+                  )
+                )}
+              </div>
+              <div
+                className="absolute hidden md:flex md:items-center md:justify-center left-3 bottom-3 px-4 py-2 rounded-xl bg-white text-slate-500 cursor-pointer hover:bg-slate-200 z-10"
+                onClick={() => handleOpenModal(0)}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                />
-              </svg>
-              <span className="ml-2 text-neutral-800 text-sm font-medium">
-                Show all photos
-              </span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                  />
+                </svg>
+                <span className="ml-2 text-neutral-800 text-sm font-medium">
+                  Show all photos
+                </span>
+              </div>
             </div>
-          </div>
-        </header>
-        {/* MODAL PHOTOS */}
-        <ModalPhotos
-          imgs={LIST_IMAGES_DEMO}
-          isOpen={isOpen}
-          onClose={handleCloseModal}
-          initFocus={openFocusIndex}
-          uniqueClassName="nc-ProductDetailPage2__modalPhotos"
-        />
-      </>
+          </header>
+          {/* MODAL PHOTOS */}
+          <ModalPhotos
+            imgs={LIST_IMAGES_DEMO}
+            isOpen={isOpen}
+            onClose={handleCloseModal}
+            initFocus={openFocusIndex}
+            uniqueClassName="nc-ProductDetailPage2__modalPhotos"
+          />
+        </>
 
-      {/* MAIn */}
-      <main className="container relative z-10 mt-9 sm:mt-11 flex ">
-        {/* CONTENT */}
-        <div className="w-full lg:w-3/5 xl:w-2/3 space-y-10 lg:pr-14 lg:space-y-14">
-          {renderSection1()}
-          {renderSection2()}
-        </div>
+        {/* MAIN */}
+        <main className="container relative z-10 mt-9 sm:mt-11 flex ">
+          {/* CONTENT */}
+          <section className="w-full lg:w-3/5 xl:w-2/3 space-y-10 lg:pr-14 lg:space-y-14">
+            {renderSection1()}
+            {renderSection2()}
+          </section>
 
-        {/* SIDEBAR */}
-        <div className="flex-grow">
-          <div className="hidden lg:block sticky top-28">
-            {renderSectionSidebar()}
-          </div>
-        </div>
-      </main>
-      {/* KEY BENEFITS SECTION */}
-      <div className="container mb-10 lg:pb-28 pt-48 space-y-14">
-        <div className={`nc-SectionPromo2 ${className}`}>
-          <div className="relative flex flex-col lg:flex-row lg:justify-end bg-yellow-50 dark:bg-slate-800 rounded-2xl sm:rounded-[40px] p-4 pb-0 sm:p-5 sm:pb-0 lg:p-24">
-            {/* <div className="absolute inset-0">
+          {/* SIDEBAR */}
+          <aside className="flex-grow">
+            <div className="hidden lg:block sticky top-28">
+              {renderSectionSidebar()}
+            </div>
+          </aside>
+        </main>
+        {/* KEY BENEFITS SECTION */}
+        <section className="container mb-10 lg:pb-28 pt-48 space-y-14">
+          <div className={`nc-SectionPromo2 ${className}`}>
+            <div className="relative flex flex-col lg:flex-row lg:justify-end bg-yellow-50 dark:bg-slate-800 rounded-2xl sm:rounded-[40px] p-4 pb-0 sm:p-5 sm:pb-0 lg:p-24">
+              {/* <div className="absolute inset-0">
               <img
                 className="absolute w-full h-full object-contain dark:opacity-5"
                 src={backgroundLineSvg}
@@ -673,177 +757,156 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
               />
             </div> */}
 
-            <div className="lg:w-[50%] max-w-lg relative">
-              <p className="font-semibold text-2xl">Key Benefits</p>
-              <h2 className="font-semibold text-2xl sm:text-4xl xl:text-5xl 2xl:text-6xl mt-2 sm:mt-2 !leading-[1.13] tracking-tight">
-                Herbal Tooth Powder
-                {/* Special offer <br />
+              <div className="lg:w-[50%] max-w-lg relative">
+                <p className="font-semibold text-2xl">Key Benefits</p>
+                <h2 className="font-semibold text-2xl sm:text-4xl xl:text-5xl 2xl:text-6xl mt-2 sm:mt-2 !leading-[1.13] tracking-tight">
+                  Herbal Tooth Powder
+                  {/* Special offer <br />
                 in kids products */}
-              </h2>
-              {/* <span className="block mt-6 text-slate-500 dark:text-slate-400">
+                </h2>
+                {/* <span className="block mt-6 text-slate-500 dark:text-slate-400">
                 Fashion is a form of self-expression and autonomy at a
                 particular period and place.
               </span> */}
-              <ul className="text-lg list-disc list-inside leading-7 text-yellow-950 mt-3">
-                <li>Essential to control plaque of teeth</li>
-                <li>Removes odour from teeth</li>
-                <li>Brushing your teeth twice a day is good for health</li>
-                <li>Enhances Immunity</li>
-              </ul>
-              <div className="flex space-x-2 sm:space-x-5 mt-6 sm:mt-12">
-                <ButtonPrimary
-                  href="/page-search"
-                  className="md:px-14 md:py-5 md:text-2xl bg-primary-700 dark:bg-slate-200 dark:text-slate-900"
-                >
-                  Buy Now
-                </ButtonPrimary>
-                <span className="self-center">
-                  <svg
-                    className="w-14 h-14 text-primary-700 dark:text-white"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
+                <ul className="text-lg list-disc list-inside leading-7 text-yellow-950 mt-3">
+                  <li>Essential to control plaque of teeth</li>
+                  <li>Removes odour from teeth</li>
+                  <li>Brushing your teeth twice a day is good for health</li>
+                  <li>Enhances Immunity</li>
+                </ul>
+                <div className="flex space-x-2 sm:space-x-5 mt-6 sm:mt-12">
+                  <ButtonPrimary
+                    href="/page-search"
+                    className="md:px-14 md:py-5 md:text-2xl bg-primary-700 dark:bg-slate-200 dark:text-slate-900"
                   >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"
-                    />
-                  </svg>
-                </span>
+                    Buy Now
+                  </ButtonPrimary>
+                  <span className="self-center">
+                    <svg
+                      className="w-14 h-14 text-primary-700 dark:text-white"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"
+                      />
+                    </svg>
+                  </span>
+                </div>
               </div>
-            </div>
 
-            <NcImage
-              containerClassName="relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(55%-40px)]"
-              src={benefitsImage}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* KEY INGREDIENTS */}
-      <section className="container mb-24">
-        <h4 className="text-3xl font-semibold mb-10">Key Ingredients</h4>
-        <div className="grid grid-cols-1 gap-y-10 gap-x-5 md:grid-cols-2 lg:grid-cols-4 mb-10">
-          {ingredients.map((ing) => (
-            <div key={ing.id}>
-              <img className="rounded-2xl " src={ing.src} alt={ing.title} />
-              <div className="grid justify-items-stretch">
-                <h5 className="font-semibold justify-self-center text-dark-900 dark:text-white text-2xl mt-2">
-                  {ing.title}
-                </h5>
-                <p className="justify-self-center text-sm font-semibold text-slate-500 dark:text-white">
-                  {ing.shortDesc}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-        <ButtonSecondary className="border border-slate-300 dark:border-slate-700 md:text-lg md:px-20 md:py-4">
-          Show all ingredients
-        </ButtonSecondary>
-      </section>
-
-      {/* EXPERT TALK */}
-      <section className="container mb-10">
-        <h4 className="text-3xl font-semibold mb-10">Expert Talk</h4>
-        {[{ ...product, image: Expert, id: 1 }].map((item, index) => (
-          <div
-            key={item.id}
-            className="bg-slate-100 rounded-3xl grid grid-cols-1 gap-y-10 sm:grid-cols-4 py-6 px-10 mb-20"
-          >
-            <div>
-              <img
-                className="sm:w-full md:w-56 h-auto rounded-2xl"
-                src={item.image}
-                alt={item.name}
+              <NcImage
+                containerClassName="relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(55%-40px)]"
+                src={benefitsImage}
               />
-            </div>
-            <div className="col-span-3">
-              <h3 className="text-2xl font-semibold pt-2">
-                Dr.Manikandan B.A.M.S
-              </h3>
-              <h4 className="text-zinc-500 font-medium mt-1 mb-2">
-                Ayurveda Doctor, General Medicine
-              </h4>
-              <p className="text-black leading-7">
-                Was going through post partum hair fall, I was so depressed as
-                no oils were showing result. This was my final hope & honestly
-                it stands true to its benefits. Was going through post partum
-                hair fall, I was so depressed as no oils were showing result.
-                Was going through post partum hair fall, I was so depressed as
-                no oils were showing result. This was my final hope & honestly
-                it stands true to its benefits. Was going through post partum
-                hair fall, I was so depressed as no oils were showing result.
-              </p>
-            </div>
-          </div>
-        ))}
-
-        <div
-          className="group aspect-w-16 aspect-h-16 sm:aspect-h-9 bg-neutral-800 rounded-3xl overflow-hidden border-4 border-white dark:border-neutral-900 sm:rounded-[50px] sm:border-[10px] z-0"
-          title={"expert Meditating"}
-        >
-          <div className="cursor-pointer absolute inset-0 flex items-center justify-center z-10">
-            <img src={videoIcon} alt="icon" />
-          </div>
-          <NcImage
-            containerClassName="absolute inset-0 rounded-3xl overflow-hidden z-0"
-            className="object-cover w-full h-full transition-transform group-hover:scale-105 duration-300  "
-            src={video}
-            title={"expert Meditating"}
-            alt={"expert Meditating"}
-          />
-        </div>
-      </section>
-
-      {/* OTHER SECTION */}
-      <div className="container pb-24 lg:pb-28 mb-10 space-y-14">
-        {/* <hr className="border-slate-200 dark:border-slate-700" /> */}
-        <h4 className="text-3xl font-semibold mb-10">Customer Reviews</h4>
-        {renderReviews()}
-
-        {/* FAQ */}
-        <section>
-          <h4 className="text-3xl font-semibold mb-10">
-            Frequently Asked Questions
-          </h4>
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-            <div>
-              <img src={faqImg} alt="FAQ" />
-            </div>
-            <div className="col-span-2">
-              <AccordionInfo />
             </div>
           </div>
         </section>
 
-        {/* <hr className="border-slate-200 dark:border-slate-700" /> */}
+        {/* KEY INGREDIENTS */}
+        <section className="container mb-24">
+          <h4 className="text-3xl font-semibold mb-10">Key Ingredients</h4>
+          <div className="grid grid-cols-1 gap-y-10 gap-x-5 md:grid-cols-2 lg:grid-cols-4 mb-10">
+            {ingredients.map((ing) => (
+              <div key={ing.id}>
+                <img className="rounded-2xl " src={ing.src} alt={ing.title} />
+                <div className="grid justify-items-stretch">
+                  <h5 className="font-semibold justify-self-center text-dark-900 dark:text-white text-2xl mt-2">
+                    {ing.title}
+                  </h5>
+                  <p className="justify-self-center text-sm font-semibold text-slate-500 dark:text-white">
+                    {ing.shortDesc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <ButtonSecondary className="border border-slate-300 dark:border-slate-700 md:text-lg md:px-20 md:py-4">
+            Show all ingredients
+          </ButtonSecondary>
+        </section>
 
-        <SectionSliderProductCard
-          heading="Related Products"
-          subHeading=""
-          headingFontClassName="text-3xl font-semibold"
-          headingClassName="mb-10 text-neutral-900 dark:text-neutral-50"
-          data={relatedProducts}
+        {/* EXPERT TALK */}
+        <section className="container mb-10">
+          {/* SLIDER SECTION */}
+          <AppSlider
+            data={expertTalkItems}
+            renderChildren={renderExperts}
+            glideOptions={expertSlideGlideOptions}
+          >
+            <Heading fontClass="text-3xl md:text-3xl font-semibold" hasNextPrev>
+              Expert Talk
+            </Heading>
+          </AppSlider>
+
+          {/* VIDEO */}
+          <div
+            className="group aspect-w-16 aspect-h-16 sm:aspect-h-9 bg-neutral-800 rounded-3xl overflow-hidden border-4 border-white dark:border-neutral-900 sm:rounded-[50px] sm:border-[10px] z-0"
+            title={"expert Meditating"}
+          >
+            <div className="cursor-pointer absolute inset-0 flex items-center justify-center z-10">
+              <img src={videoIcon} alt="icon" />
+            </div>
+            <NcImage
+              containerClassName="absolute inset-0 rounded-3xl overflow-hidden z-0"
+              className="object-cover w-full h-full transition-transform group-hover:scale-105 duration-300  "
+              src={video}
+              title={"expert Meditating"}
+              alt={"expert Meditating"}
+            />
+          </div>
+        </section>
+
+        {/* OTHER SECTION */}
+        <section className="container pb-24 lg:pb-28 mb-10 space-y-14">
+          {/* <hr className="border-slate-200 dark:border-slate-700" /> */}
+          <h4 className="text-3xl font-semibold mb-10">Customer Reviews</h4>
+          {renderReviews()}
+
+          {/* FAQ */}
+          <section>
+            <h4 className="text-3xl font-semibold mb-10">
+              Frequently Asked Questions
+            </h4>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+              <div>
+                <img src={faqImg} alt="FAQ" />
+              </div>
+              <div className="col-span-2">
+                <AccordionInfo />
+              </div>
+            </div>
+          </section>
+
+          {/* <hr className="border-slate-200 dark:border-slate-700" /> */}
+
+          <SectionSliderProductCard
+            heading="Related Products"
+            subHeading=""
+            headingFontClassName="text-3xl font-semibold"
+            headingClassName="mb-10 text-neutral-900 dark:text-neutral-50"
+            data={relatedProducts}
+          />
+        </section>
+
+        {/* POLICY SECTION */}
+        <section className="container mb-20">
+          <Policy />
+        </section>
+
+        {/* MODAL VIEW ALL REVIEW */}
+        <ModalViewAllReviews
+          show={isOpenModalViewAllReviews}
+          onCloseModalViewAllReviews={() => setIsOpenModalViewAllReviews(false)}
         />
       </div>
-
-      {/* POLICY SECTION */}
-      <div className="container mb-20">
-        <Policy />
-      </div>
-
-      {/* MODAL VIEW ALL REVIEW */}
-      <ModalViewAllReviews
-        show={isOpenModalViewAllReviews}
-        onCloseModalViewAllReviews={() => setIsOpenModalViewAllReviews(false)}
-      />
-    </div>
+    </section>
   );
 };
 
