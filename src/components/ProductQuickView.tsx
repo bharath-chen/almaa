@@ -31,7 +31,8 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({
   product,
   className = "",
 }) => {
-  const { name, image, price, sizes, variants, status, allOfSizes } = product;
+  const { id, name, image, price, sizes, variants, status, allOfSizes } =
+    product;
   const LIST_IMAGES_DEMO = [image, detail2JPG, detail3JPG];
   const { addItemToCartWithQuantity } = useShoppingCartContext();
   const [variantActive, setVariantActive] = React.useState(0);
@@ -218,7 +219,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({
         {/* ---------- 1 HEADING ----------  */}
         <div>
           <h2 className="text-2xl font-semibold hover:text-primary-6000 transition-colors">
-            <Link to="/product-detail">{name}</Link>
+            <Link to={"/product-detail/" + id}>{name}</Link>
           </h2>
 
           <div className="flex items-center mt-5 space-x-4 sm:space-x-5">
