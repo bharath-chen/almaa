@@ -20,12 +20,14 @@ export interface ProductCardProps {
   className?: string;
   data?: Product;
   isLiked?: boolean;
+  onLike?: () => void;
 }
 
 const ProductCard: FC<ProductCardProps> = ({
   className = "",
   data = PRODUCTS[0],
   isLiked,
+  onLike,
 }) => {
   const {
     id,
@@ -262,7 +264,11 @@ const ProductCard: FC<ProductCardProps> = ({
 
           <ProductStatus status={status} />
 
-          <LikeButton liked={isLiked} className="absolute top-3 right-3 z-10" />
+          <LikeButton
+            liked={isLiked}
+            onLike={onLike}
+            className="absolute top-3 right-3 z-10"
+          />
 
           {sizes ? renderSizeList() : renderGroupButtons()}
         </div>
