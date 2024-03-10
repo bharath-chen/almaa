@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import heroImg from "../../assets/HOME PAGE/1-slider-image.jpg";
 import ButtonSecondary from "../../shared/Button/ButtonSecondary";
 import aboutSectionImg from "../../assets/HOME PAGE/2-about-section.jpg";
-import DiscoverMoreSlider from "../../components/DiscoverMoreSlider";
 import img1 from "../../assets/HOME PAGE/3-carousal-1.png";
 import img2 from "../../assets/HOME PAGE/3-carousal-2.png";
 import img3 from "../../assets/HOME PAGE/3-carousal-3.png";
@@ -13,8 +12,7 @@ import categoryImg3 from "../../assets/HOME PAGE/8-carousal-3.png";
 import categoryImg4 from "../../assets/HOME PAGE/8-carousal-4.png";
 import whyAlmaaImg from "../../assets/HOME PAGE/10-why-section.jpg";
 import certification1Img from "../../assets/HOME PAGE/11-certificates.jpg";
-import Glide from "@glidejs/glide";
-import { useId, useEffect, FC } from "react";
+import { useEffect, useState } from "react";
 import Heading from "../../components/Heading/Heading";
 import CardCategory3 from "../../components/CardCategories/CardCategory3";
 import AccordionInfo from "../../containers/ProductDetailPage/AccordionInfo";
@@ -34,95 +32,19 @@ import exploreImg3 from "../../assets/HOME PAGE/6-explore-3.png";
 import exploreImg4 from "../../assets/HOME PAGE/6-explore-4.png";
 import exploreImg5 from "../../assets/HOME PAGE/6-explore-5.png";
 import exploreImg6 from "../../assets/HOME PAGE/6-explore-6.png";
-import ButtonPrimary from "../../shared/Button/ButtonPrimary";
+import Button from "../../shared/Button/Button";
 import mdSectionImg from "../../assets/HOME PAGE/5-md-section.png";
-
-interface SliderProps {
-  heading: {
-    desc?: string;
-    rightDescText?: string;
-    fontClass?: string;
-    text?: string;
-  };
-  data: {
-    name: string;
-    desc: string;
-    featuredImage: string;
-    color: string;
-  }[];
-}
-
-const Slider: FC<SliderProps> = ({ data, heading }) => {
-  const id = useId();
-  const UNIQUE_CLASS = "glidejs" + id.replace(/:/g, "_");
-
-  useEffect(() => {
-    // @ts-ignore
-    const OPTIONS: Glide.Options = {
-      perView: 2.8,
-      gap: 32,
-      bound: true,
-      breakpoints: {
-        1280: {
-          gap: 28,
-          perView: 2.5,
-        },
-        1279: {
-          gap: 20,
-          perView: 2.15,
-        },
-        1023: {
-          gap: 20,
-          perView: 1.6,
-        },
-        768: {
-          gap: 20,
-          perView: 1.2,
-        },
-        500: {
-          gap: 20,
-          perView: 1,
-        },
-      },
-    };
-
-    const slider = new Glide(`.${UNIQUE_CLASS}`, OPTIONS);
-    slider.mount();
-    return () => {
-      slider.destroy();
-    };
-  }, [UNIQUE_CLASS]);
-
-  return (
-    <div className={`nc-DiscoverMoreSlider nc-p-l-container ${UNIQUE_CLASS} `}>
-      <Heading
-        className="mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 nc-p-r-container "
-        desc=""
-        rightDescText={heading.rightDescText || ""}
-        hasNextPrev
-        fontClass="text-2xl md:text-4xl font-bold"
-      >
-        {heading.text || ""}
-      </Heading>
-      <div className="" data-glide-el="track">
-        <ul className="glide__slides">
-          {data.map((item, index) => (
-            <li key={index} className={`glide__slide`}>
-              <CardCategory3
-                name={item.name}
-                desc={item.desc}
-                featuredImage={item.featuredImage}
-                color={item.color}
-                btnText="View Products"
-                href="/products"
-              />
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-};
+import Nav from "../../shared/Nav/Nav";
+import NavItem from "../../shared/NavItem/NavItem";
+import productsService from "../../service/products-service";
+import ProductCard from "../../components/ProductCard";
+import emailSubscribeImg from "../../assets/HOME PAGE/14-subscribe.png";
+import video1Img from "../../assets/HOME PAGE/9-video-1.jpg";
+import video2Img from "../../assets/HOME PAGE/9-video-2.jpg";
+import video3Img from "../../assets/HOME PAGE/9-video-3.jpg";
+import saveAndExploreImg from "../../assets/HOME PAGE/12-save-section.png";
+import AppSlider from "../../components/AppSlider/AppSlider";
+import { Product } from "../../data/data";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -288,7 +210,7 @@ const Home = () => {
     },
   ];
 
-  const DEMO_MORE_EXPLORE_DATA = [
+  const exploreSectionData = [
     {
       id: 1,
       name: "Talk to Doctor",
@@ -375,12 +297,116 @@ const Home = () => {
     // },
   ];
 
+  const lifeStyleCards = [
+    {
+      id: 1,
+      src: video1Img,
+      heading: "How to enhance your lifestyle in a healthy way ?",
+      categoryType: "LifeStyle",
+      dateAdded: "04<sup>th</sup> Feb 2024",
+    },
+    {
+      id: 2,
+      src: video2Img,
+      heading: "Healthy life using natural & organic ingredients",
+      categoryType: "Food Practice",
+      dateAdded: "02<sup>nd</sup> Feb 2024",
+    },
+    {
+      id: 3,
+      src: video3Img,
+      heading: "Let's elevate your life! Participate in Pournami Pooja...",
+      categoryType: "LifeStyle",
+      dateAdded: "05<sup>th</sup> Feb 2024",
+    },
+  ];
+
+  const tabs = ["Best Sellers", "Offers", "Newly Launched"];
+
+  const renderCategoryCard = (item: {
+    name: string;
+    desc: string;
+    featuredImage: string;
+    color: string;
+  }) => {
+    return (
+      <CardCategory3
+        name={item.name}
+        desc={item.desc}
+        featuredImage={item.featuredImage}
+        color={item.color}
+        btnText="View Products"
+        href="/products"
+      />
+    );
+  };
+
+  const renderHealthAndLifestyleCard = (item: {
+    id: number;
+    src: string;
+    heading: string;
+    categoryType: string;
+    dateAdded: string;
+  }) => {
+    return (
+      <div className="grid grid-cols-1 gap-3 w-full">
+        <div className="flex flex-col">
+          <NcImage
+            className="rounded-[30px] object-contain w-full h-auto"
+            src={item.src}
+            alt={item.heading}
+          />
+          <div>
+            <h2 className="px-2 w-full font-semibold mt-3 mb-2">
+              {item.heading}
+            </h2>
+          </div>
+          <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 justify-items-between gap-5 px-2">
+              <div className="flex flex-col">
+                <div className="text-sm rounded-lg text-green-500 border border-green-500 py-1 px-2 flex-grow">
+                  {item.categoryType}
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <div className="flex flex-row items-stretch text-sm text-slate-500">
+                  <span>
+                    <svg
+                      className="w-6 h-6 text-slate-500 dark:text-white"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    ></svg>
+                  </span>
+                  <span
+                    className="self-center"
+                    dangerouslySetInnerHTML={{ __html: item.dateAdded }}
+                  ></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const [tabActive, setTabActive] = useState("Best Sellers");
+
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const products = productsService.getAllProducts().slice(0, 4);
+    setFeaturedProducts(products);
+  }, []);
+
   return (
     <main className="relative overflow-hidden">
       {/* HERO SECTION */}
       <section className="w-full mb-20">
         <div className="nc-PageHome relative overflow-hidden">
-          <img
+          <NcImage
             src={heroImg}
             alt="Hero Img"
             className="w-full h-auto object-cover"
@@ -390,16 +416,16 @@ const Home = () => {
               "container absolute top-1/2 md:top-[40%] md:left-[15%] lg:top-[40%] lg:left-[17%] transform -translate-y-1/2 text-white text-center md:text-left "
             }
           >
-            <h2 className="text-sm md:text-4xl font-semibold leading-7 tracking-wide">
+            <h2 className="text-sm md:text-2xl lg:text-4xl font-semibold leading-7 tracking-wide">
               Live a Healthy Life with Siddha
             </h2>
-            <h3 className="text-md md:text-7xl mt-3 md:mt-6 mb-3 font-thin">
+            <h3 className="text-2xl md:text-4xl lg:text-7xl mt-3 md:mt-6 md:mb-3 sm:mb-2 font-thin">
               <span className="pacifico-regular">Herbal for a</span> <br />
               <span className="font-bold">HEALTHY WELLBEING</span>
             </h3>
             <ButtonSecondary
               onClick={() => navigate("/products")}
-              className="md:my-6 lg:my-10 text-xs md:px-8 md:py-5 xl:px-24"
+              className="focus:ring-2 focus:ring-offset-2 focus:ring-transparent md:my-6 lg:my-10 text-xs md:px-8 md:py-5 xl:px-24"
             >
               Explore Now
             </ButtonSecondary>
@@ -427,7 +453,7 @@ const Home = () => {
             </p>
           </div>
           <div>
-            <img
+            <NcImage
               className="w-full h-full object-contain lg:object-cover"
               src={aboutSectionImg}
               alt="about almaa"
@@ -449,20 +475,53 @@ const Home = () => {
 
       {/* EXPLORE PRODUCTS BY MEDICAL CONDITIONS SECTION */}
       <section className="mb-40">
-        <Slider
-          heading={{
-            text: "Explore Prodcuts",
-            rightDescText: "by Medical Conditions",
-          }}
+        <AppSlider
+          className="nc-DiscoverMoreSlider nc-p-l-container "
           data={medicSliders}
-        />
+          renderChildren={renderCategoryCard}
+        >
+          <Heading
+            className="mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 nc-p-r-container "
+            rightDescText="by Medical Conditions"
+            hasNextPrev
+          >
+            Explore Products
+          </Heading>
+        </AppSlider>
+      </section>
+
+      {/* FEATURED PRODUCTS SECTION */}
+      <section className="container mb-40">
+        <Heading className="mb-10" rightDescText="Products">
+          Featured
+        </Heading>
+        <Nav
+          className="sm:space-x-2"
+          containerClassName="relative flex w-full overflow-x-auto text-sm md:text-base hiddenScrollbar"
+        >
+          {tabs.map((item, index) => (
+            <NavItem
+              key={index}
+              isActive={tabActive === item}
+              onClick={() => setTabActive(item)}
+            >
+              {item}
+            </NavItem>
+          ))}
+        </Nav>
+        <hr className="my-8" />
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+          {featuredProducts.map((product) => (
+            <ProductCard key={product.id} data={product} />
+          ))}
+        </div>
       </section>
 
       {/* MD SECTION */}
       <section className="container mb-40">
         <div className={`nc-SectionPromo2`}>
           <div className="relative flex flex-col justify-center lg:flex-row lg:justify-end bg-slate-50 dark:bg-slate-800 rounded-2xl sm:rounded-[40px] p-4 pb-0 sm:p-5 sm:pb-0 lg:p-24">
-            <div className="lg:w-[45%] max-w-lg relative lg:top-14">
+            <div className="lg:w-[55%] max-w-lg relative lg:top-14">
               <h2 className="text-2xl tracking-normal font-medium">
                 Let's Understand
               </h2>
@@ -478,13 +537,49 @@ const Home = () => {
                   <li>Completely written in Tamil literature</li>
                 </ul>
               </div>
-              <div className="flex space-x-2 sm:space-x-5 mt-6 mb-10 sm:mt-12">
-                <ButtonPrimary className="sm:bg-primary-900 sm:hover:bg-white sm:hover:text-primary-900 dark:bg-slate-200 dark:text-slate-900">
-                  Watch Video
-                </ButtonPrimary>
-                <ButtonPrimary className="sm:bg-primary-900 sm:hover:bg-white sm:hover:text-primary-900 dark:bg-slate-200 dark:text-slate-900">
+              <div className="grid grid-cols-1 md:grid-cols-2 sm:gap-5 md:gap-5 my-5">
+                <Button className="bg-primary-900 text-white sm:text-white sm:bg-primary-900 sm:hover:bg-white sm:hover:text-primary-900 shadow-xl dark:bg-slate-200 dark:text-slate-900 mb-3 md:m-0">
+                  Watch Video{" "}
+                  <span className="ml-3 p-1 bg-green-400 rounded-full">
+                    <svg
+                      className="w-5 h-5 text-primary-900 dark:text-white"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M8.6 5.2A1 1 0 0 0 7 6v12a1 1 0 0 0 1.6.8l8-6a1 1 0 0 0 0-1.6l-8-6Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                </Button>
+                <Button className="bg-primary-900 text-white sm:text-white sm:bg-primary-900 sm:hover:bg-white sm:hover:text-primary-900 shadow-xl dark:bg-slate-200 dark:text-slate-900">
                   Listen Audio
-                </ButtonPrimary>
+                  <span className="ml-3 p-1 bg-green-400 rounded-full">
+                    <svg
+                      className="w-5 h-5 text-primary-900 dark:text-white"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M13 6a2 2 0 0 0-3.3-1.5l-4 3.4H4a2 2 0 0 0-2 2V14c0 1.2.9 2 2 2h1.6l4.1 3.5A2 2 0 0 0 13 18V6Z" />
+                      <path
+                        fillRule="evenodd"
+                        d="M14.8 7.7a1 1 0 0 1 1.4 0 6.1 6.1 0 0 1 0 8.6 1 1 0 0 1-1.3 0 1 1 0 0 1 0-1.5 4 4 0 0 0-.1-5.7 1 1 0 0 1 0-1.4Z"
+                        clipRule="evenodd"
+                      />
+                      <path
+                        fillRule="evenodd"
+                        d="M17.7 4.8a1 1 0 0 1 1.4 0 10.2 10.2 0 0 1 0 14.4 1 1 0 0 1-1.4 0 1 1 0 0 1 0-1.4 8.2 8.2 0 0 0 0-11.6 1 1 0 0 1 0-1.4Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                </Button>
               </div>
               <div className="pl-3">
                 <h3 className="font-bold text-xl sm:text-3xl mt-2 sm:mt-2 !leading-[1.13] tracking-tight">
@@ -509,7 +604,7 @@ const Home = () => {
         <div className="relative py-24 lg:py-32">
           <BackgroundSection className="bg-neutral-100/70 dark:bg-black/20" />
           <SectionGridMoreExplore
-            data={DEMO_MORE_EXPLORE_DATA}
+            data={exploreSectionData}
             // className="bg-neutral-100/70 dark:bg-black/20 rounded-2xl px-16 py-20"
           />
         </div>
@@ -522,14 +617,76 @@ const Home = () => {
           rightDescText="Medical Consultants"
           data={medicalConsultants}
         />
+        <ButtonSecondary className="focus:ring-2 focus:ring-offset-2 focus:ring-transparent tracking-tight ml-3 mt-6 md:text-2xl sm:px-14 border sm:py-5 sm:text-dark sm:bg-white-900 sm:hover:bg-white sm:hover:text-primary-900 border border-slate-300 dark:border-slate-700">
+          Visit all Doctors
+        </ButtonSecondary>
       </section>
 
       {/* EXPLORE PRODUCTS BY CATEGORIES SECTION  */}
       <section className="mb-40">
-        <Slider
-          heading={{ text: "Explore Products", rightDescText: "by Categories" }}
+        <AppSlider
           data={categorySliders}
-        />
+          className="nc-DiscoverMoreSlider nc-p-l-container "
+          renderChildren={renderCategoryCard}
+        >
+          <Heading
+            className="mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 nc-p-r-container "
+            rightDescText="by Categories"
+            hasNextPrev
+          >
+            Explore Products
+          </Heading>
+          {/* <Heading
+            className={heading.classNames}
+            desc={heading.desc}
+            rightDescText={heading.rightDescText}
+            hasNextPrev
+            fontClass={heading.fontClass}
+          >
+            {heading.text}
+          </Heading> */}
+        </AppSlider>
+      </section>
+
+      {/* HEALTHY AND LIFESTYLE VIDEOS SECTION */}
+      <section className="container mb-40">
+        <AppSlider
+          data={lifeStyleCards}
+          className="glidejs_rb_ flow-root glide--swipeable glide--ltr glide--slider"
+          glideClassName="glide__track"
+          renderChildren={renderHealthAndLifestyleCard}
+          glideOptions={{
+            perView: 3,
+            gap: 32,
+            bound: true,
+            breakpoints: {
+              1280: {
+                perView: 4,
+              },
+              1024: {
+                gap: 20,
+                perView: 4,
+              },
+              768: {
+                gap: 20,
+                perView: 3,
+              },
+              640: {
+                gap: 20,
+                perView: 2.3,
+              },
+              500: {
+                gap: 20,
+                perView: 1.4,
+              },
+            },
+          }}
+          itemWrapperClassName="w-full"
+        >
+          <Heading rightDescText="Videos" hasNextPrev>
+            Health & Lifestyle
+          </Heading>
+        </AppSlider>
       </section>
 
       {/* WHY SHOULD YOU BE WITH ALMA SECTION */}
@@ -543,7 +700,7 @@ const Home = () => {
         </Heading>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 place-content-center">
           <div className="lg:pl-20">
-            <img
+            <NcImage
               className="h-auto object-contain"
               src={whyAlmaaImg}
               alt="Almaa Greatness"
@@ -570,6 +727,54 @@ const Home = () => {
         </div>
       </section>
 
+      {/* CLIENTS SECTION */}
+      <section className="container mb-40">
+        <SectionClientSay />
+      </section>
+
+      {/* SAVE AND EARN SECTION */}
+      <section className="container mb-40">
+        <div className="relative py-16 md:py-5">
+          <BackgroundSection className="bg-amber-100/70 dark:bg-black/20" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 justify-items-between">
+            <div className="order-last md:order-first place-self-center">
+              <Heading
+                className="mb-5 lg:mb-5 text-neutral-900 dark:text-neutral-50"
+                fontClass="text-2xl md:text-2xl lg:text-4xl font-semibold"
+                rightDescText="from Almaa Herbal"
+              >
+                <span className="mb-2 hidden md:block">
+                  Let's Save & Earn <br />
+                </span>
+                <span className="block md:hidden text-2xl">
+                  Let's Save & Earn
+                </span>
+              </Heading>
+              <p className="mb-5 sm:text-sm md:text-md lg:text-2xl text-neutral-700 font-medium">
+                Opportunities to earn, save and get <br /> more benefits from
+                almaa. Dont miss
+              </p>
+              <ul className="mb-5 list-disc list-inside text-md lg:text-2xl leading-7">
+                <li className="lg:py-2">Product Purchases</li>
+                <li className="lg:py-2">Premium Membership</li>
+                <li className="lg:py-2">Refer & Earn</li>
+                <li className="lg:py-2">Become a Volunteer</li>
+              </ul>
+              <ButtonSecondary className="text-lg lg:text-2xl border border-slate-300 dark:border-slate-700 py-4 lg:py-6 lg:px-16">
+                Explore & Save
+              </ButtonSecondary>
+            </div>
+
+            <div className="relative md:top-[-80px]">
+              <NcImage
+                className="w-full h-auto object-contain md:object-cover rounded-lg"
+                src={saveAndExploreImg}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ARTICLES DOCTORS TEAM SECTION */}
       <section className="container mb-40">
         <div className="relative py-24 lg:py-32">
@@ -584,9 +789,63 @@ const Home = () => {
         </div>
       </section>
 
-      {/* CLIENTS SECTION */}
-      <section className="container mb-40">
-        <SectionClientSay />
+      {/* EMAIL SUBSCRIBE SECTION */}
+      <section className="container">
+        <div className="relative py-16 lg:py-16">
+          <BackgroundSection className="bg-amber-100/70 dark:bg-black/20 md:h-3/4" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 justify-items-center">
+            <div className="order-last md:order-first">
+              <Heading
+                className="mb-5 lg:mb-5 text-neutral-900 dark:text-neutral-50"
+                fontClass="sm:text-md md:text-2xl lg:text-4xl font-semibold"
+                rightDescText="resources from us"
+              >
+                <span className="mb-2">
+                  Let's Subscribe & get <br />{" "}
+                </span>
+              </Heading>
+              <p className="sm:text-sm md:text-md lg:text-2xl text-neutral-700 font-medium">
+                Opportunities to earn, save and get <br /> more benefits from
+                almaa. Dont miss
+              </p>
+              <form className="mt-2 relative max-w-sm">
+                <input
+                  type="email"
+                  className="block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 disabled:bg-neutral-200 dark:disabled:bg-neutral-800 rounded-full text-sm font-normal h-11 px-4 py-3 "
+                  required
+                  aria-required="true"
+                  placeholder="Enter your email address"
+                />
+                <button
+                  className="ttnc-ButtonCircle flex items-center justify-center rounded-full !leading-none disabled:bg-opacity-70 bg-slate-900 hover:bg-slate-800 
+        text-slate-50 absolute transform top-1/2 -translate-y-1/2 right-1  w-9 h-9  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
+                  type="submit"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M3.75 12a.75.75 0 01.75-.75h13.19l-5.47-5.47a.75.75 0 011.06-1.06l6.75 6.75a.75.75 0 010 1.06l-6.75 6.75a.75.75 0 11-1.06-1.06l5.47-5.47H4.5a.75.75 0 01-.75-.75z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </button>
+              </form>
+            </div>
+
+            <div className="relative md:top-[-150px]">
+              <NcImage
+                className="w-full h-auto object-contain md:object-cover rounded-lg"
+                src={emailSubscribeImg}
+              />
+            </div>
+          </div>
+        </div>
       </section>
     </main>
   );
