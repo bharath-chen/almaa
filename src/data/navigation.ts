@@ -184,18 +184,48 @@ const DOCTORS_TEAM_CHILD: NavItemType[] = [
   { id: ncNanoId(), href: "/", name: "Single Herbs" },
 ];
 
+const ABOUT_TEAM_CHILD: NavItemType[] = [
+  { id: ncNanoId(), href: "/", name: "Almaa Groups" },
+  { id: ncNanoId(), href: "/", name: "Founder" },
+  { id: ncNanoId(), href: "/", name: "Doctors Team" },
+  { id: ncNanoId(), href: "/", name: "Our Branches" },
+  { id: ncNanoId(), href: "/", name: "Siddha Science" },
+  { id: ncNanoId(), href: "/", name: "Our Concepts" },
+];
+
+const PRODUCTS_TEAM_CHILD: NavItemType[] = [
+  { id: ncNanoId(), href: "/products", name: "Health Conditions" },
+  { id: ncNanoId(), href: "/products", name: "Nature Of Product" },
+  { id: ncNanoId(), href: "/products", name: "Combos" },
+  { id: ncNanoId(), href: "/products", name: "Nutraceuticals" },
+  { id: ncNanoId(), href: "/products", name: "Cosmetics" },
+  { id: ncNanoId(), href: "/products", name: "Single Herbs" },
+];
+
+const RESOURCES_TEAM_CHILD: NavItemType[] = [
+  { id: ncNanoId(), href: "/products", name: "Blog" },
+  { id: ncNanoId(), href: "/products", name: "Case Studies" },
+  { id: ncNanoId(), href: "/products", name: "Health Tips" },
+  { id: ncNanoId(), href: "/products", name: "Media & Gallery" },
+  { id: ncNanoId(), href: "/products", name: "News & Events" },
+  { id: ncNanoId(), href: "/products", name: "A-Z Disease Index" },
+  { id: ncNanoId(), href: "/products", name: "A-Z Ingredient Index" },
+];
+
 export const NAVIGATION_DEMO_2: NavItemType[] = [
   {
     id: ncNanoId(),
-    href: "/",
-    name: "Home",
+    href: null,
+    name: "About",
+    type: "subMenu",
+    children: ABOUT_TEAM_CHILD,
   },
   {
     id: ncNanoId(),
-    href: "/products",
+    href: null,
     name: "Products",
-    // type: "subMenu",
-    // children: DOCTORS_TEAM_CHILD,
+    type: "subMenu",
+    children: PRODUCTS_TEAM_CHILD,
   },
   {
     id: ncNanoId(),
@@ -213,20 +243,16 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
     href: "/products",
     name: "Resources",
     type: "subMenu",
-    children: DOCTORS_TEAM_CHILD,
+    children: RESOURCES_TEAM_CHILD,
   },
   {
     id: ncNanoId(),
     href: "/products",
     name: "Library",
-    type: "subMenu",
-    children: OTHER_PAGE_CHILD,
   },
   {
     id: ncNanoId(),
     href: "/products",
     name: "Support",
-    type: "subMenu",
-    children: DOCTORS_TEAM_CHILD,
   },
 ];
