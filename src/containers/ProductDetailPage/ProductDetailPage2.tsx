@@ -20,7 +20,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import SectionSliderProductCard from "../../components/SectionSliderProductCard";
 import ModalViewAllReviews from "./ModalViewAllReviews";
 import NotifyAddTocart from "../../components/NotifyAddTocart";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import productsService from "../../service/products-service";
 import product1Img from "../../assets/PRODUCT DETAIL/1-product-pic-1.jpg";
 import product2Img from "../../assets/PRODUCT DETAIL/1-product-pic-2.jpg";
@@ -39,6 +39,10 @@ import video from "../../assets/PRODUCT DETAIL/5-video.jpg";
 import videoIcon from "../../assets/PRODUCT DETAIL/5-video-icon.png";
 import AppSlider from "../../components/AppSlider/AppSlider";
 import Heading from "../../components/Heading/Heading";
+import carousel1 from "../../assets/HOME PAGE/3-carousal-1.png";
+import carousel2 from "../../assets/HOME PAGE/3-carousal-2.png";
+import carousel3 from "../../assets/HOME PAGE/3-carousal-3.png";
+import carousel4 from "../../assets/HOME PAGE/3-carousal-4.png";
 
 export interface ProductDetailPage2Props {
   className?: string;
@@ -636,6 +640,36 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     },
   };
 
+  const carousels = [
+    {
+      id: 1,
+      src: carousel1,
+      bgColor: "bg-pink-300",
+      label: "Respiratory Wellbeing",
+    },
+    {
+      id: 2,
+      src: carousel2,
+      bgColor: "bg-pink-300",
+      label: "Digestive Wellbeing",
+    },
+    {
+      id: 3,
+      src: carousel3,
+      bgColor: "bg-pink-300",
+      label: "Reproductive Wellbeing",
+    },
+    { id: 4, src: carousel4, bgColor: "bg-pink-300", label: "Renal Health" },
+    { id: 5, src: carousel1, bgColor: "bg-pink-300", label: "Liver Health" },
+    {
+      id: 6,
+      src: carousel2,
+      bgColor: "bg-pink-300",
+      label: "Gallbladder Health",
+    },
+    { id: 7, src: carousel3, bgColor: "bg-pink-300", label: "Heart Health" },
+  ];
+
   return (
     <section className="relative overflow-hidden">
       <div
@@ -646,6 +680,32 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
         <>
           <header className="container mt-8 sm:mt-10">
             <div className="relative ">
+              <div className="grid mt-16 mb-40 md:gap-20 lg:gap-5 sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-8">
+                {carousels.map((carousel, index) => (
+                  <div key={carousel.id} className="md:w-[100px] md:h-[100px]">
+                    <div className={`rounded-lg ${carousel.bgColor}`}>
+                      <NcImage
+                        src={carousel.src}
+                        alt={carousel.id + "-" + index}
+                      />
+                    </div>
+                    <div className="py-3">
+                      <p className="text-[14px] text-slate-400 text-center">
+                        {carousel.label}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+                <div className="h-[250px] md:w-[110px] md:h-[110px]">
+                  <div className="flex justify-center h-full items-center rounded-lg bg-primary-900">
+                    <div className="flex justify-center items-center">
+                      <Link to="/" className="text-white h-full">
+                        View All
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 lg:gap-6">
                 <div
                   className="col-span-2 md:col-span-1 row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
