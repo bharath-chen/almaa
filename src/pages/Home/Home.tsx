@@ -661,23 +661,23 @@ const Home = () => {
             bound: true,
             breakpoints: {
               1280: {
-                perView: 4,
+                perView: 3,
               },
               1024: {
                 gap: 20,
-                perView: 4,
+                perView: 3,
               },
               768: {
                 gap: 20,
-                perView: 3,
+                perView: 2,
               },
               640: {
                 gap: 20,
-                perView: 2.3,
+                perView: 1,
               },
               500: {
                 gap: 20,
-                perView: 1.4,
+                perView: 1,
               },
             },
           }}
