@@ -650,24 +650,24 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     {
       id: 2,
       src: carousel2,
-      bgColor: "bg-pink-300",
+      bgColor: "bg-stone-200",
       label: "Digestive Wellbeing",
     },
     {
       id: 3,
       src: carousel3,
-      bgColor: "bg-pink-300",
+      bgColor: "bg-green-100",
       label: "Reproductive Wellbeing",
     },
-    { id: 4, src: carousel4, bgColor: "bg-pink-300", label: "Renal Health" },
-    { id: 5, src: carousel1, bgColor: "bg-pink-300", label: "Liver Health" },
+    { id: 4, src: carousel4, bgColor: "bg-red-100", label: "Renal Health" },
+    { id: 5, src: carousel1, bgColor: "bg-teal-100", label: "Liver Health" },
     {
       id: 6,
       src: carousel2,
-      bgColor: "bg-pink-300",
+      bgColor: "bg-slate-300",
       label: "Gallbladder Health",
     },
-    { id: 7, src: carousel3, bgColor: "bg-pink-300", label: "Heart Health" },
+    { id: 7, src: carousel3, bgColor: "bg-sky-300", label: "Heart Health" },
   ];
 
   return (
