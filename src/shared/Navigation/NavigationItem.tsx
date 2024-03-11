@@ -2,7 +2,7 @@ import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import CardCategory3 from "../../components/CardCategories/CardCategory3";
 import { FC, Fragment, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { LocationStates } from "../../routers/types";
 
 export interface NavItemType {
@@ -54,7 +54,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                 {menu.children.map((item, index) => (
                   <div key={index} className="cursor-pointer">
                     <p className="font-medium text-slate-500 dark:text-neutral-200 hover:text-primary-900 dark:hover:text-primary-900">
-                      {item.name}
+                      <Link to={item.href}>{item.name}</Link>
                     </p>
                     {/* <ul className="grid space-y-4 mt-4">
                         {item.children?.map(renderMegaMenuNavlink)}
@@ -260,7 +260,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
           target={item.targetBlank ? "_blank" : undefined}
           rel="noopener noreferrer"
           // hover:bg-slate-100
-          className="inline-flex items-center text-sm lg:text-[15px] font-medium text-slate-700 dark:text-slate-300 py-2.5 px-4 xl:px-5 rounded-full hover:text-emerald-400 dark:hover:text-emerald-400"
+          className="inline-flex items-center text-sm lg:text-[15px] font-medium text-slate-700 dark:text-slate-300 py-2.5 px-4 xl:px-5 rounded-full hover:text-primary-900 dark:hover:text-emerald-400"
           to={{
             pathname: item.href || undefined,
           }}
