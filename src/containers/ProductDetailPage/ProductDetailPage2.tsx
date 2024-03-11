@@ -589,6 +589,22 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     );
   };
 
+  const renderIngredients = (item) => {
+    return (
+      <div key={item.id}>
+        <img className="rounded-2xl " src={item.src} alt={item.title} />
+        <div className="grid justify-items-stretch">
+          <h5 className="font-semibold justify-self-center text-dark-900 dark:text-white text-2xl mt-2">
+            {item.title}
+          </h5>
+          <p className="justify-self-center text-sm font-semibold text-slate-500 dark:text-white">
+            {item.shortDesc}
+          </p>
+        </div>
+      </div>
+    );
+  };
+
   const expertTalkItems = [
     {
       id: 1,
@@ -815,8 +831,8 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       </section>
 
       {/* KEY INGREDIENTS */}
-      <section className="container mb-24">
-        <h4 className="text-3xl font-semibold mb-10">Key Ingredients</h4>
+      <section className="container mb-24 overflow-hidden">
+        {/* <h4 className="text-3xl font-semibold mb-10">Key Ingredients</h4>
         <div className="grid grid-cols-1 gap-y-10 gap-x-5 md:grid-cols-2 lg:grid-cols-4 mb-10">
           {ingredients.map((ing) => (
             <div key={ing.id}>
@@ -831,10 +847,46 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
               </div>
             </div>
           ))}
-        </div>
-        <ButtonSecondary className="border border-slate-300 dark:border-slate-700 md:text-lg md:px-20 md:py-4">
+        </div> */}
+
+        {/* SLIDER SECTION */}
+        <AppSlider
+          data={ingredients}
+          renderChildren={renderIngredients}
+          glideOptions={{
+            perView: 4,
+            gap: 32,
+            bound: true,
+            breakpoints: {
+              1280: {
+                perView: 4,
+              },
+              1024: {
+                gap: 20,
+                perView: 4,
+              },
+              768: {
+                gap: 20,
+                perView: 3,
+              },
+              640: {
+                gap: 20,
+                perView: 1,
+              },
+              500: {
+                gap: 20,
+                perView: 1,
+              },
+            },
+          }}
+        >
+          <Heading fontClass="text-3xl md:text-3xl font-semibold" hasNextPrev>
+            Key Ingredients
+          </Heading>
+        </AppSlider>
+        {/* <ButtonSecondary className="border border-slate-300 dark:border-slate-700 md:text-lg md:px-20 md:py-4">
           Show all ingredients
-        </ButtonSecondary>
+        </ButtonSecondary> */}
       </section>
 
       {/* EXPERT TALK */}
