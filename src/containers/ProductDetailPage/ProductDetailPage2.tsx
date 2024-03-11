@@ -21,7 +21,7 @@ import SectionSliderProductCard from "../../components/SectionSliderProductCard"
 import ModalViewAllReviews from "./ModalViewAllReviews";
 import NotifyAddTocart from "../../components/NotifyAddTocart";
 import { Link, useParams } from "react-router-dom";
-import productsService from "../../service/products-service";
+import productsService from "../../services/products-service";
 import product1Img from "../../assets/PRODUCT DETAIL/1-product-pic-1.jpg";
 import product2Img from "../../assets/PRODUCT DETAIL/1-product-pic-2.jpg";
 import product3Img from "../../assets/PRODUCT DETAIL/1-product-pic-3.jpg";

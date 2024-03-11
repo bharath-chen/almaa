@@ -36,7 +36,7 @@ import Button from "../../shared/Button/Button";
 import mdSectionImg from "../../assets/HOME PAGE/5-md-section.png";
 import Nav from "../../shared/Nav/Nav";
 import NavItem from "../../shared/NavItem/NavItem";
-import productsService from "../../service/products-service";
+import productsService from "../../services/products-service";
 import ProductCard from "../../components/ProductCard";
 import emailSubscribeImg from "../../assets/HOME PAGE/14-subscribe.png";
 import video1Img from "../../assets/HOME PAGE/9-video-1.jpg";

@@ -1,6 +1,6 @@
 import ProductCard from "../../components/ProductCard";
 import SidebarFilters from "../../containers/SidebarFilters";
-import productsService from "../../service/products-service";
+import productsService from "../../services/products-service";
 import { FC, useEffect, useState } from "react";
 import { Product } from "../../data/data";
 
