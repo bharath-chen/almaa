@@ -44,7 +44,7 @@ const widgetMenus: WidgetFooterMenu[] = [
   {
     id: "2",
     title: "Subscribe to our newsletter",
-    classNames: "lg:col-span-2",
+    classNames: "lg:col-span-4",
     menus: [
       {
         href: "#",
@@ -59,12 +59,12 @@ const widgetMenus: WidgetFooterMenu[] = [
                 type="text"
                 id="floating_helper"
                 aria-describedby="floating_helper_text"
-                className="block px-2.5 pb-2.5 pt-5 w-full text-sm xl:text-md text-neutral-550 bg-dark-900 dark:bg-neutral-900 border-t-2 border-b-2 border-l-2 border-r-2 lg:border-r-0 border-neutral-550 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-neutral-500 dark:focus:outline-none focus:outline-none focus:ring-0 focus:border-neutral-550 peer"
+                className="block px-2.5 pb-2.5 pt-5 w-full text-sm  text-neutral-550 bg-dark-900 dark:bg-neutral-900 border-t-2 border-b-2 border-l-2 border-r-2 lg:border-r-0 border-neutral-550 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-neutral-500 dark:focus:outline-none focus:outline-none focus:ring-0 focus:border-neutral-550 peer"
                 placeholder=" "
               />
               <label
                 htmlFor="floating_helper"
-                className="absolute text-sm xl:text-md text-neutral-550 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 left-[9px] z-10 origin-[0] start-1 peer-focus:text-neutral-700 peer-focus:dark:text-neutral-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+                className="absolute text-sm xl:text-md text-neutral-550 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 left-[10px] z-10 origin-[0] start-1 peer-focus:text-neutral-700 peer-focus:dark:text-neutral-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
               >
                 Enter your email
               </label>
@@ -84,7 +84,7 @@ const widgetMenus: WidgetFooterMenu[] = [
   {
     id: "4",
     title: "Contact Us",
-    classNames: "lg:col-span-2",
+    classNames: "lg:col-span-4",
     menus: [
       {
         href: "#",
