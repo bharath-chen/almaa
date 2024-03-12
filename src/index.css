@@ -18,3 +18,16 @@ ul.dashed li:before {
   position: absolute;
   margin-left: -20px;
 }
+
+/* Hide scrollbar but enable scrolling */
+.scroll-hidden::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+.scroll-hidden::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.scroll-hidden::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
