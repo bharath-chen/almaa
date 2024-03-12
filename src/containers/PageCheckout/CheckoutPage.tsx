@@ -11,6 +11,10 @@ import ContactInfo from "./ContactInfo";
 import PaymentMethod from "./PaymentMethod";
 import ShippingAddress from "./ShippingAddress";
 import { useShoppingCartContext } from "../../store/shopping-cart-context";
+import AppOfferCodes, {
+  OfferCode,
+} from "../../components/AppOfferCodes/AppOfferCodes";
+
 
 const CheckoutPage = () => {
   const { cart, totalPrice, removeItemFromCart, updateQuantity, orderPlaced } =
@@ -19,6 +23,86 @@ const CheckoutPage = () => {
   const [tabActive, setTabActive] = useState<
     "ContactInfo" | "ShippingAddress" | "PaymentMethod"
   >("ShippingAddress");
+
+  const [offerCodes, setOfferCodes] = useState<OfferCode[]>([
+    {
+      id: 1,
+      code: "CODE10",
+      description: "Get 10% discount on purchase",
+      discount: 10,
+    },
+    {
+      id: 2,
+      code: "CODE20",
+      description: "Get 20% discount on purchase",
+      discount: 20,
+    },
+    {
+      id: 3,
+      code: "CODE30",
+      description: "Get 30% discount on purchase",
+      discount: 30,
+    },
+  ]);
+
+  const [offerCode, setOfferCode] = useState<string>("");
+  const [discountCodeError, setDiscountCodeError] = useState<string>("");
+  const [offerCodeApplied, setOfferCodeApplied] = useState(false);
+  const [discount, setDiscount] = useState(0);
+
+  const applyOfferCode = (code: string) => {
+    const validCode = offerCodes.find((o) => o.code === code);
+
+    if (!validCode) {
+      setDiscountCodeError("Oops! Invalid Discount Code");
+      setOfferCodeApplied(false);
+      setDiscount(0);
+      return;
+    }
+
+    setDiscountCodeError(null);
+    setOfferCode(validCode.code);
+    setOfferCodeApplied(true);
+    setDiscount(validCode.discount);
+  };
+
+  const removeOfferCode = () => {
+    setDiscountCodeError("");
+    setOfferCode("");
+    setOfferCodeApplied(false);
+    setDiscount(0);
+  };
+
+  const handleOfferCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const code = e.target.value.toLocaleUpperCase();
+    setDiscountCodeError("");
+    setOfferCode(code);
+  };
+
+  const calculateDiscount = (originalPrice: number, discountPercentage = 0) => {
+    // if (
+    //   originalPrice <= 0 ||
+    //   discountPercentage < 0 ||
+    //   discountPercentage > 100
+    // ) {
+    //   return "Invalid input. Please provide valid values.";
+    // }
+
+    if (discountPercentage === 0) {
+      return {
+        discountAmount: "0.00",
+        discountedPrice: originalPrice.toFixed(2),
+      };
+    }
+
+    const discountAmount = (originalPrice * discountPercentage) / 100;
+    const discountedPrice = originalPrice - discountAmount;
+
+    return {
+      discountAmount: discountAmount.toFixed(2),
+      discountedPrice: discountedPrice.toFixed(2),
+    };
+  };
 
   const handleScrollToEl = (id: string) => {
     const element = document.getElementById(id);
@@ -273,13 +357,65 @@ const CheckoutPage = () => {
                 <div className="mt-10 pt-6 text-sm text-slate-500 dark:text-slate-400 border-t border-slate-200/70 dark:border-slate-700 ">
                   <div>
                     <Label className="text-sm">Discount code</Label>
-                    <div className="flex mt-1.5">
-                      <Input sizeClass="h-10 px-4 py-3" className="flex-1" />
-                      <button className="text-neutral-700 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-100 rounded-2xl px-4 ml-3 font-medium text-sm bg-neutral-200/70 dark:bg-neutral-700 dark:hover:bg-neutral-800 w-24 flex justify-center items-center transition-colors">
-                        Apply
-                      </button>
-                    </div>
+                    {offerCodeApplied && (
+                      <div className="flex mt-1.5 py-4 px-4 justify-between w-full border border-2 rounded-lg border-slate-200 bg-slate-200">
+                        <span className="text-md ">
+                          <span className="text-primary-900 font-semibold pr-2">
+                            '{offerCode}' applied successfully!
+                          </span>
+                        </span>
+                        <button type="button" onClick={removeOfferCode}>
+                          <svg
+                            className="w-6 h-6 text-primary-900 dark:text-white"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    )}
+                    {!offerCodeApplied && (
+                      <div className="flex mt-1.5">
+                        <Input
+                          sizeClass="h-10 px-4 py-3"
+                          className="flex-1 uppercase"
+                          value={offerCode}
+                          onChange={handleOfferCodeChange}
+                        />
+                        <button
+                          disabled={!offerCode}
+                          onClick={() => applyOfferCode(offerCode)}
+                          className={
+                            "text-neutral-700 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700 rounded-2xl px-4 ml-3 font-medium text-sm bg-neutral-200/70 dark:bg-neutral-700 dark:hover:bg-neutral-800 w-24 flex justify-center items-center transition-colors " +
+                            (!offerCode
+                              ? "bg-neutral-50 cursor-not-allowed"
+                              : "bg-neutral-100 cursor-pointer hover:bg-neutral-100")
+                          }
+                        >
+                          Apply
+                        </button>
+                      </div>
+                    )}
+                    {discountCodeError && (
+                      <p className="pl-3 mt-2 text-red-600">
+                        {discountCodeError}
+                      </p>
+                    )}
                   </div>
+
+                  {!offerCodeApplied && (
+                    <AppOfferCodes
+                      offerCodes={offerCodes}
+                      onApply={applyOfferCode}
+                    />
+                  )}
 
                   <div className="mt-4 flex justify-between py-2.5">
                     <span>Subtotal</span>
@@ -301,7 +437,11 @@ const CheckoutPage = () => {
                   </div>
                   <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
                     <span>Order total</span>
-                    <span>₹{(totalPrice + 5 + 24.9).toFixed(2)}</span>
+                    <span>
+                      ₹
+                      {calculateDiscount(totalPrice, discount).discountedPrice +
+                        (5 + 24.9).toFixed(2)}
+                    </span>
                   </div>
                 </div>
                 <ButtonPrimary
