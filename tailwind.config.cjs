@@ -72,6 +72,9 @@ module.exports = {
         dark: {
           900: customColors("--c-dark-900"),
         },
+        greenyellow: {
+          900: customColors("--c-greenyellow-900"),
+        },
       },
     },
   },
