@@ -15,7 +15,6 @@ import AppOfferCodes, {
   OfferCode,
 } from "../../components/AppOfferCodes/AppOfferCodes";
 
-
 const CheckoutPage = () => {
   const { cart, totalPrice, removeItemFromCart, updateQuantity, orderPlaced } =
     useShoppingCartContext();
@@ -245,6 +244,7 @@ const CheckoutPage = () => {
           <div className="flex mt-auto pt-4 items-end justify-between text-sm">
             <div className="hidden sm:block text-center relative">
               <NcInputNumber
+                defaultValue={item.quantity}
                 onChange={(value) => updateQuantity(item.id, value)}
                 className="relative z-10"
               />
@@ -349,7 +349,12 @@ const CheckoutPage = () => {
                   </ButtonPrimary>
                 </>
               )}
-              {cart.map((item, index) => renderProduct(item.product, index))}
+              {cart.map((item, index) =>
+                renderProduct(
+                  { ...item.product, quantity: item.quantity },
+                  index
+                )
+              )}
             </div>
 
             {cart.length > 0 && (
