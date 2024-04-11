@@ -24,6 +24,7 @@ import PageCollection2 from "../containers/PageCollection2";
 import Home from "../pages/Home/Home";
 import Products from "../pages/Products/Products";
 import Page404 from "../containers/Page404/Page404";
+import Blog from "../pages/Blog/Blog";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -48,7 +49,7 @@ export const pages: Page[] = [
   { path: "/cart", component: CartPage },
   { path: "/checkout", component: CheckoutPage },
   //
-  { path: "/blog", component: BlogPage },
+  { path: "/blog", component: Blog },
   { path: "/blog-single", component: BlogSingle },
   //
   { path: "/contact", component: PageContact },
