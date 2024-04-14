@@ -48,7 +48,7 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
       { id: ncNanoId(), href: "/blog", name: "Blog Page" },
       { id: ncNanoId(), href: "/blog-single", name: "Blog Single" },
       { id: ncNanoId(), href: "/about", name: "About Page" },
-      { id: ncNanoId(), href: "/contact", name: "Contact Page" },
+      { id: ncNanoId(), href: "/support", name: "Support Page" },
       { id: ncNanoId(), href: "/login", name: "Login" },
       { id: ncNanoId(), href: "/signup", name: "Signup" },
     ],
@@ -135,7 +135,7 @@ const OTHER_PAGE_CHILD: NavItemType[] = [
       },
       {
         id: ncNanoId(),
-        href: "/contact",
+        href: "/support",
         name: "Contact us",
       },
       {
@@ -204,12 +204,10 @@ const PRODUCTS_TEAM_CHILD: NavItemType[] = [
 
 const RESOURCES_TEAM_CHILD: NavItemType[] = [
   { id: ncNanoId(), href: "/blog", name: "Blog" },
-  { id: ncNanoId(), href: "/products", name: "Case Studies" },
+  { id: ncNanoId(), href: "/case-studies", name: "Case Studies" },
   { id: ncNanoId(), href: "/products", name: "Health Tips" },
   { id: ncNanoId(), href: "/products", name: "Media & Gallery" },
   { id: ncNanoId(), href: "/products", name: "News & Events" },
-  { id: ncNanoId(), href: "/products", name: "A-Z Disease Index" },
-  { id: ncNanoId(), href: "/products", name: "A-Z Ingredient Index" },
 ];
 
 export const NAVIGATION_DEMO_2: NavItemType[] = [
@@ -247,12 +245,12 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
   },
   {
     id: ncNanoId(),
-    href: "/products",
+    href: "/library",
     name: "Library",
   },
   {
     id: ncNanoId(),
-    href: "/products",
+    href: "/support",
     name: "Support",
   },
 ];

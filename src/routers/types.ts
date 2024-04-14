@@ -20,8 +20,10 @@ export interface LocationStates {
   "/checkout"?: {};
   "/blog"?: {};
   "/blog-single"?: {};
+  "/case-studies"?: {};
+  "/library"?: {};
   "/about"?: {};
-  "/contact"?: {};
+  "/support"?: {};
   "/login"?: {};
   "/signup"?: {};
   "/forgot-pass"?: {};
