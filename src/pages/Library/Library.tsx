@@ -1,13 +1,8 @@
 import rightImg from "../../images/hero-right1.png";
 import React, { FC } from "react";
-import SectionFounder from "./SectionFounder";
-import SectionStatistic from "./SectionStatistic";
 import { Helmet } from "react-helmet-async";
 import BgGlassmorphism from "../../components/BgGlassmorphism/BgGlassmorphism";
-import BackgroundSection from "../../components/BackgroundSection/BackgroundSection";
 import SectionHero from "./SectionHero";
-import SectionClientSay from "../../components/SectionClientSay/SectionClientSay";
-import SectionPromo3 from "../../components/SectionPromo3";
 import AppSlider from "../../components/AppSlider/AppSlider";
 import Heading from "../../components/Heading/Heading";
 import { MEDICAL_CONSULTANTS, MEDIC_SLIDERS } from "../../data/home";
@@ -16,7 +11,6 @@ import Button from "../../shared/Button/Button";
 import NcImage from "../../shared/NcImage/NcImage";
 import mdSectionImg from "../../assets/HOME PAGE/5-md-section.png";
 import SectionSliderCategories from "../../components/SectionSliderCategories/SectionSliderCategories";
-import ButtonSecondary from "../../shared/Button/ButtonSecondary";
 
 export interface PageAboutProps {
   className?: string;
@@ -61,15 +55,15 @@ const Library: FC<PageAboutProps> = ({ className = "" }) => {
           subHeading="We’re impartial and independent, and every day we create distinctive, world-class programmes and content which inform, educate and entertain millions of people in the around the world."
         />
 
-        <SectionFounder />
-        <div className="relative py-16">
+        {/* <SectionFounder /> */}
+        {/* <div className="relative py-16">
           <BackgroundSection />
           <SectionClientSay />
-        </div>
+        </div> */}
 
-        <SectionStatistic />
+        {/* <SectionStatistic /> */}
 
-        <SectionPromo3 />
+        {/* <SectionPromo3 /> */}
       </div>
       {/* EXPLORE PRODUCTS BY MEDICAL CONDITIONS SECTION */}
       <section className="mb-40">
