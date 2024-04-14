@@ -22,6 +22,8 @@ export interface LocationStates {
   "/blog-single"?: {};
   "/case-studies"?: {};
   "/library"?: {};
+  "/production-unit"?: {};
+  "/wellness-center"?: {};
   "/about"?: {};
   "/support"?: {};
   "/login"?: {};

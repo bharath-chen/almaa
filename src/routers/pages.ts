@@ -26,6 +26,8 @@ import Blog from "../pages/Resources/Blog/Blog";
 import CaseStudies from "../pages/CaseStudies/CaseStudies";
 import Support from "../pages/Support/Support";
 import Library from "../pages/Library/Library";
+import WellnessCenter from "../pages/WellnessCenter/WellnessCenter";
+import ProductionUnit from "../pages/ProductionUnit/ProductionUnit";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -53,6 +55,8 @@ export const pages: Page[] = [
   { path: "/blog", component: Blog },
   { path: "/blog-single", component: BlogSingle },
   //
+  { path: "/wellness-center", component: WellnessCenter },
+  { path: "/production-unit", component: ProductionUnit },
   { path: "/library", component: Library },
   { path: "/case-studies", component: CaseStudies },
   { path: "/support", component: Support },

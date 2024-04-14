@@ -227,13 +227,13 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
   },
   {
     id: ncNanoId(),
-    href: "/products",
+    href: "/wellness-center",
     name: "Wellness Center",
   },
 
   {
     id: ncNanoId(),
-    href: "/products",
+    href: "/production-unit",
     name: "Production Unit",
   },
   {
