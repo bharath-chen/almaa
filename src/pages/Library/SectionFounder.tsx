@@ -1,5 +1,4 @@
 import Heading from "../../components/Heading/Heading";
-import React from "react";
 import NcImage from "../../shared/NcImage/NcImage";
 
 export interface People {
@@ -40,17 +39,30 @@ const FOUNDER_DEMO: People[] = [
   },
 ];
 
-const SectionFounder = () => {
+interface FounderProps {
+  founders?: People[];
+  heading?: string;
+  desc?: string;
+}
+
+const SectionFounder = ({
+  founders = [],
+  heading = "",
+  desc = "",
+}: FounderProps) => {
   return (
     <div className="nc-SectionFounder relative">
       <Heading
-        desc="We’re impartial and independent, and every day we create distinctive,
-          world-class programmes and content"
+       desc={
+          desc ||
+          `We’re impartial and independent, and every day we create distinctive,
+          world-class programmes and content`
+        }
       >
-        ⛱ Founder
+        {heading || "⛱ Founder"}
       </Heading>
       <div className="grid sm:grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4 xl:gap-x-8">
-        {FOUNDER_DEMO.map((item) => (
+        {founders.map((item) => (
           <div key={item.id} className="max-w-sm">
             <NcImage
               containerClassName="relative h-0 aspect-h-1 aspect-w-1 rounded-xl overflow-hidden"
