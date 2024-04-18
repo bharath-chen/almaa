@@ -318,6 +318,15 @@ const Home = () => {
       <section className="container mb-40">
         <div className="relative py-24 lg:py-32">
           <BackgroundSection className="bg-neutral-100/70 dark:bg-black/20" />
+          <Heading
+            className="mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50"
+            fontClass="text-3xl md:text-4xl 2xl:text-5xl font-semibold"
+            isCenter
+            desc=""
+            rightDescText="Concepts"
+          >
+            Explore Almaa's
+          </Heading>
           <SectionGridMoreExplore
             data={EXPLORE_SECTION_DATA}
             // className="bg-neutral-100/70 dark:bg-black/20 rounded-2xl px-16 py-20"
