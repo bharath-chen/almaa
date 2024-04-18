@@ -185,7 +185,7 @@ const DOCTORS_TEAM_CHILD: NavItemType[] = [
 ];
 
 const ABOUT_TEAM_CHILD: NavItemType[] = [
-  { id: ncNanoId(), href: "/", name: "Almaa Groups" },
+  { id: ncNanoId(), href: "/almaa-groups", name: "Almaa Groups" },
   { id: ncNanoId(), href: "/", name: "Founder" },
   { id: ncNanoId(), href: "/", name: "Doctors Team" },
   { id: ncNanoId(), href: "/", name: "Our Branches" },

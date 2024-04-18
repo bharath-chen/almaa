@@ -28,6 +28,7 @@ import Support from "../pages/Support/Support";
 import Library from "../pages/Library/Library";
 import WellnessCenter from "../pages/WellnessCenter/WellnessCenter";
 import ProductionUnit from "../pages/ProductionUnit/ProductionUnit";
+import AlmaaGroups from "../pages/About/AlmaaGroups/AlmaaGroups";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -54,6 +55,8 @@ export const pages: Page[] = [
   //
   { path: "/blog", component: Blog },
   { path: "/blog-single", component: BlogSingle },
+  //
+  { path: "/almaa-groups", component: AlmaaGroups },
   //
   { path: "/wellness-center", component: WellnessCenter },
   { path: "/production-unit", component: ProductionUnit },
