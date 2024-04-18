@@ -186,11 +186,11 @@ const DOCTORS_TEAM_CHILD: NavItemType[] = [
 
 const ABOUT_TEAM_CHILD: NavItemType[] = [
   { id: ncNanoId(), href: "/almaa-groups", name: "Almaa Groups" },
-  { id: ncNanoId(), href: "/", name: "Founder" },
-  { id: ncNanoId(), href: "/", name: "Doctors Team" },
-  { id: ncNanoId(), href: "/", name: "Our Branches" },
-  { id: ncNanoId(), href: "/", name: "Siddha Science" },
-  { id: ncNanoId(), href: "/", name: "Our Concepts" },
+  { id: ncNanoId(), href: "/founder", name: "Founder" },
+  { id: ncNanoId(), href: "/doctors-team", name: "Doctors Team" },
+  { id: ncNanoId(), href: "/our-branches", name: "Our Branches" },
+  { id: ncNanoId(), href: "/siddha-science", name: "Siddha Science" },
+  { id: ncNanoId(), href: "/our-concepts", name: "Our Concepts" },
 ];
 
 const PRODUCTS_TEAM_CHILD: NavItemType[] = [

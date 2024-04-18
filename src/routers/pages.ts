@@ -29,6 +29,11 @@ import Library from "../pages/Library/Library";
 import WellnessCenter from "../pages/WellnessCenter/WellnessCenter";
 import ProductionUnit from "../pages/ProductionUnit/ProductionUnit";
 import AlmaaGroups from "../pages/About/AlmaaGroups/AlmaaGroups";
+import Founder from "../pages/About/Founder/Founder";
+import DoctorsTeam from "../pages/About/DoctorsTeam/DoctorsTeam";
+import OurBranches from "../pages/About/OurBranches/OurBranches";
+import SiddhaScience from "../pages/About/SiddhaScience/SiddhaScience";
+import OurConcepts from "../pages/About/OurConcepts/OurConcepts";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -57,6 +62,11 @@ export const pages: Page[] = [
   { path: "/blog-single", component: BlogSingle },
   //
   { path: "/almaa-groups", component: AlmaaGroups },
+  { path: "/founder", component: Founder },
+  { path: "/doctors-team", component: DoctorsTeam },
+  { path: "/our-branches", component: OurBranches },
+  { path: "/our-concepts", component: OurConcepts },
+  { path: "/siddha-science", component: SiddhaScience },
   //
   { path: "/wellness-center", component: WellnessCenter },
   { path: "/production-unit", component: ProductionUnit },

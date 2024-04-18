@@ -22,6 +22,11 @@ export interface LocationStates {
   "/blog-single"?: {};
   "/case-studies"?: {};
   "/almaa-groups"?: {};
+  "/founder"?: {};
+  "/doctors-team"?: {};
+  "/our-branches"?: {};
+  "/siddha-science"?: {};
+  "/our-concepts"?: {};
   "/library"?: {};
   "/production-unit"?: {};
   "/wellness-center"?: {};
