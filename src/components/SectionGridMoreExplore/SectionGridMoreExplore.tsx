@@ -38,6 +38,7 @@ export interface SectionGridMoreExploreProps {
   gridClassName?: string;
   boxCard?: "box1" | "box4" | "box6";
   data?: ExploreType[];
+  onCardClick?: (data: ExploreType) => void;
 }
 
 export const DEMO_MORE_EXPLORE_DATA = [
@@ -120,6 +121,7 @@ const SectionGridMoreExplore: FC<SectionGridMoreExploreProps> = ({
   boxCard = "box4",
   gridClassName = "grid-cols-1 md:grid-cols-2 xl:grid-cols-3",
   data = DEMO_MORE_EXPLORE_DATA.filter((_, i) => i < 6),
+  onCardClick,
 }) => {
   const [tabActive, setTabActive] = React.useState("Man");
 
@@ -180,7 +182,11 @@ const SectionGridMoreExplore: FC<SectionGridMoreExploreProps> = ({
       data-nc-id="SectionGridMoreExplore"
     >
       <div className={`grid gap-4 md:gap-7 ${gridClassName}`}>
-        {data.map((item) => renderCard(item))}
+        {data.map((item) => (
+          <div key={item.id} onClick={() => onCardClick(item)}>
+            {renderCard(item)}
+          </div>
+        ))}
       </div>
     </div>
   );

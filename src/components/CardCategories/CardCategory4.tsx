@@ -66,7 +66,7 @@ const CardCategory4: FC<CardCategory4Props> = ({
         </div>
       </div>
 
-      <Link to={"/page-collection"}></Link>
+      {/* <Link to={"/page-collection"}></Link> */}
     </div>
   );
 };
