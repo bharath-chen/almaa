@@ -24,6 +24,7 @@ export interface LocationStates {
   "/almaa-groups"?: {};
   "/founder"?: {};
   "/doctors-team"?: {};
+  "/doctor-detail"?: {};
   "/our-branches"?: {};
   "/siddha-science"?: {};
   "/our-concepts"?: {};

@@ -34,6 +34,7 @@ import DoctorsTeam from "../pages/About/DoctorsTeam/DoctorsTeam";
 import OurBranches from "../pages/About/OurBranches/OurBranches";
 import SiddhaScience from "../pages/About/SiddhaScience/SiddhaScience";
 import OurConcepts from "../pages/About/OurConcepts/OurConcepts";
+import DoctorDetail from "../pages/About/DoctorsTeam/DoctorDetail";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -64,6 +65,7 @@ export const pages: Page[] = [
   { path: "/almaa-groups", component: AlmaaGroups },
   { path: "/founder", component: Founder },
   { path: "/doctors-team", component: DoctorsTeam },
+  { path: "/doctor-detail", component: DoctorDetail },
   { path: "/our-branches", component: OurBranches },
   { path: "/our-concepts", component: OurConcepts },
   { path: "/siddha-science", component: SiddhaScience },
