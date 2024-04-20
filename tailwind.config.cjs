@@ -76,6 +76,9 @@ module.exports = {
           900: customColors("--c-greenyellow-900"),
         },
       },
+      zIndex: {
+        999: "999",
+      },
     },
   },
   variants: {
