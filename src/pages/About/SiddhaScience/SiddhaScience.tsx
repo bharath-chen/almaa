@@ -11,7 +11,7 @@ const SiddhaScience = () => {
   return (
     <>
       {/* HISTORY OF SIDDHA SECTION */}
-      <section className="container mt-10 mb-40">
+      <section className="container mt-10 mb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 place-content-center">
           <div>
             <h3 className="text-2xl xl:text-3xl font-semibold">
@@ -132,7 +132,7 @@ const SiddhaScience = () => {
         </div>
       </section>
 
-      {/* WHY SHOULD YOU BE WITH ALMA SECTION */}
+      {/* WHY SIDDHA MEDICINE SECTION */}
       <section className="container mb-40">
         <Heading
           className="mb-8"
