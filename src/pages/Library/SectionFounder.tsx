@@ -6,6 +6,7 @@ export interface People {
   name: string;
   job: string;
   avatar: string;
+  href?: string;
 }
 
 const FOUNDER_DEMO: People[] = [
@@ -40,12 +41,14 @@ const FOUNDER_DEMO: People[] = [
 ];
 
 interface FounderProps {
+  onClick: (person: People) => void;
   founders?: People[];
   heading?: string;
   desc?: string;
 }
 
 const SectionFounder = ({
+  onClick,
   founders = [],
   heading = "",
   desc = "",
@@ -53,7 +56,7 @@ const SectionFounder = ({
   return (
     <div className="nc-SectionFounder relative">
       <Heading
-       desc={
+        desc={
           desc ||
           `We’re impartial and independent, and every day we create distinctive,
           world-class programmes and content`
@@ -63,7 +66,11 @@ const SectionFounder = ({
       </Heading>
       <div className="grid sm:grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4 xl:gap-x-8">
         {founders.map((item) => (
-          <div key={item.id} className="max-w-sm">
+          <div
+            onClick={() => onClick(item)}
+            key={item.id}
+            className="max-w-sm cursor-pointer"
+          >
             <NcImage
               containerClassName="relative h-0 aspect-h-1 aspect-w-1 rounded-xl overflow-hidden"
               className="absolute inset-0 object-cover"
