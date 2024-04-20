@@ -24,7 +24,7 @@ const BranchDetailPopup = ({ branch, onClose }: BranchDetailPopupProps) => {
 
   return (
     <div
-      className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center popup-overlay"
+      className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center popup-overlay z-[999]"
       onClick={handleOutsideClick}
     >
       <div className="bg-white rounded-lg overflow-hidden max-w-md w-full m-4 sm:m-8 lg:m-12 relative">
