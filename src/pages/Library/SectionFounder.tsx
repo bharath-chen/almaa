@@ -41,7 +41,7 @@ const FOUNDER_DEMO: People[] = [
 ];
 
 interface FounderProps {
-  onClick: (person: People) => void;
+  onClick?: (person: People) => void;
   founders?: People[];
   heading?: string;
   desc?: string;
