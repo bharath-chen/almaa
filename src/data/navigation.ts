@@ -207,7 +207,7 @@ const RESOURCES_TEAM_CHILD: NavItemType[] = [
   { id: ncNanoId(), href: "/case-studies", name: "Case Studies" },
   { id: ncNanoId(), href: "/products", name: "Health Tips" },
   { id: ncNanoId(), href: "/products", name: "Media & Gallery" },
-  { id: ncNanoId(), href: "/products", name: "News & Events" },
+  { id: ncNanoId(), href: "/news-&-events", name: "News & Events" },
 ];
 
 export const NAVIGATION_DEMO_2: NavItemType[] = [

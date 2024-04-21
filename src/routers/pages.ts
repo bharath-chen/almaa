@@ -35,6 +35,7 @@ import OurBranches from "../pages/About/OurBranches/OurBranches";
 import SiddhaScience from "../pages/About/SiddhaScience/SiddhaScience";
 import OurConcepts from "../pages/About/OurConcepts/OurConcepts";
 import DoctorDetail from "../pages/About/DoctorsTeam/DoctorDetail";
+import NewsAndEvents from "../pages/Resources/NewsAndEvents/NewsAndEvents";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -74,6 +75,8 @@ export const pages: Page[] = [
   { path: "/production-unit", component: ProductionUnit },
   { path: "/library", component: Library },
   { path: "/case-studies", component: CaseStudies },
+  { path: "/case-study", component: BlogSingle },
+  { path: "/news-&-events", component: NewsAndEvents },
   { path: "/support", component: Support },
   { path: "/about", component: PageAbout },
   { path: "/signup", component: PageSignUp },

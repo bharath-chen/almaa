@@ -21,6 +21,8 @@ export interface LocationStates {
   "/blog"?: {};
   "/blog-single"?: {};
   "/case-studies"?: {};
+  "/case-study"?: {};
+  "/news-&-events"?: {};
   "/almaa-groups"?: {};
   "/founder"?: {};
   "/doctors-team"?: {};
