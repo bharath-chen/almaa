@@ -30,7 +30,7 @@ const AppOfferCodes = ({ offerCodes, onApply }: Props) => {
             : "overflow-y-hidden h-28")
         }
       >
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-x-10 gap-y-4">
           {codes.map((item) => (
             <div
               key={item.id}
