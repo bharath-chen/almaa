@@ -205,8 +205,8 @@ const PRODUCTS_TEAM_CHILD: NavItemType[] = [
 const RESOURCES_TEAM_CHILD: NavItemType[] = [
   { id: ncNanoId(), href: "/blog", name: "Blog" },
   { id: ncNanoId(), href: "/case-studies", name: "Case Studies" },
-  { id: ncNanoId(), href: "/products", name: "Health Tips" },
-  { id: ncNanoId(), href: "/products", name: "Media & Gallery" },
+  { id: ncNanoId(), href: "/media-&-gallery", name: "Media & Gallery" },
+  { id: ncNanoId(), href: "/videos", name: "Videos" },
   { id: ncNanoId(), href: "/news-&-events", name: "News & Events" },
 ];
 
