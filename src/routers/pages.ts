@@ -23,7 +23,7 @@ import Home from "../pages/Home/Home";
 import Products from "../pages/Products/Products";
 import Page404 from "../containers/Page404/Page404";
 import Blog from "../pages/Resources/Blog/Blog";
-import CaseStudies from "../pages/CaseStudies/CaseStudies";
+import CaseStudies from "../pages/Resources/CaseStudies/CaseStudies";
 import Support from "../pages/Support/Support";
 import Library from "../pages/Library/Library";
 import WellnessCenter from "../pages/WellnessCenter/WellnessCenter";
@@ -36,6 +36,8 @@ import SiddhaScience from "../pages/About/SiddhaScience/SiddhaScience";
 import OurConcepts from "../pages/About/OurConcepts/OurConcepts";
 import DoctorDetail from "../pages/About/DoctorsTeam/DoctorDetail";
 import NewsAndEvents from "../pages/Resources/NewsAndEvents/NewsAndEvents";
+import Media from "../pages/Resources/Media/Media";
+import Videos from "../pages/Resources/Videos/Videos";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -77,6 +79,8 @@ export const pages: Page[] = [
   { path: "/case-studies", component: CaseStudies },
   { path: "/case-study", component: BlogSingle },
   { path: "/news-&-events", component: NewsAndEvents },
+  { path: "/media-&-gallery", component: Media },
+  { path: "/videos", component: Videos },
   { path: "/support", component: Support },
   { path: "/about", component: PageAbout },
   { path: "/signup", component: PageSignUp },

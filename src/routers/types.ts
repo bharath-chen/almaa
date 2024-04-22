@@ -23,6 +23,8 @@ export interface LocationStates {
   "/case-studies"?: {};
   "/case-study"?: {};
   "/news-&-events"?: {};
+  "/media-&-gallery"?: {};
+  "/videos"?: {};
   "/almaa-groups"?: {};
   "/founder"?: {};
   "/doctors-team"?: {};
