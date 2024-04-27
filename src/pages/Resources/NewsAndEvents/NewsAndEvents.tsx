@@ -1,8 +1,34 @@
 import { useNavigate } from "react-router-dom";
 import AppSlider from "../../../components/AppSlider/AppSlider";
 import Heading from "../../../components/Heading/Heading";
-import { LIFE_STYLE_CARDS } from "../../../data/home";
 import NcImage from "../../../shared/NcImage/NcImage";
+import video1Img from "../../../assets/HOME PAGE/9-video-1.jpg";
+import video2Img from "../../../assets/HOME PAGE/9-video-2.jpg";
+import video3Img from "../../../assets/HOME PAGE/9-video-3.jpg";
+
+const NEWS_AND_EVENTS = [
+  {
+    id: 1,
+    src: video1Img,
+    heading: "Heading 1",
+    categoryType: "LifeStyle",
+    dateAdded: "04<sup>th</sup> Feb 2024",
+  },
+  {
+    id: 2,
+    src: video2Img,
+    heading: "Heading 2",
+    categoryType: "Food Practice",
+    dateAdded: "02<sup>nd</sup> Feb 2024",
+  },
+  {
+    id: 3,
+    src: video3Img,
+    heading: "Heading 3",
+    categoryType: "LifeStyle",
+    dateAdded: "05<sup>th</sup> Feb 2024",
+  },
+];
 
 const NewsAndEvents = () => {
   const navigate = useNavigate();
@@ -25,29 +51,12 @@ const NewsAndEvents = () => {
             alt={item.heading}
           />
           <div className="mt-3">
-            <div className="grid grid-cols-1 md:grid-cols-2 justify-items-between gap-5 px-2">
-              <div className="flex flex-col">
-                <div className="text-sm text-slate-500 rounded-lg py-1 px-2 flex-grow">
-                  Sample Name
-                </div>
-              </div>
-              <div className="flex flex-col">
-                <div className="flex flex-row items-stretch text-sm text-slate-500">
-                  <span>
-                    <svg
-                      className="w-6 h-6 text-slate-500 dark:text-white"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    ></svg>
-                  </span>
-                  <span
-                    className="self-center"
-                    dangerouslySetInnerHTML={{ __html: item.dateAdded }}
-                  ></span>
-                </div>
-              </div>
+            <div className="flex flex-col items-center">
+              <h2 className="my-3 text-black-500 text-xl">{item.heading}</h2>
+              <p
+                className="text-gray-500"
+                dangerouslySetInnerHTML={{ __html: item.dateAdded }}
+              ></p>
             </div>
           </div>
         </div>
@@ -58,7 +67,7 @@ const NewsAndEvents = () => {
   return (
     <section className="container my-40">
       <AppSlider
-        data={LIFE_STYLE_CARDS}
+        data={NEWS_AND_EVENTS}
         className="glidejs_rb_ flow-root glide--swipeable glide--ltr glide--slider"
         glideClassName="glide__track"
         renderChildren={renderHealthAndLifestyleCard}
