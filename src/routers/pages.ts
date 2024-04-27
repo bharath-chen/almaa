@@ -79,6 +79,7 @@ export const pages: Page[] = [
   { path: "/case-studies", component: CaseStudies },
   { path: "/case-study", component: BlogSingle },
   { path: "/news-&-events", component: NewsAndEvents },
+  { path: "/news-detail", component: BlogSingle },
   { path: "/media-&-gallery", component: Media },
   { path: "/videos", component: Videos },
   { path: "/support", component: Support },
