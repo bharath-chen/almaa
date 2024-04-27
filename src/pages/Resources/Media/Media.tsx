@@ -1,8 +1,14 @@
+import SectionFounder from "../../../containers/PageAbout/SectionFounder";
+import { LayoutGridDemo } from "./LayoutGridDemo";
+
 const Media = () => {
   return (
-    <div className="container">
-      <h1>Media</h1>
-    </div>
+    <>
+      <div className="container my-20">
+        <SectionFounder />
+      </div>
+      <LayoutGridDemo />
+    </>
   );
 };
 
