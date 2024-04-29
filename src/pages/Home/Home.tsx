@@ -34,6 +34,12 @@ import {
   EXPLORE_SECTION_DATA,
   LIFE_STYLE_CARDS,
 } from "../../data/home";
+import { motion } from "framer-motion";
+
+export const pageAnimation = {
+  initial: { opacity: 0, y: 100 },
+  animate: { opacity: 1, y: 0 },
+};
 
 const Home = () => {
   const navigate = useNavigate();
@@ -117,7 +123,13 @@ const Home = () => {
   }, []);
 
   return (
-    <main className="relative overflow-hidden">
+    <motion.main
+      className="relative overflow-hidden"
+      initial="initial"
+      animate="animate"
+      variants={pageAnimation}
+      transition={{ delay: 0.1 }}
+    >
       {/* HERO SECTION */}
       <section className="w-full mb-20">
         <div className="nc-PageHome relative overflow-hidden">
@@ -571,8 +583,8 @@ const Home = () => {
           </div>
         </div>
       </section>
-    </main>
+    </motion.main>
   );
 };
 
-export default Home;
+export default motion(Home);
