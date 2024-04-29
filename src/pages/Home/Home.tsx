@@ -128,7 +128,12 @@ const Home = () => {
       initial="initial"
       animate="animate"
       variants={pageAnimation}
-      transition={{ delay: 0.1 }}
+      transition={{
+        ease: "linear",
+        duration: 0.3,
+        y: { duration: 0.3 },
+        delay: 0.2,
+      }}
     >
       {/* HERO SECTION */}
       <section className="w-full mb-20">
