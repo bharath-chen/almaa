@@ -1,7 +1,21 @@
+import { useEffect, useState } from "react";
 import MyRouter from "./routers/index";
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import Spinner from "./components/Spinner/Spinner";
 
 function App() {
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  if (loading) return <Spinner size="large" />;
+
   return (
     <HelmetProvider>
       <Helmet>
