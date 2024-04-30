@@ -14,7 +14,7 @@ function App() {
     }, 1000);
   }, []);
 
-  if (loading) return <Spinner size="large" />;
+  if (loading) return <Spinner size="large" color="primary" />;
 
   return (
     <HelmetProvider>
