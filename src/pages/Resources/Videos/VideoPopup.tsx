@@ -1,39 +1,57 @@
+import { useState } from "react";
+import ReactPlayer from "react-player/youtube";
+
 interface VideoPopupProps {
-  videoUrl: string;
-  onClose: () => void;
+  url: string;
+  isOpen: boolean;
+  closeModal: () => void;
+  backdropClick: () => void;
 }
 
-const VideoPopup = ({ videoUrl, onClose }: VideoPopupProps) => {
+const VideoPopup = ({
+  url,
+  isOpen,
+  closeModal,
+  backdropClick,
+}: VideoPopupProps) => {
   return (
-    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg overflow-hidden shadow-md z-[999]">
-      <div className="relative max-w-4xl">
-        <button
-          className="absolute top-0 right-0 m-4 text-gray-600 hover:text-gray-900"
-          onClick={onClose}
+    <>
+      {isOpen && (
+        <div
+          id="backdrop"
+          className="fixed top-0 right-0 left-0 bottom-0 flex justify-center items-center bg-black bg-opacity-70 z-50"
+          onClick={backdropClick}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-        <iframe
-          src={videoUrl}
-          title="Video Popup"
-          className="w-full h-full"
-          allowFullScreen
-        ></iframe>
-      </div>
-    </div>
+          <div className="relative p-4 w-full max-w-2xl max-h-full">
+            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <button
+                className="absolute top-2 right-2 text-gray-600"
+                onClick={closeModal}
+              >
+                <svg
+                  className="w-6 h-6 text-gray-800 text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </button>
+              <div className="w-full">
+                <ReactPlayer url={url} />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
