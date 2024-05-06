@@ -132,7 +132,7 @@ const Home = () => {
         ease: "linear",
         duration: 0.3,
         y: { duration: 0.3 },
-        delay: 0.2,
+        delay: 0.3,
       }}
     >
       {/* HERO SECTION */}
@@ -592,4 +592,4 @@ const Home = () => {
   );
 };
 
-export default motion(Home);
+export default Home;
