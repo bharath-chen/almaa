@@ -205,7 +205,7 @@ const ProductCard: FC<ProductCardProps> = ({
           }}
         >
           <BagIcon className="w-3.5 h-3.5 mb-0.5" />
-          <span className="ml-1">Add to bag</span>
+          <span className="ml-1">Add to cart</span>
         </ButtonPrimary>
         <ButtonSecondary
           className="ml-1.5 bg-white hover:!bg-gray-100 hover:text-slate-900 transition-colors shadow-lg"
@@ -251,7 +251,7 @@ const ProductCard: FC<ProductCardProps> = ({
         className={`nc-ProductCard relative flex flex-col bg-transparent ${className}`}
         data-nc-id="ProductCard"
       >
-        <Link to={"/product-detail/" + id} className="absolute inset-0"></Link>
+        {/* <Link to={"/product-detail/" + id} className="absolute inset-0"></Link> */}
 
         <div className="relative flex-shrink-0 bg-slate-50 dark:bg-slate-300 rounded-3xl overflow-hidden z-1 group">
           <Link to={"/product-detail/" + id} className="block">
@@ -261,7 +261,6 @@ const ProductCard: FC<ProductCardProps> = ({
               className="object-cover w-full h-full drop-shadow-xl"
             />
           </Link>
-
           <ProductStatus status={status} />
 
           <LikeButton
@@ -275,27 +274,55 @@ const ProductCard: FC<ProductCardProps> = ({
 
         <div className="space-y-4 px-2.5 pt-5 pb-2.5">
           {renderVariants()}
-
-          <div>
-            <h2
-              className={`nc-ProductCard__title text-base font-semibold transition-colors`}
-            >
-              {name}
-            </h2>
-            <p className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}>
-              {description}
-            </p>
-          </div>
+          <Link to={"/product-detail/" + id} className="block">
+            <div>
+              <h2
+                className={`nc-ProductCard__title text-base font-semibold transition-colors`}
+              >
+                {name}
+              </h2>
+              <p className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}>
+                {description}
+              </p>
+            </div>
+          </Link>
 
           <div className="flex justify-between items-end ">
             <Prices price={price} />
-            <div className="flex items-center mb-0.5">
-              <StarIcon className="w-5 h-5 pb-[1px] text-amber-400" />
+            <button
+              onClick={() => {
+                addItemToCart(data);
+                notifyAddTocart({ size: "XL" });
+              }}
+              type="button"
+              className="border-2 border-white rounded-lg py-1 px-2 md:py-1 md:px-2.5 text-sm font-medium"
+            >
+              <svg
+                className="w-6 h-6 text-primary-900 dark:text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4"
+                />
+              </svg>
+            </button>
+
+            {/* <div className="flex items-center mb-0.5"> */}
+            {/* <StarIcon className="w-5 h-5 pb-[1px] text-amber-400" />
               <span className="text-sm ml-1 text-slate-500 dark:text-slate-400">
                 {(Math.random() * 1 + 4).toFixed(1)} (
                 {Math.floor(Math.random() * 70 + 20)} reviews)
-              </span>
-            </div>
+              </span> */}
+            {/* </div> */}
           </div>
         </div>
       </div>
