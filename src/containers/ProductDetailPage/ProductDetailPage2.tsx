@@ -39,10 +39,6 @@ import video from "../../assets/PRODUCT DETAIL/5-video.jpg";
 import videoIcon from "../../assets/PRODUCT DETAIL/5-video-icon.png";
 import AppSlider from "../../components/AppSlider/AppSlider";
 import Heading from "../../components/Heading/Heading";
-import carousel1 from "../../assets/HOME PAGE/3-carousal-1.png";
-import carousel2 from "../../assets/HOME PAGE/3-carousal-2.png";
-import carousel3 from "../../assets/HOME PAGE/3-carousal-3.png";
-import carousel4 from "../../assets/HOME PAGE/3-carousal-4.png";
 
 export interface ProductDetailPage2Props {
   className?: string;
@@ -62,13 +58,6 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     product2Img,
     product3Img,
     product4Img,
-    // detail21JPG,
-    // detail22JPG,
-    // detail23JPG,
-    // detail24JPG,
-    // detail24JPG,
-    // detail24JPG,
-    // detail24JPG,
   ];
   const ingredients = [
     {
@@ -126,7 +115,6 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     addItemToCartWithQuantity(product, quantitySelected);
   };
 
-  //
   const renderVariants = () => {
     if (!variants || !variants.length) {
       return null;
@@ -675,28 +663,38 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 onClick={() => handleOpenModal(0)}
               >
                 <NcImage
-                  containerClassName="aspect-w-3 aspect-h-4 md:absolute md:inset-0"
+                  containerClassName="aspect-w-6 aspect-h-8 lg:aspect-h-8 md:absolute md:inset-0"
                   className="object-cover w-full h-full rounded-md sm:rounded-xl"
                   src={LIST_IMAGES_DEMO[0]}
                 />
                 <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
               </div>
 
-              {/*  */}
               <div
                 className="col-span-1 row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
                 onClick={() => handleOpenModal(1)}
               >
                 <NcImage
-                  containerClassName="absolute inset-0"
+                  containerClassName="aspect-w-6 aspect-h-8 lg:aspect-h-8"
                   className="object-cover w-full h-full rounded-md sm:rounded-xl"
                   src={LIST_IMAGES_DEMO[1]}
                 />
                 <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
               </div>
 
-              {/*  */}
-              {[LIST_IMAGES_DEMO[2], LIST_IMAGES_DEMO[3]].map((item, index) => (
+              <div
+                className="col-span-1 row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
+                onClick={() => handleOpenModal(2)}
+              >
+                <NcImage
+                  containerClassName="aspect-w-6 aspect-h-8 lg:aspect-h-8"
+                  className="object-cover w-full h-full rounded-md sm:rounded-xl"
+                  src={LIST_IMAGES_DEMO[2]}
+                />
+                <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
+              </div>
+
+              {/* {[LIST_IMAGES_DEMO[2]].map((item, index) => (
                 <div
                   key={index}
                   className={`relative rounded-md sm:rounded-xl overflow-hidden ${
@@ -704,18 +702,17 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                   }`}
                 >
                   <NcImage
-                    containerClassName="aspect-w-6 aspect-h-5 lg:aspect-h-4"
+                    containerClassName="aspect-w-6 aspect-h-8 lg:aspect-h-8"
                     className="object-cover w-full h-full rounded-md sm:rounded-xl "
                     src={item || ""}
                   />
 
-                  {/* OVERLAY */}
                   <div
                     className="absolute inset-0 bg-slate-900 bg-opacity-20 opacity-0 hover:opacity-60 transition-opacity cursor-pointer"
                     onClick={() => handleOpenModal(index + 2)}
                   />
                 </div>
-              ))}
+              ))} */}
             </div>
             <div
               className="absolute hidden md:flex md:items-center md:justify-center left-3 bottom-3 px-4 py-2 rounded-xl bg-white text-slate-500 cursor-pointer hover:bg-slate-200 z-10"
