@@ -1,6 +1,6 @@
 import Checkbox from "../../shared/Checkbox/Checkbox";
 
-interface TabFilterItem {
+export interface TabFilterItem {
   name: string;
   checked?: boolean;
 }
@@ -8,7 +8,7 @@ interface TabFilterItem {
 interface Props {
   heading: string;
   items: TabFilterItem[];
-  onItemCheck: (item: TabFilterItem) => void;
+  onItemCheck: (item: TabFilterItem, checked: boolean) => void;
 }
 
 const AppFilterTabs = ({ heading, items, onItemCheck }: Props) => {
@@ -16,14 +16,14 @@ const AppFilterTabs = ({ heading, items, onItemCheck }: Props) => {
     <div className="relative flex flex-col pb-8 space-y-4">
       <h3 className="font-semibold mb-2.5">{heading}</h3>
       {items.map((item) => (
-        <div key={item.name} className="">
+        <div key={item.name}>
           <Checkbox
             name={item.name}
             label={item.name}
             defaultChecked={item.checked}
             sizeClassName="w-5 h-5"
             labelClassName="text-sm font-normal"
-            onChange={() => onItemCheck(item)}
+            onChange={(checked: boolean) => onItemCheck(item, checked)}
           />
         </div>
       ))}
