@@ -693,26 +693,6 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 />
                 <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
               </div>
-
-              {/* {[LIST_IMAGES_DEMO[2]].map((item, index) => (
-                <div
-                  key={index}
-                  className={`relative rounded-md sm:rounded-xl overflow-hidden ${
-                    index >= 2 ? "block" : ""
-                  }`}
-                >
-                  <NcImage
-                    containerClassName="aspect-w-6 aspect-h-8 lg:aspect-h-8"
-                    className="object-cover w-full h-full rounded-md sm:rounded-xl "
-                    src={item || ""}
-                  />
-
-                  <div
-                    className="absolute inset-0 bg-slate-900 bg-opacity-20 opacity-0 hover:opacity-60 transition-opacity cursor-pointer"
-                    onClick={() => handleOpenModal(index + 2)}
-                  />
-                </div>
-              ))} */}
             </div>
             <div
               className="absolute hidden md:flex md:items-center md:justify-center left-3 bottom-3 px-4 py-2 rounded-xl bg-white text-slate-500 cursor-pointer hover:bg-slate-200 z-10"
