@@ -139,11 +139,13 @@ const SidebarFilters = () => {
 
   return (
     <div className="divide-y divide-slate-200 dark:divide-slate-700">
-      <AppFilterTabs
-        heading="Product Form"
-        items={productForms}
-        onItemCheck={handleProductFormChange}
-      />
+      <div className="py-8 pr-2">
+        <AppFilterTabs
+          heading="Product Form"
+          items={productForms}
+          onItemCheck={handleProductFormChange}
+        />
+      </div>
       <div className="py-8 pr-2">
         <AppFilterTabs
           heading="Health Condition"
