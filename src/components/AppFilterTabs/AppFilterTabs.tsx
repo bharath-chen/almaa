@@ -16,7 +16,7 @@ const AppFilterTabs = ({ heading, items, onItemCheck }: Props) => {
     <div className="mb-3">
       <h3 className="font-semibold mb-2.5">{heading}</h3>
       <div
-        className={`relative flex flex-col pb-8 space-y-4 h-32 ${
+        className={`relative flex flex-col pl-1 pt-1 pb-8 space-y-4 h-32 ${
           items.length > 4 ? "overflow-y-auto" : ""
         }`}
       >
