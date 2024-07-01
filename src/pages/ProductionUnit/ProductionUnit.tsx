@@ -27,7 +27,7 @@ const ProductionUnit = ({ className = "" }: ProductionUnitProps) => {
         <div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
           <SectionHero
             rightImg={rightImg}
-            heading="👋 About Us."
+            heading="About Us."
             btnText=""
             subHeading="We’re impartial and independent, and every day we create distinctive, world-class programmes and content which inform, educate and entertain millions of people in the around the world."
           />

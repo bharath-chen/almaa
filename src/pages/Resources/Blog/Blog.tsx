@@ -25,7 +25,7 @@ const Blog: React.FC = () => {
         </div>
 
         {/* === SECTION 1 === */}
-        <SectionAds />
+        {/* <SectionAds /> */}
 
         {/* === SECTION 8 === */}
         <SectionLatestPosts className="py-16 lg:py-28" />

@@ -361,7 +361,8 @@ const CheckoutPage = () => {
               <>
                 <div className="mt-10 pt-6 text-sm text-slate-500 dark:text-slate-400 border-t border-slate-200/70 dark:border-slate-700 ">
                   <div>
-                    <Label className="text-sm">Discount code</Label>
+                    <Label className="text-sm my-3">Discount code</Label>
+
                     {offerCodeApplied && (
                       <div className="flex mt-1.5 py-4 px-4 justify-between w-full border border-2 rounded-lg border-slate-200 bg-slate-200">
                         <span className="text-md ">

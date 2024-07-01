@@ -5,9 +5,6 @@ import NavItem2 from "../../../components/NavItem2";
 import SectionGridMoreExplore from "../../../components/SectionGridMoreExplore/SectionGridMoreExplore";
 import Nav from "../../../shared/Nav/Nav";
 import BranchDetailPopup from "./BranchDetailPopup";
-import Button from "../../../shared/Button/Button";
-import NcImage from "../../../shared/NcImage/NcImage";
-import mdSectionImg from "../../../assets/HOME PAGE/5-md-section.png";
 
 const OurBranches = () => {
   const [tabActive, setTabActive] = useState("Man");
@@ -44,7 +41,7 @@ const OurBranches = () => {
   return (
     <div className="container mt-10 mb-10">
       {/* SECTION */}
-      <div className="relative py-24 lg:py-32 mb-40">
+      <div className="relative py-20 lg:py-20 mb-40">
         <BackgroundSection />
         <Heading
           className="mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50"
@@ -54,7 +51,7 @@ const OurBranches = () => {
         >
           List of Branches
         </Heading>
-        <Nav
+        {/* <Nav
           className="p-1 bg-white dark:bg-neutral-800 rounded-full shadow-lg overflow-x-auto hiddenScrollbar"
           containerClassName="mb-12 lg:mb-14 relative flex justify-center w-full text-sm md:text-base"
         >
@@ -130,7 +127,7 @@ const OurBranches = () => {
               </div>
             </NavItem2>
           ))}
-        </Nav>
+        </Nav> */}
         <SectionGridMoreExplore onCardClick={handleCardClick} />
       </div>
 

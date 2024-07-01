@@ -24,10 +24,8 @@ const AppOfferCodes = ({ offerCodes, onApply }: Props) => {
     <>
       <div
         className={
-          "mt-4 relative  " +
-          (viewAll
-            ? "overflow-y-scroll h-36 scroll-hidden"
-            : "overflow-y-hidden h-28")
+          "mt-4 relative p-4  " +
+          (viewAll ? "overflow-y-scroll h-36" : "overflow-y-hidden h-28")
         }
       >
         <div className="flex flex-col gap-x-10 gap-y-4">

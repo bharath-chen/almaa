@@ -15,7 +15,7 @@ const WidgetCategories: FC<WidgetCategoriesProps> = ({
       data-nc-id="WidgetCategories"
     >
       <WidgetHeading1
-        title="✨ Trending topic"
+        title="✨ Category"
         viewAll={{ label: "View all", href: "/#" }}
       />
       <div className="flow-root">

@@ -114,7 +114,7 @@ const SectionSliderCategories: FC<SectionSliderCategoriesProps> = ({
                 />
               </li>
             ))}
-            <li className={`glide__slide ${itemClassName}`}>
+            {/* <li className={`glide__slide ${itemClassName}`}>
               <div
                 className={`flex-1 relative w-full h-0 rounded-2xl overflow-hidden group aspect-w-1 aspect-h-1 bg-slate-100`}
               >
@@ -158,7 +158,7 @@ const SectionSliderCategories: FC<SectionSliderCategoriesProps> = ({
                   className="opacity-0 group-hover:opacity-100 absolute inset-0 bg-black bg-opacity-10 transition-opacity"
                 ></Link>
               </div>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

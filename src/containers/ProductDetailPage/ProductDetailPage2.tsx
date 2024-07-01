@@ -322,12 +322,82 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
           />
 
           {/* BUYING OPTION */}
-          <AppProductChip
+          {/* <AppProductChip
             label="Buying Option"
             items={buyingOptions}
             selectedItem={buyingOption}
             onItemChange={setBuyingOption}
-          />
+          /> */}
+
+          <div className="my-2">
+            <h4 className="text-sm font-semibold">Buying Option</h4>
+
+            <div className="grid grid-cols-2 gap-4 desktop:gap-6 desktop:flex desktop:flex-col">
+              <div className="cursor-pointer h-full">
+                <fieldset className="flex flex-col justify-end rounded relative overflow-hidden h-full p-4 desktop:p-6 bg-green-100 border border-green-400">
+                  <legend className="max-w-fit">
+                    <p className="text-green-800 text-lg font-bold mt-1">
+                      29% off
+                    </p>
+                  </legend>
+                  <div className="flex flex-col gap-2">
+                    <div className="pt-2">
+                      <p className="text-base text-gray-700 leading-5 desktop:leading-6">
+                        100g x Pack of 1
+                      </p>
+                    </div>
+                    <div className="flex items-end gap-2 pb-2 desktop:pb-3">
+                      <div>
+                        <p className="text-xl text-gray-900 leading-6 font-bold">
+                          ₹244
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-base text-gray-500 line-through leading-5">
+                          ₹342
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-start text-gray-700 text-sm desktop:text-base">
+                    ₹2.44/g
+                  </div>
+                </fieldset>
+              </div>
+
+              <div className="cursor-pointer h-full">
+                <fieldset className="flex flex-col justify-end rounded relative overflow-hidden h-full p-4 desktop:p-6 border border-gray-300 bg-white">
+                  <legend className="max-w-fit">
+                    <p className="text-green-800 text-lg font-bold mt-1">
+                      31% off
+                    </p>
+                  </legend>
+                  <div className="flex flex-col gap-2">
+                    <div className="pt-2">
+                      <p className="text-base text-gray-700 leading-5 desktop:leading-6">
+                        100g x Pack of 2
+                      </p>
+                    </div>
+                    <div className="flex items-end gap-2 pb-2 desktop:pb-3">
+                      <div>
+                        <p className="text-xl text-gray-900 leading-6 font-bold">
+                          ₹473
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-base text-gray-500 line-through leading-5">
+                          ₹684
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-start text-gray-700 text-sm desktop:text-base">
+                    ₹2.37/g
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+          </div>
 
           {/*  ---------- 4  QTY AND ADD TO CART BUTTON */}
           <div className="flex space-x-3.5">

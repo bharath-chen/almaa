@@ -35,7 +35,7 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
       <div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
         <SectionHero
           rightImg={rightImg}
-          heading="👋 About Almaa Groups."
+          heading="About Almaa Groups."
           btnText=""
           subHeading="We’re impartial and independent, and every day we create distinctive, world-class programmes and content which inform, educate and entertain millions of people in the around the world."
         />
@@ -62,7 +62,7 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
             fontClass="text-3xl md:text-4xl 2xl:text-5xl font-semibold"
             isCenter
             desc=""
-            rightDescText="Concepts"
+            rightDescText=""
           >
             Our Companies
           </Heading>

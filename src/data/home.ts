@@ -191,6 +191,7 @@ const EXPLORE_SECTION_DATA = [
     color: "bg-indigo-50",
     btnLabel: "Explore Doctors",
     quantityText: "25 Doctors",
+    href: "/doctors-team",
   },
   {
     id: 2,
@@ -201,6 +202,7 @@ const EXPLORE_SECTION_DATA = [
     color: "bg-slate-100/80",
     btnLabel: "Explore Now",
     quantityText: "35 Therapies",
+    href: "/wellness-center",
   },
   {
     id: 3,
@@ -211,6 +213,7 @@ const EXPLORE_SECTION_DATA = [
     color: "bg-violet-50",
     btnLabel: "Explore Now",
     quantityText: "15 Books",
+    href: "/library",
   },
   {
     id: 4,
@@ -221,6 +224,7 @@ const EXPLORE_SECTION_DATA = [
     color: "bg-orange-50",
     btnLabel: "Explore Now",
     quantityText: "2 Locations",
+    href: "/wellness-center",
   },
   {
     id: 5,
@@ -231,6 +235,7 @@ const EXPLORE_SECTION_DATA = [
     color: "bg-blue-50",
     btnLabel: "Explore Now",
     quantityText: "200 Products",
+    href: "/production-unit",
   },
   {
     id: 6,
@@ -241,6 +246,7 @@ const EXPLORE_SECTION_DATA = [
     color: "bg-orange-50",
     btnLabel: "Explore Now",
     quantityText: "500 Resources",
+    href: "/blog",
   },
 ];
 

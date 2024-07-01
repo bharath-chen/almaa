@@ -231,10 +231,10 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({
               price={price}
             />
 
-            <div className="h-6 border-l border-slate-300 dark:border-slate-700"></div>
+            {/* <div className="h-6 border-l border-slate-300 dark:border-slate-700"></div> */}
 
             <div className="flex items-center">
-              <Link
+              {/* <Link
                 to="/product-detail"
                 className="flex items-center text-sm font-medium"
               >
@@ -246,12 +246,12 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({
                     142 reviews
                   </span>
                 </div>
-              </Link>
-              <span className="hidden sm:block mx-2.5">·</span>
+              </Link> */}
+              {/* <span className="hidden sm:block mx-2.5">·</span>
               <div className="hidden sm:flex items-center text-sm">
                 <SparklesIcon className="w-3.5 h-3.5" />
                 <span className="ml-1 leading-none">{status}</span>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -262,12 +262,12 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({
           selectedItem={quantityOption}
           onItemChange={setQuantityOption}
         />
-        <AppProductChip
+        {/* <AppProductChip
           label="Buying Option"
           items={buyingOptions}
           selectedItem={buyingOption}
           onItemChange={setBuyingOption}
-        />
+        /> */}
 
         {/* ---------- 3 VARIANTS AND SIZE LIST ----------  */}
         {/* <div className="">{renderVariants()}</div>

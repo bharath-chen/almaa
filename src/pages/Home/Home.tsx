@@ -35,6 +35,7 @@ import {
   LIFE_STYLE_CARDS,
 } from "../../data/home";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export const pageAnimation = {
   initial: { opacity: 0, y: 100 },
@@ -342,7 +343,7 @@ const Home = () => {
             desc=""
             rightDescText="Concepts"
           >
-            Explore Almaa's
+            Almaa Siddha
           </Heading>
           <SectionGridMoreExplore
             data={EXPLORE_SECTION_DATA}
@@ -358,8 +359,8 @@ const Home = () => {
           rightDescText="Medical Consultants"
           data={MEDICAL_CONSULTANTS}
         />
-        <ButtonSecondary className="focus:ring-2 focus:ring-offset-2 focus:ring-transparent tracking-tight ml-3 mt-6 md:text-2xl sm:px-14 border sm:py-5 sm:text-dark sm:bg-white-900 sm:hover:bg-white sm:hover:text-primary-900 border border-slate-300 dark:border-slate-700">
-          Visit all Doctors
+        <ButtonSecondary className="focus:ring-2 focus:ring-offset-2 focus:ring-transparent tracking-tight ml-3 mt-6 md:text-xl sm:px-14 border sm:py-5 sm:text-dark sm:bg-white-900 sm:hover:bg-white sm:hover:text-primary-900 border border-slate-300 dark:border-slate-700">
+          <Link to="/doctors-team">Visit all Doctors</Link>
         </ButtonSecondary>
       </section>
 
@@ -474,7 +475,7 @@ const Home = () => {
       </section>
 
       {/* SAVE AND EARN SECTION */}
-      <section className="container mb-40">
+      {/* <section className="container mb-40">
         <div className="relative py-16 md:py-5">
           <BackgroundSection className="bg-amber-100/70 dark:bg-black/20" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 justify-items-between">
@@ -514,7 +515,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ARTICLES DOCTORS TEAM SECTION */}
       <section className="container mb-40">
@@ -524,7 +525,9 @@ const Home = () => {
             <Heading rightDescText="Doctors Team">Articles from our</Heading>
             <SectionMagazine5 />
             <div className="flex mt-16 justify-center">
-              <ButtonSecondary>Show all Blogs</ButtonSecondary>
+              <ButtonSecondary>
+                <Link to="/blog">Show all Blogs</Link>
+              </ButtonSecondary>
             </div>
           </div>
         </div>

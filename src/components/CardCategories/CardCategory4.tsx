@@ -13,6 +13,7 @@ export interface CardCategory4Props {
   color?: string;
   btnLabel?: string;
   quantityText?: string;
+  href?: string;
 }
 
 const CardCategory4: FC<CardCategory4Props> = ({
@@ -24,6 +25,7 @@ const CardCategory4: FC<CardCategory4Props> = ({
   color = "bg-rose-50",
   btnLabel = "",
   quantityText = "",
+  href,
 }) => {
   return (
     <div
@@ -57,7 +59,7 @@ const CardCategory4: FC<CardCategory4Props> = ({
           </div>
 
           <Link
-            to={"/page-collection"}
+            to={href}
             className="flex items-center text-sm font-medium group-hover:text-primary-500 transition-colors"
           >
             <span>{btnLabel}</span>

@@ -32,7 +32,7 @@ const Card3Small: FC<Card3SmallProps> = ({ className = "h-full" }) => {
         </h2>
       </div>
 
-      <Link
+      {/* <Link
         to={`/blog-single`}
         title={"title"}
         className={`block sm:w-20 flex-shrink-0 relative rounded-lg overflow-hidden mb-5 sm:ml-4 sm:mb-0 group`}
@@ -44,7 +44,7 @@ const Card3Small: FC<Card3SmallProps> = ({ className = "h-full" }) => {
             src={_getImgRd()}
           />
         </div>
-      </Link>
+      </Link> */}
     </div>
   );
 };

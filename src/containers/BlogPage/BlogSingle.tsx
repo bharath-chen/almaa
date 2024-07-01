@@ -301,7 +301,7 @@ const BlogSingle = () => {
         <div className="max-w-screen-md mx-auto border-b border-t border-neutral-100 dark:border-neutral-700"></div>
         {renderAuthor()}
         {renderCommentForm()}
-        {renderCommentLists()}
+        {/* {renderCommentLists()} */}
       </div>
       <div className="relative bg-neutral-100 dark:bg-neutral-800 py-16 lg:py-28 mt-16 lg:mt-24">
         <div className="container ">
