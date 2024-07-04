@@ -10,10 +10,70 @@ import AccordionInfo from "../../containers/ProductDetailPage/AccordionInfo";
 import { ACCORDION_INFO } from "../../data/home";
 import whyAlmaaImg from "../../assets/HOME PAGE/10-why-section.jpg";
 import SectionPromo2 from "../../components/SectionPromo2";
+import SectionFounder, { People } from "../Library/SectionFounder";
 
 interface WellnessCenterProps {
   className?: string;
 }
+
+const FOUNDER_DEMO: People[] = [
+  {
+    id: "1",
+    name: `Niamh O'Shea`,
+    job: "Co-founder and Chief Executive",
+    avatar:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "4",
+    name: `Danien Jame`,
+    job: "Co-founder and Chief Executive",
+    avatar:
+      "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "3",
+    name: `Orla Dwyer`,
+    job: "Co-founder, Chairman",
+    avatar:
+      "https://images.unsplash.com/photo-1560365163-3e8d64e762ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "2",
+    name: `Dara Frazier`,
+    job: "Co-Founder, Chief Strategy Officer",
+    avatar:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "5",
+    name: `Niamh O'Shea`,
+    job: "Co-founder and Chief Executive",
+    avatar:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "6",
+    name: `Danien Jame`,
+    job: "Co-founder and Chief Executive",
+    avatar:
+      "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "7",
+    name: `Orla Dwyer`,
+    job: "Co-founder, Chairman",
+    avatar:
+      "https://images.unsplash.com/photo-1560365163-3e8d64e762ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "8",
+    name: `Dara Frazier`,
+    job: "Co-Founder, Chief Strategy Officer",
+    avatar:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+  },
+];
 
 const WellnessCenter = ({ className = "" }: WellnessCenterProps) => {
   const renderHealthAndLifestyleCard = (item: {
@@ -44,20 +104,28 @@ const WellnessCenter = ({ className = "" }: WellnessCenterProps) => {
           <title>Almaa</title>
         </Helmet>
 
-        {/* ======== BG GLASS ======== */}
-        <BgGlassmorphism />
+        {/* NATURE AND SINDHANAI SIDDHAR SECTION */}
+        <section className="container mt-40 mb-40">
+          <SectionFounder
+            heading="	Nature & Sindhanai Siddhar"
+            founders={FOUNDER_DEMO}
+          />
+        </section>
 
-        <div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
+        {/* ======== BG GLASS ======== */}
+        {/* <BgGlassmorphism /> */}
+
+        {/* <div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
           <SectionHero
             rightImg={rightImg}
             heading="About Us."
             btnText=""
             subHeading="We’re impartial and independent, and every day we create distinctive, world-class programmes and content which inform, educate and entertain millions of people in the around the world."
           />
-        </div>
+        </div> */}
 
         {/* HEALTHY AND LIFESTYLE VIDEOS SECTION */}
-        <section className="container mb-40">
+        {/* <section className="container mb-40">
           <AppSlider
             data={IMAGE_SCROLL_VIDEOS}
             className="glidejs_rb_ flow-root glide--swipeable glide--ltr glide--slider"
@@ -100,10 +168,10 @@ const WellnessCenter = ({ className = "" }: WellnessCenterProps) => {
               Health & Lifestyle
             </Heading>
           </AppSlider>
-        </section>
+        </section> */}
 
         {/* FAQ */}
-        <section className="container mb-40">
+        {/* <section className="container mb-40">
           <Heading className="mb-8" fontClass="text-2xl md:text-4xl font-bold">
             FAQ
           </Heading>
@@ -119,12 +187,12 @@ const WellnessCenter = ({ className = "" }: WellnessCenterProps) => {
               <AccordionInfo data={ACCORDION_INFO} />
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* ENQUIRE NOW */}
-        <section className="container mb-40">
+        {/* <section className="container mb-40">
           <SectionPromo2 />
-        </section>
+        </section> */}
       </div>
     </div>
   );
