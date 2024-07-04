@@ -6,6 +6,40 @@ import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import { useShoppingCartContext } from "../../store/shopping-cart-context";
+import Label from "../../components/Label/Label";
+import Input from "../../shared/Input/Input";
+import Select from "../../shared/Select/Select";
+
+const STATES = [
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
+];
 
 const CartPage = () => {
   const {
@@ -34,6 +68,7 @@ const CartPage = () => {
   };
 
   const renderProduct = (item: Product, index: number) => {
+    console.log(item, index);
     const { id, image, price, name, quantity } = item;
 
     return (
@@ -259,6 +294,19 @@ const CartPage = () => {
                       <span className="font-semibold text-slate-900 dark:text-slate-200">
                         ₹24.90
                       </span>
+                    </div>
+                    <div className="max-w-lg py-3">
+                      <Label className="text-sm">State</Label>
+                      <Select className="mt-1.5 mb-3">
+                        <option value=""></option>
+                        {STATES.map((state) => (
+                          <option key={state} value={state}>
+                            {state}
+                          </option>
+                        ))}
+                      </Select>
+                      <Label className="text-sm">Pincode</Label>
+                      <Input className="mt-1.5" type={"text"} />
                     </div>
                     <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
                       <span>Order total</span>
