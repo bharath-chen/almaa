@@ -39,6 +39,7 @@ import video from "../../assets/PRODUCT DETAIL/5-video.jpg";
 import videoIcon from "../../assets/PRODUCT DETAIL/5-video-icon.png";
 import AppSlider from "../../components/AppSlider/AppSlider";
 import Heading from "../../components/Heading/Heading";
+import AppBuyingOptionCard from "../../components/AppBuyingOptionCard/AppBuyingOptionCard";
 
 export interface ProductDetailPage2Props {
   className?: string;
@@ -85,10 +86,32 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       src: ingredient4,
     },
   ];
-  const [buyingOption, setBuyingOption] = React.useState({
-    id: 1,
-    label: "One Time",
-  });
+  const [buyingOptions, setBuyingOptions] = useState([
+    {
+      id: 1,
+      offer: 10,
+      pack: 2,
+      discountedPrice: price * 2 - price * 2 * 0.1,
+      originalPrice: price * 2,
+      selected: false,
+    },
+    {
+      id: 2,
+      offer: 20,
+      pack: 4,
+      discountedPrice: price * 4 - price * 4 * 0.2,
+      originalPrice: price * 4,
+      selected: false,
+    },
+    {
+      id: 3,
+      offer: 30,
+      pack: 10,
+      discountedPrice: price * 10 - price * 10 * 0.2,
+      originalPrice: price * 10,
+      selected: false,
+    },
+  ]);
   const [quantityOption, setQuantityOption] = React.useState({
     id: 1,
     label: "100 g",
@@ -112,7 +135,20 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
   const addToCart = () => {
     notifyAddTocart();
-    addItemToCartWithQuantity(product, quantitySelected);
+    const selected = buyingOptions.find((o) => o.selected);
+    addItemToCartWithQuantity(
+      product,
+      selected ? selected.pack : quantitySelected
+    );
+  };
+
+  const handleBuyingOption = (id: number) => {
+    const updatedBuyingOptions = [...buyingOptions].map((o) =>
+      o.id === id
+        ? { ...o, selected: (o.selected = !o.selected) }
+        : { ...o, selected: false }
+    );
+    setBuyingOptions(updatedBuyingOptions);
   };
 
   const renderVariants = () => {
@@ -156,11 +192,12 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   };
 
   const notifyAddTocart = () => {
+    const selected = buyingOptions.find((o) => o.selected);
     toast.custom(
       (t) => (
         <NotifyAddTocart
           productImage={image}
-          qualitySelected={quantitySelected}
+          qualitySelected={selected ? selected.pack : quantitySelected}
           show={t.visible}
           sizeSelected={sizeSelected}
           variantActive={variantActive}
@@ -272,11 +309,11 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       { id: 2, label: "200 g" },
     ];
 
-    const buyingOptions = [
-      { id: 1, label: "One Time" },
-      { id: 2, label: "6 Months" },
-      { id: 3, label: "1 Year" },
-    ];
+    // const buyingOptions = [
+    //   { id: 1, label: "One Time" },
+    //   { id: 2, label: "6 Months" },
+    //   { id: 3, label: "1 Year" },
+    // ];
 
     return (
       <div className="listingSectionSidebar__wrap lg:shadow-lg">
@@ -333,69 +370,14 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             <h4 className="text-sm font-semibold">Buying Option</h4>
 
             <div className="grid grid-cols-2 gap-4 desktop:gap-6 desktop:flex desktop:flex-col">
-              <div className="cursor-pointer h-full">
-                <fieldset className="flex flex-col justify-end rounded relative overflow-hidden h-full p-4 desktop:p-6 bg-green-100 border border-green-400">
-                  <legend className="max-w-fit">
-                    <p className="text-green-800 text-lg font-bold mt-1">
-                      29% off
-                    </p>
-                  </legend>
-                  <div className="flex flex-col gap-2">
-                    <div className="pt-2">
-                      <p className="text-base text-gray-700 leading-5 desktop:leading-6">
-                        100g x Pack of 1
-                      </p>
-                    </div>
-                    <div className="flex items-end gap-2 pb-2 desktop:pb-3">
-                      <div>
-                        <p className="text-xl text-gray-900 leading-6 font-bold">
-                          ₹244
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-base text-gray-500 line-through leading-5">
-                          ₹342
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-start text-gray-700 text-sm desktop:text-base">
-                    ₹2.44/g
-                  </div>
-                </fieldset>
-              </div>
-
-              <div className="cursor-pointer h-full">
-                <fieldset className="flex flex-col justify-end rounded relative overflow-hidden h-full p-4 desktop:p-6 border border-gray-300 bg-white">
-                  <legend className="max-w-fit">
-                    <p className="text-green-800 text-lg font-bold mt-1">
-                      31% off
-                    </p>
-                  </legend>
-                  <div className="flex flex-col gap-2">
-                    <div className="pt-2">
-                      <p className="text-base text-gray-700 leading-5 desktop:leading-6">
-                        100g x Pack of 2
-                      </p>
-                    </div>
-                    <div className="flex items-end gap-2 pb-2 desktop:pb-3">
-                      <div>
-                        <p className="text-xl text-gray-900 leading-6 font-bold">
-                          ₹473
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-base text-gray-500 line-through leading-5">
-                          ₹684
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-start text-gray-700 text-sm desktop:text-base">
-                    ₹2.37/g
-                  </div>
-                </fieldset>
-              </div>
+              {buyingOptions.map((buyingOption) => (
+                <AppBuyingOptionCard
+                  key={buyingOption.id}
+                  buyingOptions={buyingOption}
+                  selected={buyingOption.selected}
+                  onClick={() => handleBuyingOption(buyingOption.id)}
+                />
+              ))}
             </div>
           </div>
 
