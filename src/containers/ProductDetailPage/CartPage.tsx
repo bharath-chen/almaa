@@ -1,8 +1,7 @@
 import { NoSymbolIcon, CheckIcon } from "@heroicons/react/24/outline";
 import NcInputNumber from "../../components/NcInputNumber";
 import Prices from "../../components/Prices";
-import { Product, PRODUCTS } from "../../data/data";
-import { Helmet } from "react-helmet-async";
+import { Product } from "../../data/data";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import { useShoppingCartContext } from "../../store/shopping-cart-context";
@@ -68,8 +67,7 @@ const CartPage = () => {
   };
 
   const renderProduct = (item: Product, index: number) => {
-    console.log(item, index);
-    const { id, image, price, name, quantity } = item;
+    const { id, image, price, name, quantity, sizes } = item;
 
     return (
       <div
@@ -139,7 +137,7 @@ const CartPage = () => {
                       />
                     </svg>
 
-                    <span>{`Black`}</span>
+                    <span>{`2`}</span>
                   </div>
                   <span className="mx-4 border-l border-slate-200 dark:border-slate-700 "></span>
                   <div className="flex items-center space-x-1.5">
@@ -174,7 +172,7 @@ const CartPage = () => {
                       />
                     </svg>
 
-                    <span>{`2XL`}</span>
+                    <span>{sizes && sizes.length > 0 ? sizes[0] : "200g"}</span>
                   </div>
                 </div>
 

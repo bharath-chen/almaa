@@ -107,7 +107,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       id: 3,
       offer: 30,
       pack: 10,
-      discountedPrice: price * 10 - price * 10 * 0.2,
+      discountedPrice: price * 10 - price * 10 * 0.3,
       originalPrice: price * 10,
       selected: false,
     },
@@ -137,7 +137,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     notifyAddTocart();
     const selected = buyingOptions.find((o) => o.selected);
     addItemToCartWithQuantity(
-      product,
+      { ...product, sizes: [quantityOption.label] },
       selected ? selected.pack : quantitySelected
     );
   };
@@ -199,7 +199,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
           productImage={image}
           qualitySelected={selected ? selected.pack : quantitySelected}
           show={t.visible}
-          sizeSelected={sizeSelected}
+          sizeSelected={quantityOption.label}
           variantActive={variantActive}
         />
       ),

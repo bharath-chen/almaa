@@ -111,7 +111,7 @@ const CheckoutPage = () => {
   };
 
   const renderProduct = (item: Product, index: number) => {
-    const { image, price, name } = item;
+    const { image, price, name, sizes } = item;
 
     return (
       <div key={index} className="relative flex py-7 first:pt-0 last:pb-0">
@@ -210,7 +210,7 @@ const CheckoutPage = () => {
                       />
                     </svg>
 
-                    <span>{`2XL`}</span>
+                    <span>{item.sizes[0]}</span>
                   </div>
                 </div>
 
