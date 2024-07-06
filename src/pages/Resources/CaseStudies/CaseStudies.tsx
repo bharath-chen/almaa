@@ -1,86 +1,84 @@
-import React from "react";
-import articles2 from "../../../assets/HOME PAGE/13-articles-2.jpg";
-import articles3 from "../../../assets/HOME PAGE/13-articles-3.jpg";
-import articles4 from "../../../assets/HOME PAGE/13-articles-4.jpg";
+import React, { useState } from "react";
 import Heading from "../../../shared/Heading/Heading";
+import { featuredImgs } from "../../../contains/fakeData";
+import BlogCard from "../Blog/BlogCard";
+import MainCard from "../Blog/MainCard";
 import { useNavigate } from "react-router-dom";
 
 const CaseStudies: React.FC = () => {
+  // const [selectedCaseStudy, setSelectedCaseStudy] = useState<{
+  //   name: string;
+  //   avatar: string;
+  // } | null>(null);
+
   const navigate = useNavigate();
 
-  const caseStudies = [
-    {
-      title: "Case Study 1",
-      description: "Description of case study 1...",
-      image: articles2,
-    },
-    {
-      title: "Case Study 2",
-      description: "Description of case study 2...",
-      image: articles3,
-    },
-    {
-      title: "Case Study 3",
-      description: "Description of case study 3...",
-      image: articles4,
-    },
-    {
-      title: "Case Study 4",
-      description: "Description of case study 4...",
-      image: articles3,
-    },
-    {
-      title: "Case Study 5",
-      description: "Description of case study 5...",
-      image: articles2,
-    },
-    {
-      title: "Case Study 6",
-      description: "Description of case study 6...",
-      image: articles4,
-    },
-    {
-      title: "Case Study 7",
-      description: "Description of case study 7...",
-      image: articles3,
-    },
-    {
-      title: "Case Study 8",
-      description: "Description of case study 8...",
-      image: articles4,
-    },
-    {
-      title: "Case Study 9",
-      description: "Description of case study 9...",
-      image: articles2,
-    },
-  ];
+  const routeToCaseStudy = (item?: string) => {
+    // navigate("/case-study", {
+    //   state: {
+    //     doctor: {
+    //       id: 1,
+    //       name: "Test",
+    //       job: "Doctor",
+    //       avatar:
+    //         item ||
+    //         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+    //       href: "#",
+    //     },
+    //   },
+    // });
 
-  const handleCaseStudyClick = () => {
-    navigate("/case-study");
+    navigate("/case-study", {
+      state: {
+        doctor: {
+          id: 1,
+          name: "Test",
+          job: "Doctor",
+          avatar:
+            item ||
+            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+          href: "#",
+        },
+      },
+    });
   };
 
   return (
     <div className="container my-20">
       <Heading desc="">Case Studies</Heading>
-      <div className="grid grid-cols-3 gap-4">
-        {caseStudies.map((study, index) => (
-          <div
-            onClick={handleCaseStudyClick}
-            key={index}
-            className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
-          >
-            <img
-              src={study.image}
-              alt={study.title}
-              className="w-full h-40 object-cover"
-            />
-            <div className="p-4">
-              <h3 className="text-lg font-semibold mb-2">{study.title}</h3>
-              <p className="text-sm">{study.description}</p>
+      {/* === SECTION 1 === */}
+      <div className="pt-12 pb-16 lg:pb-28">
+        <div className="nc-SectionMagazine5">
+          <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
+            <MainCard href="/case-study" onClick={routeToCaseStudy} />
+            <div className="grid gap-6 md:gap-8">
+              {featuredImgs.map((item, index) => (
+                <BlogCard
+                  key={index}
+                  src={item}
+                  href="/case-study"
+                  onClick={() => routeToCaseStudy(item)}
+                />
+              ))}
             </div>
           </div>
-        ))}
+        </div>
+        <br />
+        <div className="nc-SectionMagazine5">
+          <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
+            <MainCard href="/case-study" onClick={routeToCaseStudy} />
+            <div className="grid gap-6 md:gap-8">
+              {featuredImgs.map((item, index) => (
+                <BlogCard
+                  key={index}
+                  src={item}
+                  href="/case-study"
+                  onClick={() => routeToCaseStudy(item)}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
