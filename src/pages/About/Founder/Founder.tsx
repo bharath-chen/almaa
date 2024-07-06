@@ -68,7 +68,7 @@ const Founder = () => {
   return (
     <>
       {/* WHO IS SINDHANAI SIDDHAR SECTION */}
-      <section className="container mb-40">
+      {/* <section className="container mb-40">
         <div className={`nc-SectionPromo2`}>
           <div className="relative flex flex-col justify-center lg:flex-row lg:justify-end bg-slate-50 dark:bg-slate-800 rounded-2xl sm:rounded-[40px] p-4 pb-0 sm:p-5 sm:pb-0 lg:p-24">
             <div className="lg:w-[55%] max-w-lg relative lg:top-14">
@@ -147,10 +147,10 @@ const Founder = () => {
             />
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* MISSION AND VISION SECTION */}
-      <section className="container mb-40">
+      <section className="container mt-40 mb-40">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 place-content-center">
           <div>
             <h3 className="text-2xl xl:text-3xl font-semibold">
@@ -177,7 +177,7 @@ const Founder = () => {
           </div>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-10">
+        {/* <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-10">
           {ABOUTS.map((about) => (
             <div className="p-4 bg-slate-100 rounded-lg" key={about.id}>
               <h4 className="text-lg font-semibold mb-1">{about.label}</h4>
@@ -186,7 +186,7 @@ const Founder = () => {
               </p>
             </div>
           ))}
-        </div>
+        </div> */}
       </section>
 
       {/* NATURE AND SINDHANAI SIDDHAR SECTION */}
