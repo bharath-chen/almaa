@@ -1,17 +1,14 @@
-import { useState } from "react";
 import ButtonPrimary from "../../../shared/Button/ButtonPrimary";
 import AccordionInfo from "../../../containers/ProductDetailPage/AccordionInfo";
 import { useLocation } from "react-router-dom";
-import { People } from "../../Library/SectionFounder";
+// import { useEffect } from "react";
 
 export interface Props {
   className?: string;
 }
 
-const CaseStudy = ({ className = "" }: Props) => {
-  const handleConnect = () => {
-    console.log("Connect!");
-  };
+const CaseStudyDetail = ({ className = "" }: Props) => {
+  const { state } = useLocation();
 
   const DEMO_DATA = [
     {
@@ -47,18 +44,18 @@ const CaseStudy = ({ className = "" }: Props) => {
         <div className="w-full max-w bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
           <div className="flex flex-col pl-5 pb-5 mt-5">
             <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white pb-2">
-              Name: Test
+              Name: {state.doctor.name}
             </h5>
             <span className="text-md text-gray-500 dark:text-gray-400 pb-2">
-              Degree: M.B.B.S
+              Degree: {state.doctor.degree}
             </span>
             <span className="text-md text-gray-500 dark:text-gray-400">
-              Designation: General Physician
+              Designation: {state.doctor.designation}
             </span>
           </div>
         </div>
         {/*  ---------- 4  QTY AND ADD TO CART BUTTON */}
-        <div className="flex space-x-3.5">
+        {/* <div className="flex space-x-3.5">
           <ButtonPrimary
             className="flex-1 flex-shrink-0"
             onClick={handleConnect}
@@ -82,7 +79,7 @@ const CaseStudy = ({ className = "" }: Props) => {
             </svg>
             <span className="ml-3">Connect</span>
           </ButtonPrimary>
-        </div>
+        </div> */}
         {/* ---------- 5 ----------  */}
         <AccordionInfo data={DEMO_DATA} />
       </div>
@@ -100,7 +97,7 @@ const CaseStudy = ({ className = "" }: Props) => {
             <div className="relative">
               <div className="aspect-w-16 aspect-h-16">
                 <img
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80"
+                  src={state.doctor.src}
                   className="w-full rounded-2xl object-cover"
                   alt={"Test"}
                 />
@@ -123,4 +120,4 @@ const CaseStudy = ({ className = "" }: Props) => {
   );
 };
 
-export default CaseStudy;
+export default CaseStudyDetail;
