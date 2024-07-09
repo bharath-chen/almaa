@@ -6,6 +6,7 @@ import aboutSectionImg from "../../../assets/HOME PAGE/2-about-section.jpg";
 import Button from "../../../shared/Button/Button";
 import Heading from "../../../components/Heading/Heading";
 import AccordionInfo from "../../../containers/ProductDetailPage/AccordionInfo";
+import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 
 const SiddhaScience = () => {
   return (
@@ -153,6 +154,11 @@ const SiddhaScience = () => {
             <AccordionInfo data={ACCORDION_INFO} />
           </div>
         </div>
+      </section>
+
+      {/* EMAIL SUBSCRIBE SECTION */}
+      <section className="container">
+        <EmailSubscribeSection />
       </section>
     </>
   );

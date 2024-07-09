@@ -11,6 +11,7 @@ import { ACCORDION_INFO } from "../../data/home";
 import whyAlmaaImg from "../../assets/HOME PAGE/10-why-section.jpg";
 import SectionPromo2 from "../../components/SectionPromo2";
 import SectionFounder, { People } from "../Library/SectionFounder";
+import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
 
 interface WellnessCenterProps {
   className?: string;
@@ -193,6 +194,9 @@ const WellnessCenter = ({ className = "" }: WellnessCenterProps) => {
         {/* <section className="container mb-40">
           <SectionPromo2 />
         </section> */}
+
+        {/* EMAIL SUBSCRIBE SECTION */}
+        <EmailSubscribeSection />
       </div>
     </div>
   );

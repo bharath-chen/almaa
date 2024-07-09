@@ -1,4 +1,5 @@
 import SectionFounder from "../../../containers/PageAbout/SectionFounder";
+import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import { LayoutGridDemo } from "./LayoutGridDemo";
 
 const Media = () => {
@@ -8,6 +9,11 @@ const Media = () => {
         <SectionFounder />
       </div>
       <LayoutGridDemo />
+
+      {/* EMAIL SUBSCRIBE SECTION */}
+      <section className="mt-40">
+        <EmailSubscribeSection />
+      </section>
     </>
   );
 };

@@ -4,6 +4,7 @@ import SectionFounder, { People } from "../../Library/SectionFounder";
 import SectionHero from "../../Library/SectionHero";
 import rightImg from "../../../images/hero-right1.png";
 import { useNavigate } from "react-router-dom";
+import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 
 interface DoctorsTeamProps {
   className?: string;
@@ -77,6 +78,9 @@ const DoctorsTeam = ({ className = "" }: DoctorsTeamProps) => {
           founders={DOCTORS}
           onClick={routeToDoctorDetail}
         />
+
+        {/* EMAIL SUBSCRIBE SECTION */}
+        <EmailSubscribeSection />
       </div>
     </div>
   );

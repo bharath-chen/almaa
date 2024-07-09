@@ -3,6 +3,7 @@ import SidebarFilters from "../../containers/SidebarFilters";
 import productsService from "../../services/products-service";
 import { FC, useEffect, useState } from "react";
 import { Product } from "../../data/data";
+import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
 
 interface Props {
   className?: string;
@@ -55,6 +56,9 @@ const Products: FC<Props> = ({ className = "" }) => {
           </main>
         </div>
       </div>
+
+      {/* EMAIL SUBSCRIBE SECTION */}
+      <EmailSubscribeSection />
     </div>
   );
 };

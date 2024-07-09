@@ -4,6 +4,7 @@ import mdSectionImg from "../../../assets/HOME PAGE/5-md-section.png";
 import { ABOUTS } from "../../../data/home";
 import aboutSectionImg from "../../../assets/HOME PAGE/2-about-section.jpg";
 import SectionFounder, { People } from "../../Library/SectionFounder";
+import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 
 const FOUNDER_DEMO: People[] = [
   {
@@ -199,6 +200,9 @@ const Founder = () => {
 
       {/* MEET SINDHANAI SIDDHAR SECTION */}
       <section className="container mb-40"></section>
+
+      {/* EMAIL SUBSCRIBE SECTION */}
+      <EmailSubscribeSection />
     </>
   );
 };

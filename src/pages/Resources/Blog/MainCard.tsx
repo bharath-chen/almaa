@@ -1,31 +1,30 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import NcImage from "../../../shared/NcImage/NcImage";
-import { Link } from "react-router-dom";
 import SocialsShare from "../../../shared/SocialsShare/SocialsShare";
-import { imgHigtQualitys, _getTitleRd } from "../../../contains/fakeData";
+import { _getTitleRd } from "../../../contains/fakeData";
 import articles1Img from "../../../assets/HOME PAGE/13-articles-1.jpg";
 import PostCardMeta from "../../../components/PostCardMeta/PostCardMeta";
 
 export interface Card12Props {
+  src?: string;
   className?: string;
+  onClick?: () => void;
 }
 
-const MainCard: FC<Card12Props> = ({ className = "h-full" }) => {
+const MainCard: FC<Card12Props> = ({ className = "h-full", onClick, src }) => {
   return (
     <div
-      className={`nc-Card12 group relative flex flex-col ${className}`}
+      className={`nc-Card12 group relative flex flex-col cursor-pointer ${className}`}
       data-nc-id="Card12"
+      onClick={onClick}
     >
-      <Link
-        to={"/blog-single"}
-        className="block flex-shrink-0 flex-grow relative w-full h-0 aspect-w-4 aspect-h-3 rounded-3xl overflow-hidden"
-      >
+      <div className="block flex-shrink-0 flex-grow relative w-full h-0 aspect-w-4 aspect-h-3 rounded-3xl overflow-hidden">
         <NcImage
-          src={articles1Img}
+          src={src || articles1Img}
           containerClassName="absolute inset-0"
           alt={"title"}
         />
-      </Link>
+      </div>
 
       <SocialsShare className="absolute hidden md:grid gap-[5px] right-4 top-4 opacity-0 z-[-1] group-hover:z-10 group-hover:opacity-100 transition-all duration-300" />
 
@@ -33,13 +32,9 @@ const MainCard: FC<Card12Props> = ({ className = "h-full" }) => {
         <h2
           className={`nc-card-title block font-semibold text-neutral-900 dark:text-neutral-100 transition-colors text-lg sm:text-2xl`}
         >
-          <Link
-            to={"/blog-single"}
-            className="line-clamp-2 capitalize"
-            title={"title"}
-          >
+          <div className="line-clamp-2 capitalize" title={"title"}>
             {_getTitleRd()}
-          </Link>
+          </div>
         </h2>
         <span className="hidden sm:block mt-4 text-neutral-500 dark:text-neutral-400">
           <span className="line-clamp-2">

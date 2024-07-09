@@ -6,6 +6,7 @@ import SectionGridMoreExplore from "../../../components/SectionGridMoreExplore/S
 import Nav from "../../../shared/Nav/Nav";
 import ConceptDetailPopup from "./ConceptDetailPopup";
 import { EXPLORE_SECTION_DATA } from "../../../data/home";
+import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 
 const OurConcepts = () => {
   const [tabActive, setTabActive] = useState("Man");
@@ -142,6 +143,9 @@ const OurConcepts = () => {
       {showPopup && (
         <ConceptDetailPopup concept={conceptData} onClose={handleClose} />
       )}
+
+      {/* EMAIL SUBSCRIBE SECTION */}
+      <EmailSubscribeSection />
     </div>
   );
 };

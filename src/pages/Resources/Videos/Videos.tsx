@@ -2,6 +2,7 @@ import Video from "./Video";
 import video1Img from "../../../assets/HOME PAGE/9-video-1.jpg";
 import video2Img from "../../../assets/HOME PAGE/9-video-2.jpg";
 import video3Img from "../../../assets/HOME PAGE/9-video-3.jpg";
+import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 
 const VIDEOS = [
   {
@@ -42,6 +43,11 @@ const Videos = () => {
           return <Video key={video.id} video={video} />;
         })}
       </div>
+
+      {/* EMAIL SUBSCRIBE SECTION */}
+      <section className="mt-40">
+        <EmailSubscribeSection />
+      </section>
     </div>
   );
 };

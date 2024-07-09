@@ -7,6 +7,7 @@ import Textarea from "../../shared/Textarea/Textarea";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import BackgroundSection from "../../components/BackgroundSection/BackgroundSection";
 import SectionPromo1 from "../../components/SectionPromo1";
+import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
 
 export interface PageContactProps {
   className?: string;
@@ -101,6 +102,11 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
           <SectionPromo1 />
         </div>
       </div>
+
+      {/* EMAIL SUBSCRIBE SECTION */}
+      <section className="mt-40">
+        <EmailSubscribeSection />
+      </section>
     </div>
   );
 };

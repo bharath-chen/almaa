@@ -40,6 +40,7 @@ import videoIcon from "../../assets/PRODUCT DETAIL/5-video-icon.png";
 import AppSlider from "../../components/AppSlider/AppSlider";
 import Heading from "../../components/Heading/Heading";
 import AppBuyingOptionCard from "../../components/AppBuyingOptionCard/AppBuyingOptionCard";
+import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
 
 export interface ProductDetailPage2Props {
   className?: string;
@@ -982,7 +983,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       </section>
 
       {/* POLICY SECTION */}
-      <section className="container mb-20">
+      <section className="container mb-40">
         <Policy />
       </section>
 
@@ -991,6 +992,9 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
         show={isOpenModalViewAllReviews}
         onCloseModalViewAllReviews={() => setIsOpenModalViewAllReviews(false)}
       />
+
+      {/* EMAIL SUBSCRIBE SECTION */}
+      <EmailSubscribeSection />
     </div>
   );
 };

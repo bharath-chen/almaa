@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import NcImage from "../../../shared/NcImage/NcImage";
 import { Link } from "react-router-dom";
 import { _getImgRd, _getTitleRd } from "../../../contains/fakeData";
@@ -7,20 +7,21 @@ import PostCardMeta from "../../../components/PostCardMeta/PostCardMeta";
 export interface Card13Props {
   className?: string;
   src?: string;
+  onClick?: () => void;
 }
 
-const BlogCard: FC<Card13Props> = ({ className = "", src }) => {
+const BlogCard: FC<Card13Props> = ({ className = "", src, onClick }) => {
   return (
-    <div className={`nc-Card13 relative flex ${className}`} data-nc-id="Card13">
+    <div
+      className={`nc-Card13 relative flex ${className}`}
+      data-nc-id="Card13"
+      onClick={onClick}
+    >
       <div className="flex flex-col h-full py-2 px-4 order-last">
         <h2 className={`nc-card-title block font-semibold text-base`}>
-          <Link
-            to={"/blog-single"}
-            className="line-clamp-2 capitalize"
-            title={"title"}
-          >
+          <div className="line-clamp-2 capitalize" title={"title"}>
             {_getTitleRd()}
-          </Link>
+          </div>
         </h2>
         <span className="hidden sm:block my-3 text-slate-500 dark:text-slate-400 ">
           <span className="line-clamp-2">
@@ -36,8 +37,7 @@ const BlogCard: FC<Card13Props> = ({ className = "", src }) => {
         </div>
       </div>
 
-      <Link
-        to={"/blog-single"}
+      <div
         className={`block relative h-full flex-shrink-0 w-2/5 sm:w-1/3 ml-3 sm:ml-5`}
       >
         <NcImage
@@ -45,7 +45,7 @@ const BlogCard: FC<Card13Props> = ({ className = "", src }) => {
           containerClassName="absolute inset-0 "
           className="object-cover w-full h-full rounded-xl sm:rounded-3xl"
         />
-      </Link>
+      </div>
     </div>
   );
 };

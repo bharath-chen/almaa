@@ -5,6 +5,7 @@ import NavItem2 from "../../../components/NavItem2";
 import SectionGridMoreExplore from "../../../components/SectionGridMoreExplore/SectionGridMoreExplore";
 import Nav from "../../../shared/Nav/Nav";
 import BranchDetailPopup from "./BranchDetailPopup";
+import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 
 const OurBranches = () => {
   const [tabActive, setTabActive] = useState("Man");
@@ -135,6 +136,9 @@ const OurBranches = () => {
       {showPopup && (
         <BranchDetailPopup branch={branch} onClose={handleClosePopup} />
       )}
+
+      {/* EMAIL SUBSCRIBE SECTION */}
+      <EmailSubscribeSection />
     </div>
   );
 };

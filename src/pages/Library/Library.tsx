@@ -11,6 +11,7 @@ import Button from "../../shared/Button/Button";
 import NcImage from "../../shared/NcImage/NcImage";
 import mdSectionImg from "../../assets/HOME PAGE/5-md-section.png";
 import SectionSliderCategories from "../../components/SectionSliderCategories/SectionSliderCategories";
+import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
 
 export interface PageAboutProps {
   className?: string;
@@ -188,6 +189,11 @@ const Library: FC<PageAboutProps> = ({ className = "" }) => {
         {/* <ButtonSecondary className="focus:ring-2 focus:ring-offset-2 focus:ring-transparent tracking-tight ml-3 mt-6 md:text-2xl sm:px-14 border sm:py-5 sm:text-dark sm:bg-white-900 sm:hover:bg-white sm:hover:text-primary-900 border border-slate-300 dark:border-slate-700">
           Visit all Doctors
         </ButtonSecondary> */}
+      </section>
+
+      {/* EMAIL SUBSCRIBE SECTION */}
+      <section className="mt-40">
+        <EmailSubscribeSection />
       </section>
     </div>
   );

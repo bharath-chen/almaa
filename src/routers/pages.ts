@@ -38,6 +38,7 @@ import DoctorDetail from "../pages/About/DoctorsTeam/DoctorDetail";
 import NewsAndEvents from "../pages/Resources/NewsAndEvents/NewsAndEvents";
 import Media from "../pages/Resources/Media/Media";
 import Videos from "../pages/Resources/Videos/Videos";
+import CaseStudyDetail from "../pages/Resources/CaseStudies/CaseStudyDetail";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -77,7 +78,7 @@ export const pages: Page[] = [
   { path: "/production-unit", component: ProductionUnit },
   { path: "/library", component: Library },
   { path: "/case-studies", component: CaseStudies },
-  { path: "/case-study", component: BlogSingle },
+  { path: "/case-study", component: CaseStudyDetail },
   { path: "/news-&-events", component: NewsAndEvents },
   { path: "/news-detail", component: BlogSingle },
   { path: "/media-&-gallery", component: Media },

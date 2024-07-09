@@ -5,6 +5,7 @@ import SectionMagazine5 from "./SectionMagazine5";
 import SectionLatestPosts from "./SectionLatestPosts";
 import BgGlassmorphism from "../../../components/BgGlassmorphism/BgGlassmorphism";
 import SectionPromo3 from "../../../components/SectionPromo3";
+import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 
 // DEMO DATA
 
@@ -32,6 +33,9 @@ const Blog: React.FC = () => {
 
         {/* === SECTION 1 === */}
         <SectionPromo3 className="pb-16 lg:pb-28" />
+
+        {/* EMAIL SUBSCRIBE SECTION */}
+        <EmailSubscribeSection />
       </div>
     </div>
   );

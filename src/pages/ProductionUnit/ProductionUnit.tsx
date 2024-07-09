@@ -5,6 +5,7 @@ import rightImg from "../../images/hero-right1.png";
 import SectionPromo2 from "../../components/SectionPromo2";
 import SectionSliderCategories from "../../components/SectionSliderCategories/SectionSliderCategories";
 import { MEDICAL_CONSULTANTS } from "../../data/home";
+import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
 
 interface ProductionUnitProps {
   className?: string;
@@ -46,6 +47,9 @@ const ProductionUnit = ({ className = "" }: ProductionUnitProps) => {
         <section className="container mb-40">
           <SectionPromo2 />
         </section>
+
+        {/* EMAIL SUBSCRIBE SECTION */}
+        <EmailSubscribeSection />
       </div>
     </div>
   );

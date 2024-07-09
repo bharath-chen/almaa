@@ -14,6 +14,7 @@ import Heading from "../../../components/Heading/Heading";
 import NcImage from "../../../shared/NcImage/NcImage";
 import AccordionInfo from "../../../containers/ProductDetailPage/AccordionInfo";
 import whyAlmaaImg from "../../../assets/HOME PAGE/10-why-section.jpg";
+import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 
 interface AlmaaGroupProps {
   className?: string;
@@ -95,6 +96,9 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
           </div>
         </div>
       </section>
+
+      {/* EMAIL SUBSCRIBE SECTION */}
+      <EmailSubscribeSection />
     </div>
   );
 };

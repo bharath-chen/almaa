@@ -5,6 +5,7 @@ import NcImage from "../../../shared/NcImage/NcImage";
 import video1Img from "../../../assets/HOME PAGE/9-video-1.jpg";
 import video2Img from "../../../assets/HOME PAGE/9-video-2.jpg";
 import video3Img from "../../../assets/HOME PAGE/9-video-3.jpg";
+import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 
 const NEWS_AND_EVENTS = [
   {
@@ -65,7 +66,7 @@ const NewsAndEvents = () => {
   };
 
   return (
-    <section className="container my-40">
+    <section className="container my-20">
       <AppSlider
         data={NEWS_AND_EVENTS}
         className="glidejs_rb_ flow-root glide--swipeable glide--ltr glide--slider"
@@ -103,6 +104,11 @@ const NewsAndEvents = () => {
           News & Events
         </Heading>
       </AppSlider>
+
+      {/* EMAIL SUBSCRIBE SECTION */}
+      <section className="mt-40">
+        <EmailSubscribeSection />
+      </section>
     </section>
   );
 };

@@ -3,6 +3,7 @@ import Heading from "../../../shared/Heading/Heading";
 import MainCard from "../Blog/MainCard";
 import { useNavigate } from "react-router-dom";
 import articles1Img from "../../../assets/HOME PAGE/13-articles-1.jpg";
+import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 
 const CaseStudies: React.FC = () => {
   const navigate = useNavigate();
@@ -31,23 +32,27 @@ const CaseStudies: React.FC = () => {
   ];
 
   return (
-    <div className="container my-20">
-      <Heading desc="">Case Studies</Heading>
-      {/* === SECTION 1 === */}
-      <div className="pt-12 pb-16 lg:pb-28">
-        <div className="nc-SectionMagazine5">
-          <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
-            {items.map((item, index) => (
-              <MainCard
-                key={index}
-                src={item}
-                onClick={() => routeToCaseStudy(item)}
-              />
-            ))}
+    <>
+      <div className="container my-20">
+        <Heading desc="">Case Studies</Heading>
+        {/* === SECTION 1 === */}
+        <div className="pt-12 pb-16 lg:pb-28">
+          <div className="nc-SectionMagazine5">
+            <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
+              {items.map((item, index) => (
+                <MainCard
+                  key={index}
+                  src={item}
+                  onClick={() => routeToCaseStudy(item)}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      {/* EMAIL SUBSCRIBE SECTION */}
+      <EmailSubscribeSection />
+    </>
   );
 };
 
