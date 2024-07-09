@@ -53,8 +53,8 @@ const widgetMenus: WidgetFooterMenu[] = [
       },
       {
         content: () => (
-          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1">
-            {/* <div className="relative lg:col-span-2">
+          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3">
+            <div className="relative lg:col-span-2">
               <input
                 type="text"
                 id="floating_helper"
@@ -68,7 +68,7 @@ const widgetMenus: WidgetFooterMenu[] = [
               >
                 Enter your email
               </label>
-            </div> */}
+            </div>
             <button
               type="button"
               className="mt-2 lg:mt-0 focus:outline-none h-full text-white bg-greenyellow-900 hover:bg-greenyellow-900 focus:ring-0 focus:ring-greenyellow-900 font-medium text-sm xl:text-md px-5 py-2.5 mb-2 dark:bg-greenyellow-900 dark:hover:bg-green-700 dark:focus:ring-green-800"
