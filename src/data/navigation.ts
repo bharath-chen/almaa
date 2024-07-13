@@ -215,14 +215,14 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
     id: ncNanoId(),
     href: "/",
     name: "About",
-    type: "subMenu",
+    type: "dropdown",
     children: ABOUT_TEAM_CHILD,
   },
   {
     id: ncNanoId(),
     href: "/products",
     name: "Products",
-    type: "subMenu",
+    type: "dropdown",
     children: PRODUCTS_TEAM_CHILD,
   },
   {
@@ -240,7 +240,7 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
     id: ncNanoId(),
     href: "/products",
     name: "Resources",
-    type: "subMenu",
+    type: "dropdown",
     children: RESOURCES_TEAM_CHILD,
   },
   {
