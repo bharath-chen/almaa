@@ -8,6 +8,7 @@ import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import BackgroundSection from "../../components/BackgroundSection/BackgroundSection";
 import SectionPromo1 from "../../components/SectionPromo1";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
+import GMap from "../../components/GMap/GMap";
 
 export interface PageContactProps {
   className?: string;
@@ -16,7 +17,7 @@ export interface PageContactProps {
 const info = [
   {
     title: "🗺 ADDRESS",
-    desc: "Photo booth tattooed prism, portland taiyaki hoodie neutra typewriter",
+    desc: "Krishnagiri Almaa Siddha Care Clinic Door No:-2/24 Mel Pudur Main Road, Next to PNS Institute, Krishnagiri-635001",
   },
   {
     title: "💌 EMAIL",
@@ -24,7 +25,7 @@ const info = [
   },
   {
     title: "☎ PHONE",
-    desc: "000-123-456-7890",
+    desc: "+91 - 7401403002",
   },
 ];
 
@@ -96,11 +97,12 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
       </div>
 
       {/* OTHER SECTIONS */}
-      <div className="container">
-        <div className="relative my-24 lg:my-32 py-24 lg:py-32">
+      <div className="container my-20">
+        <GMap height="400px" />
+        {/* <div className="relative my-24 lg:my-32 py-24 lg:py-32">
           <BackgroundSection />
           <SectionPromo1 />
-        </div>
+        </div> */}
       </div>
 
       {/* EMAIL SUBSCRIBE SECTION */}

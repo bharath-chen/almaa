@@ -13,7 +13,8 @@ const OurBranches = () => {
   const [branch, setBranch] = useState({
     picture: "branch-picture-url",
     name: "Branch Name",
-    address: "123 Main Street, City, Country",
+    address:
+      "Krishnagiri Almaa Siddha Care Clinic Door No:-2/24 Mel Pudur Main Road, Next to PNS Institute, Krishnagiri-635001.",
     contactInfo: "Phone: +123 456 7890",
     whatsapp: "whatsapp-number",
     phone: "branch-phone-number",
@@ -26,7 +27,7 @@ const OurBranches = () => {
       ...branch,
       picture: item.image,
       name: item.name,
-      contactInfo: "9354372582",
+      contactInfo: "+91 - 7401403002",
       whatsapp: "9354372582",
       phone: "9354372582",
       email: "branch-email@example.com",
