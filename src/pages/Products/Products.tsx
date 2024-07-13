@@ -4,6 +4,7 @@ import productsService from "../../services/products-service";
 import { FC, useEffect, useState } from "react";
 import { Product } from "../../data/data";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
+import CategoriesFilter from "./CategoriesFilter/CategoriesFilter";
 
 interface Props {
   className?: string;
@@ -24,6 +25,10 @@ const Products: FC<Props> = ({ className = "" }) => {
     );
   };
 
+  const handleRemoveFilter = () => {
+    console.log("remove filter");
+  };
+
   return (
     <div
       className={`nc-PageCollection2 ${className}`}
@@ -39,9 +44,14 @@ const Products: FC<Props> = ({ className = "" }) => {
               </div>
               <div className="flex-shrink-0 mb-10 lg:mb-0 lg:mx-4 border-t lg:border-t-0"></div>
               <div className="flex-1 ">
-                <div className="bg-gradient-to-r inline-block from-primary-500 via-primary-600 to-primary-700 py-4 px-6 rounded-md mb-10 text-white shadow-lg">
+                <CategoriesFilter
+                  name="Powders"
+                  count={12}
+                  removeFilter={handleRemoveFilter}
+                />
+                {/* <div className="bg-gradient-to-r inline-block from-primary-500 via-primary-600 to-primary-700 py-4 px-6 rounded-md mb-10 text-white shadow-lg">
                   <h2 className="text-2xl font-bold">Category: Powders (12)</h2>
-                </div>
+                </div> */}
                 <div className="flex-1 grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 ">
                   {products.map((item, index) => (
                     <ProductCard
