@@ -1,8 +1,6 @@
-import ButtonPrimary from "../../../shared/Button/ButtonPrimary";
 import AccordionInfo from "../../../containers/ProductDetailPage/AccordionInfo";
 import { useLocation } from "react-router-dom";
 import articles1Img from "../../../assets/HOME PAGE/13-articles-1.jpg";
-// import { useEffect } from "react";
 
 export interface Props {
   className?: string;
