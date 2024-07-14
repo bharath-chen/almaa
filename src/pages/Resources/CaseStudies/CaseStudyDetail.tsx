@@ -1,6 +1,7 @@
 import ButtonPrimary from "../../../shared/Button/ButtonPrimary";
 import AccordionInfo from "../../../containers/ProductDetailPage/AccordionInfo";
 import { useLocation } from "react-router-dom";
+import articles1Img from "../../../assets/HOME PAGE/13-articles-1.jpg";
 // import { useEffect } from "react";
 
 export interface Props {
@@ -44,14 +45,14 @@ const CaseStudyDetail = ({ className = "" }: Props) => {
         <div className="w-full max-w bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
           <div className="flex flex-col pl-5 pb-5 mt-5">
             <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white pb-2">
-              Name: {state.doctor.name}
+              {state.caseStudy.title}
             </h5>
             <span className="text-md text-gray-500 dark:text-gray-400 pb-2">
-              Degree: {state.doctor.degree}
+              {state.caseStudy.description}
             </span>
-            <span className="text-md text-gray-500 dark:text-gray-400">
-              Designation: {state.doctor.designation}
-            </span>
+            {/* <span className="text-md text-gray-500 dark:text-gray-400">
+              Designation: {state.caseStudy.designation}
+            </span> */}
           </div>
         </div>
         {/*  ---------- 4  QTY AND ADD TO CART BUTTON */}
@@ -97,9 +98,9 @@ const CaseStudyDetail = ({ className = "" }: Props) => {
             <div className="relative">
               <div className="aspect-w-16 aspect-h-16">
                 <img
-                  src={state.doctor.src}
+                  src={articles1Img}
                   className="w-full rounded-2xl object-cover"
-                  alt={"Test"}
+                  alt={state.caseStudy.title}
                 />
               </div>
             </div>
