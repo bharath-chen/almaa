@@ -1,20 +1,13 @@
 import { useState } from "react";
+import { IVideo } from "../../../services/video-service";
 import VideoPopup from "./VideoPopup";
 
-interface Video {
-  id: number;
-  title: string;
-  description: string;
-  src: string;
-  thumbnail: string;
-}
-
 interface VideoProps {
-  video: Video;
+  video: IVideo;
 }
 
 const Video = ({ video }: VideoProps) => {
-  const [currentVideoSelected, setCurrentVideo] = useState<Video | null>(null);
+  const [currentVideoSelected, setCurrentVideo] = useState<IVideo | null>(null);
   const [showPopup, setShowPopup] = useState(false);
 
   const handleOpenPopup = () => {
@@ -30,7 +23,7 @@ const Video = ({ video }: VideoProps) => {
     <>
       {showPopup && (
         <VideoPopup
-          url={currentVideoSelected.src}
+          url={currentVideoSelected.video_url}
           isOpen={showPopup}
           closeModal={handleClosePopup}
           backdropClick={handleClosePopup}
@@ -40,7 +33,7 @@ const Video = ({ video }: VideoProps) => {
         {/* Image overlay */}
         <div className="relative">
           <img
-            src={video.thumbnail}
+            src={video.thumbnail_url}
             alt={video.title}
             className="w-full h-auto"
           />

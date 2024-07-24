@@ -1,46 +1,39 @@
 import Video from "./Video";
-import video1Img from "../../../assets/HOME PAGE/9-video-1.jpg";
-import video2Img from "../../../assets/HOME PAGE/9-video-2.jpg";
-import video3Img from "../../../assets/HOME PAGE/9-video-3.jpg";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
-
-const VIDEOS = [
-  {
-    id: 1,
-    title: "Video 1",
-    description: "Description for Video 1",
-    src: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    thumbnail: video1Img,
-  },
-  {
-    id: 2,
-    title: "Video 2",
-    description: "Description for Video 2",
-    src: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    thumbnail: video2Img,
-  },
-  {
-    id: 3,
-    title: "Video 3",
-    description: "Description for Video 3",
-    src: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    thumbnail: video3Img,
-  },
-  {
-    id: 4,
-    title: "Video 4",
-    description: "Description for Video 4",
-    src: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    thumbnail: video1Img,
-  },
-];
+import videoService, { IVideo } from "../../../services/video-service";
+import { useEffect, useState } from "react";
+import { CanceledError } from "axios";
 
 const Videos = () => {
+  const [videos, setVideos] = useState<IVideo[]>([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const { request, cancel } = videoService.getAll<IVideo>();
+
+    setLoading(true);
+
+    request
+      .then((res) => {
+        setLoading(false);
+        setVideos(res.data);
+      })
+      .catch((err) => {
+        setLoading(false);
+        if (err instanceof CanceledError) return;
+
+        setError(err.message);
+      });
+
+    return () => cancel();
+  }, []);
+
   return (
     <div className="container my-20">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {VIDEOS.map((video) => {
-          return <Video key={video.id} video={video} />;
+        {videos.map((video) => {
+          return <Video key={video.video_id} video={video} />;
         })}
       </div>
 
