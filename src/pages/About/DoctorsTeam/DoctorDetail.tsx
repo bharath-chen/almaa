@@ -3,6 +3,7 @@ import ButtonPrimary from "../../../shared/Button/ButtonPrimary";
 import AccordionInfo from "../../../containers/ProductDetailPage/AccordionInfo";
 import { useLocation } from "react-router-dom";
 import { People } from "../../Library/SectionFounder";
+import { IDoctor } from "../../../services/doctors-service";
 
 export interface ProductDetailPageProps {
   className?: string;
@@ -11,7 +12,7 @@ export interface ProductDetailPageProps {
 const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
   const { state } = useLocation();
 
-  const [doctorDetails, setDoctorDetails] = useState<People | null>(
+  const [doctorDetail, setDoctorDetail] = useState<IDoctor | null>(
     state.doctor
   );
 
@@ -57,13 +58,13 @@ const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
         <div className="w-full max-w bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
           <div className="flex flex-col pl-5 pb-5 mt-5">
             <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white pb-2">
-              Name: {doctorDetails.name}
+              Name: {doctorDetail.name}
             </h5>
             <span className="text-md text-gray-500 dark:text-gray-400 pb-2">
-              Degree: M.B.B.S
+              Degree: {doctorDetail.qualification}
             </span>
             <span className="text-md text-gray-500 dark:text-gray-400">
-              Designation: General Physician
+              Designation: {doctorDetail.specialization}
             </span>
           </div>
         </div>
@@ -225,9 +226,9 @@ const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
             <div className="relative">
               <div className="aspect-w-16 aspect-h-16">
                 <img
-                  src={doctorDetails.avatar}
+                  src={doctorDetail.profile_picture}
                   className="md:w-full rounded-2xl object-cover"
-                  alt={doctorDetails.name}
+                  alt={doctorDetail.name}
                 />
               </div>
             </div>
