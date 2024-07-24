@@ -30,6 +30,8 @@ const NewsAndEvents = () => {
         if (err instanceof CanceledError) return;
         setError(err.message);
       });
+
+    return () => cancel();
   }, []);
 
   if (loading) return <Spinner size="large" color="primary" />;
