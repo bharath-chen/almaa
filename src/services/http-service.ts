@@ -1,3 +1,4 @@
+import { Params } from "react-router-dom";
 import apiClient from "./api-client";
 
 interface Entity {
@@ -11,10 +12,21 @@ class HttpService {
     this.endpoint = endpoint;
   }
 
-  getAll<T>() {
+  getAll<T, K = undefined>(config?: K) {
     const controller = new AbortController();
     const request = apiClient.get<T[]>(this.endpoint, {
       signal: controller.signal,
+      params: config || null,
+    });
+
+    return { request, cancel: () => controller.abort() };
+  }
+
+  get<T, K = undefined>(config?: K) {
+    const controller = new AbortController();
+    const request = apiClient.get<T>(this.endpoint, {
+      signal: controller.signal,
+      params: config || null,
     });
 
     return { request, cancel: () => controller.abort() };
