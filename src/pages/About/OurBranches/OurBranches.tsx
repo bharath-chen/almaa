@@ -1,37 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BackgroundSection from "../../../components/BackgroundSection/BackgroundSection";
 import Heading from "../../../components/Heading/Heading";
-import NavItem2 from "../../../components/NavItem2";
-import SectionGridMoreExplore from "../../../components/SectionGridMoreExplore/SectionGridMoreExplore";
-import Nav from "../../../shared/Nav/Nav";
+// import SectionGridMoreExplore from "../../../components/SectionGridMoreExplore/SectionGridMoreExplore";
 import BranchDetailPopup from "./BranchDetailPopup";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
+import BranchCard from "./BranchCard";
+import branchesService, { IBranch } from "../../../services/branches-service";
+import { CanceledError } from "axios";
 
 const OurBranches = () => {
+  const [loading, setLoading] = useState(false);
+  const [branches, setBranches] = useState<IBranch[]>([]);
+  const [error, setError] = useState("");
   const [tabActive, setTabActive] = useState("Man");
   const [showPopup, setShowPopup] = useState(false);
-  const [branch, setBranch] = useState({
-    picture: "branch-picture-url",
-    name: "Branch Name",
-    address:
-      "Krishnagiri Almaa Siddha Care Clinic Door No:-2/24 Mel Pudur Main Road, Next to PNS Institute, Krishnagiri-635001.",
-    contactInfo: "Phone: +123 456 7890",
-    whatsapp: "whatsapp-number",
-    phone: "branch-phone-number",
-    email: "branch-email@example.com",
-  });
+  const [branch, setBranch] = useState<IBranch | null>(null);
+  // {
+  // picture: "branch-picture-url",
+  // name: "Branch Name",
+  // address:
+  //   "Krishnagiri Almaa Siddha Care Clinic Door No:-2/24 Mel Pudur Main Road, Next to PNS Institute, Krishnagiri-635001.",
+  // contactInfo: "Phone: +123 456 7890",
+  // whatsapp: "whatsapp-number",
+  // phone: "branch-phone-number",
+  // email: "branch-email@example.com",
+  // }
 
-  const handleCardClick = (item) => {
+  const handleCardClick = (item: IBranch) => {
     console.log(item);
-    setBranch({
-      ...branch,
-      picture: item.image,
-      name: item.name,
-      contactInfo: "+91 - 7401403002",
-      whatsapp: "9354372582",
-      phone: "9354372582",
-      email: "branch-email@example.com",
-    });
+    setBranch(item);
     setShowPopup(true);
   };
 
@@ -39,6 +36,26 @@ const OurBranches = () => {
     console.log("handleClosePopup");
     setShowPopup(false);
   };
+
+  useEffect(() => {
+    const { request, cancel } = branchesService.getAll<IBranch>();
+
+    setLoading(false);
+
+    request
+      .then((res) => {
+        setLoading(false);
+        setBranches(res.data);
+      })
+      .catch((err) => {
+        setLoading(false);
+        if (err instanceof CanceledError) return;
+
+        setError(err.message);
+      });
+
+    () => cancel();
+  }, []);
 
   return (
     <div className="container mt-10 mb-10">
@@ -130,7 +147,23 @@ const OurBranches = () => {
             </NavItem2>
           ))}
         </Nav> */}
-        <SectionGridMoreExplore onCardClick={handleCardClick} />
+        <div
+          className={`nc-SectionGridMoreExplore relative`}
+          data-nc-id="SectionGridMoreExplore"
+        >
+          <div
+            className={`grid gap-4 md:gap-7 grid-cols-1 md:grid-cols-2 xl:grid-cols-3`}
+          >
+            {branches.map((branch) => (
+              <BranchCard
+                key={branch.branch_id}
+                branch={branch}
+                onCardClick={() => handleCardClick(branch)}
+              />
+            ))}
+          </div>
+        </div>
+        {/* <SectionGridMoreExplore onCardClick={handleCardClick} /> */}
       </div>
 
       {/* Modal */}

@@ -2,19 +2,20 @@ import { useState } from "react";
 import ButtonPrimary from "../../../shared/Button/ButtonPrimary";
 import "../OurBranches/OurBranches.css";
 import GMap from "../../../components/GMap/GMap";
+import { IBranch } from "../../../services/branches-service";
 
-interface Branch {
-  picture: string;
-  name: string;
-  address: string;
-  contactInfo: string;
-  whatsapp: string;
-  phone: string;
-  email: string;
-}
+// interface Branch {
+//   picture: string;
+//   name: string;
+//   address: string;
+//   contactInfo: string;
+//   whatsapp: string;
+//   phone: string;
+//   email: string;
+// }
 
 interface BranchDetailPopupProps {
-  branch: Branch;
+  branch: IBranch;
   onClose: () => void;
 }
 
@@ -61,13 +62,17 @@ const BranchDetailPopup = ({ branch, onClose }: BranchDetailPopupProps) => {
         <div className="p-8 max-h-[700px] overflow-y-auto">
           {/* Add overflow-y-auto to make the content scrollable */}
           <img
-            src={branch.picture}
+            src=""
             alt="Branch"
             className="w-32 h-32 rounded-full mb-2 mx-auto"
           />
-          <h2 className="text-xl font-bold text-center mb-2">{branch.name}</h2>
-          <p className="text-center text-gray-600 mb-4">{branch.address}</p>
-          <p className="text-center text-gray-600 mb-4">{branch.contactInfo}</p>
+          <h2 className="text-xl font-bold text-center mb-2">
+            {branch.branch_name}
+          </h2>
+          <p className="text-center text-gray-600 mb-4">{branch.location}</p>
+          <p className="text-center text-gray-600 mb-4">
+            {branch.contact_number}
+          </p>
           <GMap />
           <div className="flex flex-col justify-between mt-5">
             <div className="flex sm:flex-col md:flex-row justify-center">
