@@ -39,6 +39,8 @@ const CaseStudies: React.FC = () => {
         if (err instanceof CanceledError) return;
         setError(err.message);
       });
+
+    return () => cancel();
   }, []);
 
   if (loading) return <Spinner size="large" color="primary" />;
