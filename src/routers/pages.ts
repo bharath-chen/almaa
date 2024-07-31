@@ -3,7 +3,7 @@ import { Page } from "./types";
 import AccountPage from "../containers/AccountPage/AccountPage";
 import PageAbout from "../containers/PageAbout/PageAbout";
 import PageSignUp from "../containers/PageSignUp/PageSignUp";
-import PageLogin from "../containers/PageLogin/PageLogin";
+import Login from "../pages/Login/Login";
 import PageSubcription from "../containers/PageSubcription/PageSubcription";
 import BlogSingle from "../containers/BlogPage/BlogSingle";
 import PageCollection from "../containers/PageCollection";
@@ -39,6 +39,7 @@ import NewsAndEvents from "../pages/Resources/NewsAndEvents/NewsAndEvents";
 import Media from "../pages/Resources/Media/Media";
 import Videos from "../pages/Resources/Videos/Videos";
 import CaseStudyDetail from "../pages/Resources/CaseStudies/CaseStudyDetail";
+import Faq from "../pages/Faq";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -86,7 +87,8 @@ export const pages: Page[] = [
   { path: "/support", component: Support },
   { path: "/about", component: PageAbout },
   { path: "/signup", component: PageSignUp },
-  { path: "/login", component: PageLogin },
+  { path: "/login", component: Login },
+  { path: "/faq", component: Faq },
   { path: "/subscription", component: PageSubcription },
   { path: "/page-not-found", component: Page404 },
 ];

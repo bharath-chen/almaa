@@ -2,6 +2,7 @@ import Logo from "../../shared/Logo/Logo";
 import SocialsList1 from "../../shared/SocialsList1/SocialsList1";
 import { CustomLink } from "../../data/types";
 import React, { ReactNode } from "react";
+import { Link } from "react-router-dom";
 
 export interface WidgetFooterMenu {
   id: string;
@@ -20,7 +21,7 @@ const widgetMenus: WidgetFooterMenu[] = [
       { href: "#", label: "Blog" },
       { href: "#", label: "Careers" },
       { href: "#", label: "Contact Us" },
-      { href: "#", label: "FAQs" },
+      { href: "/faq", label: "FAQs" },
       { href: "#", label: "Health Help" },
       { href: "#", label: "Herb Finder" },
       { href: "#", label: "Loyalty Program" },
@@ -148,15 +149,21 @@ const Footer: React.FC = () => {
           {menu.menus.map((item, index) => (
             <li key={index}>
               {item.label && (
-                <a
+                // <a
+                //   key={index}
+                //   className="text-sm xl:text-md text-neutral-550 dark:text-neutral-300 hover:text-neutral-550 dark:hover:text-white"
+                //   href={item.href}
+                //   target="_blank"
+                //   rel="noopener noreferrer"
+                // >
+                <Link
                   key={index}
                   className="text-sm xl:text-md text-neutral-550 dark:text-neutral-300 hover:text-neutral-550 dark:hover:text-white"
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  to={item.href}
                 >
                   {item.label}
-                </a>
+                </Link>
+                // </a>
               )}
 
               {item.content && <div>{item.content()}</div>}

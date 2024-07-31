@@ -40,6 +40,7 @@ export interface LocationStates {
   "/support"?: {};
   "/login"?: {};
   "/signup"?: {};
+  "/faq"?: {};
   "/forgot-pass"?: {};
   "/page404"?: {};
   "/subscription"?: {};
