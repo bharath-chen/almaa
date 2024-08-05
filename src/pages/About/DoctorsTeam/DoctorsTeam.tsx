@@ -1,6 +1,5 @@
 import { Helmet } from "react-helmet-async";
 import BgGlassmorphism from "../../../components/BgGlassmorphism/BgGlassmorphism";
-import SectionFounder, { People } from "../../Library/SectionFounder";
 import SectionHero from "../../Library/SectionHero";
 import rightImg from "../../../images/hero-right1.png";
 import { useNavigate } from "react-router-dom";
@@ -8,16 +7,17 @@ import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSu
 import { useEffect, useState } from "react";
 import doctorsService, { IDoctor } from "../../../services/doctors-service";
 import { CanceledError } from "axios";
-import Spinner from "../../../components/Spinner/Spinner";
 import Doctors from "./Doctors";
+import { useDispatch } from "react-redux";
+import { hideLoader, showLoader } from "../../../state/actions/loaderActions";
 
 interface DoctorsTeamProps {
   className?: string;
 }
 
 const DoctorsTeam = ({ className = "" }: DoctorsTeamProps) => {
+  const dispatch = useDispatch();
   const [doctors, setDoctors] = useState<IDoctor[]>([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -30,24 +30,22 @@ const DoctorsTeam = ({ className = "" }: DoctorsTeamProps) => {
   useEffect(() => {
     const { request, cancel } = doctorsService.getAll<IDoctor>();
 
-    setLoading(true);
+    dispatch(showLoader());
 
     request
       .then((res) => {
-        setLoading(false);
+        dispatch(hideLoader());
         setDoctors(res.data);
         console.log(res.data);
       })
       .catch((err) => {
-        setLoading(false);
         if (err instanceof CanceledError) return;
+        dispatch(hideLoader());
         setError(err.message);
       });
 
     return () => cancel();
   }, []);
-
-  if (loading) return <Spinner size="large" color="primary" />;
 
   return (
     <div

@@ -5,8 +5,12 @@ import Spinner from "../../components/Spinner/Spinner";
 import faqService from "../../services/faq-service";
 import AppAccordion from "../../components/AppAccordion/AppAccordion";
 import { IFaq } from "../../services/faq-service";
+import { useDispatch } from "react-redux";
+import { hideLoader, showLoader } from "../../state/actions/loaderActions";
 
 const Faq = () => {
+  const dispatch = useDispatch();
+
   const [faqs, setFaqs] = useState<IFaq[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -14,24 +18,22 @@ const Faq = () => {
   useEffect(() => {
     const { request, cancel } = faqService.getAll<IFaq>();
 
-    setLoading(true);
+    dispatch(showLoader());
 
     request
       .then((res) => {
         setFaqs(res.data);
-        setLoading(false);
+        dispatch(hideLoader());
       })
       .catch((err) => {
-        setLoading(false);
         if (err instanceof CanceledError) return;
 
+        dispatch(hideLoader());
         setError(err.message);
       });
 
     return () => cancel();
   }, []);
-
-  if (loading) return <Spinner size="large" color="primary" />;
 
   return (
     <div className="container mx-auto px-4 my-20">

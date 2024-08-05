@@ -8,12 +8,14 @@ import caseStudyService, {
 import { CanceledError } from "axios";
 import Spinner from "../../../components/Spinner/Spinner";
 import CaseStudyCard from "./CaseStudyCard";
+import { useDispatch } from "react-redux";
+import { hideLoader, showLoader } from "../../../state/actions/loaderActions";
 
 const CaseStudies: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [caseStudies, setCaseStudies] = useState<ICaseStudy[]>([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const routeToCaseStudy = (item?: ICaseStudy) => {
@@ -27,23 +29,21 @@ const CaseStudies: React.FC = () => {
   useEffect(() => {
     const { request, cancel } = caseStudyService.getAll<ICaseStudy>();
 
-    setLoading(true);
+    dispatch(showLoader());
 
     request
       .then((res) => {
-        setLoading(false);
+        dispatch(hideLoader());
         setCaseStudies(res.data);
       })
       .catch((err) => {
-        setLoading(false);
         if (err instanceof CanceledError) return;
+        dispatch(hideLoader());
         setError(err.message);
       });
 
     return () => cancel();
   }, []);
-
-  if (loading) return <Spinner size="large" color="primary" />;
 
   return (
     <>

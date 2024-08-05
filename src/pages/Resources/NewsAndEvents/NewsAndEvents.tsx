@@ -7,8 +7,11 @@ import newsEventsService, {
 import { CanceledError } from "axios";
 import NewsAndEventCard from "./NewsAndEventCard";
 import Spinner from "../../../components/Spinner/Spinner";
+import { useDispatch } from "react-redux";
+import { hideLoader, showLoader } from "../../../state/actions/loaderActions";
 
 const NewsAndEvents = () => {
+  const dispatch = useDispatch();
   const [newsAndEvents, setNewsAndEvents] = useState<INewsAndEvents[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,23 +21,21 @@ const NewsAndEvents = () => {
   useEffect(() => {
     const { request, cancel } = newsEventsService.getAll<INewsAndEvents>();
 
-    setLoading(true);
+    dispatch(showLoader());
 
     request
       .then((res) => {
-        setLoading(false);
+        dispatch(hideLoader());
         setNewsAndEvents(res.data);
       })
       .catch((err) => {
-        setLoading(false);
         if (err instanceof CanceledError) return;
+        dispatch(hideLoader());
         setError(err.message);
       });
 
     return () => cancel();
   }, []);
-
-  if (loading) return <Spinner size="large" color="primary" />;
 
   return (
     <section className="container my-20">

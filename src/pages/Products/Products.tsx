@@ -1,29 +1,42 @@
 import ProductCard from "../../components/ProductCard";
 import SidebarFilters from "../../containers/SidebarFilters";
-import productsService from "../../services/products-service";
 import { FC, useEffect, useState } from "react";
-import { Product } from "../../data/data";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import CategoriesFilter from "./CategoriesFilter/CategoriesFilter";
+import productService, { Product } from "../../services/product-service";
+import { CanceledError } from "axios";
+import Spinner from "../../components/Spinner/Spinner";
+import { useDispatch } from "react-redux";
+import { hideLoader, showLoader } from "../../state/actions/loaderActions";
 
 interface Props {
   className?: string;
 }
 
 const Products: FC<Props> = ({ className = "" }) => {
+  const dispatch = useDispatch();
   const [products, setProducts] = useState<Product[]>([]);
+  const [error, setError] = useState("");
 
+  // Products
   useEffect(() => {
-    setProducts(productsService.getAllProducts());
-  }, []);
+    const { request, cancel } = productService.getAll<Product>();
 
-  const handleLike = (productId: number) => {
-    setProducts((products) =>
-      products.map((p) =>
-        p.id === productId ? { ...p, liked: (p.liked = !p.liked) } : p
-      )
-    );
-  };
+    dispatch(showLoader());
+
+    request
+      .then((res) => {
+        dispatch(hideLoader());
+        setProducts(res.data);
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+        dispatch(hideLoader());
+        setError(err.message);
+      });
+
+    return () => cancel();
+  }, []);
 
   const handleRemoveFilter = () => {
     console.log("remove filter");
@@ -56,10 +69,11 @@ const Products: FC<Props> = ({ className = "" }) => {
                   {products.map((item, index) => (
                     <ProductCard
                       data={item}
-                      onLike={() => handleLike(item.id)}
+                      // onLike={() => handleLike(item.id)}
                       key={index}
                     />
                   ))}
+                  {/* {prod} */}
                 </div>
               </div>
             </div>
