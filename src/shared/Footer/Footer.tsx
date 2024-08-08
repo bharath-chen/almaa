@@ -28,7 +28,7 @@ const widgetMenus: WidgetFooterMenu[] = [
       { href: "#", label: "Research Papers" },
       { href: "#", label: "Store Locator" },
       { href: "#", label: "Refund Policy" },
-      { href: "#", label: "Terms of Service" },
+      { href: "/terms-of-service", label: "Terms of Service" },
     ],
   },
   {
@@ -38,8 +38,8 @@ const widgetMenus: WidgetFooterMenu[] = [
     menus: [
       { href: "#", label: "Shipping" },
       { href: "#", label: "Returns & Cancellation" },
-      { href: "#", label: "Terms of Use" },
-      { href: "#", label: "Privacy Policy" },
+      { href: "/terms-of-use", label: "Terms of Use" },
+      { href: "/privacy-policy", label: "Privacy Policy" },
     ],
   },
   {
