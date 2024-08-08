@@ -44,6 +44,9 @@ export interface LocationStates {
   "/forgot-pass"?: {};
   "/page404"?: {};
   "/subscription"?: {};
+  "/terms-of-service"?: {};
+  "/terms-of-use"?: {};
+  "/privacy-policy"?: {};
   "/page-not-found"?: {};
 }
 

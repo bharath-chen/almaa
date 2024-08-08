@@ -40,6 +40,8 @@ import Media from "../pages/Resources/Media/Media";
 import Videos from "../pages/Resources/Videos/Videos";
 import CaseStudyDetail from "../pages/Resources/CaseStudies/CaseStudyDetail";
 import Faq from "../pages/Faq";
+import TermsAndConditions from "../pages/TermsAndConditions/TermsAndConditions";
+import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -90,5 +92,8 @@ export const pages: Page[] = [
   { path: "/login", component: Login },
   { path: "/faq", component: Faq },
   { path: "/subscription", component: PageSubcription },
+  { path: "/terms-of-service", component: TermsAndConditions },
+  { path: "/terms-of-use", component: TermsAndConditions },
+  { path: "/privacy-policy", component: PrivacyPolicy },
   { path: "/page-not-found", component: Page404 },
 ];
