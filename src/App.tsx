@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import MyRouter from "./routers/index";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { hideLoader, showLoader } from "./state/actions/loaderActions";
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import MyRouter from "./routers/index";
 import Spinner from "./components/Spinner/Spinner";
 
 function App() {
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setLoading(true);
+    dispatch(showLoader());
 
     setTimeout(() => {
-      setLoading(false);
+      dispatch(hideLoader());
     }, 1000);
   }, []);
-
-  if (loading) return <Spinner size="large" color="primary" />;
 
   return (
     <HelmetProvider>
@@ -22,8 +22,8 @@ function App() {
         <title>Almaa</title>
         <meta name="description" content="Almaa || Shop - eCommerce" />
       </Helmet>
-
       {/* MAIN APP */}
+      <Spinner size="large" color="primary" />
       <div className="bg-white text-base dark:bg-slate-900 text-slate-900 dark:text-slate-200">
         <MyRouter />
       </div>
