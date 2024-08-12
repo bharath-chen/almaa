@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import facebookSvg from "../../images/Facebook.svg";
 import twitterSvg from "../../images/Twitter.svg";
 import googleSvg from "../../images/Google.svg";
@@ -6,6 +6,7 @@ import { Helmet } from "react-helmet-async";
 import Input from "../../shared/Input/Input";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import { Link } from "react-router-dom";
+import signupService from "../../services/signup-service";
 
 export interface PageSignUpProps {
   className?: string;
@@ -30,6 +31,37 @@ const loginSocials = [
 ];
 
 const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
+  const [customer, setCustomer] = useState({
+    firstName: "",
+    lastName: "",
+    password: "",
+    email: "",
+    mobileNumber: "",
+  });
+
+  const handleSignUp = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const payload = {
+      gofor: "customersadd",
+      first_name: customer.firstName,
+      last_name: customer.lastName,
+      password: customer.password,
+      email: customer.email,
+      mobilenumber: customer.mobileNumber,
+      resgistration_type: "Website",
+    };
+
+    signupService
+      .create(payload)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className={`nc-PageSignUp  ${className}`} data-nc-id="PageSignUp">
       <Helmet>
@@ -40,7 +72,7 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
           Signup
         </h2>
         <div className="max-w-md mx-auto space-y-6 ">
-          <div className="grid gap-3">
+          {/* <div className="grid gap-3">
             {loginSocials.map((item, index) => (
               <a
                 key={index}
@@ -57,31 +89,90 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
                 </h3>
               </a>
             ))}
-          </div>
+          </div> */}
           {/* OR */}
-          <div className="relative text-center">
+          {/* <div className="relative text-center">
             <span className="relative z-10 inline-block px-4 font-medium text-sm bg-white dark:text-neutral-400 dark:bg-neutral-900">
               OR
             </span>
             <div className="absolute left-0 w-full top-1/2 transform -translate-y-1/2 border border-neutral-100 dark:border-neutral-800"></div>
-          </div>
+          </div> */}
           {/* FORM */}
-          <form className="grid grid-cols-1 gap-6" action="#" method="post">
+          <form
+            onSubmit={handleSignUp}
+            className="grid grid-cols-1 gap-6"
+            action="#"
+            method="post"
+          >
             <label className="block">
               <span className="text-neutral-800 dark:text-neutral-200">
-                Email address
+                First Name
               </span>
               <Input
-                type="email"
-                placeholder="example@example.com"
+                type="text"
+                placeholder="First Name"
                 className="mt-1"
+                value={customer.firstName}
+                onChange={(e) =>
+                  setCustomer({ ...customer, firstName: e.target.value })
+                }
+              />
+            </label>
+            <label className="block">
+              <span className="text-neutral-800 dark:text-neutral-200">
+                Last Name
+              </span>
+              <Input
+                type="text"
+                placeholder="Last Name"
+                className="mt-1"
+                value={customer.lastName}
+                onChange={(e) =>
+                  setCustomer({ ...customer, lastName: e.target.value })
+                }
               />
             </label>
             <label className="block">
               <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
                 Password
               </span>
-              <Input type="password" className="mt-1" />
+              <Input
+                type="password"
+                placeholder="Password"
+                className="mt-1"
+                value={customer.password}
+                onChange={(e) =>
+                  setCustomer({ ...customer, password: e.target.value })
+                }
+              />
+            </label>
+            <label className="block">
+              <span className="text-neutral-800 dark:text-neutral-200">
+                Email
+              </span>
+              <Input
+                type="email"
+                placeholder="Email"
+                className="mt-1"
+                value={customer.email}
+                onChange={(e) =>
+                  setCustomer({ ...customer, email: e.target.value })
+                }
+              />
+            </label>
+            <label className="block">
+              <span className="text-neutral-800 dark:text-neutral-200">
+                Mobile No
+              </span>
+              <Input
+                type="tel"
+                placeholder="Mobile Number"
+                className="mt-1"
+                value={customer.mobileNumber}
+                onChange={(e) =>
+                  setCustomer({ ...customer, mobileNumber: e.target.value })
+                }
+              />
             </label>
             <ButtonPrimary type="submit">Continue</ButtonPrimary>
           </form>
