@@ -5,12 +5,14 @@ export interface AlertProps {
   containerClassName?: string;
   type?: "default" | "warning" | "info" | "success" | "error";
   children?: React.ReactNode;
+  onClose: () => void;
 }
 
 export const Alert: React.FC<AlertProps> = ({
   children = "Alert Text",
   containerClassName = "",
   type = "default",
+  onClose,
 }) => {
   let classes = containerClassName;
   switch (type) {
@@ -39,7 +41,7 @@ export const Alert: React.FC<AlertProps> = ({
     >
       <i className="pe-7s-info text-2xl mr-2"></i>
       {children}
-      <ButtonClose className="absolute top-4 right-6" />
+      <ButtonClose onClick={onClose} className="absolute top-4 right-6" />
     </div>
   );
 };

@@ -1,13 +1,17 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import facebookSvg from "../../images/Facebook.svg";
 import twitterSvg from "../../images/Twitter.svg";
 import googleSvg from "../../images/Google.svg";
 import { Helmet } from "react-helmet-async";
 import Input from "../../shared/Input/Input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
+import loginService, {
+  ILoginCustomerPayload,
+} from "../../services/login-service";
+import { Alert } from "../../shared/Alert/Alert";
 
-export interface PageLoginProps {
+export interface Props {
   className?: string;
 }
 
@@ -29,7 +33,48 @@ const loginSocials = [
   },
 ];
 
-const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
+const Login: FC<Props> = ({ className = "" }) => {
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const mobilePattern = /^\d{10}$/;
+
+    let usernameKey = "";
+
+    if (emailPattern.test(customer.username)) {
+      usernameKey = "email";
+    } else if (mobilePattern.test(customer.username)) {
+      usernameKey = "mobile";
+    }
+
+    const { request, cancel } = loginService.get<
+      ILoginCustomerPayload,
+      { [key: string]: string; password: string }
+    >({ [usernameKey]: customer.username, password: customer.password });
+
+    request
+      .then((res) => {
+        if (+res.data.status) {
+          navigate("/");
+          localStorage.setItem("customerDetails", JSON.stringify(res.data));
+        } else {
+          setError(res.data.status);
+        }
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  };
+
+  const [customer, setCustomer] = useState({
+    username: "",
+    password: "",
+  });
+
   return (
     <div className={`nc-PageLogin ${className}`} data-nc-id="PageLogin">
       <Helmet>
@@ -40,7 +85,7 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
           Login
         </h2>
         <div className="max-w-md mx-auto space-y-6">
-          <div className="grid gap-3">
+          {/* <div className="grid gap-3">
             {loginSocials.map((item, index) => (
               <a
                 key={index}
@@ -57,24 +102,33 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
                 </h3>
               </a>
             ))}
-          </div>
+          </div> */}
           {/* OR */}
-          <div className="relative text-center">
+          {/* <div className="relative text-center">
             <span className="relative z-10 inline-block px-4 font-medium text-sm bg-white dark:text-neutral-400 dark:bg-neutral-900">
               OR
             </span>
             <div className="absolute left-0 w-full top-1/2 transform -translate-y-1/2 border border-neutral-100 dark:border-neutral-800"></div>
-          </div>
+          </div> */}
           {/* FORM */}
-          <form className="grid grid-cols-1 gap-6" action="#" method="post">
+          {error && (
+            <Alert onClose={() => setError("")} type="error">
+              {error}
+            </Alert>
+          )}
+          <form onSubmit={handleLogin} className="grid grid-cols-1 gap-6">
             <label className="block">
               <span className="text-neutral-800 dark:text-neutral-200">
-                Email address
+                Email / Mobile No
               </span>
               <Input
-                type="email"
-                placeholder="example@example.com"
+                type="text"
+                placeholder="Email or Mobile No"
                 className="mt-1"
+                value={customer.username}
+                onChange={(e) =>
+                  setCustomer({ ...customer, username: e.target.value })
+                }
               />
             </label>
             <label className="block">
@@ -84,7 +138,15 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
                   Forgot password?
                 </Link>
               </span>
-              <Input type="password" className="mt-1" />
+              <Input
+                type="password"
+                placeholder="Password"
+                value={customer.password}
+                onChange={(e) =>
+                  setCustomer({ ...customer, password: e.target.value })
+                }
+                className="mt-1"
+              />
             </label>
             <ButtonPrimary type="submit">Continue</ButtonPrimary>
           </form>
@@ -102,4 +164,4 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
   );
 };
 
-export default PageLogin;
+export default Login;
