@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { hideLoader, showLoader } from "./state/actions/loaderActions";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import MyRouter from "./routers/index";
 import Spinner from "./components/Spinner/Spinner";
+import { useAppDispatch } from "./hooks/hooks";
+import { hideLoader, showLoader } from "./features/loader/loaderSlice";
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(showLoader());
