@@ -6,12 +6,11 @@ import galleryListService, {
   IGallery,
 } from "../../../services/gallery-list-service";
 import { CanceledError } from "axios";
-import Spinner from "../../../components/Spinner/Spinner";
-import { useDispatch } from "react-redux";
-import { hideLoader, showLoader } from "../../../state/actions/loaderActions";
+import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
+import { useAppDispatch } from "../../../hooks/hooks";
 
 const Media = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [galleryList, setGalleryList] = useState<IGallery[]>([]);
   const [loading, setLoading] = useState(false);

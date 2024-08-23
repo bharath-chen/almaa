@@ -8,15 +8,15 @@ import { useEffect, useState } from "react";
 import doctorsService, { IDoctor } from "../../../services/doctors-service";
 import { CanceledError } from "axios";
 import Doctors from "./Doctors";
-import { useDispatch } from "react-redux";
-import { hideLoader, showLoader } from "../../../state/actions/loaderActions";
+import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
+import { useAppDispatch } from "../../../hooks/hooks";
 
 interface DoctorsTeamProps {
   className?: string;
 }
 
 const DoctorsTeam = ({ className = "" }: DoctorsTeamProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [doctors, setDoctors] = useState<IDoctor[]>([]);
   const [error, setError] = useState("");
 

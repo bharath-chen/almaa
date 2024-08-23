@@ -1,28 +1,30 @@
 import { useEffect, useState } from "react";
+import { Address } from "../models/address";
 import apiClient, { CanceledError } from "../services/api-client";
 import { hideLoader, showLoader } from "../features/loader/loaderSlice";
 import { useAppDispatch } from "./hooks";
 
-const useHtmlContent = (endpoint: string) => {
-  const dispatch = useAppDispatch();
-  const [htmlContent, setHtmlContent] = useState("");
+const useViewAddressess = () => {
+  const [addressList, setAddressList] = useState<Address[]>([]);
   const [error, setError] = useState("");
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const controller = new AbortController();
 
-    dispatch(showLoader());
+    const customerDetails = JSON.parse(localStorage.getItem("customerDetails"));
+    if (!customerDetails) return;
 
+    dispatch(showLoader());
     apiClient
-      .get(endpoint, {
-        headers: {
-          Accept: "text/html",
-        },
-        signal: controller.signal,
-      })
+      .get<Address[]>(
+        `?gofor=addresslist&customer_id=${customerDetails.customer_id}`,
+        { signal: controller.signal }
+      )
       .then((res) => {
         dispatch(hideLoader());
-        setHtmlContent(res.data);
+        setAddressList(res.data);
       })
       .catch((err) => {
         if (err instanceof CanceledError) return;
@@ -34,7 +36,7 @@ const useHtmlContent = (endpoint: string) => {
     return () => controller.abort();
   }, []);
 
-  return { htmlContent, error };
+  return { addressList, error, setAddressList };
 };
 
-export default useHtmlContent;
+export default useViewAddressess;

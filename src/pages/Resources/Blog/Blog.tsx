@@ -7,18 +7,14 @@ import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSu
 import { IBlog } from "../../../services/blog-list-service";
 import blogListService from "../../../services/blog-list-service";
 import { CanceledError } from "axios";
-import Spinner from "../../../components/Spinner/Spinner";
-import { featuredImgs } from "../../../contains/fakeData";
-import BlogCard from "./BlogCard";
-import MainCard from "./MainCard";
 import SectionMagazine5 from "../../../containers/BlogPage/SectionMagazine5";
-import { useDispatch } from "react-redux";
-import { hideLoader, showLoader } from "../../../state/actions/loaderActions";
+import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
+import { useAppDispatch } from "../../../hooks/hooks";
 
 // DEMO DATA
 
 const Blog: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [blogList, setBlogList] = useState<IBlog[]>([]);
   const [error, setError] = useState("");
 

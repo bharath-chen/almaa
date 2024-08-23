@@ -6,14 +6,13 @@ import caseStudyService, {
   ICaseStudy,
 } from "../../../services/case-study-service";
 import { CanceledError } from "axios";
-import Spinner from "../../../components/Spinner/Spinner";
 import CaseStudyCard from "./CaseStudyCard";
-import { useDispatch } from "react-redux";
-import { hideLoader, showLoader } from "../../../state/actions/loaderActions";
+import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
+import { useAppDispatch } from "../../../hooks/hooks";
 
 const CaseStudies: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [caseStudies, setCaseStudies] = useState<ICaseStudy[]>([]);
   const [error, setError] = useState("");

@@ -1,6 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { AppState } from "../../state/reducers";
+import { useAppSelector } from "../../hooks/hooks";
 
 interface SpinnerProps {
   size?: "small" | "medium" | "large"; // Optional prop for spinner size
@@ -11,7 +10,7 @@ const Spinner: React.FC<SpinnerProps> = ({
   size = "medium",
   color = "blue",
 }) => {
-  const loading = useSelector((state: AppState) => state.loader.loading);
+  const loading = useAppSelector((state) => state.loader.loading);
 
   const getSizeClasses = () => {
     switch (size) {

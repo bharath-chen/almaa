@@ -16,12 +16,8 @@ import SectionSliderCategories from "../../components/SectionSliderCategories/Se
 import SectionGridMoreExplore from "../../components/SectionGridMoreExplore/SectionGridMoreExplore";
 import Button from "../../shared/Button/Button";
 import mdSectionImg from "../../assets/HOME PAGE/5-md-section.png";
-import Nav from "../../shared/Nav/Nav";
-import NavItem from "../../shared/NavItem/NavItem";
-import productsService from "../../services/products-service";
 import ProductCard from "../../components/ProductCard";
 import AppSlider from "../../components/AppSlider/AppSlider";
-import { Product } from "../../data/data";
 import {
   ABOUTS,
   MEDIC_SLIDERS,
@@ -34,7 +30,14 @@ import {
 } from "../../data/home";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import AppCarousel from "../../components/AppCarousel/AppCarousel";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
+import productService from "../../services/product-service";
+import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
+import { CanceledError } from "axios";
+import topDealsService from "../../services/top-deals-service";
+import { useAppDispatch } from "../../hooks/hooks";
+import { Product } from "../../models/product";
 
 export const pageAnimation = {
   initial: { opacity: 0, y: 100 },
@@ -43,6 +46,8 @@ export const pageAnimation = {
 
 const Home = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [error, setError] = useState("");
 
   const renderCategoryCard = (item: {
     name: string;
@@ -117,9 +122,52 @@ const Home = () => {
 
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
 
+  const images = [
+    heroImg,
+    heroImg,
+    heroImg,
+    // "https://via.placeholder.com/600x400/ff7f7f/333333?text=Slide+1",
+    // "https://via.placeholder.com/600x400/ffbf7f/333333?text=Slide+2",
+    // "https://via.placeholder.com/600x400/ffff7f/333333?text=Slide+3",
+    // "https://via.placeholder.com/600x400/7fff7f/333333?text=Slide+4",
+    // "https://via.placeholder.com/600x400/7fbfff/333333?text=Slide+5",
+  ];
+
   useEffect(() => {
-    const products = productsService.getAllProducts().slice(0, 4);
-    setFeaturedProducts(products);
+    // const products = productsService.getAllProducts().slice(0, 4);
+    const { request, cancel } = productService.getAll<Product>();
+
+    dispatch(showLoader());
+
+    request
+      .then((res) => {
+        dispatch(hideLoader());
+        setFeaturedProducts(res.data.slice(0, 4));
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+
+        dispatch(hideLoader());
+        setError(err.message);
+      });
+
+    return () => cancel();
+  }, []);
+
+  useEffect(() => {
+    const { request, cancel } = topDealsService.getAll<Product>();
+
+    request
+      .then((res) => {
+        setFeaturedProducts(res.data);
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+
+        console.log(err.message);
+      });
+
+    return () => cancel();
   }, []);
 
   return (
@@ -164,6 +212,11 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Carousel Section */}
+      {/* <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <AppCarousel images={images} />
+      </div> */}
 
       {/* ABOUT SECTION */}
       <section className="container mb-40">
@@ -227,7 +280,7 @@ const Home = () => {
         <Heading className="mb-10" rightDescText="Products">
           Featured
         </Heading>
-        <Nav
+        {/* <Nav
           className="sm:space-x-2"
           containerClassName="relative flex w-full overflow-x-auto text-sm md:text-base hiddenScrollbar"
         >
@@ -241,10 +294,10 @@ const Home = () => {
             </NavItem>
           ))}
         </Nav>
-        <hr className="my-8" />
+        <hr className="my-8" /> */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {featuredProducts.map((product) => (
-            <ProductCard key={product.id} data={product} />
+            <ProductCard key={product.product_id} data={product} />
           ))}
         </div>
       </section>

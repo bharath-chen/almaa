@@ -1,20 +1,23 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import Logo from "../../../shared/Logo/Logo";
 import MenuBar from "../../../shared/MenuBar/MenuBar";
 import AvatarDropdown from "./AvatarDropdown";
 import Navigation from "../../../shared/Navigation/Navigation";
 import CartDropdown from "./CartDropdown";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import almaaLogo from "../../../assets/almaa-logo-small.png";
+import productsSearch from "../../../services/products-search";
+import { Product } from "../../../models/product";
+import { useAppDispatch } from "../../../hooks/hooks";
+import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
 
 export interface NavbarProps {}
 
 const Navbar: FC<NavbarProps> = () => {
   const inputRef = React.createRef<HTMLInputElement>();
   const [showSearchForm, setShowSearchForm] = useState(false);
-  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const renderMagnifyingGlassIcon = () => {
     return (
@@ -43,13 +46,33 @@ const Navbar: FC<NavbarProps> = () => {
     );
   };
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const { request } = productsSearch.getAll<
+      Product,
+      { ["item_search_text"]: string }
+    >({
+      ["item_search_text"]: inputRef.current.value || "",
+    });
+
+    dispatch(showLoader());
+
+    request
+      .then((res) => {
+        dispatch(hideLoader());
+        console.log(res.data);
+      })
+      .catch((err) => {
+        dispatch(hideLoader());
+        console.log(err.message);
+      });
+  };
+
   const renderSearchForm = () => {
     return (
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          navigate("/page-search");
-        }}
+        onSubmit={handleSearch}
         className="flex-1 py-2 text-slate-900 dark:text-slate-100"
       >
         <div className="bg-slate-50 dark:bg-slate-800 flex items-center space-x-1.5 px-5 h-full rounded">

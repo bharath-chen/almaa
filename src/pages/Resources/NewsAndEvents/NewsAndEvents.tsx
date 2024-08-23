@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import { useEffect, useState } from "react";
 import newsEventsService, {
@@ -6,17 +5,13 @@ import newsEventsService, {
 } from "../../../services/news-events-service";
 import { CanceledError } from "axios";
 import NewsAndEventCard from "./NewsAndEventCard";
-import Spinner from "../../../components/Spinner/Spinner";
-import { useDispatch } from "react-redux";
-import { hideLoader, showLoader } from "../../../state/actions/loaderActions";
+import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
+import { useAppDispatch } from "../../../hooks/hooks";
 
 const NewsAndEvents = () => {
-  const dispatch = useDispatch();
-  const [newsAndEvents, setNewsAndEvents] = useState<INewsAndEvents[]>([]);
+  const dispatch = useAppDispatch();
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const navigate = useNavigate();
+  const [newsAndEvents, setNewsAndEvents] = useState<INewsAndEvents[]>([]);
 
   useEffect(() => {
     const { request, cancel } = newsEventsService.getAll<INewsAndEvents>();

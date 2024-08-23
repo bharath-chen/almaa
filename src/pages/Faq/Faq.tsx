@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { CanceledError } from "axios";
 import Heading from "../../shared/Heading/Heading";
-import Spinner from "../../components/Spinner/Spinner";
 import faqService from "../../services/faq-service";
 import AppAccordion from "../../components/AppAccordion/AppAccordion";
 import { IFaq } from "../../services/faq-service";
-import { useDispatch } from "react-redux";
-import { hideLoader, showLoader } from "../../state/actions/loaderActions";
+import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
+import { useAppDispatch } from "../../hooks/hooks";
 
 const Faq = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [faqs, setFaqs] = useState<IFaq[]>([]);
   const [loading, setLoading] = useState(false);

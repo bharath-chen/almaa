@@ -2,21 +2,24 @@ import ProductCard from "../../components/ProductCard";
 import SidebarFilters from "../../containers/SidebarFilters";
 import { FC, useEffect, useState } from "react";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import CategoriesFilter from "./CategoriesFilter/CategoriesFilter";
-import productService, { Product } from "../../services/product-service";
+import Chip from "./Chip/Chip";
+import productService from "../../services/product-service";
+import { Product } from "../../models/product";
 import { CanceledError } from "axios";
-import Spinner from "../../components/Spinner/Spinner";
-import { useDispatch } from "react-redux";
-import { hideLoader, showLoader } from "../../state/actions/loaderActions";
+import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
+import { SortOrder } from "../../models/sort-order";
+import sortProductsService from "../../services/sort-products-service";
+import { useAppDispatch } from "../../hooks/hooks";
 
 interface Props {
   className?: string;
 }
 
 const Products: FC<Props> = ({ className = "" }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState("");
+  const [selectedSortOrder, setSelectedSortOrder] = useState<SortOrder>();
 
   // Products
   useEffect(() => {
@@ -38,8 +41,29 @@ const Products: FC<Props> = ({ className = "" }) => {
     return () => cancel();
   }, []);
 
-  const handleRemoveFilter = () => {
-    console.log("remove filter");
+  useEffect(() => {
+    if (selectedSortOrder?.value) {
+      const { request } = sortProductsService.getAll<
+        Product,
+        { sortBy: string }
+      >({ sortBy: selectedSortOrder.value });
+
+      dispatch(showLoader());
+
+      request
+        .then((res) => {
+          dispatch(hideLoader());
+          setProducts(res.data);
+        })
+        .catch((err) => {
+          dispatch(hideLoader());
+          setError(err.message);
+        });
+    }
+  }, [selectedSortOrder?.value]);
+
+  const handleSortingProducts = (selectedSort: SortOrder) => {
+    setSelectedSortOrder(selectedSort);
   };
 
   return (
@@ -53,18 +77,19 @@ const Products: FC<Props> = ({ className = "" }) => {
             {/* LOOP ITEMS */}
             <div className="flex flex-col lg:flex-row">
               <div className="lg:w-1/3 xl:w-1/4 pr-4">
-                <SidebarFilters />
+                <SidebarFilters
+                  selectedSortOrder={selectedSortOrder}
+                  onSort={handleSortingProducts}
+                />
               </div>
               <div className="flex-shrink-0 mb-10 lg:mb-0 lg:mx-4 border-t lg:border-t-0"></div>
               <div className="flex-1 ">
-                <CategoriesFilter
+                <Chip
                   name="Powders"
-                  count={12}
-                  removeFilter={handleRemoveFilter}
+                  onClick={() => {
+                    console.log("Clicked");
+                  }}
                 />
-                {/* <div className="bg-gradient-to-r inline-block from-primary-500 via-primary-600 to-primary-700 py-4 px-6 rounded-md mb-10 text-white shadow-lg">
-                  <h2 className="text-2xl font-bold">Category: Powders (12)</h2>
-                </div> */}
                 <div className="flex-1 grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 ">
                   {products.map((item, index) => (
                     <ProductCard
