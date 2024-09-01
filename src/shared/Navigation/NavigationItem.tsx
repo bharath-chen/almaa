@@ -17,9 +17,13 @@ export interface NavItemType {
 
 export interface NavigationItemProps {
   menuItem: NavItemType;
+  onSubMenuItemClick?: (menuItem: NavItemType) => void;
 }
 
-const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
+const NavigationItem: FC<NavigationItemProps> = ({
+  menuItem,
+  onSubMenuItemClick,
+}) => {
   const [menuCurrentHovers, setMenuCurrentHovers] = useState<string[]>([]);
 
   const onMouseEnterMenu = (id: string) => {
@@ -54,7 +58,11 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                 {menu.children.map((item, index) => (
                   <div key={index} className="cursor-pointer">
                     <p className="font-medium text-slate-500 dark:text-neutral-200 hover:text-primary-900 dark:hover:text-primary-900">
-                      <Link to={item.href}>{item.name}</Link>
+                      {item.href ? (
+                        <Link to={item.href}>{item.name}</Link>
+                      ) : (
+                        <span>{item.name}</span>
+                      )}
                     </p>
                     {/* <ul className="grid space-y-4 mt-4">
                         {item.children?.map(renderMegaMenuNavlink)}
@@ -226,6 +234,16 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
   };
 
   const renderDropdownMenuNavlink = (item: NavItemType) => {
+    if (!item.href)
+      return (
+        <span
+          onClick={() => onSubMenuItemClick(item)}
+          className="cursor-pointer flex items-center py-2 px-4 rounded-md hover:text-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 font-normal text-neutral-6000 dark:text-neutral-400"
+        >
+          {item.name}
+        </span>
+      );
+
     return (
       <NavLink
         target={item.targetBlank ? "_blank" : undefined}
@@ -233,7 +251,8 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
         className={({ isActive }) =>
           `flex items-center py-2 px-4 rounded-md hover:text-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 ${
             isActive
-              ? "font-medium text-neutral-900 dark:text-neutral-100"
+              ? // ? "font-medium text-neutral-900 dark:text-neutral-100"
+                "font-normal text-neutral-6000 dark:text-neutral-400"
               : "font-normal text-neutral-6000 dark:text-neutral-400 "
           }`
         }
