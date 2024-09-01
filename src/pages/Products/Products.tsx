@@ -9,17 +9,59 @@ import { CanceledError } from "axios";
 import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
 import { SortOrder } from "../../models/sort-order";
 import sortProductsService from "../../services/sort-products-service";
-import { useAppDispatch } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import {
+  addItemToWishlist,
+  removeItemFromWishlist,
+} from "../../features/wishlist/wishlistSlice";
+import { Alert } from "../../shared/Alert/Alert";
+import { useLocation } from "react-router-dom";
+import { NavItemType } from "../../shared/Navigation/NavigationItem";
+import subcategoryService from "../../services/subcategory-service";
+import { type SubCategory } from "../../models/subCategory";
 
 interface Props {
   className?: string;
 }
 
 const Products: FC<Props> = ({ className = "" }) => {
-  const dispatch = useAppDispatch();
+  const location = useLocation();
+  const [selectedCategory, setSelectedCategory] = useState<NavItemType>();
+  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
+  const [selectedSubCategory, setSelectedSubCategory] = useState<SubCategory>();
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState("");
   const [selectedSortOrder, setSelectedSortOrder] = useState<SortOrder>();
+  const [close, setClose] = useState(false);
+  const dispatch = useAppDispatch();
+  const wishlist = useAppSelector((state) => state.wishlist);
+
+  useEffect(() => {
+    setSelectedCategory(location.state ? location.state?.item : []);
+
+    if (location.state?.item) {
+      const { request } = subcategoryService.getAll<
+        SubCategory,
+        { category_id: string }
+      >({
+        category_id: location.state.item.id,
+      });
+
+      dispatch(showLoader());
+
+      request
+        .then((res) => {
+          dispatch(hideLoader());
+          setSubCategories(res.data);
+        })
+        .catch((err) => {
+          if (err instanceof CanceledError) return;
+
+          dispatch(hideLoader());
+          console.log(error);
+        });
+    }
+  }, [location.state]);
 
   // Products
   useEffect(() => {
@@ -66,6 +108,22 @@ const Products: FC<Props> = ({ className = "" }) => {
     setSelectedSortOrder(selectedSort);
   };
 
+  const handleLike = (id: string) => {
+    const updatedProducts = [...products].map((p) =>
+      p.product_id === id ? { ...p, isLiked: (p.isLiked = !p.isLiked) } : p
+    );
+    const product = updatedProducts.find((p) => p.product_id === id);
+
+    if (product.isLiked) dispatch(addItemToWishlist(product));
+    else dispatch(removeItemFromWishlist(product));
+
+    setProducts(updatedProducts);
+  };
+
+  const handleClose = () => {
+    setClose(!close);
+  };
+
   return (
     <div
       className={`nc-PageCollection2 ${className}`}
@@ -73,6 +131,11 @@ const Products: FC<Props> = ({ className = "" }) => {
     >
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 sm:space-y-20 lg:space-y-28">
         <div className="space-y-10 lg:space-y-14">
+          {wishlist.success && (
+            <Alert type="success" onClose={handleClose}>
+              {wishlist.success}
+            </Alert>
+          )}
           <main>
             {/* LOOP ITEMS */}
             <div className="flex flex-col lg:flex-row">
@@ -84,17 +147,27 @@ const Products: FC<Props> = ({ className = "" }) => {
               </div>
               <div className="flex-shrink-0 mb-10 lg:mb-0 lg:mx-4 border-t lg:border-t-0"></div>
               <div className="flex-1 ">
-                <Chip
-                  name="Powders"
-                  onClick={() => {
-                    console.log("Clicked");
-                  }}
-                />
+                <div className="flex flex-row">
+                  {subCategories.map((item) => (
+                    <Chip
+                      active={
+                        item.subcategory_id ===
+                        selectedSubCategory?.subcategory_id
+                      }
+                      key={item.subcategory_id}
+                      id={item.subcategory_id}
+                      name={item.subcat_name}
+                      onClick={() => {
+                        setSelectedSubCategory(item);
+                      }}
+                    />
+                  ))}
+                </div>
                 <div className="flex-1 grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 ">
                   {products.map((item, index) => (
                     <ProductCard
                       data={item}
-                      // onLike={() => handleLike(item.id)}
+                      onLike={() => handleLike(item.product_id)}
                       key={index}
                     />
                   ))}
