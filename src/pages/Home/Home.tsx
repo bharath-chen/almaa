@@ -38,6 +38,14 @@ import { CanceledError } from "axios";
 import topDealsService from "../../services/top-deals-service";
 import { useAppDispatch } from "../../hooks/hooks";
 import { Product } from "../../models/product";
+import homeCategoryService, {
+  NatProduct,
+} from "../../services/home-category-service";
+import homeService, {
+  FeatureProductResponse,
+} from "../../services/home-service";
+import Nav from "../../shared/Nav/Nav";
+import NavItem from "../../shared/NavItem/NavItem";
 
 export const pageAnimation = {
   initial: { opacity: 0, y: 100 },
@@ -118,10 +126,11 @@ const Home = () => {
     );
   };
 
-  const [tabActive, setTabActive] = useState("Best Sellers");
+  const [tabActive, setTabActive] = useState(TABS[0]);
 
-  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
-
+  const [featuredProducts, setFeaturedProducts] =
+    useState<FeatureProductResponse>();
+  const [natProducts, setNatProducts] = useState<NatProduct[]>([]);
   const images = [
     heroImg,
     heroImg,
@@ -134,28 +143,7 @@ const Home = () => {
   ];
 
   useEffect(() => {
-    // const products = productsService.getAllProducts().slice(0, 4);
-    const { request, cancel } = productService.getAll<Product>();
-
-    dispatch(showLoader());
-
-    request
-      .then((res) => {
-        dispatch(hideLoader());
-        setFeaturedProducts(res.data.slice(0, 4));
-      })
-      .catch((err) => {
-        if (err instanceof CanceledError) return;
-
-        dispatch(hideLoader());
-        setError(err.message);
-      });
-
-    return () => cancel();
-  }, []);
-
-  useEffect(() => {
-    const { request, cancel } = topDealsService.getAll<Product>();
+    const { request, cancel } = homeService.get<FeatureProductResponse>();
 
     request
       .then((res) => {
@@ -168,6 +156,24 @@ const Home = () => {
       });
 
     return () => cancel();
+  }, []);
+
+  useEffect(() => {
+    const { request, cancel } = homeCategoryService.getAll<NatProduct>();
+
+    dispatch(showLoader());
+
+    request
+      .then((res) => {
+        dispatch(hideLoader());
+        setNatProducts(res.data);
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+
+        dispatch(hideLoader());
+        setError(err.message);
+      });
   }, []);
 
   return (
@@ -276,31 +282,34 @@ const Home = () => {
       </section>
 
       {/* FEATURED PRODUCTS SECTION */}
-      <section className="container mb-40">
-        <Heading className="mb-10" rightDescText="Products">
-          Featured
-        </Heading>
-        {/* <Nav
-          className="sm:space-x-2"
-          containerClassName="relative flex w-full overflow-x-auto text-sm md:text-base hiddenScrollbar"
-        >
-          {TABS.map((item, index) => (
-            <NavItem
-              key={index}
-              isActive={tabActive === item}
-              onClick={() => setTabActive(item)}
-            >
-              {item}
-            </NavItem>
-          ))}
-        </Nav>
-        <hr className="my-8" /> */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          {featuredProducts.map((product) => (
-            <ProductCard key={product.product_id} data={product} />
-          ))}
-        </div>
-      </section>
+
+      {featuredProducts && featuredProducts[tabActive.key].length && (
+        <section className="container mb-40">
+          <Heading className="mb-10" rightDescText="Products">
+            Featured
+          </Heading>
+          <Nav
+            className="sm:space-x-2"
+            containerClassName="relative flex w-full overflow-x-auto text-sm md:text-base hiddenScrollbar"
+          >
+            {TABS.map((item, index) => (
+              <NavItem
+                key={item.id}
+                isActive={tabActive.id === item.id}
+                onClick={() => setTabActive(item)}
+              >
+                {item.name}
+              </NavItem>
+            ))}
+          </Nav>
+          <hr className="my-8" />
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+            {featuredProducts[tabActive.key]?.map((product) => (
+              <ProductCard key={product.product_id} data={product} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* MD SECTION */}
       <section className="container mb-40">
@@ -417,20 +426,27 @@ const Home = () => {
       </section>
 
       {/* EXPLORE PRODUCTS BY CATEGORIES SECTION  */}
-      <section className="mb-40">
-        <AppSlider
-          data={CATEGORY_SLIDERS}
-          className="nc-DiscoverMoreSlider nc-p-l-container "
-          renderChildren={renderCategoryCard}
-        >
-          <Heading
-            className="mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 nc-p-r-container "
-            rightDescText="by Categories"
-            hasNextPrev
+      {natProducts.length && (
+        <section className="mb-40">
+          <AppSlider
+            // data={CATEGORY_SLIDERS}
+            data={natProducts.map((p) => ({
+              name: "",
+              desc: p.name,
+              featuredImage: "",
+              color: "bg-slate-50",
+            }))}
+            className="nc-DiscoverMoreSlider nc-p-l-container "
+            renderChildren={renderCategoryCard}
           >
-            Explore Products
-          </Heading>
-          {/* <Heading
+            <Heading
+              className="mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 nc-p-r-container "
+              rightDescText="by Categories"
+              hasNextPrev
+            >
+              Explore Products
+            </Heading>
+            {/* <Heading
             className={heading.classNames}
             desc={heading.desc}
             rightDescText={heading.rightDescText}
@@ -439,8 +455,9 @@ const Home = () => {
           >
             {heading.text}
           </Heading> */}
-        </AppSlider>
-      </section>
+          </AppSlider>
+        </section>
+      )}
 
       {/* HEALTHY AND LIFESTYLE VIDEOS SECTION */}
       <section className="container mb-40">
