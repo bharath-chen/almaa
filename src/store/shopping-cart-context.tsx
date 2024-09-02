@@ -1,6 +1,13 @@
 // src/context/ShoppingCartContext.tsx
-import { createContext, useContext, useReducer, ReactNode } from "react";
-import { Product } from "../data/data";
+import {
+  createContext,
+  useContext,
+  useReducer,
+  ReactNode,
+  useEffect,
+} from "react";
+import { Product } from "../models/product";
+// import { Product } from "../data/data";
 
 type CartItem = {
   product: Product;
@@ -14,6 +21,7 @@ type CartAction =
       type: "ADD_TO_CART_WITH_QUANTITY";
       payload: { product: Product; quantity: number };
     }
+  | { type: "SET_CART_ITEMS"; payload: { products: Product[] } }
   | { type: "REMOVE_FROM_CART"; payload: number }
   | {
       type: "UPDATE_QUANTITY";
@@ -33,6 +41,7 @@ type ShoppingCartState = {
 
 type CartContextValue = ShoppingCartState & {
   addItemToCart: (product: Product) => void;
+  setCartItems: (products: Product[]) => void;
   addItemToCartWithQuantity: (product: Product, quantity: number) => void;
   removeItemFromCart: (id: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
@@ -50,6 +59,17 @@ const initialState: ShoppingCartState = {
   placedOrders: [],
 };
 
+const localStorageKey = "shoppingCart";
+
+const loadStateFromLocalStorage = (): ShoppingCartState => {
+  const storedState = localStorage.getItem(localStorageKey);
+  return storedState ? JSON.parse(storedState) : initialState;
+};
+
+const saveStateToLocalStorage = (state: ShoppingCartState) => {
+  localStorage.setItem(localStorageKey, JSON.stringify(state));
+};
+
 // Create the context
 const ShoppingCartContext = createContext<CartContextValue | null>(null);
 
@@ -59,7 +79,7 @@ function calculateTotalItemsCount(cartItems: CartItem[]) {
 
 function calculateTotalPrice(cartItems: CartItem[]) {
   return cartItems.reduce(
-    (total, item) => total + item.product.price * item.quantity,
+    (total, item) => total + +item.product.selling_price * item.quantity,
     0
   );
 }
@@ -69,14 +89,14 @@ function CartReducer(state: ShoppingCartState, action: CartAction) {
     case "ADD_TO_CART":
       // eslint-disable-next-line no-case-declarations
       const existingCartItem = state.cart.find(
-        (item) => item.product.id === action.payload.id
+        (item) => item.product.product_id === action.payload.product_id
       );
 
       if (existingCartItem) {
         return {
           ...state,
           cart: state.cart.map((item) =>
-            item.product.id === action.payload.id
+            item.product.product_id === action.payload.product_id
               ? { ...item, quantity: item.quantity + 1 }
               : item
           ),
@@ -88,17 +108,26 @@ function CartReducer(state: ShoppingCartState, action: CartAction) {
         };
       }
 
+    case "SET_CART_ITEMS":
+      return {
+        ...state,
+        cart: action.payload.products.map((p) => ({
+          product: p,
+          quantity: p.qty,
+        })),
+      };
+
     case "ADD_TO_CART_WITH_QUANTITY":
       // eslint-disable-next-line no-case-declarations
       const isExisting = state.cart.find(
-        (item) => item.product.id === action.payload.product.id
+        (item) => item.product.product_id === action.payload.product.product_id
       );
 
       if (isExisting) {
         return {
           ...state,
           cart: state.cart.map((item) =>
-            item.product.id === action.payload.product.id
+            item.product.product_id === action.payload.product.product_id
               ? { ...item, quantity: item.quantity + action.payload.quantity }
               : item
           ),
@@ -119,14 +148,16 @@ function CartReducer(state: ShoppingCartState, action: CartAction) {
     case "REMOVE_FROM_CART":
       return {
         ...state,
-        cart: state.cart.filter((item) => item.product.id !== action.payload),
+        cart: state.cart.filter(
+          (item) => +item.product.product_id !== action.payload
+        ),
       };
 
     case "UPDATE_QUANTITY":
       return {
         ...state,
         cart: state.cart.map((item) =>
-          item.product.id === action.payload.productId
+          +item.product.product_id === action.payload.productId
             ? { ...item, quantity: action.payload.quantity }
             : item
         ),
@@ -149,13 +180,24 @@ function CartReducer(state: ShoppingCartState, action: CartAction) {
 
 // Create a provider component
 function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
-  const [cartState, dispatch] = useReducer(CartReducer, initialState);
+  const [cartState, dispatch] = useReducer(
+    CartReducer,
+    initialState,
+    loadStateFromLocalStorage
+  );
+
+  useEffect(() => {
+    saveStateToLocalStorage(cartState);
+  }, [cartState]);
 
   const ctx: CartContextValue = {
     cart: cartState.cart,
     placedOrders: cartState.placedOrders,
     totalItemsCount: calculateTotalItemsCount(cartState.cart),
     totalPrice: calculateTotalPrice(cartState.cart),
+    setCartItems(products) {
+      dispatch({ type: "SET_CART_ITEMS", payload: { products } });
+    },
     addItemToCart(product) {
       dispatch({ type: "ADD_TO_CART", payload: product });
     },

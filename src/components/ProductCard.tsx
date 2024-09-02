@@ -4,8 +4,7 @@ import NcImage from "../shared/NcImage/NcImage";
 import LikeButton from "./LikeButton";
 import Prices from "./Prices";
 import { ArrowsPointingOutIcon } from "@heroicons/react/24/outline";
-import { Product, PRODUCTS } from "../data/data";
-import { StarIcon } from "@heroicons/react/24/solid";
+import { Product } from "../models/product";
 import ButtonPrimary from "../shared/Button/ButtonPrimary";
 import ButtonSecondary from "../shared/Button/ButtonSecondary";
 import BagIcon from "./BagIcon";
@@ -15,6 +14,12 @@ import ModalQuickView from "./ModalQuickView";
 import ProductQuickView from "./ProductQuickView";
 import ProductStatus from "./ProductStatus";
 import { useShoppingCartContext } from "../store/shopping-cart-context";
+import StarIcon from "@heroicons/react/24/solid/StarIcon";
+import { useAppDispatch } from "../hooks/hooks";
+import {
+  addItemToWishlist,
+  removeItemFromWishlist,
+} from "../features/wishlist/wishlistSlice";
 
 export interface ProductCardProps {
   className?: string;
@@ -25,24 +30,27 @@ export interface ProductCardProps {
 
 const ProductCard: FC<ProductCardProps> = ({
   className = "",
-  data = PRODUCTS[0],
+  data,
   isLiked,
   onLike,
 }) => {
   const {
-    id,
-    name,
-    price,
-    description,
-    sizes,
-    variants,
-    variantType,
+    product_id,
+    product_name,
+    unit_price,
+    full_description,
+    // sizes,
+    // variants,
+    // variantType,
     status,
-    image,
+    selling_price,
+    product_image1,
+    user_ratings,
+    almaa_ratings,
   } = data;
   const [variantActive, setVariantActive] = React.useState(0);
   const [showModalQuickView, setShowModalQuickView] = React.useState(false);
-  const { addItemToCart } = useShoppingCartContext();
+  const { cart, addItemToCart } = useShoppingCartContext();
 
   const notifyAddTocart = ({ size }: { size?: string }) => {
     toast.custom(
@@ -74,8 +82,8 @@ const ProductCard: FC<ProductCardProps> = ({
       <div className="flex ">
         <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
-            src={image}
-            alt={name}
+            src={product_image1}
+            alt={product_name}
             className="h-full w-full object-cover object-center"
           />
         </div>
@@ -84,16 +92,16 @@ const ProductCard: FC<ProductCardProps> = ({
           <div>
             <div className="flex justify-between ">
               <div>
-                <h3 className="text-base font-medium ">{name}</h3>
+                <h3 className="text-base font-medium ">{product_name}</h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                   <span>
-                    {variants ? variants[variantActive].name : `Natural`}
+                    {/* {variants ? variants[variantActive].name : `Natural`} */}
                   </span>
                   <span className="mx-2 border-l border-slate-200 dark:border-slate-700 h-4"></span>
                   <span>{size[0] || "XL"}</span>
                 </p>
               </div>
-              <Prices price={price} className="mt-0.5" />
+              <Prices price={+selling_price} className="mt-0.5" />
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
@@ -138,59 +146,59 @@ const ProductCard: FC<ProductCardProps> = ({
     return "border-transparent";
   };
 
-  const renderVariants = () => {
-    if (!variants || !variants.length || !variantType) {
-      return null;
-    }
+  // const renderVariants = () => {
+  //   if (!variants || !variants.length || !variantType) {
+  //     return null;
+  //   }
 
-    if (variantType === "color") {
-      return (
-        <div className="flex space-x-1">
-          {variants.map((variant, index) => (
-            <div
-              key={index}
-              onClick={() => setVariantActive(index)}
-              className={`relative w-6 h-6 rounded-full overflow-hidden z-10 border cursor-pointer ${
-                variantActive === index
-                  ? getBorderClass(variant.color)
-                  : "border-transparent"
-              }`}
-              title={variant.name}
-            >
-              <div
-                className={`absolute inset-0.5 rounded-full z-0 ${variant.color}`}
-              ></div>
-            </div>
-          ))}
-        </div>
-      );
-    }
+  //   if (variantType === "color") {
+  //     return (
+  //       <div className="flex space-x-1">
+  //         {variants.map((variant, index) => (
+  //           <div
+  //             key={index}
+  //             onClick={() => setVariantActive(index)}
+  //             className={`relative w-6 h-6 rounded-full overflow-hidden z-10 border cursor-pointer ${
+  //               variantActive === index
+  //                 ? getBorderClass(variant.color)
+  //                 : "border-transparent"
+  //             }`}
+  //             title={variant.name}
+  //           >
+  //             <div
+  //               className={`absolute inset-0.5 rounded-full z-0 ${variant.color}`}
+  //             ></div>
+  //           </div>
+  //         ))}
+  //       </div>
+  //     );
+  //   }
 
-    return (
-      <div className="flex ">
-        {variants.map((variant, index) => (
-          <div
-            key={index}
-            onClick={() => setVariantActive(index)}
-            className={`relative w-11 h-6 rounded-full overflow-hidden z-10 border cursor-pointer ${
-              variantActive === index
-                ? "border-black dark:border-slate-300"
-                : "border-transparent"
-            }`}
-            title={variant.name}
-          >
-            <div className="absolute inset-0.5 rounded-full overflow-hidden z-0">
-              <img
-                src={variant.thumbnail}
-                alt="variant"
-                className="absolute w-full h-full object-cover"
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  };
+  //   return (
+  //     <div className="flex ">
+  //       {variants.map((variant, index) => (
+  //         <div
+  //           key={index}
+  //           onClick={() => setVariantActive(index)}
+  //           className={`relative w-11 h-6 rounded-full overflow-hidden z-10 border cursor-pointer ${
+  //             variantActive === index
+  //               ? "border-black dark:border-slate-300"
+  //               : "border-transparent"
+  //           }`}
+  //           title={variant.name}
+  //         >
+  //           <div className="absolute inset-0.5 rounded-full overflow-hidden z-0">
+  //             <img
+  //               src={variant.thumbnail}
+  //               alt="variant"
+  //               className="absolute w-full h-full object-cover"
+  //             />
+  //           </div>
+  //         </div>
+  //       ))}
+  //     </div>
+  //   );
+  // };
 
   const renderGroupButtons = () => {
     return (
@@ -200,7 +208,7 @@ const ProductCard: FC<ProductCardProps> = ({
           fontSize="text-xs"
           sizeClass="py-2 px-4"
           onClick={() => {
-            addItemToCart(data);
+            // addItemToCart(data);
             notifyAddTocart({ size: "XL" });
           }}
         >
@@ -220,30 +228,30 @@ const ProductCard: FC<ProductCardProps> = ({
     );
   };
 
-  const renderSizeList = () => {
-    if (!sizes || !sizes.length) {
-      return null;
-    }
+  // const renderSizeList = () => {
+  //   if (!sizes || !sizes.length) {
+  //     return null;
+  //   }
 
-    return (
-      <div className="absolute bottom-0 inset-x-1 space-x-1.5 flex justify-center opacity-0 invisible group-hover:bottom-4 group-hover:opacity-100 group-hover:visible transition-all">
-        {sizes.map((size, index) => {
-          return (
-            <div
-              key={index}
-              className="nc-shadow-lg w-10 h-10 rounded-xl bg-white hover:bg-slate-900 hover:text-white transition-colors cursor-pointer flex items-center justify-center uppercase font-semibold tracking-tight text-sm text-slate-900"
-              onClick={() => {
-                addItemToCart(data);
-                notifyAddTocart({ size });
-              }}
-            >
-              {size}
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
+  //   return (
+  //     <div className="absolute bottom-0 inset-x-1 space-x-1.5 flex justify-center opacity-0 invisible group-hover:bottom-4 group-hover:opacity-100 group-hover:visible transition-all">
+  //       {sizes.map((size, index) => {
+  //         return (
+  //           <div
+  //             key={index}
+  //             className="nc-shadow-lg w-10 h-10 rounded-xl bg-white hover:bg-slate-900 hover:text-white transition-colors cursor-pointer flex items-center justify-center uppercase font-semibold tracking-tight text-sm text-slate-900"
+  //             onClick={() => {
+  //               addItemToCart(data);
+  //               notifyAddTocart({ size });
+  //             }}
+  //           >
+  //             {size}
+  //           </div>
+  //         );
+  //       })}
+  //     </div>
+  //   );
+  // };
 
   return (
     <>
@@ -254,14 +262,14 @@ const ProductCard: FC<ProductCardProps> = ({
         {/* <Link to={"/product-detail/" + id} className="absolute inset-0"></Link> */}
 
         <div className="relative flex-shrink-0 bg-slate-50 dark:bg-slate-300 rounded-3xl overflow-hidden z-1 group">
-          <Link to={"/product-detail/" + id} className="block">
+          <Link to={"/product-detail/" + product_id} className="block">
             <NcImage
               containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0"
-              src={image}
+              src={product_image1}
               className="object-cover w-full h-full drop-shadow-xl"
             />
           </Link>
-          <ProductStatus status={status} />
+          {/* <ProductStatus status={status} /> */}
 
           <LikeButton
             liked={isLiked}
@@ -269,71 +277,72 @@ const ProductCard: FC<ProductCardProps> = ({
             className="absolute top-3 right-3 z-10"
           />
 
-          {sizes ? renderSizeList() : renderGroupButtons()}
+          {/* {sizes ? renderSizeList() : renderGroupButtons()} */}
         </div>
 
         <div className="space-y-4 px-2.5 pt-5 pb-2.5">
-          {renderVariants()}
-          <Link to={"/product-detail/" + id} className="block">
+          {/* {renderVariants()} */}
+          <Link to={"/product-detail/" + product_id} className="block">
             <div>
               <h2
                 className={`nc-ProductCard__title text-base font-semibold transition-colors`}
               >
-                {name}
+                {product_name}
               </h2>
               <p className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}>
-                {description}
+                {full_description}
               </p>
             </div>
           </Link>
 
           <div className="flex justify-between items-end ">
-            <Prices price={price} />
-            <button
-              onClick={() => {
-                addItemToCart(data);
-                notifyAddTocart({ size: "XL" });
-              }}
-              type="button"
-              className="border-2 border-white rounded-lg py-1 px-2 md:py-1 md:px-2.5 text-sm font-medium"
-            >
-              <svg
-                className="w-6 h-6 text-primary-900 dark:text-white"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4"
-                />
-              </svg>
-            </button>
+            <Prices price={+selling_price} />
 
-            {/* <div className="flex items-center mb-0.5"> */}
-            {/* <StarIcon className="w-5 h-5 pb-[1px] text-amber-400" />
-              <span className="text-sm ml-1 text-slate-500 dark:text-slate-400">
-                {(Math.random() * 1 + 4).toFixed(1)} (
-                {Math.floor(Math.random() * 70 + 20)} reviews)
-              </span> */}
-            {/* </div> */}
+            <div className="flex items-center mb-0.5">
+              <button
+                onClick={() => {
+                  addItemToCart(data);
+                  notifyAddTocart({ size: "XL" });
+                }}
+                type="button"
+                className="border-2 border-white rounded-lg py-1 px-2 md:py-1 md:px-2.5 text-sm font-medium"
+              >
+                <svg
+                  className="w-6 h-6 text-primary-900 dark:text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4"
+                  />
+                </svg>
+              </button>
+              {/* <StarIcon className="w-5 h-5 pb-[1px] text-amber-400" />
+              <span className="text-sm ml-1 text-slate-500 dark:text-slate-400"> */}
+              {/* {(Math.random() * 1 + 4).toFixed(1)} */}
+              {/* {parseInt(user_ratings).toFixed(1)} */}
+              {/* ({Math.floor(Math.random() * 70 + 20)} reviews) */}
+              {/* </span> */}
+            </div>
           </div>
         </div>
       </div>
 
       {/* QUICKVIEW */}
-      <ModalQuickView
+      {/* <ModalQuickView
         show={showModalQuickView}
         onCloseModalQuickView={() => setShowModalQuickView(false)}
       >
         <ProductQuickView product={data} />
-      </ModalQuickView>
+      </ModalQuickView> */}
     </>
   );
 };
