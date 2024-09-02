@@ -2,7 +2,7 @@ import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import CardCategory3 from "../../components/CardCategories/CardCategory3";
 import { FC, Fragment, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { LocationStates } from "../../routers/types";
 
 export interface NavItemType {
@@ -17,13 +17,10 @@ export interface NavItemType {
 
 export interface NavigationItemProps {
   menuItem: NavItemType;
-  onSubMenuItemClick?: (menuItem: NavItemType) => void;
 }
 
-const NavigationItem: FC<NavigationItemProps> = ({
-  menuItem,
-  onSubMenuItemClick,
-}) => {
+const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
+  const navigate = useNavigate();
   const [menuCurrentHovers, setMenuCurrentHovers] = useState<string[]>([]);
 
   const onMouseEnterMenu = (id: string) => {
@@ -237,7 +234,13 @@ const NavigationItem: FC<NavigationItemProps> = ({
     if (!item.href)
       return (
         <span
-          onClick={() => onSubMenuItemClick(item)}
+          onClick={() =>
+            navigate("/products", {
+              state: {
+                item: { ...item },
+              },
+            })
+          }
           className="cursor-pointer flex items-center py-2 px-4 rounded-md hover:text-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 font-normal text-neutral-6000 dark:text-neutral-400"
         >
           {item.name}
