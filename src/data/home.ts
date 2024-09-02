@@ -274,7 +274,12 @@ const LIFE_STYLE_CARDS = [
   },
 ];
 
-const TABS = ["Best Sellers", "Offers", "Newly Launched"];
+const TABS = [
+  { id: "t1", name: "Best Sellers", key: "bestprodGet" },
+  { id: "t2", name: "Offers", key: "offerprodGet" },
+  { id: "t3", name: "Newly Launched", key: "newprodGet" },
+  { id: "t4", name: "Favorites", key: "favprodGet" },
+];
 
 export {
   ABOUTS,
