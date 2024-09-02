@@ -20,16 +20,16 @@ export const Alert: React.FC<AlertProps> = ({
       classes += " text-black bg-neutral-900";
       break;
     case "info":
-      classes += " bg-status-infoBg text-status-info";
+      classes += " bg-status-info text-status-info";
       break;
     case "success":
-      classes += " bg-status-successBg text-status-success";
+      classes += " bg-status-success text-status-success";
       break;
     case "error":
-      classes += " bg-status-errorBg text-status-error";
+      classes += " bg-status-error text-status-error";
       break;
     case "warning":
-      classes += " bg-status-warningBg text-status-warning";
+      classes += " bg-status-warning text-status-warning";
       break;
     default:
       break;
