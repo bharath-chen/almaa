@@ -27,6 +27,12 @@ const ReviewItem: FC<ReviewItemProps> = ({
   className = "",
   data = DEMO_DATA,
 }) => {
+  const { starPoint } = data;
+
+  const totalStars = 5;
+  const filledPoints = starPoint;
+  const unfilledPoints = totalStars - filledPoints;
+
   return (
     <div
       className={`nc-ReviewItem flex flex-col ${className}`}
@@ -51,11 +57,22 @@ const ReviewItem: FC<ReviewItemProps> = ({
           </div>
 
           <div className="mt-0.5 flex text-yellow-500">
+            {filledPoints !== 0 &&
+              Array.from({ length: filledPoints }, (_, index) => index + 1).map(
+                (n) => <StarIcon key={n} className="w-5 h-5" />
+              )}
+            {unfilledPoints !== 0 &&
+              Array.from(
+                { length: filledPoints - 1 },
+                (_, index) => index + 1
+              ).map((n) => (
+                <StarIcon key={n} className="w-5 h-5 text-gray-500" />
+              ))}
+            {/* <StarIcon className="w-5 h-5" />
             <StarIcon className="w-5 h-5" />
             <StarIcon className="w-5 h-5" />
             <StarIcon className="w-5 h-5" />
-            <StarIcon className="w-5 h-5" />
-            <StarIcon className="w-5 h-5" />
+            <StarIcon className="w-5 h-5" /> */}
           </div>
         </div>
       </div>
