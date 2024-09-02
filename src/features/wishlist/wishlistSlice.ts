@@ -20,8 +20,10 @@ const initialState: WishlistState = {
 export const fetchWishlist = createAsyncThunk(
   "wishlist/fetchWishList",
   async () => {
+    const authInfo = JSON.parse(localStorage.getItem("authState"));
+
     const response = await apiClient.get<Wishlist>(
-      "?gofor=wishlist&customer_id=3"
+      `?gofor=wishlist&customer_id=${authInfo?.customer_id}`
     );
     return response.data;
   }
@@ -30,9 +32,10 @@ export const fetchWishlist = createAsyncThunk(
 export const addItemToWishlist = createAsyncThunk(
   "wishlist/addItemToWishlist",
   async (item: Product) => {
+    const authInfo = JSON.parse(localStorage.getItem("authState"));
     const payload = {
       goFor: "addwishlist",
-      customer_id: "3",
+      customer_id: authInfo?.customer_id,
       product_id: item.product_id,
     };
     const response = await apiClient.post(null, payload);
@@ -43,9 +46,10 @@ export const addItemToWishlist = createAsyncThunk(
 export const removeItemFromWishlist = createAsyncThunk(
   "wishlist/updateItemToWishlist",
   async (item: Product) => {
+    const authInfo = JSON.parse(localStorage.getItem("authState"));
     const payload = {
       goFor: "updatewishlist",
-      customer_id: "3",
+      customer_id: authInfo?.customer_id,
       product_id: item.product_id,
     };
     const response = await apiClient.post(null, payload);
