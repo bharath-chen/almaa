@@ -1,9 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import loaderReducer from "../features/loader/loaderSlice";
+import wishlistReducer from "../features/wishlist/wishlistSlice";
+import authReducer from "../features/auth/authSlice";
 
 export const store = configureStore({
   reducer: {
     loader: loaderReducer,
+    wishlist: wishlistReducer,
+    auth: authReducer,
   },
 });
 
