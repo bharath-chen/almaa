@@ -5,12 +5,25 @@ import SortOrderFilter from "../../components/SectionGridMoreExplore/SortOrderFi
 import React, { FC, Fragment } from "react";
 import ButtonClose from "../../shared/ButtonClose/ButtonClose";
 
+export interface Review {
+  id: string;
+  name: string;
+  avatar?: string;
+  date: string;
+  comment: string;
+  starPoint: number;
+}
+
 export interface ModalViewAllReviewsProps {
+  rating: string;
+  reviews: Review[];
   show: boolean;
   onCloseModalViewAllReviews: () => void;
 }
 
 const ModalViewAllReviews: FC<ModalViewAllReviewsProps> = ({
+  rating,
+  reviews,
   show,
   onCloseModalViewAllReviews,
 }) => {
@@ -66,7 +79,10 @@ const ModalViewAllReviews: FC<ModalViewAllReviewsProps> = ({
                 <div className="px-8 my-5 flex justify-between flex-wrap">
                   <h2 className="text-xl sm:text-2xl font-semibold flex items-center">
                     <StarIcon className="w-7 h-7 mb-0.5" />
-                    <span className="ml-1.5"> 4,87 · 142 Reviews</span>
+                    <span className="ml-1.5">
+                      {" "}
+                      {rating} · {reviews?.length} Reviews
+                    </span>
                   </h2>
                   <SortOrderFilter
                     className="my-2"
@@ -79,6 +95,7 @@ const ModalViewAllReviews: FC<ModalViewAllReviewsProps> = ({
                   />
                 </div>
                 <div className="px-8 py-8 border-t border-slate-200 dark:border-slate-700 overflow-auto grid grid-cols-1 md:grid-cols-2 gap-x-14 gap-y-10">
+                  {/* <ReviewItem />
                   <ReviewItem />
                   <ReviewItem />
                   <ReviewItem />
@@ -87,8 +104,10 @@ const ModalViewAllReviews: FC<ModalViewAllReviewsProps> = ({
                   <ReviewItem />
                   <ReviewItem />
                   <ReviewItem />
-                  <ReviewItem />
-                  <ReviewItem />
+                  <ReviewItem /> */}
+                  {reviews?.map((r) => (
+                    <ReviewItem key={r.id} data={r} />
+                  ))}
                 </div>
               </div>
             </div>

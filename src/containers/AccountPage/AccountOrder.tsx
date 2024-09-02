@@ -1,20 +1,48 @@
+import { useEffect, useState } from "react";
 import Prices from "../../components/Prices";
-import { PRODUCTS, Product } from "../../data/data";
+import { Product } from "../../models/product";
 import ButtonSecondary from "../../shared/Button/ButtonSecondary";
 import { useShoppingCartContext } from "../../store/shopping-cart-context";
 import CommonLayout from "./CommonLayout";
+import orderService from "../../services/order-service";
+import { CanceledError } from "axios";
 
 const AccountOrder = () => {
   const { placedOrders } = useShoppingCartContext();
+  const [orders, setOrders] = useState([]);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const customerDetails = JSON.parse(localStorage.getItem("customerDetails"));
+
+    const { request, cancel } = orderService.get<
+      { viewOrders: any[]; productDetail: Product[] },
+      { goFor: string; customer_id: string }
+    >({ goFor: "vieworders", customer_id: customerDetails.customer_id });
+
+    request
+      .then((res) => {
+        console.log(res.data);
+        setOrders(res.data.viewOrders);
+        setProducts(res.data.productDetail);
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+
+        console.log(err.message);
+      });
+
+    return () => cancel();
+  }, []);
 
   const renderProductItem = (product: Product, index: number) => {
-    const { image, name } = product;
+    const { product_image1, product_name, selling_price } = product;
     return (
       <div key={index} className="flex py-4 sm:py-7 last:pb-0 first:pt-0">
         <div className="h-24 w-16 sm:w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
-            src={image}
-            alt={name}
+            src={product_image1}
+            alt={product_name}
             className="h-full w-full object-cover object-center"
           />
         </div>
@@ -23,14 +51,16 @@ const AccountOrder = () => {
           <div>
             <div className="flex justify-between ">
               <div>
-                <h3 className="text-base font-medium line-clamp-1">{name}</h3>
+                <h3 className="text-base font-medium line-clamp-1">
+                  {product_name}
+                </h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                   <span>{"Natural"}</span>
                   <span className="mx-2 border-l border-slate-200 dark:border-slate-700 h-4"></span>
                   <span>{"XL"}</span>
                 </p>
               </div>
-              <Prices price={product.price} className="mt-0.5 ml-2" />
+              <Prices price={+selling_price} className="mt-0.5 ml-2" />
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">

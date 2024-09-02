@@ -1,14 +1,10 @@
 import React from "react";
 import ButtonClose from "../../shared/ButtonClose/ButtonClose";
-import Logo from "../../shared/Logo/Logo";
 import { Disclosure } from "@headlessui/react";
 import { NavLink } from "react-router-dom";
 import { NavItemType } from "./NavigationItem";
 import { NAVIGATION_DEMO_2 } from "../../data/navigation";
-import ButtonPrimary from "../../shared/Button/ButtonPrimary";
-import SocialsList from "../../shared/SocialsList/SocialsList";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import SwitchDarkMode from "../../shared/SwitchDarkMode/SwitchDarkMode";
 import almaaLogo from "../../assets/almaa-logo-small.png";
 
 export interface NavMobileProps {
@@ -28,39 +24,41 @@ const NavMobile: React.FC<NavMobileProps> = ({
       <ul className="nav-mobile-sub-menu pl-6 pb-1 text-base">
         {item.children?.map((i, index) => (
           <Disclosure key={i.href + index} as="li">
-            <NavLink
-              to={{
-                pathname: i.href || undefined,
-              }}
-              className={({ isActive }) =>
-                `flex text-sm rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 mt-0.5 pr-4 ${itemClass} ${
-                  isActive ? "text-secondary" : ""
-                }`
-              }
-            >
-              <span
-                className={`py-2.5 ${!i.children ? "block w-full" : ""}`}
-                onClick={onClickClose}
+            {item.href && (
+              <NavLink
+                to={{
+                  pathname: i.href || undefined,
+                }}
+                className={({ isActive }) =>
+                  `flex text-sm rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 mt-0.5 pr-4 ${itemClass} ${
+                    isActive ? "text-secondary" : ""
+                  }`
+                }
               >
-                {i.name}
-              </span>
-              {i.children && (
                 <span
-                  className="flex items-center flex-grow"
-                  onClick={(e) => e.preventDefault()}
+                  className={`py-2.5 ${!i.children ? "block w-full" : ""}`}
+                  onClick={onClickClose}
                 >
-                  <Disclosure.Button
-                    as="span"
-                    className="flex justify-end flex-grow"
-                  >
-                    <ChevronDownIcon
-                      className="ml-2 h-4 w-4 text-slate-500"
-                      aria-hidden="true"
-                    />
-                  </Disclosure.Button>
+                  {i.name}
                 </span>
-              )}
-            </NavLink>
+                {i.children && (
+                  <span
+                    className="flex items-center flex-grow"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <Disclosure.Button
+                      as="span"
+                      className="flex justify-end flex-grow"
+                    >
+                      <ChevronDownIcon
+                        className="ml-2 h-4 w-4 text-slate-500"
+                        aria-hidden="true"
+                      />
+                    </Disclosure.Button>
+                  </span>
+                )}
+              </NavLink>
+            )}
             {i.children && (
               <Disclosure.Panel>
                 {_renderMenuChild(

@@ -4,7 +4,7 @@ import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import Input from "../../shared/Input/Input";
 import CommonLayout from "./CommonLayout";
 import updatePasswordService from "../../services/update-password-service";
-import { ILoginCustomerPayload } from "../../services/login-service";
+import { Customer } from "../../models/customer";
 
 const AccountPass = () => {
   const [accountPasswordDetails, setAccountPasswordDetails] = useState({
@@ -14,7 +14,7 @@ const AccountPass = () => {
   });
 
   const handleUpdatePassword = () => {
-    const customerDetails: ILoginCustomerPayload = JSON.parse(
+    const customerDetails: Customer = JSON.parse(
       localStorage.getItem("customerDetails")
     );
     // customer_id=1&password=123456

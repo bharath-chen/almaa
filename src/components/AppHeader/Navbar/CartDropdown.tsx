@@ -1,6 +1,6 @@
 import { Popover, Transition } from "@headlessui/react";
 import Prices from "../../../components/Prices";
-import { Product } from "../../../data/data";
+import { Product } from "../../../models/product";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "../../../shared/Button/ButtonPrimary";
@@ -16,19 +16,26 @@ export default function CartDropdown() {
   } = useShoppingCartContext();
 
   const renderProduct = (item: Product, index: number, close: () => void) => {
-    const { id, name, price, image, quantity } = item;
+    const {
+      product_id,
+      product_name,
+      selling_price,
+      product_image1,
+      quantity,
+      qty,
+    } = item;
     return (
       <div key={index} className="flex py-5 last:pb-0">
         <div className="relative h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
-            src={image}
-            alt={name}
+            src={product_image1}
+            alt={product_name}
             className="h-full w-full object-contain object-center"
           />
           <Link
             onClick={close}
             className="absolute inset-0"
-            to={"/product-detail/" + id}
+            to={"/product-detail/" + product_id}
           />
         </div>
 
@@ -37,27 +44,29 @@ export default function CartDropdown() {
             <div className="flex justify-between ">
               <div>
                 <h3 className="text-base font-medium ">
-                  <Link onClick={close} to={"/product-detail/" + id}>
-                    {name}
+                  <Link onClick={close} to={"/product-detail/" + product_id}>
+                    {product_name}
                   </Link>
                 </h3>
-                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                {/* <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                   <span>{`Natural`}</span>
                   <span className="mx-2 border-l border-slate-200 dark:border-slate-700 h-4"></span>
                   <span>{"XL"}</span>
-                </p>
+                </p> */}
               </div>
-              <Prices price={price} className="mt-0.5" />
+              <Prices price={+selling_price} className="mt-0.5" />
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
-            <p className="text-gray-500 dark:text-slate-400">{`Qty ${quantity}`}</p>
+            <p className="text-gray-500 dark:text-slate-400">{`Qty ${
+              qty || quantity
+            }`}</p>
 
             <div className="flex">
               <button
                 type="button"
                 className="font-medium text-primary-900 dark:text-primary-500 "
-                onClick={() => removeItemFromCart(item.id)}
+                onClick={() => removeItemFromCart(+product_id)}
               >
                 Remove
               </button>
@@ -145,11 +154,7 @@ export default function CartDropdown() {
                         </p>
                       )}
                       {cart.map((item, index) =>
-                        renderProduct(
-                          { ...item.product, quantity: item.quantity },
-                          index,
-                          close
-                        )
+                        renderProduct({ ...item.product }, index, close)
                       )}
                     </div>
                   </div>

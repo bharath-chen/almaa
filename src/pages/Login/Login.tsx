@@ -6,9 +6,8 @@ import { Helmet } from "react-helmet-async";
 import Input from "../../shared/Input/Input";
 import { Link, useNavigate } from "react-router-dom";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
-import loginService, {
-  ILoginCustomerPayload,
-} from "../../services/login-service";
+import loginService from "../../services/login-service";
+import { Customer } from "../../models/customer";
 import { Alert } from "../../shared/Alert/Alert";
 
 export interface Props {
@@ -52,7 +51,7 @@ const Login: FC<Props> = ({ className = "" }) => {
     }
 
     const { request, cancel } = loginService.get<
-      ILoginCustomerPayload,
+      Customer,
       { [key: string]: string; password: string }
     >({ [usernameKey]: customer.username, password: customer.password });
 

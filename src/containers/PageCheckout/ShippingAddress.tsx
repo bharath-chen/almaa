@@ -1,25 +1,70 @@
 import Label from "../../components/Label/Label";
-import React, { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import ButtonSecondary from "../../shared/Button/ButtonSecondary";
 import Input from "../../shared/Input/Input";
 import Radio from "../../shared/Radio/Radio";
 import Select from "../../shared/Select/Select";
+import { Address } from "../../models/address";
+
+interface AddressForm {
+  firstName: string;
+  lastName: string;
+  address: string;
+  apt: string;
+  city: string;
+  country: string;
+  state: string;
+  pincode: string;
+  addressType: string;
+}
 
 interface Props {
+  address?: Address;
   isActive: boolean;
   onCloseActive: () => void;
   onOpenActive: () => void;
 }
 
 const ShippingAddress: FC<Props> = ({
+  address,
   isActive,
   onCloseActive,
   onOpenActive,
 }) => {
+  const [addressForm, setAddressForm] = useState<AddressForm>({
+    firstName: "",
+    lastName: "",
+    address: "",
+    apt: "",
+    city: "",
+    country: "",
+    state: "",
+    pincode: "",
+    addressType: "Address-type-home",
+  });
+
+  useEffect(() => {
+    const customerDetails = JSON.parse(localStorage.getItem("customerDetails"));
+
+    if (!customerDetails || !address) return;
+
+    setAddressForm({
+      ...addressForm,
+      address: `${address.doorno}, ${address.street}, ${address.location}`,
+      city: address.city,
+      state: address.state,
+      firstName: customerDetails.first_name,
+      lastName: customerDetails.last_name,
+      pincode: address.pincode,
+      country: "India",
+      addressType: "Address-type-home",
+    });
+  }, [address]);
+
   const renderShippingAddress = () => {
     return (
-      <div className="border border-slate-200 dark:border-slate-700 rounded-xl ">
+      <div className="border border-slate-200 dark:border-slate-700 rounded-xl mb-4">
         <div className="p-6 flex flex-col sm:flex-row items-start">
           <span className="hidden sm:block">
             <svg
@@ -85,7 +130,11 @@ const ShippingAddress: FC<Props> = ({
             </h3>
             <div className="font-semibold mt-1 text-sm">
               <span className="">
-                St. Paul's Road, Norris, SD 57560, Dakota, USA
+                {`${addressForm?.address || ""}, ${addressForm?.city || ""}, ${
+                  addressForm?.state || ""
+                }, ${addressForm?.country || ""} - ${
+                  addressForm?.pincode || ""
+                }`}
               </span>
             </div>
           </div>
@@ -105,13 +154,26 @@ const ShippingAddress: FC<Props> = ({
         >
           {/* ============ */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
+            {/* defaultValue="Cole" */}
             <div>
               <Label className="text-sm">First name</Label>
-              <Input className="mt-1.5" defaultValue="Cole" />
+              <Input
+                className="mt-1.5"
+                value={addressForm?.firstName}
+                onChange={(e) =>
+                  setAddressForm({ ...addressForm, firstName: e.target.value })
+                }
+              />
             </div>
             <div>
               <Label className="text-sm">Last name</Label>
-              <Input className="mt-1.5" defaultValue="Enrico " />
+              <Input
+                className="mt-1.5"
+                value={addressForm?.lastName}
+                onChange={(e) =>
+                  setAddressForm({ ...addressForm, lastName: e.target.value })
+                }
+              />
             </div>
           </div>
 
@@ -121,10 +183,13 @@ const ShippingAddress: FC<Props> = ({
               <Label className="text-sm">Address</Label>
               <Input
                 className="mt-1.5"
-                placeholder=""
-                defaultValue={"123, Dream Avenue, USA"}
+                value={addressForm?.address}
+                onChange={(e) =>
+                  setAddressForm({ ...addressForm, address: e.target.value })
+                }
                 type={"text"}
               />
+              {/* defaultValue={"123, Dream Avenue, USA"} */}
             </div>
             <div className="sm:w-1/3">
               <Label className="text-sm">Apt, Suite *</Label>
@@ -136,11 +201,18 @@ const ShippingAddress: FC<Props> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
             <div>
               <Label className="text-sm">City</Label>
-              <Input className="mt-1.5" defaultValue="Norris" />
+              <Input
+                className="mt-1.5"
+                value={addressForm?.city}
+                onChange={(e) =>
+                  setAddressForm({ ...addressForm, city: e.target.value })
+                }
+              />
+              {/* defaultValue="Norris" */}
             </div>
             <div>
               <Label className="text-sm">Country</Label>
-              <Select className="mt-1.5" defaultValue="United States ">
+              <Select className="mt-1.5" defaultValue={"India"}>
                 <option value="United States">United States</option>
                 <option value="United States">Canada</option>
                 <option value="United States">Mexico</option>
@@ -149,6 +221,7 @@ const ShippingAddress: FC<Props> = ({
                 <option value="United States">England</option>
                 <option value="United States">Laos</option>
                 <option value="United States">China</option>
+                <option value="India">India</option>
               </Select>
             </div>
           </div>
@@ -157,11 +230,25 @@ const ShippingAddress: FC<Props> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
             <div>
               <Label className="text-sm">State/Province</Label>
-              <Input className="mt-1.5" defaultValue="Texas" />
+              <Input
+                className="mt-1.5"
+                value={addressForm?.state}
+                onChange={(e) =>
+                  setAddressForm({ ...addressForm, state: e.target.value })
+                }
+              />
+              {/* defaultValue="Texas" */}
             </div>
             <div>
               <Label className="text-sm">Postal code</Label>
-              <Input className="mt-1.5" defaultValue="2500 " />
+              <Input
+                className="mt-1.5"
+                value={addressForm?.pincode}
+                onChange={(e) =>
+                  setAddressForm({ ...addressForm, pincode: e.target.value })
+                }
+              />
+              {/* defaultValue="Texas" */}
             </div>
           </div>
 
@@ -173,12 +260,22 @@ const ShippingAddress: FC<Props> = ({
                 label={`<span class="text-sm font-medium">Home <span class="font-light">(All Day Delivery)</span></span>`}
                 id="Address-type-home"
                 name="Address-type"
+                // value="Address-type-home"
+                // checked={addressForm?.addressType === "Address-type-home"}
+                // onChange={(val) =>
+                //   setAddressForm({ ...addressForm, addressType: val })
+                // }
                 defaultChecked
               />
               <Radio
                 label={`<span class="text-sm font-medium">Office <span class="font-light">(Delivery <span class="font-medium">9 AM - 5 PM</span>)</span> </span>`}
                 id="Address-type-office"
                 name="Address-type"
+                // value="Address-type-office"
+                // checked={addressForm?.addressType === "Address-type-office"}
+                // onChange={(val) =>
+                //   setAddressForm({ ...addressForm, addressType: val })
+                // }
               />
             </div>
           </div>
@@ -189,7 +286,9 @@ const ShippingAddress: FC<Props> = ({
               className="sm:!px-7 shadow-none"
               onClick={onCloseActive}
             >
-              Save and next to Payment
+              {address?.address_id
+                ? "Continue to payment"
+                : "Save and next to Payment"}
             </ButtonPrimary>
             <ButtonSecondary
               className="mt-3 sm:mt-0 sm:ml-3"

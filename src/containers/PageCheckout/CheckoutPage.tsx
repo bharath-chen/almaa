@@ -1,10 +1,10 @@
 import Label from "../../components/Label/Label";
 import NcInputNumber from "../../components/NcInputNumber";
 import Prices from "../../components/Prices";
-import { Product, PRODUCTS } from "../../data/data";
-import { useState } from "react";
-import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+// import { Product } from "../../data/data";
+import { Product } from "../../models/product";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import Input from "../../shared/Input/Input";
 import ContactInfo from "./ContactInfo";
@@ -14,10 +14,35 @@ import { useShoppingCartContext } from "../../store/shopping-cart-context";
 import AppOfferCodes, {
   OfferCode,
 } from "../../components/AppOfferCodes/AppOfferCodes";
+import useViewAddressess from "../../hooks/useViewAddress";
+import { Address } from "../../models/address";
+import useViewCart from "../../hooks/useViewCart";
+import orderService from "../../services/order-service";
 
 const CheckoutPage = () => {
-  const { cart, totalPrice, removeItemFromCart, updateQuantity, orderPlaced } =
-    useShoppingCartContext();
+  const {
+    cart,
+    setCartItems,
+    totalPrice,
+    removeItemFromCart,
+    updateQuantity,
+    orderPlaced,
+  } = useShoppingCartContext();
+
+  const { cartDetails, setCartDetails } = useViewCart();
+  const { addressList, setAddressList } = useViewAddressess();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const productDetails =
+      cartDetails && cartDetails.cartDetail.length > 0
+        ? cartDetails.cartDetail.map((c, index) => ({
+            ...cartDetails.productDetail[index][0],
+            qty: +c.quantity,
+          }))
+        : [];
+    setCartItems(productDetails);
+  }, [cartDetails]);
 
   const [tabActive, setTabActive] = useState<
     "ContactInfo" | "ShippingAddress" | "PaymentMethod"
@@ -89,7 +114,7 @@ const CheckoutPage = () => {
 
     if (discountPercentage === 0) {
       return {
-        discountAmount: "0.00",
+        discountAmount: 0.0,
         discountedPrice: originalPrice.toFixed(2),
       };
     }
@@ -111,14 +136,23 @@ const CheckoutPage = () => {
   };
 
   const renderProduct = (item: Product, index: number) => {
-    const { image, price, name, sizes } = item;
+    const {
+      product_id,
+      product_image1,
+      selling_price,
+      product_name,
+      quantity,
+      qty,
+    } = item;
+
+    if (!item) return;
 
     return (
       <div key={index} className="relative flex py-7 first:pt-0 last:pb-0">
         <div className="relative h-36 w-24 sm:w-28 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
-            src={image}
-            alt={name}
+            src={product_image1}
+            alt={product_name}
             className="h-full w-full object-contain object-center"
           />
           <Link to="/product-detail" className="absolute inset-0"></Link>
@@ -129,7 +163,7 @@ const CheckoutPage = () => {
             <div className="flex justify-between ">
               <div className="flex-[1.5] ">
                 <h3 className="text-base font-semibold">
-                  <Link to="/product-detail">{name}</Link>
+                  <Link to="/product-detail">{product_name}</Link>
                 </h3>
                 <div className="mt-1.5 sm:mt-2.5 flex text-sm text-slate-600 dark:text-slate-300">
                   <div className="flex items-center space-x-1.5">
@@ -210,7 +244,7 @@ const CheckoutPage = () => {
                       />
                     </svg>
 
-                    <span>{item.sizes[0]}</span>
+                    {/* <span>{item.sizes[0]}</span> */}
                   </div>
                 </div>
 
@@ -230,13 +264,13 @@ const CheckoutPage = () => {
                   </select>
                   <Prices
                     contentClass="py-1 px-2 md:py-1.5 md:px-2.5 text-sm font-medium h-full"
-                    price={price}
+                    price={+selling_price}
                   />
                 </div>
               </div>
 
               <div className="hidden flex-1 sm:flex justify-end">
-                <Prices price={price} className="mt-0.5" />
+                <Prices price={+selling_price} className="mt-0.5" />
               </div>
             </div>
           </div>
@@ -244,15 +278,15 @@ const CheckoutPage = () => {
           <div className="flex mt-auto pt-4 items-end justify-between text-sm">
             <div className="hidden sm:block text-center relative">
               <NcInputNumber
-                defaultValue={item.quantity}
-                onChange={(value) => updateQuantity(item.id, value)}
+                defaultValue={+qty || +quantity}
+                onChange={(value) => updateQuantity(+product_id, value)}
                 className="relative z-10"
               />
             </div>
 
             <a
               className="cursor-pointer relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
-              onClick={() => removeItemFromCart(item.id)}
+              onClick={() => removeItemFromCart(+product_id)}
             >
               <span>Remove</span>
             </a>
@@ -280,17 +314,27 @@ const CheckoutPage = () => {
         </div>
 
         <div id="ShippingAddress" className="scroll-mt-24">
-          <ShippingAddress
-            isActive={tabActive === "ShippingAddress"}
-            onOpenActive={() => {
-              setTabActive("ShippingAddress");
-              handleScrollToEl("ShippingAddress");
-            }}
-            onCloseActive={() => {
-              setTabActive("PaymentMethod");
-              handleScrollToEl("PaymentMethod");
-            }}
-          />
+          <button
+            onClick={handleAddAddress}
+            className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium py-3 px-4 sm:py-3.5 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-90 bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 text-slate-50 dark:text-slate-800 shadow-xl sm:!px-7 shadow-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 mb-4"
+          >
+            Add Address
+          </button>
+          {addressList.map((address, index) => (
+            <ShippingAddress
+              address={address}
+              key={index}
+              isActive={tabActive === "ShippingAddress"}
+              onOpenActive={() => {
+                setTabActive("ShippingAddress");
+                handleScrollToEl("ShippingAddress");
+              }}
+              onCloseActive={() => {
+                setTabActive("PaymentMethod");
+                handleScrollToEl("PaymentMethod");
+              }}
+            />
+          ))}
         </div>
 
         <div id="PaymentMethod" className="scroll-mt-24">
@@ -305,6 +349,40 @@ const CheckoutPage = () => {
         </div>
       </div>
     );
+  };
+
+  const handleAddAddress = () => {
+    if (addressList.length <= 5) {
+      const list = [...addressList];
+      list.push({} as Address);
+      setAddressList(list);
+    }
+  };
+
+  const handleConfirmOrder = () => {
+    interface CreateOrderPayload {
+      gofor: string;
+      customer_id: string;
+      invoice_amount: string;
+      product_details: { product_id: string; quantity: string }[];
+    }
+
+    const customerDetails = JSON.parse(localStorage.getItem("customerDetails"));
+
+    const payload: CreateOrderPayload = {
+      gofor: "createorders",
+      customer_id: customerDetails.customer_id,
+      invoice_amount: totalPrice.toString(),
+      product_details: cart.map((c) => ({
+        product_id: c.product.product_id,
+        quantity: c.quantity.toString(),
+      })),
+    };
+
+    orderService.create<CreateOrderPayload>(payload).then((res) => {
+      orderPlaced();
+      navigate("/account-my-order");
+    });
   };
 
   return (
@@ -349,12 +427,16 @@ const CheckoutPage = () => {
                   </ButtonPrimary>
                 </>
               )}
-              {cart.map((item, index) =>
-                renderProduct(
-                  { ...item.product, quantity: item.quantity },
-                  index
-                )
-              )}
+              {cart &&
+                cart.length > 0 &&
+                cart.map((item, index) => {
+                  return renderProduct(
+                    {
+                      ...item.product,
+                    },
+                    index
+                  );
+                })}
             </div>
 
             {cart.length > 0 && (
@@ -445,14 +527,16 @@ const CheckoutPage = () => {
                     <span>Order total</span>
                     <span>
                       ₹
-                      {calculateDiscount(totalPrice, discount).discountedPrice +
-                        (5 + 24.9).toFixed(2)}
+                      {(
+                        +calculateDiscount(totalPrice, discount)
+                          .discountedPrice +
+                        (5 + 24.9)
+                      ).toFixed(2)}
                     </span>
                   </div>
                 </div>
                 <ButtonPrimary
-                  onClick={orderPlaced}
-                  href="/account-my-order"
+                  onClick={handleConfirmOrder}
                   className="mt-8 w-full"
                 >
                   Confirm order

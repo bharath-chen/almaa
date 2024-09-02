@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
   NoSymbolIcon,
   ClockIcon,
@@ -18,7 +18,7 @@ import Policy from "./Policy";
 import toast from "react-hot-toast";
 import { StarIcon } from "@heroicons/react/24/solid";
 import SectionSliderProductCard from "../../components/SectionSliderProductCard";
-import ModalViewAllReviews from "./ModalViewAllReviews";
+import ModalViewAllReviews, { Review } from "./ModalViewAllReviews";
 import NotifyAddTocart from "../../components/NotifyAddTocart";
 import { Link, useParams } from "react-router-dom";
 import productsService from "../../services/products-service";
@@ -41,6 +41,14 @@ import AppSlider from "../../components/AppSlider/AppSlider";
 import Heading from "../../components/Heading/Heading";
 import AppBuyingOptionCard from "../../components/AppBuyingOptionCard/AppBuyingOptionCard";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
+import relatedProductsService from "../../services/related-products-service";
+import { CanceledError } from "axios";
+import productDetailService, {
+  ProductDetail,
+} from "../../services/product-detail-service";
+import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
+import { useAppDispatch } from "../../hooks/hooks";
+import { Product } from "../../models/product";
 
 export interface ProductDetailPage2Props {
   className?: string;
@@ -50,9 +58,10 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   className = "",
 }) => {
   const { id } = useParams();
-  const relatedProducts = productsService
-    .getAllProducts()
-    .filter((_, i) => i < 8 && i > 2);
+  const dispatch = useAppDispatch();
+  // const relatedProducts = productsService
+  //   .getAllProducts()
+  //   .filter((_, i) => i < 8 && i > 2);
   const product = productsService.getProduct(+id);
   const { name, sizes, variants, status, allOfSizes, price, image } = product;
   const LIST_IMAGES_DEMO: string[] = [
@@ -127,6 +136,53 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     useState(false);
   const [openFocusIndex, setOpenFocusIndex] = useState(0);
 
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [productDetail, setProductDetail] = useState<ProductDetail>();
+
+  useEffect(() => {
+    const { request, cancel } = productDetailService.get<
+      ProductDetail,
+      { product_id: number }
+    >({ product_id: +id });
+
+    dispatch(showLoader());
+
+    request
+      .then((res) => {
+        dispatch(hideLoader());
+        setProductDetail(res.data);
+        console.log("Product detail:", res.data);
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+
+        dispatch(hideLoader());
+        console.log(err.message);
+      });
+
+    return () => cancel();
+  }, []);
+
+  // Related Products
+  useEffect(() => {
+    const { request, cancel } = relatedProductsService.getAll<
+      Product,
+      { product_id: number }
+    >({ product_id: +id });
+
+    request
+      .then((res) => {
+        setRelatedProducts(res.data);
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+
+        console.log(err.message);
+      });
+
+    return () => cancel();
+  }, []);
+
   const handleOpenModal = (index: number) => {
     setIsOpen(true);
     setOpenFocusIndex(index);
@@ -137,10 +193,10 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   const addToCart = () => {
     notifyAddTocart();
     const selected = buyingOptions.find((o) => o.selected);
-    addItemToCartWithQuantity(
-      { ...product, sizes: [quantityOption.label] },
-      selected ? selected.pack : quantitySelected
-    );
+    // addItemToCartWithQuantity(
+    //   product,
+    //   selected ? selected.pack : quantitySelected
+    // );
   };
 
   const handleBuyingOption = (id: number) => {
@@ -324,7 +380,11 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             {/* ---------- 1 HEADING ----------  */}
             <div className="flex items-center justify-between space-x-5">
               <div className="flex text-2xl font-semibold">
-                Rs.{price.toFixed(2)}
+                {/* Rs.{price.toFixed(2)} */}
+                Rs.
+                {parseInt(
+                  productDetail?.product_attributes[0].selling_price
+                ).toFixed(2)}
               </div>
 
               <a
@@ -335,10 +395,12 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                   <StarIcon className="w-5 h-5 pb-[1px] text-orange-400" />
                 </div>
                 <span className="ml-1.5 flex">
-                  <span>4.9 </span>
+                  <span>
+                    {productDetail?.product_details[0]?.user_ratings}{" "}
+                  </span>
                   <span className="mx-1.5">·</span>
                   <span className="text-slate-700 dark:text-slate-400 underline">
-                    142 reviews
+                    {productDetail?.product_feedback.length} reviews
                   </span>
                 </span>
               </a>
@@ -434,7 +496,9 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     return (
       <div className="listingSection__wrap !space-y-6">
         <div>
-          <h2 className="text-2xl md:text-3xl font-semibold">{name}</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold">
+            {productDetail?.product_details[0]?.product_name}
+          </h2>
           <div className="flex items-center mt-4 sm:mt-5">
             <a
               href="#reviews"
@@ -444,10 +508,10 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 <StarIcon className="w-5 h-5 pb-[1px] text-slate-800 dark:text-slate-200" />
               </div>
               <span className="ml-1.5">
-                <span>4.9</span>
+                <span>{productDetail?.product_details[0]?.user_ratings}</span>
                 <span className="mx-1.5">·</span>
                 <span className="text-slate-700 dark:text-slate-400 underline">
-                  142 reviews
+                  {productDetail?.product_feedback?.length} reviews
                 </span>
               </span>
             </a>
@@ -469,53 +533,55 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
           data={[
             {
               name: "Product Info",
-              content:
-                "A miraculous combination of herbs in pal podi magically clears sore throat, sinus headache, running nose, sneezing, improves vision and clears the discolourization of facial skin",
+              content: productDetail?.product_details[0]?.short_description,
+              // "A miraculous combination of herbs in pal podi magically clears sore throat, sinus headache, running nose, sneezing, improves vision and clears the discolourization of facial skin",
             },
-            {
-              name: `Benefits of ${name}`,
-              content: `<ul class="list-disc list-inside leading-7">
-            <li>Essential to control plaque of teeth</li>
-            <li>
-             Removes odour from teeth
-            </li>
-            <li>
-              Brushing your teeth twice a day is good for health
-            </li>
-            <li>
-              Enhances immunity
-            </li>
-          </ul>`,
-            },
+            //   {
+            //     name: `Benefits of ${name}`,
+            //     content: `<ul class="list-disc list-inside leading-7">
+            //   <li>Essential to control plaque of teeth</li>
+            //   <li>
+            //    Removes odour from teeth
+            //   </li>
+            //   <li>
+            //     Brushing your teeth twice a day is good for health
+            //   </li>
+            //   <li>
+            //     Enhances immunity
+            //   </li>
+            // </ul>`,
+            //   },
             {
               name: `How to Use?`,
-              content: `<ul class="list-disc list-inside leading-7">
-            <li>Essential to control plaque of teeth</li>
-            <li>
-             Removes odour from teeth
-            </li>
-            <li>
-              Brushing your teeth twice a day is good for health
-            </li>
-            <li>
-              Enhances immunity
-            </li>
-          </ul>`,
+              content: `<ul class="list-disc list-inside leading-7"><li>${productDetail?.product_details[0]?.howtouse}</li></ul>`,
+              //     `<ul class="list-disc list-inside leading-7">
+              //   <li>Essential to control plaque of teeth</li>
+              //   <li>
+              //    Removes odour from teeth
+              //   </li>
+              //   <li>
+              //     Brushing your teeth twice a day is good for health
+              //   </li>
+              //   <li>
+              //     Enhances immunity
+              //   </li>
+              // </ul>`,
             },
             {
               name: `Suitable For`,
               content: `<ul class="list-disc list-inside leading-7">
-            <li>Essential to control plaque of teeth</li>
-            <li>
-             Removes odour from teeth
-            </li>
-            <li>
-              Brushing your teeth twice a day is good for health
-            </li>
-            <li>
-              Enhances immunity
-            </li>
-          </ul>`,
+            <li>${productDetail?.product_details[0]?.suitablefor}</li>  
+            </ul>`,
+              // <li>Essential to control plaque of teeth</li>
+              // <li>
+              //  Removes odour from teeth
+              // </li>
+              // <li>
+              //   Brushing your teeth twice a day is good for health
+              // </li>
+              // <li>
+              //   Enhances immunity
+              // </li>
             },
           ]}
           panelClassName="p-4 pt-3.5 text-slate-600 text-base dark:text-slate-300 leading-7"
@@ -531,18 +597,19 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
         {/* <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div> */}
         <div className="prose prose-sm sm:prose dark:prose-invert sm:max-w-4xl">
           <p className="text-slate-700 font-normal">
-            Apart from usual tooth cleansing, the palpodi is indicated to treat
+            {/* Apart from usual tooth cleansing, the palpodi is indicated to treat
             45 types of tooth disorders. A miraculous combinations of herbs in
             pal podi magically clears sore throat, sinus, headache, running
             nose, sneezing, improves vision and clears the discolouration of
-            facial skin.
+            facial skin. */}
+            {productDetail?.product_details[0]?.full_description}
           </p>
-          <ul className="list-inside leading-7">
+          {/* <ul className="list-inside leading-7">
             <li>Essential to control plaque of teeth</li>
             <li>Removes odour from teeth</li>
             <li>Brushing your teeth twice a day is good for health</li>
             <li>Enhances Immunity</li>
-          </ul>
+          </ul> */}
         </div>
         {/* ---------- 6 ----------  */}
       </div>
@@ -555,13 +622,28 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
         {/* HEADING */}
         <h2 className="text-2xl font-semibold flex items-center">
           <StarIcon className="w-7 h-7 mb-0.5" />
-          <span className="ml-1.5"> 4,87 · 142 Reviews</span>
+          <span className="ml-1.5">
+            {" "}
+            {productDetail?.product_details[0]?.user_ratings} ,{" "}
+            {productDetail?.product_feedback?.length} Reviews
+          </span>
         </h2>
 
         {/* comment */}
         <div className="mt-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-y-11 gap-x-28">
-            <ReviewItem />
+            {productDetail?.product_feedback?.map((feedback) => (
+              <ReviewItem
+                key={feedback.prodcustfb_id}
+                data={{
+                  comment: feedback.comments,
+                  date: new Date().toString(),
+                  name: "Stiven Hokinhs",
+                  starPoint: +feedback.user_ratings,
+                }}
+              />
+            ))}
+            {/* <ReviewItem />
             <ReviewItem
               data={{
                 comment: `I love the charcoal heavyweight hoodie. Still looks new after plenty of washes. 
@@ -588,14 +670,14 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 name: "Dahon Stiven",
                 starPoint: 5,
               }}
-            />
+            /> */}
           </div>
 
           <ButtonSecondary
             onClick={() => setIsOpenModalViewAllReviews(true)}
             className="mt-10 border border-slate-300 dark:border-slate-700 "
           >
-            Show me all 142 reviews
+            Show me all {productDetail?.product_feedback?.length} reviews
           </ButtonSecondary>
         </div>
       </div>
@@ -718,7 +800,8 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 <NcImage
                   containerClassName="aspect-w-6 aspect-h-8 lg:aspect-h-8 md:absolute md:inset-0"
                   className="object-cover w-full h-full rounded-md sm:rounded-xl"
-                  src={LIST_IMAGES_DEMO[0]}
+                  // src={LIST_IMAGES_DEMO[0]}
+                  src={productDetail?.product_details[0]?.product_image1}
                 />
                 <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
               </div>
@@ -730,7 +813,8 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 <NcImage
                   containerClassName="aspect-w-6 aspect-h-8 lg:aspect-h-8"
                   className="object-cover w-full h-full rounded-md sm:rounded-xl"
-                  src={LIST_IMAGES_DEMO[1]}
+                  // src={LIST_IMAGES_DEMO[1]}
+                  src={productDetail?.product_details[0]?.product_image2}
                 />
                 <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
               </div>
@@ -742,7 +826,8 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 <NcImage
                   containerClassName="aspect-w-6 aspect-h-8 lg:aspect-h-8"
                   className="object-cover w-full h-full rounded-md sm:rounded-xl"
-                  src={LIST_IMAGES_DEMO[2]}
+                  // src={LIST_IMAGES_DEMO[2]}
+                  src={productDetail?.product_details[0]?.product_image3}
                 />
                 <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
               </div>
@@ -773,7 +858,12 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
         </header>
         {/* MODAL PHOTOS */}
         <ModalPhotos
-          imgs={LIST_IMAGES_DEMO}
+          imgs={[
+            productDetail?.product_details[0]?.product_image1,
+            productDetail?.product_details[0]?.product_image2,
+            productDetail?.product_details[0]?.product_image3,
+            productDetail?.product_details[0]?.product_image4,
+          ]}
           isOpen={isOpen}
           onClose={handleCloseModal}
           initFocus={openFocusIndex}
@@ -811,7 +901,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             <div className="lg:w-[50%] max-w-lg relative">
               <p className="font-semibold text-2xl">Key Benefits</p>
               <h2 className="font-semibold text-2xl sm:text-4xl xl:text-5xl 2xl:text-6xl mt-2 sm:mt-2 !leading-[1.13] tracking-tight">
-                Herbal Tooth Powder
+                {productDetail?.product_details[0]?.product_name}
                 {/* Special offer <br />
                 in kids products */}
               </h2>
@@ -827,7 +917,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
               </ul>
               <div className="flex space-x-2 sm:space-x-5 mt-6 sm:mt-12">
                 <ButtonPrimary
-                  href="/page-search"
+                  // href="/page-search"
                   className="md:px-14 md:py-5 md:text-2xl bg-primary-700 dark:bg-slate-200 dark:text-slate-900"
                 >
                   Buy Now
@@ -943,7 +1033,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
           <NcImage
             containerClassName="absolute inset-0 rounded-3xl overflow-hidden z-0"
             className="object-cover w-full h-full transition-transform group-hover:scale-105 duration-300  "
-            src={video}
+            src={productDetail?.product_details[0]?.video}
             title={"expert Meditating"}
             alt={"expert Meditating"}
           />
@@ -973,13 +1063,15 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
         {/* <hr className="border-slate-200 dark:border-slate-700" /> */}
 
-        <SectionSliderProductCard
-          heading="Related Products"
-          subHeading=""
-          headingFontClassName="text-3xl font-semibold"
-          headingClassName="mb-10 text-neutral-900 dark:text-neutral-50"
-          data={relatedProducts}
-        />
+        {relatedProducts.length > 0 && (
+          <SectionSliderProductCard
+            heading="Related Products"
+            subHeading=""
+            headingFontClassName="text-3xl font-semibold"
+            headingClassName="mb-10 text-neutral-900 dark:text-neutral-50"
+            data={relatedProducts}
+          />
+        )}
       </section>
 
       {/* POLICY SECTION */}
@@ -988,9 +1080,23 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       </section>
 
       {/* MODAL VIEW ALL REVIEW */}
+      {/* id: string;
+  name: string;
+  avatar?: string;
+  date: string;
+  comment: string;
+  starPoint: number; */}
       <ModalViewAllReviews
         show={isOpenModalViewAllReviews}
         onCloseModalViewAllReviews={() => setIsOpenModalViewAllReviews(false)}
+        rating={productDetail?.product_details[0]?.user_ratings}
+        reviews={productDetail?.product_feedback?.map((f) => ({
+          id: f.prodcustfb_id,
+          name: "Stiven Hokinhs",
+          date: new Date().toString(),
+          comment: f.comments,
+          starPoint: +f.user_ratings,
+        }))}
       />
 
       {/* EMAIL SUBSCRIBE SECTION */}
@@ -1000,9 +1106,9 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 };
 
 export default ProductDetailPage2;
-function useEffect(
-  arg0: () => () => void,
-  arg1: (string | React.MutableRefObject<any>)[]
-) {
-  throw new Error("Function not implemented.");
-}
+// function useEffect(
+//   arg0: () => () => void,
+//   arg1: (string | React.MutableRefObject<any>)[]
+// ) {
+//   throw new Error("Function not implemented.");
+// }
