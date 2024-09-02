@@ -1,18 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../state/store";
-
-interface AuthState {
-  customer_id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  mobilenumber: string;
-  registration_type: string;
-  status: string;
-  otp_status: string;
-  created_date: string | null;
-  modified_date: string;
-}
+import { AuthState } from "../../models/authState";
 
 const initialState: AuthState = {
   customer_id: "",
@@ -69,6 +57,8 @@ const authSlice = createSlice({
 export const { login, logout } = authSlice.actions;
 
 export default authSlice.reducer;
+
+export const selectAuthInfo = (state: RootState): AuthState => state.auth;
 
 export const selectIsLoggedIn = (state: RootState): boolean => {
   return !!state.auth.customer_id && !!state.auth.email;

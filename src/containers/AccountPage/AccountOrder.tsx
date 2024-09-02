@@ -6,19 +6,20 @@ import { useShoppingCartContext } from "../../store/shopping-cart-context";
 import CommonLayout from "./CommonLayout";
 import orderService from "../../services/order-service";
 import { CanceledError } from "axios";
+import { useAppSelector } from "../../hooks/hooks";
+import { RootState } from "../../state/store";
 
 const AccountOrder = () => {
   const { placedOrders } = useShoppingCartContext();
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
+  const customer = useAppSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    const customerDetails = JSON.parse(localStorage.getItem("customerDetails"));
-
     const { request, cancel } = orderService.get<
       { viewOrders: any[]; productDetail: Product[] },
       { goFor: string; customer_id: string }
-    >({ goFor: "vieworders", customer_id: customerDetails.customer_id });
+    >({ goFor: "vieworders", customer_id: customer?.customer_id });
 
     request
       .then((res) => {

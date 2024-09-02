@@ -7,6 +7,7 @@ import { pages } from "./pages";
 import { Toaster } from "react-hot-toast";
 import MiniOfferBanner from "../components/MiniOfferBanner";
 import { ShoppingCartProvider } from "../store/shopping-cart-context";
+import AuthGuard from "../components/AuthGuard/AuthGuard";
 
 const MyRoutes = () => {
   return (
@@ -18,9 +19,24 @@ const MyRoutes = () => {
         {/* <SiteHeader /> */}
         <AppHeader />
         <Routes>
-          {pages.map(({ component: Component, path }, index) => {
-            return <Route key={index} element={<Component />} path={path} />;
-          })}
+          {pages.map(
+            ({ component: Component, path, protectedRoute }, index) => {
+              if (protectedRoute) {
+                return (
+                  <Route
+                    key={index}
+                    element={
+                      <AuthGuard>
+                        <Component />
+                      </AuthGuard>
+                    }
+                    path={path}
+                  />
+                );
+              }
+              return <Route key={index} element={<Component />} path={path} />;
+            }
+          )}
           <Route element={<Page404 />} />
           <Route path="*" Component={Page404} />
         </Routes>

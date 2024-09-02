@@ -3,7 +3,8 @@ import { CartDetail } from "../models/cartDetail";
 import { Product } from "../models/product";
 import apiClient, { CanceledError } from "../services/api-client";
 import { hideLoader, showLoader } from "../features/loader/loaderSlice";
-import { useAppDispatch } from "./hooks";
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { RootState } from "../state/store";
 
 interface CartDetailPayload {
   cartDetail: CartDetail[];
@@ -11,11 +12,10 @@ interface CartDetailPayload {
 }
 
 const useViewCart = () => {
+  const customer = useAppSelector((state: RootState) => state.auth);
   const dispatch = useAppDispatch();
   const [cartDetails, setCartDetails] = useState<CartDetailPayload>();
   const [error, setError] = useState("");
-
-  const customerDetails = JSON.parse(localStorage.getItem("customerDetails"));
 
   useEffect(() => {
     const controller = new AbortController();
@@ -24,7 +24,7 @@ const useViewCart = () => {
 
     apiClient
       .get<CartDetailPayload>(
-        `?gofor=viewcart&customer_id=${customerDetails.customer_id}`,
+        `?gofor=viewcart&customer_id=${customer?.customer_id}`,
         {
           signal: controller.signal,
         }

@@ -7,8 +7,10 @@ import Input from "../../shared/Input/Input";
 import { Link, useNavigate } from "react-router-dom";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import loginService from "../../services/login-service";
-import { Customer } from "../../models/customer";
 import { Alert } from "../../shared/Alert/Alert";
+import { useAppDispatch } from "../../hooks/hooks";
+import { login } from "../../features/auth/authSlice";
+import { AuthState } from "../../models/authState";
 
 export interface Props {
   className?: string;
@@ -35,6 +37,7 @@ const loginSocials = [
 const Login: FC<Props> = ({ className = "" }) => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const dispatch = useAppDispatch();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,15 +54,15 @@ const Login: FC<Props> = ({ className = "" }) => {
     }
 
     const { request, cancel } = loginService.get<
-      Customer,
+      AuthState,
       { [key: string]: string; password: string }
     >({ [usernameKey]: customer.username, password: customer.password });
 
     request
       .then((res) => {
         if (+res.data.status) {
+          dispatch(login(res.data));
           navigate("/");
-          localStorage.setItem("customerDetails", JSON.stringify(res.data));
         } else {
           setError(res.data.status);
         }

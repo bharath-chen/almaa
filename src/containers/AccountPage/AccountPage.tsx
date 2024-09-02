@@ -7,12 +7,16 @@ import Textarea from "../../shared/Textarea/Textarea";
 import CommonLayout from "./CommonLayout";
 import { Helmet } from "react-helmet-async";
 import { avatarImgs } from "../../contains/fakeData";
+import { useAppSelector } from "../../hooks/hooks";
+import { RootState } from "../../state/store";
 
 export interface AccountPageProps {
   className?: string;
 }
 
 const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
+  const customer = useAppSelector((state: RootState) => state.auth);
+
   return (
     <div className={`nc-AccountPage ${className}`} data-nc-id="AccountPage">
       <Helmet>
@@ -61,7 +65,13 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
             <div className="flex-grow mt-10 md:mt-0 md:pl-16 max-w-3xl space-y-6">
               <div>
                 <Label>Full name</Label>
-                <Input className="mt-1.5" defaultValue="Enrico Cole" />
+                <Input
+                  className="mt-1.5"
+                  // defaultValue="Enrico Cole"
+                  defaultValue={
+                    customer?.first_name + " " + customer?.last_name
+                  }
+                />
               </div>
 
               {/* ---- */}
@@ -75,7 +85,8 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
                   </span>
                   <Input
                     className="!rounded-l-none"
-                    placeholder="example@email.com"
+                    // placeholder="example@email.com"
+                    placeholder={customer?.email}
                   />
                 </div>
               </div>

@@ -190,7 +190,10 @@ const Home = () => {
       }}
     >
       {/* HERO SECTION */}
-      <section className="w-full mb-20">
+      <section className="container-fluid mb-40">
+        <AppCarousel />
+      </section>
+      {/* <section className="w-full mb-20">
         <div className="nc-PageHome relative overflow-hidden">
           <NcImage
             src={heroImg}
@@ -217,7 +220,7 @@ const Home = () => {
             </ButtonSecondary>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Carousel Section */}
       {/* <div className="flex items-center justify-center min-h-screen bg-gray-100">

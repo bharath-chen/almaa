@@ -43,3 +43,16 @@ ul.dashed li:before {
   top: 0;
   left: 0;
 }
+
+.slick-prev,
+.slick-next {
+  z-index: 1;
+}
+
+.slick-prev {
+  left: 10px;
+}
+
+.slick-next {
+  right: 10px;
+}

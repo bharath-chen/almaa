@@ -44,9 +44,13 @@ import TermsAndConditions from "../pages/TermsAndConditions/TermsAndConditions";
 import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
 
 export const pages: Page[] = [
-  { path: "/", component: Home },
-  { path: "/products", component: Products },
-  { path: "/product-detail/:id", component: ProductDetailPage2 },
+  { path: "/", component: Home, protectedRoute: false },
+  { path: "/products", component: Products, protectedRoute: true },
+  {
+    path: "/product-detail/:id",
+    component: ProductDetailPage2,
+    protectedRoute: true,
+  },
   { path: "/home2", component: PageHome2 },
   { path: "/home3", component: PageHome3 },
   //
@@ -57,14 +61,22 @@ export const pages: Page[] = [
   { path: "/page-collection", component: PageCollection },
   { path: "/page-search", component: PageSearch },
   //
-  { path: "/account", component: AccountPage },
-  { path: "/account-savelists", component: AccountSavelists },
-  { path: "/account-change-password", component: AccountPass },
-  { path: "/account-billing", component: AccountBilling },
-  { path: "/account-my-order", component: AccountOrder },
+  { path: "/account", component: AccountPage, protectedRoute: true },
+  {
+    path: "/account-savelists",
+    component: AccountSavelists,
+    protectedRoute: true,
+  },
+  {
+    path: "/account-change-password",
+    component: AccountPass,
+    protectedRoute: true,
+  },
+  { path: "/account-billing", component: AccountBilling, protectedRoute: true },
+  { path: "/account-my-order", component: AccountOrder, protectedRoute: true },
   //
-  { path: "/cart", component: CartPage },
-  { path: "/checkout", component: CheckoutPage },
+  { path: "/cart", component: CartPage, protectedRoute: true },
+  { path: "/checkout", component: CheckoutPage, protectedRoute: true },
   //
   { path: "/blog", component: Blog },
   { path: "/blog-single", component: BlogSingle },

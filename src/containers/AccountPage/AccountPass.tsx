@@ -5,8 +5,12 @@ import Input from "../../shared/Input/Input";
 import CommonLayout from "./CommonLayout";
 import updatePasswordService from "../../services/update-password-service";
 import { Customer } from "../../models/customer";
+import { useAppSelector } from "../../hooks/hooks";
+import { RootState } from "../../state/store";
 
 const AccountPass = () => {
+  const customer = useAppSelector((state: RootState) => state.auth);
+
   const [accountPasswordDetails, setAccountPasswordDetails] = useState({
     currentPassword: "",
     newPassword: "",
@@ -14,15 +18,11 @@ const AccountPass = () => {
   });
 
   const handleUpdatePassword = () => {
-    const customerDetails: Customer = JSON.parse(
-      localStorage.getItem("customerDetails")
-    );
-    // customer_id=1&password=123456
     const { request } = updatePasswordService.get<
       any,
       { customer_id: number; password: string }
     >({
-      customer_id: +customerDetails.customer_id,
+      customer_id: +customer.customer_id,
       password: accountPasswordDetails.newPassword,
     });
 

@@ -1,16 +1,18 @@
-import React, { FC, useEffect, useRef, useState } from "react";
-import Logo from "../../../shared/Logo/Logo";
+import React, { FC, useState } from "react";
 import MenuBar from "../../../shared/MenuBar/MenuBar";
 import AvatarDropdown from "./AvatarDropdown";
 import Navigation from "../../../shared/Navigation/Navigation";
 import CartDropdown from "./CartDropdown";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import almaaLogo from "../../../assets/almaa-logo-small.png";
 import productsSearch from "../../../services/products-search";
 import { Product } from "../../../models/product";
 import { useAppDispatch } from "../../../hooks/hooks";
 import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
+import { RootState } from "../../../state/store";
+import { useSelector } from "react-redux";
+import { selectIsLoggedIn } from "../../../features/auth/authSlice";
 
 export interface NavbarProps {}
 
@@ -18,6 +20,7 @@ const Navbar: FC<NavbarProps> = () => {
   const inputRef = React.createRef<HTMLInputElement>();
   const [showSearchForm, setShowSearchForm] = useState(false);
   const dispatch = useAppDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const renderMagnifyingGlassIcon = () => {
     return (
@@ -122,8 +125,17 @@ const Navbar: FC<NavbarProps> = () => {
               {renderMagnifyingGlassIcon()}
             </button>
           )}
-          <AvatarDropdown />
-          <CartDropdown />
+          {isLoggedIn && (
+            <>
+              <AvatarDropdown />
+              <CartDropdown />
+            </>
+          )}
+          {!isLoggedIn && (
+            <>
+              <Link to="/login">Login</Link>
+            </>
+          )}
         </div>
       </div>
     );
