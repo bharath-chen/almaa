@@ -1,4 +1,3 @@
-import { Params } from "react-router-dom";
 import apiClient from "./api-client";
 
 interface Entity {
