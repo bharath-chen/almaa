@@ -4,7 +4,7 @@ import AvatarDropdown from "./AvatarDropdown";
 import Navigation from "../../../shared/Navigation/Navigation";
 import CartDropdown from "./CartDropdown";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import almaaLogo from "../../../assets/almaa-logo-small.png";
 import productsSearch from "../../../services/products-search";
 import { Product } from "../../../models/product";
@@ -21,6 +21,7 @@ const Navbar: FC<NavbarProps> = () => {
   const [showSearchForm, setShowSearchForm] = useState(false);
   const dispatch = useAppDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const navigate = useNavigate();
 
   const renderMagnifyingGlassIcon = () => {
     return (
@@ -64,11 +65,15 @@ const Navbar: FC<NavbarProps> = () => {
     request
       .then((res) => {
         dispatch(hideLoader());
-        console.log(res.data);
+        navigate("/page-search", {
+          state: {
+            products: res.data,
+            searchText: inputRef.current.value,
+          },
+        });
       })
       .catch((err) => {
         dispatch(hideLoader());
-        console.log(err.message);
       });
   };
 
