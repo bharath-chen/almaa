@@ -53,7 +53,7 @@ interface ProductAttributes {
   modified_date: string;
 }
 
-interface ProductExperience {
+interface ProductExpertTalk {
   pro_exptalk_id: string;
   product_id: string;
   image: string;
@@ -89,7 +89,7 @@ interface ProductIngredient {
 export interface ProductDetail {
   product_details: ProductDetails[];
   product_attributes: ProductAttributes[];
-  product_experience: ProductExperience[];
+  product_experttalk: ProductExpertTalk[];
   product_feedback: ProductFeedback[];
   product_tags: ProductTag[];
   product_ingred: ProductIngredient[];

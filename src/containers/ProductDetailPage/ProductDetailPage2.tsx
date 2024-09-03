@@ -684,28 +684,28 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     );
   };
 
-  const renderExperts = (item) => {
+  const renderExperts = (expert) => {
     return (
       <div
-        key={item.id}
+        key={expert.doctor_id}
         className="bg-slate-100 rounded-3xl grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-4 py-6 px-10 mb-20"
       >
         <div>
-          <img
+          <NcImage
             className="sm:w-full md:w-56 h-auto rounded-2xl"
-            src={item.src}
-            alt={item.name}
+            src={expert.docphoto}
+            alt={expert.name}
           />
         </div>
         <div className="col-span-3">
           <h3 className="md:text-lg lg:text-2xl font-semibold pt-2">
-            {item.name}
+            {expert.name}
           </h3>
           <h4 className="text-zinc-500 font-medium mt-1 mb-2">
-            {item.profession}
+            {expert.specialization}
           </h4>
           <p className="text-sm md:text-md lg:text-lg text-black leading-7">
-            {item.content}
+            {expert.content}
           </p>
         </div>
       </div>
@@ -714,14 +714,14 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
   const renderIngredients = (item) => {
     return (
-      <div key={item.id}>
-        <img className="rounded-2xl " src={item.src} alt={item.title} />
+      <div key={item.ingredient_id}>
+        <NcImage className="rounded-2xl " src={item.image} alt={item.name} />
         <div className="grid justify-items-stretch">
           <h5 className="font-semibold justify-self-center text-dark-900 dark:text-white text-2xl mt-2">
-            {item.title}
+            {item.name}
           </h5>
           <p className="justify-self-center text-sm font-semibold text-slate-500 dark:text-white">
-            {item.shortDesc}
+            {item.desc}
           </p>
         </div>
       </div>
@@ -970,40 +970,42 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
         </div> */}
 
         {/* SLIDER SECTION */}
-        <AppSlider
-          data={ingredients}
-          renderChildren={renderIngredients}
-          glideOptions={{
-            perView: 4,
-            gap: 32,
-            bound: true,
-            breakpoints: {
-              1280: {
-                perView: 4,
+        {productDetail?.product_ingred && (
+          <AppSlider
+            data={productDetail?.product_ingred}
+            renderChildren={renderIngredients}
+            glideOptions={{
+              perView: 4,
+              gap: 32,
+              bound: true,
+              breakpoints: {
+                1280: {
+                  perView: 4,
+                },
+                1024: {
+                  gap: 20,
+                  perView: 4,
+                },
+                768: {
+                  gap: 20,
+                  perView: 3,
+                },
+                640: {
+                  gap: 20,
+                  perView: 1,
+                },
+                500: {
+                  gap: 20,
+                  perView: 1,
+                },
               },
-              1024: {
-                gap: 20,
-                perView: 4,
-              },
-              768: {
-                gap: 20,
-                perView: 3,
-              },
-              640: {
-                gap: 20,
-                perView: 1,
-              },
-              500: {
-                gap: 20,
-                perView: 1,
-              },
-            },
-          }}
-        >
-          <Heading fontClass="text-3xl md:text-3xl font-semibold" hasNextPrev>
-            Key Ingredients
-          </Heading>
-        </AppSlider>
+            }}
+          >
+            <Heading fontClass="text-3xl md:text-3xl font-semibold" hasNextPrev>
+              Key Ingredients
+            </Heading>
+          </AppSlider>
+        )}
         {/* <ButtonSecondary className="border border-slate-300 dark:border-slate-700 md:text-lg md:px-20 md:py-4">
           Show all ingredients
         </ButtonSecondary> */}
@@ -1012,15 +1014,17 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       {/* EXPERT TALK */}
       <section className="container mb-10 overflow-hidden">
         {/* SLIDER SECTION */}
-        <AppSlider
-          data={expertTalkItems}
-          renderChildren={renderExperts}
-          glideOptions={expertSlideGlideOptions}
-        >
-          <Heading fontClass="text-3xl md:text-3xl font-semibold" hasNextPrev>
-            Expert Talk
-          </Heading>
-        </AppSlider>
+        {productDetail?.product_experttalk && (
+          <AppSlider
+            data={productDetail.product_experttalk}
+            renderChildren={renderExperts}
+            glideOptions={expertSlideGlideOptions}
+          >
+            <Heading fontClass="text-3xl md:text-3xl font-semibold" hasNextPrev>
+              Expert Talk
+            </Heading>
+          </AppSlider>
+        )}
 
         {/* VIDEO */}
         <div
@@ -1080,12 +1084,6 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       </section>
 
       {/* MODAL VIEW ALL REVIEW */}
-      {/* id: string;
-  name: string;
-  avatar?: string;
-  date: string;
-  comment: string;
-  starPoint: number; */}
       <ModalViewAllReviews
         show={isOpenModalViewAllReviews}
         onCloseModalViewAllReviews={() => setIsOpenModalViewAllReviews(false)}
@@ -1106,9 +1104,3 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 };
 
 export default ProductDetailPage2;
-// function useEffect(
-//   arg0: () => () => void,
-//   arg1: (string | React.MutableRefObject<any>)[]
-// ) {
-//   throw new Error("Function not implemented.");
-// }
