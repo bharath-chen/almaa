@@ -434,7 +434,7 @@ const Home = () => {
           <AppSlider
             // data={CATEGORY_SLIDERS}
             data={natProducts.map((p) => ({
-              name: "",
+              name: p.tagline,
               desc: p.name,
               featuredImage: "",
               color: "bg-slate-50",

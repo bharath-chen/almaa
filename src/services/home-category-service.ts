@@ -5,6 +5,7 @@ export interface NatProduct {
   name: string;
   status: string;
   created_date: string;
+  tagline: string;
 }
 
 export default create("?gofor=natprodlist");
