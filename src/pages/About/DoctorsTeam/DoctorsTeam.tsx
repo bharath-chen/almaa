@@ -10,6 +10,7 @@ import { CanceledError } from "axios";
 import Doctors from "./Doctors";
 import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
 import { useAppDispatch } from "../../../hooks/hooks";
+import Heading from "../../../shared/Heading/Heading";
 
 interface DoctorsTeamProps {
   className?: string;
@@ -59,7 +60,7 @@ const DoctorsTeam = ({ className = "" }: DoctorsTeamProps) => {
       {/* ======== BG GLASS ======== */}
       <BgGlassmorphism />
 
-      <div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
+      <div className="container py-16">
         <SectionHero
           rightImg={rightImg}
           heading="About Us."
@@ -67,15 +68,30 @@ const DoctorsTeam = ({ className = "" }: DoctorsTeamProps) => {
           subHeading="We’re impartial and independent, and every day we create distinctive, world-class programmes and content which inform, educate and entertain millions of people in the around the world."
         />
 
-        <Doctors
-          heading="Doctors"
-          desc={null}
-          doctors={doctors}
-          onClick={routeToDoctorDetail}
-        />
+        <section className="my-20">
+          <Heading desc={null}>
+            Meet Our Team: Guardians of Indigenous Knowledge
+          </Heading>
 
-        {/* EMAIL SUBSCRIBE SECTION */}
-        <EmailSubscribeSection />
+          <ul className="list-disc list-inside leading-7 mt-5 mb-10">
+            <li>
+              Our doctor's compassion for both the service and the profession
+              ensures that every patient's journey to health is a smooth
+              passage.
+            </li>
+            <li>
+              Our Quality & experience with unmatched professionalism carry us
+              forward 
+            </li>
+          </ul>
+
+          <Doctors doctors={doctors} onClick={routeToDoctorDetail} />
+        </section>
+
+        <section className="pt-20">
+          {/* EMAIL SUBSCRIBE SECTION */}
+          <EmailSubscribeSection />
+        </section>
       </div>
     </div>
   );

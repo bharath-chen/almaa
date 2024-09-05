@@ -3,24 +3,13 @@ import { IDoctor } from "../../../services/doctors-service";
 import NcImage from "../../../shared/NcImage/NcImage";
 
 interface Props {
-  heading?: string;
-  desc?: string;
   doctors: IDoctor[];
   onClick: (doctor: IDoctor) => void;
 }
 
-const Doctors = ({ heading, desc, doctors, onClick }: Props) => {
+const Doctors = ({ doctors, onClick }: Props) => {
   return (
     <div className="nc-SectionFounder relative">
-      <Heading
-        desc={
-          desc ||
-          `We’re impartial and independent, and every day we create distinctive,
-        world-class programmes and content`
-        }
-      >
-        {heading || "⛱ Founder"}
-      </Heading>
       <div className="grid sm:grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4 xl:gap-x-8">
         {doctors.map((item) => (
           <div
