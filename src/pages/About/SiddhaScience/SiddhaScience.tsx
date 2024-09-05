@@ -7,6 +7,7 @@ import Button from "../../../shared/Button/Button";
 import Heading from "../../../components/Heading/Heading";
 import AccordionInfo from "../../../containers/ProductDetailPage/AccordionInfo";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
+import { SIDDHA_SCIENCE } from "./SIDDHA_SCIENCE";
 
 const SiddhaScience = () => {
   return (
@@ -151,7 +152,7 @@ const SiddhaScience = () => {
             />
           </div>
           <div>
-            <AccordionInfo data={ACCORDION_INFO} />
+            <AccordionInfo data={SIDDHA_SCIENCE.accordionData} />
           </div>
         </div>
       </section>
