@@ -16,6 +16,7 @@ import AccordionInfo from "../../../containers/ProductDetailPage/AccordionInfo";
 import whyAlmaaImg from "../../../assets/HOME PAGE/10-why-section.jpg";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import SEO from "../../../shared/SEO/SEO";
+import { ALMAA_GROUP } from "./ALMAA_GROUP";
 
 interface AlmaaGroupProps {
   className?: string;
@@ -39,11 +40,15 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
       {/* ======== BG GLASS ======== */}
       <BgGlassmorphism />
       <div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
+        <h1 className="font-bold lg:text-5xl md:text-4xl text-2xl">
+          Our Story: Unveiling Almaa's Heritage in Siddha Medicine Online
+        </h1>
         <SectionHero
           rightImg={rightImg}
-          heading="About Almaa Groups."
+          heading={null}
           btnText=""
-          subHeading="We’re impartial and independent, and every day we create distinctive, world-class programmes and content which inform, educate and entertain millions of people in the around the world."
+          subHeading="Sindhanai Sitthar Thiru. M.G.L. Velayudham Avargal has started the Almaa Herbal Nature Pvt.Ltd with the motto of introducing the Siddha System of Medicine into every Household in Tamil Nadu & all around the world. The Siddha system has a large potential to cure diseases and maintain health. He aimed to Increase the Quality & Standards of Siddha medicine to compete with Global Standards.
+Where contemporary medicine was just to alleviate symptoms, he saw the curing capacity of Siddha medicine and its need around the world. He thought Siddha medicine through Online medium was a powerful tool to showcase the power of Tamil traditional medicine to the world. We Are Offering Online Consultations with Siddha doctors through our portal. "
         />
       </div>
       {/* AWARDS & ACCOLADES SECTION */}
@@ -80,10 +85,10 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
       <section className="container mb-40">
         <Heading
           className="mb-8"
-          rightDescText="Almaa?"
+          rightDescText="Medicine"
           fontClass="text-2xl md:text-4xl font-bold"
         >
-          Why
+          Why Siddha
         </Heading>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 place-content-center">
           <div className="lg:pl-20">
@@ -94,7 +99,7 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
             />
           </div>
           <div>
-            <AccordionInfo data={ACCORDION_INFO} />
+            <AccordionInfo data={ALMAA_GROUP.accordionData} />
           </div>
         </div>
       </section>
