@@ -16,19 +16,28 @@ const SiddhaScience = () => {
       <section className="container mt-10 mb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 place-content-center">
           <div>
-            <h3 className="text-2xl xl:text-3xl font-semibold">
-              Take Care of you <span className="text-slate-400">in a</span>{" "}
+            <h2 className="text-2xl xl:text-3xl font-semibold">
+              History of Siddha - Oldest Known Medical Practice
+              {/* Take Care of you <span className="text-slate-400">in a</span>{" "}
               <br />
-              <span className="my-2 text-slate-400">Herbal Way ...</span>
-            </h3>
+              <span className="my-2 text-slate-400">Herbal Way ...</span> */}
+            </h2>
             <p className="mt-1 text-slate-400 leading-7 tracking-wide text-sm md:text-md xl:text-lg text-justify">
-              Almaa acknowledges, abides and acts upon the principles and
-              provides right treatment for universal diseases with herbal
-              products as food supplementary, while pharmaceutical companies
-              extract active ingredients from plants and sell them as drugs, the
-              benefits of medicinal plants which cannot be replicated because of
-              their synergistic combination of hundreds of naturally occuring
-              phytochemicals that cannot be produced in laboratories.
+              Siddha medicine is as old as the Tamil language, dating back to
+              12,000 years B.C. to the Lemuria continent, south of the
+              Kanyakumari district. It is a part of the lifestyle followed by
+              the most advanced civilization - the Tamizh people. It is a simple
+              yet complex strategy that engages life with the surrounding
+              atmosphere extending up to the effects of planets on the physical
+              body.  The history that is available in writings from the 18
+              siddhargal lineages almost contributes to less than 5% of the
+              total history of the Siddha medicine system. Siddha Has come a
+              long way from Lemuria to today where we can get Siddha medicine
+              online from the comfort of our home. Siddha doctors Available
+              online can diagnose and prescribe from remote places to every nook
+              & corner of the country.  Concepts like Kaya-Kalpam, Varmam, Vaasi
+              & Muppu are not only unique to Siddha but curious idea pages for
+              the modern medical system.
             </p>
           </div>
           <div>
