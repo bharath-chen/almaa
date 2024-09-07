@@ -6,6 +6,7 @@ import SectionPromo2 from "../../components/SectionPromo2";
 import SectionSliderCategories from "../../components/SectionSliderCategories/SectionSliderCategories";
 import { MEDICAL_CONSULTANTS } from "../../data/home";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
+import SEO from "../../shared/SEO/SEO";
 
 interface ProductionUnitProps {
   className?: string;
@@ -18,9 +19,14 @@ const ProductionUnit = ({ className = "" }: ProductionUnitProps) => {
         className={`nc-PageAbout overflow-hidden relative ${className}`}
         data-nc-id="PageAbout"
       >
-        <Helmet>
-          <title>Almaa</title>
-        </Helmet>
+        {/* SEO */}
+        <SEO
+          title="Best Siddha Medicine Manufacturers | Siddha Foods Tech & Almaa Herbal Nature"
+          description=".With a focus on purity, sustainability, and innovation, we offer a wide range of herbal solutions that cater to various health and wellness needs. Trust Nature’s Essence for reliable and effective herbal products."
+          keywords="best siddha medicine manufacturers in tamilnadu, siddha medicine manufacturers in tamilnadu, siddha medicine manufacturers, siddha drug manufacturers, best herbal supplement manufacturers, natural medicine manufacturers"
+          canonical="/siddha-medicine-manufacturers"
+          robots="INDEX, FOLLOW"
+        />
 
         {/* ======== BG GLASS ======== */}
         <BgGlassmorphism />

@@ -7,6 +7,7 @@ import Nav from "../../../shared/Nav/Nav";
 import ConceptDetailPopup from "./ConceptDetailPopup";
 import { EXPLORE_SECTION_DATA } from "../../../data/home";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
+import SEO from "../../../shared/SEO/SEO";
 
 const OurConcepts = () => {
   const [tabActive, setTabActive] = useState("Man");
@@ -31,6 +32,15 @@ const OurConcepts = () => {
 
   return (
     <div className="container my-20">
+      {/* SEO */}
+      <SEO
+        title="Almaa Herbal Velayutham | Pournami Poojai, Amavasai Poojai, Cow Pooja"
+        description="Our Concepts -  Experience the profound serenity of our sacred poojai rituals, Join us for personalised blessings that connect you with divine energies and enrich your holistic retreat."
+        keywords="alma velayutham siddha maruthuvam, almaa siddha hospital, alma velayutham, almaa herbal velayutham, pournami poojai, amavasai poojai, cow pooja"
+        canonical="/our-concepts"
+        robots="INDEX, FOLLOW"
+      />
+
       {/* EXPLORE SECTIONS */}
       <section className="container mb-40">
         <div className="relative py-24 lg:py-32">
@@ -139,11 +149,9 @@ const OurConcepts = () => {
         </Nav>
         <SectionGridMoreExplore onCardClick={handleCardClick} />
       </div> */}
-
       {showPopup && (
         <ConceptDetailPopup concept={conceptData} onClose={handleClose} />
       )}
-
       {/* EMAIL SUBSCRIBE SECTION */}
       <EmailSubscribeSection />
     </div>

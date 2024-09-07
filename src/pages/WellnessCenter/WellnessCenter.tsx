@@ -12,6 +12,7 @@ import whyAlmaaImg from "../../assets/HOME PAGE/10-why-section.jpg";
 import SectionPromo2 from "../../components/SectionPromo2";
 import SectionFounder, { People } from "../Library/SectionFounder";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
+import SEO from "../../shared/SEO/SEO";
 
 interface WellnessCenterProps {
   className?: string;
@@ -101,9 +102,14 @@ const WellnessCenter = ({ className = "" }: WellnessCenterProps) => {
         className={`nc-PageAbout overflow-hidden relative ${className}`}
         data-nc-id="PageAbout"
       >
-        <Helmet>
-          <title>Almaa</title>
-        </Helmet>
+        {/*SEO*/}
+        <SEO
+          title="Vela Siddha Village Resort | Rejuvenation Resort & Therapy"
+          description="Embrace the Serenity of Siddha Medicine and Modern Wellness | Wellness Treatments and Retreats | Luxurious Accommodations | Siddha Medical Treatments "
+          keywords="vela siddha village resort, heritage village resort & spa, rejuvenation therapy, rejuvenation resort"
+          canonical="/wellness-centre"
+          robots="INDEX, FOLLOW"
+        />
 
         {/* NATURE AND SINDHANAI SIDDHAR SECTION */}
         <section className="container mt-40 mb-40">

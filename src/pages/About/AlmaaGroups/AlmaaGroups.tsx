@@ -15,6 +15,7 @@ import NcImage from "../../../shared/NcImage/NcImage";
 import AccordionInfo from "../../../containers/ProductDetailPage/AccordionInfo";
 import whyAlmaaImg from "../../../assets/HOME PAGE/10-why-section.jpg";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
+import SEO from "../../../shared/SEO/SEO";
 
 interface AlmaaGroupProps {
   className?: string;
@@ -26,13 +27,17 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
       className={`nc-PageAbout overflow-hidden relative ${className}`}
       data-nc-id="PageAbout"
     >
-      <Helmet>
-        <title>Almaa</title>
-      </Helmet>
+      {/* SEO */}
+      <SEO
+        title="About Us - Unveiling the Siddha Wisdom: The Almaa Journey"
+        description="Embark on the journey of Siddha wisdom with Almaa, your trusted source for holistic healing online."
+        keywords="siddha doctor online, siddha medicine online, siddha products online"
+        canonical="/about-us"
+        robots="INDEX, FOLLOW"
+      />
 
       {/* ======== BG GLASS ======== */}
       <BgGlassmorphism />
-
       <div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
         <SectionHero
           rightImg={rightImg}
@@ -41,7 +46,6 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
           subHeading="We’re impartial and independent, and every day we create distinctive, world-class programmes and content which inform, educate and entertain millions of people in the around the world."
         />
       </div>
-
       {/* AWARDS & ACCOLADES SECTION */}
       <section className="container mb-40">
         <SectionSliderCategories
@@ -53,7 +57,6 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
           Visit all Doctors
         </ButtonSecondary> */}
       </section>
-
       {/* OUR COMPANIES SECTIONS */}
       <section className="container mb-40">
         <div className="relative py-24 lg:py-32">
@@ -73,7 +76,6 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
           />
         </div>
       </section>
-
       {/* WHY ALMAA SECTION */}
       <section className="container mb-40">
         <Heading
@@ -96,7 +98,6 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
           </div>
         </div>
       </section>
-
       {/* EMAIL SUBSCRIBE SECTION */}
       <EmailSubscribeSection />
     </div>
