@@ -5,6 +5,7 @@ import { ABOUTS } from "../../../data/home";
 import aboutSectionImg from "../../../assets/HOME PAGE/2-about-section.jpg";
 import SectionFounder, { People } from "../../Library/SectionFounder";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
+import SEO from "../../../shared/SEO/SEO";
 
 const FOUNDER_DEMO: People[] = [
   {
@@ -149,24 +150,35 @@ const Founder = () => {
           </div>
         </div>
       </section> */}
-
+      {/* SEO */}
+      <SEO
+        title="About Us - Unveiling the Siddha Wisdom: The Almaa Journey"
+        description="Embark on the journey of Siddha wisdom with Almaa, your trusted source for holistic healing online."
+        keywords="siddha doctor online, siddha medicine online, siddha products online"
+        canonical="/about-us"
+        robots="INDEX, FOLLOW"
+      />
       {/* MISSION AND VISION SECTION */}
       <section className="container mt-40 mb-40">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 place-content-center">
           <div>
-            <h3 className="text-2xl xl:text-3xl font-semibold">
-              Take Care of you <span className="text-slate-400">in a</span>{" "}
+            <h3 className="text-2xl xl:text-3xl font-semibold mb-4">
+              Who is Sindhanai Siddhar?
+              {/* Take Care of you <span className="text-slate-400">in a</span>{" "}
               <br />
-              <span className="my-2 text-slate-400">Herbal Way ...</span>
+              <span className="my-2 text-slate-400">Herbal Way ...</span> */}
             </h3>
             <p className="mt-1 text-slate-400 leading-7 tracking-wide text-sm md:text-md xl:text-lg text-justify">
-              Almaa acknowledges, abides and acts upon the principles and
-              provides right treatment for universal diseases with herbal
-              products as food supplementary, while pharmaceutical companies
-              extract active ingredients from plants and sell them as drugs, the
-              benefits of medicinal plants which cannot be replicated because of
-              their synergistic combination of hundreds of naturally occuring
-              phytochemicals that cannot be produced in laboratories.
+              As the name indicates, Sindhanai Siddhar is a profound thinker and
+              tamizh enthusiast. His profound understanding of the relationship
+              between Body, Mind, Food, Lifestyle & diseases made him stand out
+              in the health fraternity. This hardworking 53-year-old young man
+              has single-handedly created a huge impact on the traditional
+              medicines sector.  Sindhanai Siddhar's work focused on the
+              fundamental aspects of nature, body and the application of the
+              above to relieve people from their health issues. His
+              groundbreaking research revolutionized our understanding of the
+              Siddha system of medicine.
             </p>
           </div>
           <div>
@@ -189,7 +201,6 @@ const Founder = () => {
           ))}
         </div> */}
       </section>
-
       {/* NATURE AND SINDHANAI SIDDHAR SECTION */}
       <section className="container mb-40">
         <SectionFounder
@@ -197,10 +208,8 @@ const Founder = () => {
           founders={FOUNDER_DEMO}
         />
       </section>
-
       {/* MEET SINDHANAI SIDDHAR SECTION */}
       <section className="container mb-40"></section>
-
       {/* EMAIL SUBSCRIBE SECTION */}
       <EmailSubscribeSection />
     </>
