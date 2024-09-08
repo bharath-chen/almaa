@@ -10,6 +10,8 @@ import Label from "../../components/Label/Label";
 import Input from "../../shared/Input/Input";
 import Select from "../../shared/Select/Select";
 import cartService from "../../services/cart-service";
+import { useAppSelector } from "../../hooks/hooks";
+import { RootState } from "../../state/store";
 
 const STATES = [
   "Andhra Pradesh",
@@ -44,6 +46,7 @@ const STATES = [
 
 const CartPage = () => {
   const navigate = useNavigate();
+  const user = useAppSelector((state: RootState) => state.auth);
 
   const {
     cart,
@@ -252,12 +255,11 @@ const CartPage = () => {
       product_details: { product_id: string; quantity: string }[];
     }
 
-    const customerDetails = JSON.parse(localStorage.getItem("customerDetails"));
     const productDetails = JSON.parse(localStorage.getItem("shoppingCart"));
 
     const payload: AddCartRequest = {
       gofor: "addcart",
-      cust_id: customerDetails.customer_id,
+      cust_id: user.customer_id,
       product_details: productDetails.cart.map((p) => ({
         productId: p.product.product_id,
         quantity: p.quantity.toString(),
