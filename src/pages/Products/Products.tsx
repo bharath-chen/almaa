@@ -1,5 +1,5 @@
 import ProductCard from "../../components/ProductCard";
-import SidebarFilters from "../../containers/SidebarFilters";
+import SidebarFilters, { Filters } from "../../containers/SidebarFilters";
 import { FC, useEffect, useState } from "react";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import Chip from "./Chip/Chip";
@@ -19,6 +19,7 @@ import { useLocation } from "react-router-dom";
 import { NavItemType } from "../../shared/Navigation/NavigationItem";
 import subcategoryService from "../../services/subcategory-service";
 import { type SubCategory } from "../../models/subCategory";
+import filterProductsService from "../../services/filter-products-service";
 
 interface Props {
   className?: string;
@@ -32,34 +33,82 @@ const Products: FC<Props> = ({ className = "" }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState("");
   const [selectedSortOrder, setSelectedSortOrder] = useState<SortOrder>();
+  const [selectedFilter, setSelectedFilter] = useState<Filters>({
+    nat_of_prod: [],
+    herb_type: false,
+    is_nutraceutical: false,
+    pres_req: false,
+  });
   const [close, setClose] = useState(false);
   const dispatch = useAppDispatch();
   const wishlist = useAppSelector((state) => state.wishlist);
+
+  const getSubCategories = () => {
+    const { request } = subcategoryService.getAll<
+      SubCategory,
+      { category_id: string }
+    >({
+      category_id: location.state.item.id,
+    });
+
+    dispatch(showLoader());
+
+    request
+      .then((res) => {
+        dispatch(hideLoader());
+        setSubCategories(res.data);
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+
+        dispatch(hideLoader());
+        console.log(error);
+      });
+  };
+
+  const getProductsByCategory = () => {
+    dispatch(showLoader());
+
+    const { request } = productService.getAll<Product, { category_id: string }>(
+      { category_id: location.state.item.id }
+    );
+
+    request
+      .then((res) => {
+        dispatch(hideLoader());
+        setProducts(res.data);
+      })
+      .catch((err) => {
+        dispatch(hideLoader());
+        setError(err.message);
+      });
+  };
+
+  const getProductsBySubCategory = (subCategoryId: string) => {
+    dispatch(showLoader());
+
+    const { request } = productService.getAll<
+      Product,
+      { subcategory_id: string }
+    >({ subcategory_id: subCategoryId });
+
+    request
+      .then((res) => {
+        dispatch(hideLoader());
+        setProducts(res.data);
+      })
+      .catch((err) => {
+        dispatch(hideLoader());
+        setError(err.message);
+      });
+  };
 
   useEffect(() => {
     setSelectedCategory(location.state ? location.state?.item : []);
 
     if (location.state?.item) {
-      const { request } = subcategoryService.getAll<
-        SubCategory,
-        { category_id: string }
-      >({
-        category_id: location.state.item.id,
-      });
-
-      dispatch(showLoader());
-
-      request
-        .then((res) => {
-          dispatch(hideLoader());
-          setSubCategories(res.data);
-        })
-        .catch((err) => {
-          if (err instanceof CanceledError) return;
-
-          dispatch(hideLoader());
-          console.log(error);
-        });
+      getSubCategories();
+      getProductsByCategory();
     }
   }, [location.state]);
 
@@ -102,10 +151,61 @@ const Products: FC<Props> = ({ className = "" }) => {
           setError(err.message);
         });
     }
-  }, [selectedSortOrder?.value]);
+  }, [selectedSortOrder?.value, selectedFilter]);
+
+  useEffect(() => {
+    if (
+      selectedFilter.nat_of_prod.length > 0 ||
+      selectedFilter.herb_type ||
+      selectedFilter.pres_req ||
+      selectedFilter.is_nutraceutical
+    ) {
+      const obj = {
+        nat_of_prod: selectedFilter.nat_of_prod.join(","),
+        is_nutraceutical: 1,
+        pres_req: 1,
+        herb_type: "Single",
+      };
+
+      if (selectedFilter.nat_of_prod.length === 0) delete obj.nat_of_prod;
+
+      if (!selectedFilter.is_nutraceutical) delete obj.is_nutraceutical;
+
+      if (!selectedFilter.pres_req) delete obj.pres_req;
+
+      if (!selectedFilter.herb_type) delete obj.herb_type;
+
+      const { request } = filterProductsService.getAll<
+        Product,
+        | {
+            nat_of_prod?: string;
+            herb_type?: string;
+            pres_req?: number;
+            is_nutraceutical?: number;
+          }
+        | {}
+      >(obj);
+
+      dispatch(showLoader());
+
+      request
+        .then((res) => {
+          dispatch(hideLoader());
+          setProducts(res.data);
+        })
+        .catch((err) => {
+          dispatch(hideLoader());
+          setError(err.message);
+        });
+    }
+  }, [selectedFilter]);
 
   const handleSortingProducts = (selectedSort: SortOrder) => {
     setSelectedSortOrder(selectedSort);
+  };
+
+  const handleFilterChange = (filter: Filters) => {
+    setSelectedFilter(filter);
   };
 
   const handleLike = (id: string) => {
@@ -122,6 +222,11 @@ const Products: FC<Props> = ({ className = "" }) => {
 
   const handleClose = () => {
     setClose(!close);
+  };
+
+  const handleSelectedChip = (item: SubCategory) => {
+    getProductsBySubCategory(item.subcategory_id);
+    setSelectedSubCategory(item);
   };
 
   return (
@@ -143,6 +248,8 @@ const Products: FC<Props> = ({ className = "" }) => {
                 <SidebarFilters
                   selectedSortOrder={selectedSortOrder}
                   onSort={handleSortingProducts}
+                  selectedFilter={selectedFilter}
+                  onFilterChange={handleFilterChange}
                 />
               </div>
               <div className="flex-shrink-0 mb-10 lg:mb-0 lg:mx-4 border-t lg:border-t-0"></div>
@@ -157,9 +264,7 @@ const Products: FC<Props> = ({ className = "" }) => {
                       key={item.subcategory_id}
                       id={item.subcategory_id}
                       name={item.subcat_name}
-                      onClick={() => {
-                        setSelectedSubCategory(item);
-                      }}
+                      onClick={() => handleSelectedChip(item)}
                     />
                   ))}
                 </div>
