@@ -6,7 +6,7 @@ import { hideLoader, showLoader } from "../features/loader/loaderSlice";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { RootState } from "../state/store";
 
-interface CartDetailPayload {
+export interface CartDetailPayload {
   cartDetail: CartDetail[];
   productDetail: [Product[]];
 }
