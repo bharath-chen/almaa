@@ -4,13 +4,18 @@ import { Fragment } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Avatar from "../../../shared/Avatar/Avatar";
 import SwitchDarkMode2 from "../../../shared/SwitchDarkMode/SwitchDarkMode2";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { logout } from "../../../features/auth/authSlice";
+import { RootState } from "../../../state/store";
 
 export default function AvatarDropdown() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state: RootState) => state.auth);
 
   const handleLogout = () => {
+    dispatch(logout());
     navigate("/login");
-    localStorage.removeItem("customerDetails");
     localStorage.removeItem("shoppingCart");
   };
 
@@ -60,8 +65,10 @@ export default function AvatarDropdown() {
                       <Avatar imgUrl={avatarImgs[7]} sizeClass="w-12 h-12" />
 
                       <div className="flex-grow">
-                        <h4 className="font-semibold">Eden Smith</h4>
-                        <p className="text-xs mt-0.5">Los Angeles, CA</p>
+                        <h4 className="font-semibold">
+                          {user.first_name} {user.last_name}
+                        </h4>
+                        {/* <p className="text-xs mt-0.5">Los Angeles, CA</p> */}
                       </div>
                     </div>
 
