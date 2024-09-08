@@ -213,7 +213,7 @@ const RESOURCES_TEAM_CHILD: NavItemType[] = [
 export const NAVIGATION_DEMO_2: NavItemType[] = [
   {
     id: ncNanoId(),
-    href: "/",
+    href: "/about",
     name: "About",
     type: "dropdown",
     children: ABOUT_TEAM_CHILD,
