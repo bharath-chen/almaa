@@ -33,7 +33,7 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
   return (
     <div className={`nc-PageSearch  ${className}`} data-nc-id="PageSearch">
       <Helmet>
-        <title>Search || Ciseco Ecommerce Template</title>
+        <title>Almaa</title>
       </Helmet>
 
       {/* <div
@@ -98,7 +98,7 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
         <main>
           {/* FILTER */}
           {/* <HeaderFilterSearchPage /> */}
-          {/* <Heading desc="">{location?.state?.products.length} items</Heading> */}
+          <Heading desc="">Keyword: {location?.state?.searchText}</Heading>
 
           {/* LOOP ITEMS */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
