@@ -113,7 +113,7 @@ function CartReducer(state: ShoppingCartState, action: CartAction) {
         ...state,
         cart: action.payload.products.map((p) => ({
           product: p,
-          quantity: p.qty,
+          quantity: p?.qty,
         })),
       };
 
