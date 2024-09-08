@@ -71,38 +71,38 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   //   .filter((_, i) => i < 8 && i > 2);
   const product = productsService.getProduct(+id);
   const { name, sizes, variants, status, allOfSizes, price, image } = product;
-  const LIST_IMAGES_DEMO: string[] = [
-    product1Img,
-    product2Img,
-    product3Img,
-    product4Img,
-  ];
-  const ingredients = [
-    {
-      id: 1,
-      title: "Vengaram",
-      shortDesc: "Strengthens gums",
-      src: ingredient1,
-    },
-    {
-      id: 2,
-      title: "Milagu",
-      shortDesc: "Anti Immunity Property",
-      src: ingredient2,
-    },
-    {
-      id: 3,
-      title: "Induppu",
-      shortDesc: "Controls Teeth Erosion",
-      src: ingredient3,
-    },
-    {
-      id: 4,
-      title: "Kaluppu",
-      shortDesc: "Cleanse & Anti fungal",
-      src: ingredient4,
-    },
-  ];
+  // const LIST_IMAGES_DEMO: string[] = [
+  //   product1Img,
+  //   product2Img,
+  //   product3Img,
+  //   product4Img,
+  // ];
+  // const ingredients = [
+  //   {
+  //     id: 1,
+  //     title: "Vengaram",
+  //     shortDesc: "Strengthens gums",
+  //     src: ingredient1,
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Milagu",
+  //     shortDesc: "Anti Immunity Property",
+  //     src: ingredient2,
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Induppu",
+  //     shortDesc: "Controls Teeth Erosion",
+  //     src: ingredient3,
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "Kaluppu",
+  //     shortDesc: "Cleanse & Anti fungal",
+  //     src: ingredient4,
+  //   },
+  // ];
   const [buyingOptions, setBuyingOptions] = useState([
     {
       id: 1,
@@ -266,7 +266,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                     {/* {variants ? variants[variantActive].name : `Natural`} */}
                   </span>
                   <span className="mx-2 border-l border-slate-200 dark:border-slate-700 h-4"></span>
-                  <span>{size[0] || "XL"}</span>
+                  <span>{quantityOption.label}</span>
                 </p>
               </div>
               <Prices
