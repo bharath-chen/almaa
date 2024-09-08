@@ -307,9 +307,10 @@ const Home = () => {
           </Nav>
           <hr className="my-8" />
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-            {featuredProducts[tabActive.key]?.map((product) => (
-              <ProductCard key={product.product_id} data={product} />
-            ))}
+            {featuredProducts[tabActive.key]?.map((product) => {
+              product.selling_price = product?.price || product.selling_price;
+              return <ProductCard key={product.product_id} data={product} />;
+            })}
           </div>
         </section>
       )}
