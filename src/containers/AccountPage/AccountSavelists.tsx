@@ -28,9 +28,10 @@ const AccountSavelists = () => {
           {!items.productdetail.length && (
             <h3 className="text-center">No wishlist added!</h3>
           )}
-          {items.productdetail.map((p) => (
-            <ProductCard key={p.product_id} data={p} />
-          ))}
+          {items.productdetail.map((p) => {
+            p.isLiked = true;
+            return <ProductCard key={p.product_id} data={p} />;
+          })}
         </div>
         {/* <div className="flex !mt-20 justify-center items-center">
           <ButtonSecondary loading>Show me more</ButtonSecondary>

@@ -16,8 +16,11 @@ import AppOfferCodes, {
 } from "../../components/AppOfferCodes/AppOfferCodes";
 import useViewAddressess from "../../hooks/useViewAddress";
 import { Address } from "../../models/address";
-import useViewCart from "../../hooks/useViewCart";
+import useViewCart, { CartDetailPayload } from "../../hooks/useViewCart";
 import orderService from "../../services/order-service";
+import { CartDetail } from "../../models/cartDetail";
+import { useAppSelector } from "../../hooks/hooks";
+import { RootState } from "../../state/store";
 
 const CheckoutPage = () => {
   const {
@@ -32,16 +35,21 @@ const CheckoutPage = () => {
   const { cartDetails, setCartDetails } = useViewCart();
   const { addressList, setAddressList } = useViewAddressess();
   const navigate = useNavigate();
+  const user = useAppSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    const productDetails =
+    const productDetails: Product[] =
       cartDetails && cartDetails.cartDetail.length > 0
         ? cartDetails.cartDetail.map((c, index) => ({
             ...cartDetails.productDetail[index][0],
             qty: +c.quantity,
           }))
         : [];
-    setCartItems(productDetails);
+    const modifiedProductDetails: Product[] = productDetails.filter((p) => {
+      if (p.product_id) return p;
+    });
+
+    setCartItems(modifiedProductDetails);
   }, [cartDetails]);
 
   const [tabActive, setTabActive] = useState<
@@ -367,11 +375,9 @@ const CheckoutPage = () => {
       product_details: { product_id: string; quantity: string }[];
     }
 
-    const customerDetails = JSON.parse(localStorage.getItem("customerDetails"));
-
     const payload: CreateOrderPayload = {
       gofor: "createorders",
-      customer_id: customerDetails.customer_id,
+      customer_id: user.customer_id,
       invoice_amount: totalPrice.toString(),
       product_details: cart.map((c) => ({
         product_id: c.product.product_id,
