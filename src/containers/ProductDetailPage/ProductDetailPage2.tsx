@@ -49,6 +49,13 @@ import productDetailService, {
 import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
 import { useAppDispatch } from "../../hooks/hooks";
 import { Product } from "../../models/product";
+import { Transition } from "@headlessui/react";
+import Prices from "../../components/Prices";
+
+const calculateOriginalPrice = (price: number, pack: number) => price * pack;
+
+const calculateDiscountedPrice = (price: number, pack: number, offer: number) =>
+  price * pack - price * pack * (offer / 100);
 
 export interface ProductDetailPage2Props {
   className?: string;
@@ -149,9 +156,17 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
     request
       .then((res) => {
+        const details = res.data;
+        const price = +details.product_attributes[0].selling_price;
         dispatch(hideLoader());
-        setProductDetail(res.data);
-        console.log("Product detail:", res.data);
+        setProductDetail(details);
+        setBuyingOptions((bo) =>
+          bo.map((b) => ({
+            ...b,
+            originalPrice: calculateOriginalPrice(price, b.pack),
+            discountedPrice: calculateDiscountedPrice(price, b.pack, b.offer),
+          }))
+        );
       })
       .catch((err) => {
         if (err instanceof CanceledError) return;
@@ -190,13 +205,93 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
   const handleCloseModal = () => setIsOpen(false);
 
+  const notifyAddTocart = ({ size }: { size?: string }) => {
+    toast.custom(
+      (t) => (
+        <Transition
+          appear
+          show={t.visible}
+          className="p-4 max-w-md w-full bg-white dark:bg-slate-800 shadow-lg rounded-2xl pointer-events-auto ring-1 ring-black/5 dark:ring-white/10 text-slate-900 dark:text-slate-200"
+          enter="transition-all duration-150"
+          enterFrom="opacity-0 translate-x-20"
+          enterTo="opacity-100 translate-x-0"
+          leave="transition-all duration-150"
+          leaveFrom="opacity-100 translate-x-0"
+          leaveTo="opacity-0 translate-x-20"
+        >
+          <p className="block text-base font-semibold leading-none">
+            Added to cart!
+          </p>
+          <div className="border-t border-slate-200 dark:border-slate-700 my-4" />
+          {renderProductCartOnNotify({ size })}
+        </Transition>
+      ),
+      { position: "top-right", id: "nc-product-notify", duration: 3000 }
+    );
+  };
+
   const addToCart = () => {
-    notifyAddTocart();
+    notifyAddTocart({ size: "" });
     const selected = buyingOptions.find((o) => o.selected);
-    // addItemToCartWithQuantity(
-    //   product,
-    //   selected ? selected.pack : quantitySelected
-    // );
+    addItemToCartWithQuantity(
+      {
+        ...productDetail.product_details[0],
+        ...productDetail.product_attributes[0],
+      },
+      selected ? selected.pack : quantitySelected
+    );
+  };
+
+  const renderProductCartOnNotify = ({ size }: { size?: string }) => {
+    const selected = buyingOptions.find((o) => o.selected);
+    return (
+      <div className="flex ">
+        <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
+          <img
+            src={productDetail.product_details[0].product_image1}
+            alt={productDetail.product_details[0].product_name}
+            className="h-full w-full object-cover object-center"
+          />
+        </div>
+
+        <div className="ml-4 flex flex-1 flex-col">
+          <div>
+            <div className="flex justify-between ">
+              <div>
+                <h3 className="text-base font-medium ">
+                  {productDetail.product_details[0].product_name}
+                </h3>
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                  <span>
+                    {/* {variants ? variants[variantActive].name : `Natural`} */}
+                  </span>
+                  <span className="mx-2 border-l border-slate-200 dark:border-slate-700 h-4"></span>
+                  <span>{size[0] || "XL"}</span>
+                </p>
+              </div>
+              <Prices
+                price={+productDetail.product_attributes[0].selling_price}
+                className="mt-0.5"
+              />
+            </div>
+          </div>
+          <div className="flex flex-1 items-end justify-between text-sm">
+            <p className="text-gray-500 dark:text-slate-400">
+              Qty {selected?.pack || quantitySelected}
+            </p>
+
+            <div className="flex">
+              <Link
+                to={"/cart"}
+                className="font-medium text-primary-900 dark:text-primary-500 "
+              >
+                View cart
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   const handleBuyingOption = (id: number) => {
@@ -248,21 +343,21 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     );
   };
 
-  const notifyAddTocart = () => {
-    const selected = buyingOptions.find((o) => o.selected);
-    toast.custom(
-      (t) => (
-        <NotifyAddTocart
-          productImage={image}
-          qualitySelected={selected ? selected.pack : quantitySelected}
-          show={t.visible}
-          sizeSelected={quantityOption.label}
-          variantActive={variantActive}
-        />
-      ),
-      { position: "top-right", id: "nc-product-notify", duration: 3000 }
-    );
-  };
+  // const notifyAddTocart = () => {
+  //   const selected = buyingOptions.find((o) => o.selected);
+  //   toast.custom(
+  //     (t) => (
+  //       <NotifyAddTocart
+  //         productImage={productDetail.product_details[0].product_image1}
+  //         qualitySelected={selected ? selected.pack : quantitySelected}
+  //         show={t.visible}
+  //         sizeSelected={quantityOption.label}
+  //         variantActive={variantActive}
+  //       />
+  //     ),
+  //     { position: "top-right", id: "nc-product-notify", duration: 3000 }
+  //   );
+  // };
 
   const renderSizeList = () => {
     if (!allOfSizes || !sizes || !sizes.length) {
