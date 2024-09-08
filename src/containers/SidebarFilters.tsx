@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Radio from "../shared/Radio/Radio";
 import MySwitch from "../components/MySwitch";
@@ -16,22 +16,31 @@ const DATA_sortOrderRadios = [
   { name: "Best Rating", id: "best-rating", value: "rating" },
   { name: "Newest", id: "newest", value: "newest" },
   { name: "Price Low - Hight", id: "price-low-high", value: "price_low_high" },
-  { name: "Price Hight - Low", id: "price-high-low", value: "price_high_low" },
+  { name: "Price High - Low", id: "price-high-low", value: "price_high_low" },
 ];
+
+export interface Filters {
+  is_nutraceutical: boolean;
+  pres_req: boolean;
+  herb_type: boolean;
+  nat_of_prod: string[];
+}
 
 interface Props {
   selectedSortOrder: SortOrder;
   onSort: (selectedSortOrder: SortOrder) => void;
+  selectedFilter: Filters;
+  onFilterChange: (filter: Filters) => void;
 }
 
 //https://almaherbal.top/App/api.php?gofor=filterproducts&herb_type=Single&is_combo=1&recomm_gender=2
 
-const SidebarFilters = ({ selectedSortOrder, onSort }: Props) => {
-  const [filterSwitch, setFilterSwitch] = useState({
-    isPrescripitonRequired: false,
-    isNutraceuticalProduct: false,
-    isHerbEnabled: false,
-  });
+const SidebarFilters = ({
+  selectedSortOrder,
+  onSort,
+  selectedFilter,
+  onFilterChange,
+}: Props) => {
   const [productForms, setProductForms] = useState<TabFilterItem[]>([
     {
       name: "Powders",
@@ -97,8 +106,13 @@ const SidebarFilters = ({ selectedSortOrder, onSort }: Props) => {
       if (item.name === productForm.name) item.checked = checked;
       return item;
     });
-
     setProductForms(items);
+
+    const checkedItems = items
+      .filter((item) => item.checked)
+      .map((c) => c.name);
+
+    onFilterChange({ ...selectedFilter, nat_of_prod: checkedItems });
   };
 
   const renderTabsSortOrder = () => {
@@ -121,8 +135,6 @@ const SidebarFilters = ({ selectedSortOrder, onSort }: Props) => {
     );
   };
 
-  const handleFilterChange = (enabled: boolean) => {};
-
   return (
     <div className="divide-y divide-slate-200 dark:divide-slate-700">
       <div className="py-8 pr-2">
@@ -137,24 +149,18 @@ const SidebarFilters = ({ selectedSortOrder, onSort }: Props) => {
           className="pt-5"
           desc=""
           label="Nutraceutical Product"
-          enabled={filterSwitch.isNutraceuticalProduct}
+          enabled={selectedFilter.is_nutraceutical}
           onChange={(enabled) =>
-            setFilterSwitch({
-              ...filterSwitch,
-              isNutraceuticalProduct: enabled,
-            })
+            onFilterChange({ ...selectedFilter, is_nutraceutical: enabled })
           }
         />
         <MySwitch
           className="pt-5"
           label="Prescription Required"
           desc=""
-          enabled={filterSwitch.isPrescripitonRequired}
+          enabled={selectedFilter.pres_req}
           onChange={(enabled) =>
-            setFilterSwitch({
-              ...filterSwitch,
-              isPrescripitonRequired: enabled,
-            })
+            onFilterChange({ ...selectedFilter, pres_req: enabled })
           }
         />
 
@@ -162,9 +168,9 @@ const SidebarFilters = ({ selectedSortOrder, onSort }: Props) => {
           desc=""
           className="pt-5"
           label="Single herb"
-          enabled={filterSwitch.isHerbEnabled}
+          enabled={selectedFilter.herb_type}
           onChange={(enabled) =>
-            setFilterSwitch({ ...filterSwitch, isHerbEnabled: enabled })
+            onFilterChange({ ...selectedFilter, herb_type: enabled })
           }
         />
       </div>
