@@ -8,7 +8,7 @@ import { RootState } from "../state/store";
 
 export interface CartDetailPayload {
   cartDetail: CartDetail[];
-  productDetail: [Product[]];
+  productDetail: Product[];
 }
 
 const useViewCart = () => {

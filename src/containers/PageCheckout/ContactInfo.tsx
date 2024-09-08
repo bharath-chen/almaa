@@ -4,6 +4,8 @@ import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import ButtonSecondary from "../../shared/Button/ButtonSecondary";
 import Checkbox from "../../shared/Checkbox/Checkbox";
 import Input from "../../shared/Input/Input";
+import { useAppSelector } from "../../hooks/hooks";
+import { RootState } from "../../state/store";
 
 interface Props {
   isActive: boolean;
@@ -12,6 +14,8 @@ interface Props {
 }
 
 const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
+  const user = useAppSelector((state: RootState) => state.auth);
+
   const renderAccount = () => {
     return (
       <div className="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden z-0">
@@ -64,8 +68,12 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
               </svg>
             </h3>
             <div className="font-semibold mt-1 text-sm">
-              <span className="">Enrico Smith</span>
-              <span className="ml-3 tracking-tighter">+855 - 666 - 7744</span>
+              <span className="">
+                {user.first_name} {user.last_name}
+              </span>
+              <span className="ml-3 tracking-tighter">
+                +91 {user.mobilenumber}
+              </span>
             </div>
           </div>
           <ButtonSecondary
@@ -93,11 +101,19 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
           </div>
           <div className="max-w-lg">
             <Label className="text-sm">Your phone number</Label>
-            <Input className="mt-1.5" defaultValue={"+808 xxx"} type={"tel"} />
+            <Input
+              className="mt-1.5"
+              defaultValue={"+91 " + user.mobilenumber}
+              type={"tel"}
+            />
           </div>
           <div className="max-w-lg">
             <Label className="text-sm">Email address</Label>
-            <Input className="mt-1.5" type={"email"} />
+            <Input
+              className="mt-1.5"
+              type={"email"}
+              defaultValue={user.email}
+            />
           </div>
           <div>
             <Checkbox

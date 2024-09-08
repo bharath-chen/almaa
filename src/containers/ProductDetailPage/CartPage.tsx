@@ -12,6 +12,8 @@ import Select from "../../shared/Select/Select";
 import cartService from "../../services/cart-service";
 import { useAppSelector } from "../../hooks/hooks";
 import { RootState } from "../../state/store";
+import { useEffect, useState } from "react";
+import deliveryChargeService from "../../services/delivery-charge-service";
 
 const STATES = [
   "Andhra Pradesh",
@@ -47,6 +49,8 @@ const STATES = [
 const CartPage = () => {
   const navigate = useNavigate();
   const user = useAppSelector((state: RootState) => state.auth);
+  const [form, setForm] = useState({ state: "" });
+  const [shippingEstimate, setShippingEstimate] = useState<number>();
 
   const {
     cart,
@@ -268,9 +272,25 @@ const CartPage = () => {
 
     cartService.create<AddCartRequest>(payload).then((res) => {
       console.log(res);
-      navigate("/checkout");
+      navigate("/checkout", {
+        state: {
+          shippingEstimate,
+        },
+      });
     });
   };
+
+  useEffect(() => {
+    const { request } = deliveryChargeService.get<string, { state: string }>({
+      state: form.state,
+    });
+
+    request.then((res) => {
+      if (res.data) {
+        setShippingEstimate(+res.data);
+      }
+    });
+  }, [form]);
 
   return (
     <div className="nc-CartPage">
@@ -325,12 +345,14 @@ const CartPage = () => {
                         ₹{subTotal.toFixed(2)}
                       </span>
                     </div>
-                    <div className="flex justify-between py-4">
-                      <span>Shpping estimate</span>
-                      <span className="font-semibold text-slate-900 dark:text-slate-200">
-                        ₹5.00
-                      </span>
-                    </div>
+                    {shippingEstimate && (
+                      <div className="flex justify-between py-4">
+                        <span>Shpping estimate</span>
+                        <span className="font-semibold text-slate-900 dark:text-slate-200">
+                          ₹{shippingEstimate.toFixed(2)}
+                        </span>
+                      </div>
+                    )}
                     <div className="flex justify-between py-4">
                       <span>Tax estimate</span>
                       <span className="font-semibold text-slate-900 dark:text-slate-200">
@@ -339,7 +361,13 @@ const CartPage = () => {
                     </div>
                     <div className="max-w-lg py-3">
                       <Label className="text-sm">State</Label>
-                      <Select className="mt-1.5 mb-3">
+                      <Select
+                        className="mt-1.5 mb-3"
+                        value={form.state}
+                        onChange={(e) =>
+                          setForm({ ...form, state: e.target.value })
+                        }
+                      >
                         <option value=""></option>
                         {STATES.map((state) => (
                           <option key={state} value={state}>
@@ -347,12 +375,22 @@ const CartPage = () => {
                           </option>
                         ))}
                       </Select>
-                      <Label className="text-sm">Pincode</Label>
-                      <Input className="mt-1.5" type={"text"} />
+                      {/* <Label className="text-sm">Pincode</Label>
+                      <Input
+                        className="mt-1.5"
+                        type={"text"}
+                        value={form.pinCode}
+                        onChange={(e) =>
+                          setForm({ ...form, pinCode: e.target.value })
+                        }
+                      /> */}
                     </div>
                     <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
                       <span>Order total</span>
-                      <span>₹{(subTotal + 5 + 24.9).toFixed(2)}</span>
+                      <span>
+                        ₹
+                        {(subTotal + (shippingEstimate || 0) + 24.9).toFixed(2)}
+                      </span>
                     </div>
                   </div>
                   <ButtonPrimary
