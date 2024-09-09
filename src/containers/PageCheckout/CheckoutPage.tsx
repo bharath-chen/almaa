@@ -4,7 +4,7 @@ import Prices from "../../components/Prices";
 // import { Product } from "../../data/data";
 import { Product } from "../../models/product";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import Input from "../../shared/Input/Input";
 import ContactInfo from "./ContactInfo";
@@ -21,6 +21,7 @@ import orderService from "../../services/order-service";
 import { CartDetail } from "../../models/cartDetail";
 import { useAppSelector } from "../../hooks/hooks";
 import { RootState } from "../../state/store";
+import addressService from "../../services/address-service";
 
 const CheckoutPage = () => {
   const {
@@ -35,21 +36,21 @@ const CheckoutPage = () => {
   const { cartDetails, setCartDetails } = useViewCart();
   const { addressList, setAddressList } = useViewAddressess();
   const navigate = useNavigate();
+  const location = useLocation();
   const user = useAppSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     const productDetails: Product[] =
-      cartDetails && cartDetails.cartDetail.length > 0
-        ? cartDetails.cartDetail.map((c, index) => ({
-            ...cartDetails.productDetail[index][0],
-            qty: +c.quantity,
-          }))
+      cartDetails && cartDetails.productDetail.length > 0
+        ? cartDetails.productDetail
+            .filter((p) => p)
+            .map((p, index) => ({
+              ...p,
+              qty: +cartDetails.cartDetail[index].quantity,
+            }))
         : [];
-    const modifiedProductDetails: Product[] = productDetails.filter((p) => {
-      if (p.product_id) return p;
-    });
 
-    setCartItems(modifiedProductDetails);
+    setCartItems(productDetails);
   }, [cartDetails]);
 
   const [tabActive, setTabActive] = useState<
@@ -367,6 +368,31 @@ const CheckoutPage = () => {
     }
   };
 
+  const addAddress = () => {
+    //     "gofor" : "addaddress",
+    // "customer_id": "1",
+    // "doorno": "81",
+    // "street": "Balamurugan Garden",
+    // "location": "Thoraipakkam",
+    // "pincode": "600097",
+    // "city": "Chennai",
+    // "state": "TamilNadu",
+    // "primary_use": "1",
+    // "recently_use": "0"
+    // addressService.create<{
+    //   gofor: string;
+    //   customer_id: string;
+    //   doorno: string;
+    //   street: string;
+    //   location: string;
+    //   pincode: string;
+    //   city: string;
+    //   state: string;
+    //   primary_use: string;
+    //   recently_use: string;
+    // }>();
+  };
+
   const handleConfirmOrder = () => {
     interface CreateOrderPayload {
       gofor: string;
@@ -517,12 +543,14 @@ const CheckoutPage = () => {
                       ₹{totalPrice.toFixed(2)}
                     </span>
                   </div>
-                  <div className="flex justify-between py-2.5">
-                    <span>Shipping estimate</span>
-                    <span className="font-semibold text-slate-900 dark:text-slate-200">
-                      ₹5.00
-                    </span>
-                  </div>
+                  {location.state?.shippingEstimate && (
+                    <div className="flex justify-between py-2.5">
+                      <span>Shipping estimate</span>
+                      <span className="font-semibold text-slate-900 dark:text-slate-200">
+                        ₹{location.state?.shippingEstimate.toFixed(2)}
+                      </span>
+                    </div>
+                  )}
                   <div className="flex justify-between py-2.5">
                     <span>Tax estimate</span>
                     <span className="font-semibold text-slate-900 dark:text-slate-200">
@@ -536,7 +564,7 @@ const CheckoutPage = () => {
                       {(
                         +calculateDiscount(totalPrice, discount)
                           .discountedPrice +
-                        (5 + 24.9)
+                        ((location.state?.shippingEstimate || 0) + 24.9)
                       ).toFixed(2)}
                     </span>
                   </div>
