@@ -49,7 +49,6 @@ export const pages: Page[] = [
   {
     path: "/product-detail/:id",
     component: ProductDetailPage2,
-    protectedRoute: true,
   },
   { path: "/home2", component: PageHome2 },
   { path: "/home3", component: PageHome3 },
