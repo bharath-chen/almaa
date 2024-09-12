@@ -44,8 +44,8 @@ import TermsAndConditions from "../pages/TermsAndConditions/TermsAndConditions";
 import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
 
 export const pages: Page[] = [
-  { path: "/", component: Home, protectedRoute: false },
-  { path: "/products", component: Products, protectedRoute: true },
+  { path: "/", component: Home },
+  { path: "/products", component: Products },
   {
     path: "/product-detail/:id",
     component: ProductDetailPage2,
