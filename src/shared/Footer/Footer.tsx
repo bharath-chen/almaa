@@ -3,6 +3,7 @@ import SocialsList1 from "../../shared/SocialsList1/SocialsList1";
 import { CustomLink } from "../../data/types";
 import React, { ReactNode } from "react";
 import { Link } from "react-router-dom";
+import "./footer.css";
 
 export interface WidgetFooterMenu {
   id: string;
@@ -175,7 +176,7 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <div className="nc-Footer relative py-5 lg:pt-5 lg:pb-5 border-t border-neutral-200 dark:border-neutral-700 bg-dark-900 dark:bg-neutral-900">
+    <footer className="nc-Footer relative py-5 lg:pt-5 lg:pb-5 border-t border-neutral-200 dark:border-neutral-700 bg-dark-900 dark:bg-neutral-900">
       {/* <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 md:grid-cols-4 lg:grid-cols-5 lg:gap-x-10 "> */}
       <div className="container">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
@@ -188,7 +189,7 @@ const Footer: React.FC = () => {
           </div>
         </div> */}
       </div>
-    </div>
+    </footer>
   );
 };
 
