@@ -20,6 +20,7 @@ import {
   addItemToWishlist,
   removeItemFromWishlist,
 } from "../features/wishlist/wishlistSlice";
+import AppText from "./AppText/AppText";
 
 export interface ProductCardProps {
   className?: string;
@@ -42,12 +43,14 @@ const ProductCard: FC<ProductCardProps> = ({
     // sizes,
     // variants,
     // variantType,
+    short_description,
     status,
     selling_price,
     product_image1,
     user_ratings,
     almaa_ratings,
   } = data;
+  console.log(data);
   const [variantActive, setVariantActive] = React.useState(0);
   const [showModalQuickView, setShowModalQuickView] = React.useState(false);
   const { cart, addItemToCart } = useShoppingCartContext();
@@ -289,9 +292,9 @@ const ProductCard: FC<ProductCardProps> = ({
               >
                 {product_name}
               </h2>
-              <p className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}>
-                {full_description}
-              </p>
+              {/* <p className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}> */}
+              <AppText>{short_description}</AppText>
+              {/* </p> */}
             </div>
           </Link>
 
