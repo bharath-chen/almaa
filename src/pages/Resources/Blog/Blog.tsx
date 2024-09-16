@@ -4,29 +4,40 @@ import SectionLatestPosts from "./SectionLatestPosts";
 import BgGlassmorphism from "../../../components/BgGlassmorphism/BgGlassmorphism";
 import SectionPromo3 from "../../../components/SectionPromo3";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import { IBlog } from "../../../services/blog-list-service";
 import blogListService from "../../../services/blog-list-service";
 import { CanceledError } from "axios";
 import SectionMagazine5 from "../../../containers/BlogPage/SectionMagazine5";
 import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
 import { useAppDispatch } from "../../../hooks/hooks";
+import { featuredImgs } from "../../../contains/fakeData";
+import BlogCard from "./BlogCard";
+import MainCard from "./MainCard";
+import { type Blog } from "../../../models/blog";
+import { getFormattedDate } from "../../../utils/date-utils";
 
 // DEMO DATA
 
 const Blog: React.FC = () => {
   const dispatch = useAppDispatch();
-  const [blogList, setBlogList] = useState<IBlog[]>([]);
+  const [blogList, setBlogList] = useState<Blog[]>([]);
   const [error, setError] = useState("");
 
+  const routeToBlogDetailPage = () => {};
+
   useEffect(() => {
-    const { request, cancel } = blogListService.getAll<IBlog>();
+    const { request, cancel } = blogListService.getAll<Blog>();
 
     dispatch(showLoader());
 
     request
       .then((res) => {
         dispatch(hideLoader());
-        setBlogList(res.data);
+        const data =
+          res.data.map((d) => ({
+            ...d,
+            published_date: getFormattedDate(d.published_date),
+          })) || [];
+        setBlogList(data);
       })
       .catch((err) => {
         dispatch(hideLoader());
@@ -49,21 +60,24 @@ const Blog: React.FC = () => {
       <div className="container relative">
         {/* === SECTION 1 === */}
         <div className="pt-12 pb-16 lg:pb-28">
-          <SectionMagazine5 />
-          {/* <div className="nc-SectionMagazine5">
+          {/* <SectionMagazine5 /> */}
+          <div className="nc-SectionMagazine5">
             <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
-              <MainCard onClick={routeToBlogDetailPage} />
+              {blogList[0] && (
+                <MainCard blog={blogList[0]} onClick={routeToBlogDetailPage} />
+              )}
               <div className="grid gap-6 md:gap-8">
-                {featuredImgs.map((item, index) => (
+                {blogList.map((item, index) => (
                   <BlogCard
                     key={index}
-                    src={item}
+                    // src={item}
+                    blog={item}
                     onClick={routeToBlogDetailPage}
                   />
                 ))}
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
 
         {/* === SECTION 1 === */}

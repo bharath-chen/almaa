@@ -4,14 +4,21 @@ import SocialsShare from "../../../shared/SocialsShare/SocialsShare";
 import { _getTitleRd } from "../../../contains/fakeData";
 import articles1Img from "../../../assets/HOME PAGE/13-articles-1.jpg";
 import PostCardMeta from "../../../components/PostCardMeta/PostCardMeta";
+import { type Blog } from "../../../models/blog";
 
-export interface Card12Props {
+export interface MainCardProps {
   src?: string;
   className?: string;
   onClick?: () => void;
+  blog?: Blog;
 }
 
-const MainCard: FC<Card12Props> = ({ className = "h-full", onClick, src }) => {
+const MainCard: FC<MainCardProps> = ({
+  className = "h-full",
+  onClick,
+  src,
+  blog,
+}) => {
   return (
     <div
       className={`nc-Card12 group relative flex flex-col cursor-pointer ${className}`}
@@ -33,17 +40,26 @@ const MainCard: FC<Card12Props> = ({ className = "h-full", onClick, src }) => {
           className={`nc-card-title block font-semibold text-neutral-900 dark:text-neutral-100 transition-colors text-lg sm:text-2xl`}
         >
           <div className="line-clamp-2 capitalize" title={"title"}>
-            {_getTitleRd()}
+            {/* {_getTitleRd()} */}
+            {blog?.title}
           </div>
         </h2>
         <span className="hidden sm:block mt-4 text-neutral-500 dark:text-neutral-400">
-          <span className="line-clamp-2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
+          <span
+            className="line-clamp-2"
+            dangerouslySetInnerHTML={{ __html: blog.content }}
+          >
+            {/* Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
             vero perspiciatis ullam ea? Nihil accusamus similique debitis
-            tempore mollitia? Aperiam.
+            tempore mollitia? Aperiam. */}
+            {/* {blog.content} */}
           </span>
         </span>
-        <PostCardMeta className="mt-5" />
+        <PostCardMeta
+          authorName={blog.author}
+          published_date={blog.published_date}
+          className="mt-5"
+        />
       </div>
     </div>
   );

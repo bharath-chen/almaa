@@ -3,14 +3,21 @@ import NcImage from "../../../shared/NcImage/NcImage";
 import { Link } from "react-router-dom";
 import { _getImgRd, _getTitleRd } from "../../../contains/fakeData";
 import PostCardMeta from "../../../components/PostCardMeta/PostCardMeta";
+import { Blog } from "../../../models/blog";
 
-export interface Card13Props {
+export interface BlogCardProps {
   className?: string;
   src?: string;
   onClick?: () => void;
+  blog?: Blog;
 }
 
-const BlogCard: FC<Card13Props> = ({ className = "", src, onClick }) => {
+const BlogCard: FC<BlogCardProps> = ({
+  className = "",
+  src,
+  blog,
+  onClick,
+}) => {
   return (
     <div
       className={`nc-Card13 relative flex ${className}`}
@@ -20,20 +27,28 @@ const BlogCard: FC<Card13Props> = ({ className = "", src, onClick }) => {
       <div className="flex flex-col h-full py-2 px-4 order-last">
         <h2 className={`nc-card-title block font-semibold text-base`}>
           <div className="line-clamp-2 capitalize" title={"title"}>
-            {_getTitleRd()}
+            {/* {_getTitleRd()} */}
+            {blog.title}
           </div>
         </h2>
         <span className="hidden sm:block my-3 text-slate-500 dark:text-slate-400 ">
-          <span className="line-clamp-2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-            dolorem voluptatibus numquam ut pariatur officiis?
+          <span
+            className="line-clamp-2"
+            dangerouslySetInnerHTML={{ __html: blog.content }}
+          >
+            {/* Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
+            dolorem voluptatibus numquam ut pariatur officiis? */}
           </span>
         </span>
         <span className="mt-4 block sm:hidden text-sm text-slate-500 ">
-          May 20, 2021 · 2 min read
+          {/* May 20, 2021 · 2 min read */}
+          {blog.published_date} . 2 min read
         </span>
         <div className="mt-auto hidden sm:block">
-          <PostCardMeta />
+          <PostCardMeta
+            authorName={blog.author}
+            published_date={blog.published_date}
+          />
         </div>
       </div>
 
