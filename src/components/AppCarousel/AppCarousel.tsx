@@ -59,7 +59,7 @@ const AppCarousel = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    lazyLoad: true,
+    // lazyLoad: true,
     adaptiveHeight: true,
   };
 

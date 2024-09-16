@@ -269,13 +269,14 @@ const Products: FC<Props> = ({ className = "" }) => {
                   ))}
                 </div>
                 <div className="flex-1 grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 ">
-                  {products.map((item, index) => (
-                    <ProductCard
-                      data={item}
-                      onLike={() => handleLike(item.product_id)}
-                      key={index}
-                    />
-                  ))}
+                  {products.length > 0 &&
+                    products.map((item, index) => (
+                      <ProductCard
+                        data={item}
+                        onLike={() => handleLike(item.product_id)}
+                        key={index}
+                      />
+                    ))}
                   {/* {prod} */}
                 </div>
               </div>

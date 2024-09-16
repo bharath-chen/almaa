@@ -187,6 +187,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
     request
       .then((res) => {
+        console.log(res.data);
         setRelatedProducts(res.data);
       })
       .catch((err) => {
@@ -648,7 +649,8 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             //   },
             {
               name: `How to Use?`,
-              content: `<ul class="list-disc list-inside leading-7"><li>${productDetail?.product_details[0]?.howtouse}</li></ul>`,
+              // content: `<ul class="list-disc list-inside leading-7"><li>${productDetail?.product_details[0]?.howtouse}</li></ul>`,
+              content: productDetail?.product_details[0]?.howtouse,
               //     `<ul class="list-disc list-inside leading-7">
               //   <li>Essential to control plaque of teeth</li>
               //   <li>
@@ -691,13 +693,18 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
         <h2 className="text-3xl font-semibold">Product details</h2>
         {/* <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div> */}
         <div className="prose prose-sm sm:prose dark:prose-invert sm:max-w-4xl">
-          <p className="text-slate-700 font-normal">
+          <p
+            className="text-slate-700 font-normal"
+            dangerouslySetInnerHTML={{
+              __html: productDetail?.product_details[0]?.full_description,
+            }}
+          >
             {/* Apart from usual tooth cleansing, the palpodi is indicated to treat
             45 types of tooth disorders. A miraculous combinations of herbs in
             pal podi magically clears sore throat, sinus, headache, running
             nose, sneezing, improves vision and clears the discolouration of
             facial skin. */}
-            {productDetail?.product_details[0]?.full_description}
+            {/* {productDetail?.product_details[0]?.full_description} */}
           </p>
           {/* <ul className="list-inside leading-7">
             <li>Essential to control plaque of teeth</li>
