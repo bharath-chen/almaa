@@ -9,6 +9,10 @@ import BackgroundSection from "../../components/BackgroundSection/BackgroundSect
 import SectionPromo1 from "../../components/SectionPromo1";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import GMap from "../../components/GMap/GMap";
+import { FaFacebookSquare } from "react-icons/fa";
+import { FaSquareXTwitter } from "react-icons/fa6";
+import { FaSquareInstagram } from "react-icons/fa6";
+import { FaSquareYoutube } from "react-icons/fa6";
 
 export interface PageContactProps {
   className?: string;
@@ -17,15 +21,42 @@ export interface PageContactProps {
 const info = [
   {
     title: "🗺 ADDRESS",
-    desc: "Krishnagiri Almaa Siddha Care Clinic Door No:-2/24 Mel Pudur Main Road, Next to PNS Institute, Krishnagiri-635001",
+    desc: `#10, Pillaiyar Koil Street, Saidapet, Chennai - 600015, Tamil Nadu, India`,
   },
   {
     title: "💌 EMAIL",
-    desc: "nc.example@example.com",
+    desc: "almaahospital@gmail.com",
   },
   {
     title: "☎ PHONE",
-    desc: "+91 - 7401403002",
+    desc: "+91-7401403002",
+  },
+];
+
+const socialsDemo: {
+  name: string;
+  icon: JSX.Element;
+  href: string;
+}[] = [
+  {
+    name: "Facebook",
+    icon: <FaFacebookSquare color="#1877F2" size={30} />,
+    href: "https://www.facebook.com/almaherbal",
+  },
+  {
+    name: "Instagram",
+    icon: <FaSquareInstagram color="#E1306C" size={30} />,
+    href: "https://www.instagram.com/almaaherbalnature/",
+  },
+  {
+    name: "Youtube",
+    icon: <FaSquareYoutube color="#FF0000" size={30} />,
+    href: "https://www.youtube.com/@almaaherbalnature",
+  },
+  {
+    name: "X",
+    icon: <FaSquareXTwitter color="#000000" size={30} />,
+    href: "https://x.com/almaaherbal_",
   },
 ];
 
@@ -45,6 +76,11 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
         <div className="container max-w-7xl mx-auto">
           <div className="flex-shrink-0 grid grid-cols-1 md:grid-cols-2 gap-12 ">
             <div className="max-w-sm space-y-8">
+              <div>
+                <h2 className="uppercase font-semibold text-md dark:text-neutral-200 tracking-wider">
+                  Almaa Herbal Nature Pvt Ltd
+                </h2>
+              </div>
               {info.map((item, index) => (
                 <div key={index}>
                   <h3 className="uppercase font-semibold text-sm dark:text-neutral-200 tracking-wider">
@@ -59,7 +95,7 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
                 <h3 className="uppercase font-semibold text-sm dark:text-neutral-200 tracking-wider">
                   🌏 SOCIALS
                 </h3>
-                <SocialsList className="mt-2" />
+                <SocialsList socials={socialsDemo} className="mt-2" />
               </div>
             </div>
             <div>
