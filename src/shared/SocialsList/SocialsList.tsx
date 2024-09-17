@@ -1,3 +1,9 @@
+import { FaFacebookSquare } from "react-icons/fa";
+import {
+  FaSquareInstagram,
+  FaSquareYoutube,
+  FaSquareXTwitter,
+} from "react-icons/fa6";
 import { SocialType } from "../../shared/SocialsShare/SocialsShare";
 import { FC } from "react";
 
@@ -11,10 +17,37 @@ export interface SocialsListProps {
   }[];
 }
 
+const socialsDemo: {
+  name: string;
+  icon: JSX.Element;
+  href: string;
+}[] = [
+  {
+    name: "Facebook",
+    icon: <FaFacebookSquare color="#1877F2" size={30} />,
+    href: "https://www.facebook.com/almaherbal",
+  },
+  {
+    name: "Instagram",
+    icon: <FaSquareInstagram color="#E1306C" size={30} />,
+    href: "https://www.instagram.com/almaaherbalnature/",
+  },
+  {
+    name: "Youtube",
+    icon: <FaSquareYoutube color="#FF0000" size={30} />,
+    href: "https://www.youtube.com/@almaaherbalnature",
+  },
+  {
+    name: "X",
+    icon: <FaSquareXTwitter color="#000000" size={30} />,
+    href: "https://x.com/almaaherbal_",
+  },
+];
+
 const SocialsList: FC<SocialsListProps> = ({
   className = "",
-  itemClass = "block w-6 h-6",
-  socials,
+  itemClass = "block w-8 h-8",
+  socials = socialsDemo,
 }) => {
   return (
     <nav

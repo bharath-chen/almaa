@@ -4,6 +4,13 @@ import { CustomLink } from "../../data/types";
 import React, { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import "./footer.css";
+import SocialsList from "../SocialsList/SocialsList";
+import { FaFacebookSquare } from "react-icons/fa";
+import {
+  FaSquareInstagram,
+  FaSquareYoutube,
+  FaSquareXTwitter,
+} from "react-icons/fa6";
 
 export interface WidgetFooterMenu {
   id: string;
@@ -12,24 +19,49 @@ export interface WidgetFooterMenu {
   menus: CustomLink[];
 }
 
+const socialsDemo: {
+  name: string;
+  icon: JSX.Element;
+  href: string;
+}[] = [
+  {
+    name: "Facebook",
+    icon: <FaFacebookSquare color="#1877F2" size={30} />,
+    href: "https://www.facebook.com/almaherbal",
+  },
+  {
+    name: "Instagram",
+    icon: <FaSquareInstagram color="#E1306C" size={30} />,
+    href: "https://www.instagram.com/almaaherbalnature/",
+  },
+  {
+    name: "Youtube",
+    icon: <FaSquareYoutube color="#FF0000" size={30} />,
+    href: "https://www.youtube.com/@almaaherbalnature",
+  },
+  {
+    name: "X",
+    icon: <FaSquareXTwitter color="#ffffff" size={30} />,
+    href: "https://x.com/almaaherbal_",
+  },
+];
+
 const widgetMenus: WidgetFooterMenu[] = [
   {
     id: "5",
     title: "Quick Links",
     classNames: "lg:col-span-2",
     menus: [
-      { href: "#", label: "Ask the Experts" },
-      { href: "#", label: "Blog" },
-      { href: "#", label: "Careers" },
-      { href: "#", label: "Contact Us" },
-      { href: "/faq", label: "FAQs" },
-      { href: "#", label: "Health Help" },
-      { href: "#", label: "Herb Finder" },
-      { href: "#", label: "Loyalty Program" },
-      { href: "#", label: "Research Papers" },
-      { href: "#", label: "Store Locator" },
-      { href: "#", label: "Refund Policy" },
-      { href: "/terms-of-service", label: "Terms of Service" },
+      { href: "/almaa-groups", label: "Almaa Groups" },
+      { href: "/founder", label: "Founder" },
+      { href: "/doctors-team", label: "Doctors Team" },
+      { href: "/our-branches", label: "Our Branches" },
+      { href: "/products", label: "Products" },
+      { href: "/wellness-center", label: "Wellness Center" },
+      { href: "/production-unit", label: "Production Unit" },
+      { href: "/blog", label: "Resources" },
+      { href: "/library", label: "Library" },
+      { href: "/support", label: "Support" },
     ],
   },
   {
@@ -90,7 +122,8 @@ const widgetMenus: WidgetFooterMenu[] = [
     menus: [
       {
         href: "#",
-        label: "Himalaya Wellness Company, Makali, Bengaluru - 562162",
+        label:
+          "#10, Pillaiyar Koil Street, Saidapet, Chennai - 600015, Tamil Nadu, India.",
       },
       {
         href: "#",
@@ -98,9 +131,11 @@ const widgetMenus: WidgetFooterMenu[] = [
           <>
             <p className="cursor-default text-sm xl:text-md text-neutral-550 dark:text-neutral-300 hover:text-neutral-550 dark:hover:text-white">
               Call Us:{" "}
-              <strong className="cursor-pointer">1-800-208-1930</strong>
+              <strong className="cursor-pointer">
+                044-4354 6873, 91-740 140 3000.
+              </strong>
             </p>
-            <p className="cursor-default text-sm xl:text-md text-neutral-550 dark:text-neutral-300 hover:text-neutral-550 dark:hover:text-white">
+            <p className="cursor-default text-sm xl:text-md text-neutral-550 dark:text-neutral-300 hover:text-neutral-550 dark:hover:text-white mt-5">
               Mon-Fri: 9:00am - 5:00pm
             </p>
           </>
@@ -111,9 +146,7 @@ const widgetMenus: WidgetFooterMenu[] = [
         content: () => (
           <a className="cursor-default text-sm xl:text-md text-neutral-550 dark:text-neutral-300 hover:text-neutral-550 dark:hover:text-white">
             Email Us:{" "}
-            <strong className="cursor-pointer">
-              contactus@himalayawellness.com
-            </strong>
+            <strong className="cursor-pointer">almaahospital@gmail.com</strong>
           </a>
         ),
       },
@@ -130,7 +163,7 @@ const widgetMenus: WidgetFooterMenu[] = [
         content: () => (
           <a className="text-sm xl:text-md text-neutral-550 dark:text-neutral-300 hover:text-neutral-550 dark:hover:text-white">
             <strong className="cursor-pointer">
-              Report Product Related Issues
+              <SocialsList socials={socialsDemo} />
             </strong>
           </a>
         ),
