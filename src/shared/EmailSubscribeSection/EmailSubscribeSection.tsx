@@ -3,6 +3,9 @@ import BackgroundSection from "../../components/BackgroundSection/BackgroundSect
 import Heading from "../../components/Heading/Heading";
 import NcImage from "../NcImage/NcImage";
 
+// Better discussions, better decisions.Talk to our doctor for any of your health concerns, from the
+// comfort of your home.
+
 const EmailSubscribeSection = () => {
   return (
     <section className="container">
@@ -13,15 +16,15 @@ const EmailSubscribeSection = () => {
             <Heading
               className="mb-5 lg:mb-5 text-neutral-900 dark:text-neutral-50"
               fontClass="sm:text-md md:text-2xl lg:text-4xl font-semibold"
-              rightDescText="resources from us"
+              rightDescText="better decisions"
             >
               <span className="mb-2">
-                Let's Subscribe & get <br />{" "}
+                Better discussions, <br />{" "}
               </span>
             </Heading>
             <p className="sm:text-sm md:text-md lg:text-2xl text-neutral-700 font-medium">
-              Opportunities to earn, save and get <br /> more benefits from
-              almaa. Dont miss
+              Talk to our doctor for any of your health concerns, from the
+              comfort of your home
             </p>
             <form className="mt-5 relative max-w-sm">
               <button
