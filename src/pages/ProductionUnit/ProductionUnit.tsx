@@ -50,9 +50,9 @@ const ProductionUnit = ({ className = "" }: ProductionUnitProps) => {
         </section>
 
         {/* ENQUIRE NOW */}
-        <section className="container mb-40">
+        {/* <section className="container mb-40">
           <SectionPromo2 />
-        </section>
+        </section> */}
 
         {/* EMAIL SUBSCRIBE SECTION */}
         <EmailSubscribeSection />
