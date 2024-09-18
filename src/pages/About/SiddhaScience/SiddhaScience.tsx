@@ -74,14 +74,33 @@ const SiddhaScience = () => {
                 Siddha Medicine
               </h3>
               <div className="block mt-6">
-                <ul className="pl-5 leading-relaxed dashed list-inside leading-7 text-xl text-slate-500 dark:text-slate-400">
-                  <li>2000 Years Tradition</li>
-                  <li>100% Scientific</li>
-                  <li>Solutions for 4448 diseases</li>
-                  <li>Completely written in Tamil literature</li>
+                <h4 className="font-semibold mb-3 text-2xl sm:text-2xl mt-2 sm:mt-2 !leading-[1.13] tracking-tight">
+                  Siddhargal
+                </h4>
+                <ul className="pl-5 leading-relaxed dashed list-inside leading-7 text-md text-slate-500 dark:text-slate-400">
+                  <li>
+                    The term Siddhar often misunderstood or mostly
+                    misinterpreted, actually means one who perfected the art of
+                    attaining enlightenment. There are a total of 18 siddhargal
+                    who are prime devotees of the supreme body.
+                  </li>
+                  <li>
+                    The one who attained siddhi through proper life and who will
+                    take rebirth is the ultimate goal one can reach and the 18
+                    siddhars have told us the ways to achieve this state and
+                    have shown us the path by doing it themselves.{" "}
+                  </li>
+                  <li>
+                    Palm Leaves, copper plate, stone inscriptions, and the
+                    knowledge transfer through gurukulams by the siddhars are
+                    the primary sources of existence of the most advanced
+                    ethnicity - the Tamil people through which we are today
+                    enjoying the fruits of the trees planted by our ancestors
+                    thousands of year ago!..
+                  </li>
                 </ul>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 sm:gap-5 md:gap-5 my-5">
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 sm:gap-5 md:gap-5 my-5">
                 <Button className="bg-primary-900 text-white sm:text-white sm:bg-primary-900 sm:hover:bg-white sm:hover:text-primary-900 shadow-xl dark:bg-slate-200 dark:text-slate-900 mb-3 md:m-0">
                   Watch Video{" "}
                   <span className="ml-3 p-1 bg-green-400 rounded-full">
@@ -131,7 +150,7 @@ const SiddhaScience = () => {
                 </h3>
                 <p className="text-slate-600 font-medium">Founder & Chairman</p>
                 <p className="text-slate-600 font-medium">Almaa Groups</p>
-              </div>
+              </div> */}
             </div>
 
             <NcImage
