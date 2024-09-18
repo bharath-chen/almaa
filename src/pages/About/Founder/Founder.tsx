@@ -205,6 +205,7 @@ const Founder = () => {
       <section className="container mb-40">
         <SectionFounder
           heading="	Nature & Sindhanai Siddhar"
+          desc={`"Health for All with Affordable Siddha Medicines" is the primary vision of our founder Sindhanai Siddhar Thiru.Velayudham avargal.`}
           founders={FOUNDER_DEMO}
         />
       </section>
