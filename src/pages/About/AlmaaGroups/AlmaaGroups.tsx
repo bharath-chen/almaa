@@ -4,11 +4,7 @@ import BgGlassmorphism from "../../../components/BgGlassmorphism/BgGlassmorphism
 import SectionHero from "../../Library/SectionHero";
 import rightImg from "../../../images/hero-right1.png";
 import SectionSliderCategories from "../../../components/SectionSliderCategories/SectionSliderCategories";
-import {
-  ACCORDION_INFO,
-  EXPLORE_SECTION_DATA,
-  MEDICAL_CONSULTANTS,
-} from "../../../data/home";
+import { ACCORDION_INFO, MEDICAL_CONSULTANTS } from "../../../data/home";
 import SectionGridMoreExplore from "../../../components/SectionGridMoreExplore/SectionGridMoreExplore";
 import Heading from "../../../components/Heading/Heading";
 import NcImage from "../../../shared/NcImage/NcImage";
@@ -17,10 +13,85 @@ import whyAlmaaImg from "../../../assets/HOME PAGE/10-why-section.jpg";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import SEO from "../../../shared/SEO/SEO";
 import { ALMAA_GROUP } from "./ALMAA_GROUP";
+import exploreImg1 from "../../../assets/HOME PAGE/6-explore-1.png";
+import exploreImg2 from "../../../assets/HOME PAGE/6-explore-2.png";
+import exploreImg3 from "../../../assets/HOME PAGE/6-explore-3.png";
+import exploreImg4 from "../../../assets/HOME PAGE/6-explore-4.png";
+import exploreImg5 from "../../../assets/HOME PAGE/6-explore-5.png";
+import exploreImg6 from "../../../assets/HOME PAGE/6-explore-6.png";
 
 interface AlmaaGroupProps {
   className?: string;
 }
+
+const EXPLORE_SECTION_DATA = [
+  {
+    id: 1,
+    name: "Almaa Herbal",
+    desc: "",
+    image: exploreImg1,
+    svgBg: "",
+    color: "bg-indigo-50",
+    btnLabel: "Explore Now",
+    quantityText: "",
+    href: "/doctors-team",
+  },
+  {
+    id: 2,
+    name: "Almaa Hospital",
+    desc: "",
+    image: exploreImg2,
+    svgBg: "",
+    color: "bg-slate-100/80",
+    btnLabel: "Explore Now",
+    quantityText: "",
+    href: "/wellness-center",
+  },
+  {
+    id: 3,
+    name: "Siddha Food Tech",
+    desc: "",
+    image: exploreImg3,
+    svgBg: "",
+    color: "bg-violet-50",
+    btnLabel: "Explore Now",
+    quantityText: "",
+    href: "/library",
+  },
+  {
+    id: 4,
+    name: "Almaa Therapy Center",
+    desc: "",
+    image: exploreImg4,
+    svgBg: "",
+    color: "bg-orange-50",
+    btnLabel: "Explore Now",
+    quantityText: "",
+    href: "/wellness-center",
+  },
+  {
+    id: 5,
+    name: "DR'S Siddha",
+    desc: "",
+    image: exploreImg5,
+    svgBg: "",
+    color: "bg-blue-50",
+    btnLabel: "Explore Now",
+    quantityText: "",
+    href: "/production-unit",
+  },
+  {
+    id: 6,
+    name: "Vela Siddha Village Resort",
+    desc: "",
+    image: exploreImg6,
+    svgBg: "",
+    color: "bg-orange-50",
+    btnLabel: "Explore Now",
+    quantityText: "",
+    href: "/blog",
+  },
+];
 
 const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
   return (
