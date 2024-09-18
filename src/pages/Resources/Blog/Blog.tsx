@@ -19,6 +19,7 @@ import { getFormattedDate } from "../../../utils/date-utils";
 
 const Blog: React.FC = () => {
   const dispatch = useAppDispatch();
+  const [mainCardData, setMainCardData] = useState<Blog>();
   const [blogList, setBlogList] = useState<Blog[]>([]);
   const [error, setError] = useState("");
 
@@ -37,7 +38,9 @@ const Blog: React.FC = () => {
             ...d,
             published_date: getFormattedDate(d.published_date),
           })) || [];
-        setBlogList(data);
+
+        setMainCardData(data[0]);
+        setBlogList(data.slice(1));
       })
       .catch((err) => {
         dispatch(hideLoader());
@@ -63,8 +66,8 @@ const Blog: React.FC = () => {
           {/* <SectionMagazine5 /> */}
           <div className="nc-SectionMagazine5">
             <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
-              {blogList[0] && (
-                <MainCard blog={blogList[0]} onClick={routeToBlogDetailPage} />
+              {mainCardData && (
+                <MainCard blog={mainCardData} onClick={routeToBlogDetailPage} />
               )}
               <div className="grid gap-6 md:gap-8">
                 {blogList.map((item, index) => (
