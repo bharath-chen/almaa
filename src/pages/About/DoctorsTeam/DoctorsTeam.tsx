@@ -63,9 +63,9 @@ const DoctorsTeam = ({ className = "" }: DoctorsTeamProps) => {
       <div className="container py-16">
         <SectionHero
           rightImg={rightImg}
-          heading="About Us."
+          heading="Our Doctors"
           btnText=""
-          subHeading="We’re impartial and independent, and every day we create distinctive, world-class programmes and content which inform, educate and entertain millions of people in the around the world."
+          subHeading="Our Esteemed Expert Panel consists of Senior Most Doctors in the field of Siddha combined with young & Dynamic doctors. Our Senior Doctors are masters of traditional healing, who have successfully treated countless patients using Unique remedies. Our young Siddha doctors bring innovative thinking and a modern approach to traditional healing practices."
         />
 
         <section className="my-20">
