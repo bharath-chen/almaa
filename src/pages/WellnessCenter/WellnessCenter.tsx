@@ -13,6 +13,7 @@ import SectionPromo2 from "../../components/SectionPromo2";
 import SectionFounder, { People } from "../Library/SectionFounder";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import SEO from "../../shared/SEO/SEO";
+import { WELLNESS_CENTER } from "../../data/WELLNESS_CENTER";
 
 interface WellnessCenterProps {
   className?: string;
@@ -178,23 +179,16 @@ const WellnessCenter = ({ className = "" }: WellnessCenterProps) => {
         </section> */}
 
         {/* FAQ */}
-        {/* <section className="container mb-40">
+        <section className="container mb-40">
           <Heading className="mb-8" fontClass="text-2xl md:text-4xl font-bold">
             FAQ
           </Heading>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 place-content-center">
-            <div className="lg:pl-20">
-              <NcImage
-                className="h-auto object-contain"
-                src={whyAlmaaImg}
-                alt="Almaa Greatness"
-              />
-            </div>
+          <div className="grid grid-cols-1 gap-4 place-content-center">
             <div>
-              <AccordionInfo data={ACCORDION_INFO} />
+              <AccordionInfo data={WELLNESS_CENTER.faq} />
             </div>
           </div>
-        </section> */}
+        </section>
 
         {/* ENQUIRE NOW */}
         {/* <section className="container mb-40">
