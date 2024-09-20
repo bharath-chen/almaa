@@ -1,16 +1,66 @@
-import { Helmet } from "react-helmet-async";
 import BgGlassmorphism from "../../components/BgGlassmorphism/BgGlassmorphism";
 import SectionHero from "../Library/SectionHero";
 import rightImg from "../../images/hero-right1.png";
-import SectionPromo2 from "../../components/SectionPromo2";
 import SectionSliderCategories from "../../components/SectionSliderCategories/SectionSliderCategories";
-import { MEDICAL_CONSULTANTS } from "../../data/home";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import SEO from "../../shared/SEO/SEO";
+import medicalConsultant1 from "../../assets/HOME PAGE/7-doctor-1.jpg";
+import medicalConsultant2 from "../../assets/HOME PAGE/7-doctor-2.jpg";
+import medicalConsultant3 from "../../assets/HOME PAGE/7-doctor-3.jpg";
+import medicalConsultant4 from "../../assets/HOME PAGE/7-doctor-4.jpg";
+import AccordionInfo from "../../containers/ProductDetailPage/AccordionInfo";
 
 interface ProductionUnitProps {
   className?: string;
 }
+
+const PRODUCTION_UNIT_ACCORDION_DATA = [
+  {
+    id: "pu1",
+    name: "Raw Drug Quality Analysis",
+    content:
+      "Each & every raw drug is procured from cruelty-free sources, non-GMO sources & farmers. Each & every Raw drug is carefully handpicked and screened by our expert team before starting the process of manufacturing. We are one of the best Siddha medicine manufacturers in Tamilnadu.",
+  },
+  {
+    id: "pu2",
+    name: "Good Manufacturing Process",
+    content:
+      "Our production unit is GMP-certified under State Licensing and strictly follows the guidelines prescribed by the government under GMP.",
+  },
+  {
+    id: "pu3",
+    name: "Packaging and Labeling",
+    content:
+      "We use eco-friendly medical-grade packaging materials and ensure that all labels provide clear, accurate information about the supplement's ingredients, benefits, and usage instructions. As the best herbal supplement manufacturer, we tend to provide full information about our products with transparency.",
+  },
+];
+
+const AWARDS_AND_CERTIFICATIONS = [
+  {
+    name: "fssai Certified Company",
+    desc: "",
+    img: medicalConsultant1,
+    color: "",
+  },
+  {
+    name: "GMP Certified Company.",
+    desc: "",
+    img: medicalConsultant2,
+    color: "",
+  },
+  {
+    name: "21st Century Millennium Award for Art & Culture.",
+    desc: "",
+    img: medicalConsultant3,
+    color: "",
+  },
+  {
+    name: "International Ayush Natural Award.",
+    desc: "",
+    img: medicalConsultant4,
+    color: "",
+  },
+];
 
 const ProductionUnit = ({ className = "" }: ProductionUnitProps) => {
   return (
@@ -29,15 +79,16 @@ const ProductionUnit = ({ className = "" }: ProductionUnitProps) => {
         />
 
         {/* ======== BG GLASS ======== */}
-        <BgGlassmorphism />
 
         <div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
           <SectionHero
             rightImg={rightImg}
-            heading="About Us."
+            heading="Production Unit"
             btnText=""
-            subHeading="We’re impartial and independent, and every day we create distinctive, world-class programmes and content which inform, educate and entertain millions of people in the around the world."
+            subHeading="
+Our production unit is equipped with state-of-the-art manufacturing tools and large-scale and eco-friendly methodologies. The Production unit is built to preserve the traditional manufacturing process and to yield maximum output at the same time."
           />
+          <AccordionInfo data={PRODUCTION_UNIT_ACCORDION_DATA} />
         </div>
 
         {/* AWARDS AND CERTIFICATIONS SECTION */}
@@ -45,7 +96,7 @@ const ProductionUnit = ({ className = "" }: ProductionUnitProps) => {
           <SectionSliderCategories
             heading="Awards"
             rightDescText="& Certfications"
-            data={MEDICAL_CONSULTANTS}
+            data={AWARDS_AND_CERTIFICATIONS}
           />
         </section>
 
