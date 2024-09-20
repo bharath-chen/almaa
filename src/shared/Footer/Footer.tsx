@@ -161,11 +161,11 @@ const widgetMenus: WidgetFooterMenu[] = [
       {
         href: "#",
         content: () => (
-          <a className="text-sm xl:text-md text-neutral-550 dark:text-neutral-300 hover:text-neutral-550 dark:hover:text-white">
+          <div className="text-sm xl:text-md text-neutral-550 dark:text-neutral-300 hover:text-neutral-550 dark:hover:text-white">
             <strong className="cursor-pointer">
               <SocialsList socials={socialsDemo} />
             </strong>
-          </a>
+          </div>
         ),
       },
     ],
