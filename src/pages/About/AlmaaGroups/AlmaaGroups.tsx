@@ -19,6 +19,11 @@ import exploreImg3 from "../../../assets/HOME PAGE/6-explore-3.png";
 import exploreImg4 from "../../../assets/HOME PAGE/6-explore-4.png";
 import exploreImg5 from "../../../assets/HOME PAGE/6-explore-5.png";
 import exploreImg6 from "../../../assets/HOME PAGE/6-explore-6.png";
+import medicalConsultant1 from "../../../assets/HOME PAGE/7-doctor-1.jpg";
+import medicalConsultant2 from "../../../assets/HOME PAGE/7-doctor-2.jpg";
+import medicalConsultant3 from "../../../assets/HOME PAGE/7-doctor-3.jpg";
+import medicalConsultant4 from "../../../assets/HOME PAGE/7-doctor-4.jpg";
+import mdSectionImg from "../../../assets/HOME PAGE/5-md-section.png";
 
 interface AlmaaGroupProps {
   className?: string;
@@ -93,6 +98,33 @@ const EXPLORE_SECTION_DATA = [
   },
 ];
 
+const AWARDS_AND_ACCOLADES = [
+  {
+    name: "YouTube Silver Play Button",
+    desc: "",
+    img: medicalConsultant1,
+    color: "",
+  },
+  {
+    name: "Arogyam Health & Fitness.",
+    desc: "",
+    img: medicalConsultant2,
+    color: "",
+  },
+  {
+    name: "21st Century Millennium Award for Art & Culture.",
+    desc: "",
+    img: medicalConsultant3,
+    color: "",
+  },
+  {
+    name: "International Ayush Natural Award.",
+    desc: "",
+    img: medicalConsultant4,
+    color: "",
+  },
+];
+
 const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
   return (
     <div
@@ -108,26 +140,71 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
         robots="INDEX, FOLLOW"
       />
 
-      {/* ======== BG GLASS ======== */}
-      <BgGlassmorphism />
-      <div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
-        <h1 className="font-bold lg:text-5xl md:text-4xl text-2xl">
-          Our Story: Unveiling Almaa's Heritage in Siddha Medicine Online
-        </h1>
-        <SectionHero
-          rightImg={rightImg}
-          heading={null}
-          btnText=""
-          subHeading="Sindhanai Sitthar Thiru. M.G.L. Velayudham Avargal has started the Almaa Herbal Nature Pvt.Ltd with the motto of introducing the Siddha System of Medicine into every Household in Tamil Nadu & all around the world. The Siddha system has a large potential to cure diseases and maintain health. He aimed to Increase the Quality & Standards of Siddha medicine to compete with Global Standards.
-Where contemporary medicine was just to alleviate symptoms, he saw the curing capacity of Siddha medicine and its need around the world. He thought Siddha medicine through Online medium was a powerful tool to showcase the power of Tamil traditional medicine to the world. We Are Offering Online Consultations with Siddha doctors through our portal. "
-        />
-      </div>
+      <section className="container mt-20 mb-40">
+        <div className={`nc-SectionPromo2`}>
+          <div className="relative flex flex-col justify-center lg:flex-row lg:justify-end bg-slate-50 dark:bg-slate-800 rounded-2xl sm:rounded-[40px] p-4 pb-0 sm:p-5 sm:pb-0 lg:p-24">
+            <div className="lg:w-[55%] max-w-lg relative lg:top-14">
+              <h2 className="text-2xl tracking-normal font-medium">
+                Almaa Groups
+              </h2>
+              <div className="block mt-6">
+                <ul className="pl-5 leading-relaxed dashed list-inside leading-7 text-md text-slate-500 dark:text-slate-400">
+                  <li>
+                    Founded by the esteemed Naturalist & Tamizh entrepreneur
+                    Thiru.Sindhanai Sitthar Velayudham avargal.{" "}
+                  </li>
+                  <li>
+                    Almaa is a pioneer in the traditional medicine sector. The
+                    prime motto behind the organisation is to provide quality &
+                    affordable indigenous medicines to the Tamil community &
+                    world. The need for quality Siddha medicines, user-friendly
+                    traditional medicines & most importantly side effect-free
+                    natural medicines has helped us grow immensely.{" "}
+                  </li>
+                  <li>
+                    The quality of care, quality of medicines & quality of
+                    service to the people have created trust for us among the
+                    masses.
+                  </li>
+                  <li>
+                    Word-of-mouth advertisements from people have given us a
+                    huge boost to start our branches all over Tamilnadu and soon
+                    all over India.
+                  </li>
+                  <li>
+                    The richness of our cultural heritage throughout Asia gave
+                    us a successful & firm l foot in Malaysia, Singapore and
+                    other countries.
+                  </li>
+                  <li>
+                    Through almaa groups, you can experience the harmony of
+                    body, mind, and spirit with our range of wellness solutions
+                    inspired by ancient traditions & delivered through modern
+                    technology.
+                  </li>
+                  <li>
+                    We have a range of services starting from the Outpatient
+                    Department, Inpatient Treatment Facility, Daycare therapy
+                    centres & 5-star category Wellness resorts.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <NcImage
+              containerClassName="relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(55%-40px)]"
+              src={mdSectionImg}
+              alt="Almaa Groups Founder"
+            />
+          </div>
+        </div>
+      </section>
       {/* AWARDS & ACCOLADES SECTION */}
       <section className="container mb-40">
         <SectionSliderCategories
           heading="Awards"
           rightDescText="& Accolades"
-          data={MEDICAL_CONSULTANTS}
+          data={AWARDS_AND_ACCOLADES}
         />
         {/* <ButtonSecondary className="focus:ring-2 focus:ring-offset-2 focus:ring-transparent tracking-tight ml-3 mt-6 md:text-2xl sm:px-14 border sm:py-5 sm:text-dark sm:bg-white-900 sm:hover:bg-white sm:hover:text-primary-900 border border-slate-300 dark:border-slate-700">
           Visit all Doctors
