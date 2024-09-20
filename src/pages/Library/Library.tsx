@@ -5,17 +5,79 @@ import BgGlassmorphism from "../../components/BgGlassmorphism/BgGlassmorphism";
 import SectionHero from "./SectionHero";
 import AppSlider from "../../components/AppSlider/AppSlider";
 import Heading from "../../components/Heading/Heading";
-import { MEDICAL_CONSULTANTS, MEDIC_SLIDERS } from "../../data/home";
+import {
+  ACCORDION_INFO,
+  MEDICAL_CONSULTANTS,
+  MEDIC_SLIDERS,
+} from "../../data/home";
 import CardCategory3 from "../../components/CardCategories/CardCategory3";
 import Button from "../../shared/Button/Button";
 import NcImage from "../../shared/NcImage/NcImage";
 import mdSectionImg from "../../assets/HOME PAGE/5-md-section.png";
 import SectionSliderCategories from "../../components/SectionSliderCategories/SectionSliderCategories";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
+import medicalConsultant1 from "../../assets/HOME PAGE/7-doctor-1.jpg";
+import medicalConsultant2 from "../../assets/HOME PAGE/7-doctor-2.jpg";
+import medicalConsultant3 from "../../assets/HOME PAGE/7-doctor-3.jpg";
+import medicalConsultant4 from "../../assets/HOME PAGE/7-doctor-4.jpg";
+import whyAlmaaImg from "../../assets/HOME PAGE/10-why-section.jpg";
+import AccordionInfo from "../../containers/ProductDetailPage/AccordionInfo";
 
 export interface PageAboutProps {
   className?: string;
 }
+
+const OUR_BOOKS = [
+  {
+    name: "Unavum Vazhvum",
+    desc: "",
+    img: medicalConsultant1,
+    color: "",
+  },
+  {
+    name: "Keerai illa Unavu",
+    desc: "",
+    img: medicalConsultant2,
+    color: "",
+  },
+];
+
+const OUR_CDS = [
+  {
+    name: "Pillai Peru",
+    desc: "",
+    img: medicalConsultant1,
+    color: "",
+  },
+  {
+    name: "Nlamudan Vaazha",
+    desc: "",
+    img: medicalConsultant2,
+    color: "",
+  },
+  {
+    name: "Unave Uyir",
+    desc: "",
+    img: medicalConsultant3,
+    color: "",
+  },
+];
+
+const OUR_LIBRARY = [
+  {
+    name: "Featured Articles",
+    content: `In-depth essays on herbal medicine &amp; health. Renowned Siddha Doctors Featured
+artilces o every aspect of health`,
+  },
+  {
+    name: "Editorials",
+    content: `Sindhanai Siththar Velayudhams special perspective on health & well being`,
+  },
+  {
+    name: "News and Updates",
+    content: `Current events or trends within the health&amp; siddha department`,
+  },
+];
 
 const Library: FC<PageAboutProps> = ({ className = "" }) => {
   const renderCategoryCard = (item: {
@@ -51,11 +113,37 @@ const Library: FC<PageAboutProps> = ({ className = "" }) => {
       <div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
         <SectionHero
           rightImg={rightImg}
-          heading="About Us."
+          heading="Library"
           btnText=""
-          subHeading="We’re impartial and independent, and every day we create distinctive, world-class programmes and content which inform, educate and entertain millions of people in the around the world."
+          subHeading="Welcome to our comprehensive library, where we bring together a wealth of knowledge on holistic
+health practices, traditional wisdom, and modern trends. Explore Siddha therapies, herbal remedies,
+and medicinal innovations that merge ancient traditions with contemporary advancements. Stay
+informed with the latest health news and emerging trends in wellness to make well-rounded,
+informed decisions for your well-being.
+"
         />
-
+        {/* WHY SHOULD YOU BE WITH ALMA SECTION */}
+        <section className="mb-40">
+          <Heading
+            className="mb-8"
+            rightDescText=""
+            fontClass="text-2xl md:text-4xl font-bold"
+          >
+            Our Resources
+          </Heading>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 place-content-center">
+            <div className="lg:pl-20">
+              <NcImage
+                className="h-auto object-contain"
+                src={whyAlmaaImg}
+                alt="Almaa Greatness"
+              />
+            </div>
+            <div>
+              <AccordionInfo data={OUR_LIBRARY} />
+            </div>
+          </div>
+        </section>
         {/* <SectionFounder /> */}
         {/* <div className="relative py-16">
           <BackgroundSection />
@@ -68,49 +156,60 @@ const Library: FC<PageAboutProps> = ({ className = "" }) => {
       </div>
       {/* EXPLORE PRODUCTS BY MEDICAL CONDITIONS SECTION */}
       <section className="mb-40">
-        <AppSlider
+        {/* <AppSlider
           className="nc-DiscoverMoreSlider nc-p-l-container "
           data={MEDIC_SLIDERS}
           renderChildren={renderCategoryCard}
+        > */}
+        {/* <Heading
+          className="mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 nc-p-r-container "
+          // rightDescText="by Medical Conditions"
+          // hasNextPrev
         >
-          <Heading
-            className="mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 nc-p-r-container "
-            // rightDescText="by Medical Conditions"
-            hasNextPrev
-          >
-            Our Resources
-          </Heading>
-        </AppSlider>
+          Our Resources
+        </Heading> */}
+        {/* </AppSlider> */}
       </section>
 
       {/* UYIRVAZHI MONTHLY MAGAZINE SECTION */}
       <section className="container mb-40">
-        <Heading
+        {/* <Heading
           className="mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 nc-p-r-container "
-          rightDescText="Monthly Magazine"
+          rightDescText=""
           // hasNextPrev
         >
-          Uyirvazhi -{/* Monthly Magazine */}
-        </Heading>
+          Uyirvazhi
+        </Heading> */}
         <div className={`nc-SectionPromo2`}>
           <div className="relative flex flex-col justify-center lg:flex-row lg:justify-end bg-slate-50 dark:bg-slate-800 rounded-2xl sm:rounded-[40px] p-4 pb-0 sm:p-5 sm:pb-0 lg:p-24">
             <div className="lg:w-[55%] max-w-lg relative lg:top-14">
-              <h2 className="text-2xl tracking-normal font-medium">
+              {/* <h2 className="text-2xl tracking-normal font-medium">
                 Let's Understand
-              </h2>
+              </h2> */}
               <h3 className="font-semibold text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl mt-2 sm:mt-2 !leading-[1.13] tracking-tight">
-                Siddhargal &<br />
-                Siddha Medicine
+                Uyirvazhi
               </h3>
               <div className="block mt-6">
-                <ul className="pl-5 leading-relaxed dashed list-inside leading-7 text-xl text-slate-500 dark:text-slate-400">
-                  <li>2000 Years Tradition</li>
-                  <li>100% Scientific</li>
-                  <li>Solutions for 4448 diseases</li>
-                  <li>Completely written in Tamil literature</li>
+                <ul className="pl-5 leading-relaxed dashed list-inside leading-7 text-md text-slate-500 dark:text-slate-400">
+                  <li>
+                    Welcome to Uyrivazhi, your trusted source for holistic
+                    health and wellness! Our magazine is dedicated to empowering
+                    you with the latest insights on herbal remedies, natural
+                    healing, and balanced living. Featuring expert advice from
+                    seasoned doctors and health professionals, we aim to educate
+                    and inspire readers to embrace a healthier lifestyle. From
+                    ancient medicinal practices to cutting-edge wellness trends,
+                    we bring you well-researched articles, practical tips, and
+                    personal stories to support your journey toward optimal
+                    well-being. Stay informed, stay healthy, and discover the
+                    power of nature’s wisdom
+                  </li>
+                  <li>Yearly Subscription : Rs. 360</li>
+                  <li>5 year Subscription : Rs. 1500</li>
+                  <li>Life Time Subscription : Rs. 3000</li>
                 </ul>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 sm:gap-5 md:gap-5 my-5">
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 sm:gap-5 md:gap-5 my-5">
                 <Button className="bg-primary-900 text-white sm:text-white sm:bg-primary-900 sm:hover:bg-white sm:hover:text-primary-900 shadow-xl dark:bg-slate-200 dark:text-slate-900 mb-3 md:m-0">
                   Watch Video{" "}
                   <span className="ml-3 p-1 bg-green-400 rounded-full">
@@ -160,7 +259,7 @@ const Library: FC<PageAboutProps> = ({ className = "" }) => {
                 </h3>
                 <p className="text-slate-600 font-medium">Founder & Chairman</p>
                 <p className="text-slate-600 font-medium">Almaa Groups</p>
-              </div>
+              </div> */}
             </div>
 
             <NcImage
@@ -174,10 +273,7 @@ const Library: FC<PageAboutProps> = ({ className = "" }) => {
 
       {/* OUR BOOKS SECTION */}
       <section className="container mb-40">
-        <SectionSliderCategories
-          heading="Our Books"
-          data={MEDICAL_CONSULTANTS}
-        />
+        <SectionSliderCategories heading="Our Books" data={OUR_BOOKS} />
         {/* <ButtonSecondary className="focus:ring-2 focus:ring-offset-2 focus:ring-transparent tracking-tight ml-3 mt-6 md:text-2xl sm:px-14 border sm:py-5 sm:text-dark sm:bg-white-900 sm:hover:bg-white sm:hover:text-primary-900 border border-slate-300 dark:border-slate-700">
           Visit all Doctors
         </ButtonSecondary> */}
@@ -185,7 +281,7 @@ const Library: FC<PageAboutProps> = ({ className = "" }) => {
 
       {/* OUR CDS SECTION */}
       <section className="container mb-40">
-        <SectionSliderCategories heading="Our CDS" data={MEDICAL_CONSULTANTS} />
+        <SectionSliderCategories heading="Our CDS" data={OUR_CDS} />
         {/* <ButtonSecondary className="focus:ring-2 focus:ring-offset-2 focus:ring-transparent tracking-tight ml-3 mt-6 md:text-2xl sm:px-14 border sm:py-5 sm:text-dark sm:bg-white-900 sm:hover:bg-white sm:hover:text-primary-900 border border-slate-300 dark:border-slate-700">
           Visit all Doctors
         </ButtonSecondary> */}
