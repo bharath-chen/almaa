@@ -36,7 +36,10 @@ const CaseStudyCard = ({ caseStudy, className, onClick }: Props) => {
           </div>
         </h2>
         <span className="hidden sm:block mt-4 text-neutral-500 dark:text-neutral-400">
-          <span className="line-clamp-2">{caseStudy.description}</span>
+          <span
+            className="line-clamp-2"
+            dangerouslySetInnerHTML={{ __html: caseStudy.description }}
+          ></span>
         </span>
         <div
           className={`nc-PostCardMeta inline-flex items-center fledx-wrap text-neutral-800 dark:text-neutral-200 text-sm ${className}`}
