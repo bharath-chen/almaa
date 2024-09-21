@@ -3,7 +3,6 @@ import { _getTitleRd } from "../../../contains/fakeData";
 import NcImage from "../../../shared/NcImage/NcImage";
 import SocialsShare from "../../../shared/SocialsShare/SocialsShare";
 import { INewsAndEvents } from "../../../services/news-events-service";
-import articles1Img from "../../../assets/HOME PAGE/13-articles-1.jpg";
 
 interface Props {
   newsAndEvent: INewsAndEvents;
@@ -21,9 +20,9 @@ const NewsAndEventCard = ({ newsAndEvent, className }: Props) => {
         className="block flex-shrink-0 flex-grow relative w-full h-0 aspect-w-4 aspect-h-3 rounded-3xl overflow-hidden"
       >
         <NcImage
-          src={articles1Img}
+          src={newsAndEvent.image_url}
           containerClassName="absolute inset-0"
-          alt={"title"}
+          alt={newsAndEvent.title}
         />
       </Link>
 
@@ -42,7 +41,10 @@ const NewsAndEventCard = ({ newsAndEvent, className }: Props) => {
           </Link>
         </h2>
         <span className="hidden sm:block mt-4 text-neutral-500 dark:text-neutral-400">
-          <span className="line-clamp-2">{newsAndEvent.description}</span>
+          <span
+            className="line-clamp-2"
+            dangerouslySetInnerHTML={{ __html: newsAndEvent.description }}
+          ></span>
         </span>
         <div
           className={`nc-PostCardMeta inline-flex items-center fledx-wrap text-neutral-800 dark:text-neutral-200 text-sm ${className}`}

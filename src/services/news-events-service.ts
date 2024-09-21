@@ -6,6 +6,7 @@ export interface INewsAndEvents {
   description: string;
   event_date: string;
   status: string;
+  image_url: string;
 }
 
 export default create("?gofor=newseventslist");
