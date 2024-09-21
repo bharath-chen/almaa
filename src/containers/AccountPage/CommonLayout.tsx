@@ -47,7 +47,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
                 link: "/account-change-password",
               },
               {
-                name: "Change Billing",
+                name: "Support",
                 link: "/account-billing",
               },
             ].map((item, index) => (
