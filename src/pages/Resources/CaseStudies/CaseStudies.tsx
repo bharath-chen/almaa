@@ -54,7 +54,7 @@ const CaseStudies: React.FC = () => {
             <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
               {caseStudies.map((item, index) => (
                 <CaseStudyCard
-                  key={index}
+                  key={item.case_study_id}
                   caseStudy={item}
                   onClick={() => routeToCaseStudy(item)}
                 />

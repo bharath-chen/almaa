@@ -1,6 +1,5 @@
 import AccordionInfo from "../../../containers/ProductDetailPage/AccordionInfo";
 import { useLocation } from "react-router-dom";
-import articles1Img from "../../../assets/HOME PAGE/13-articles-1.jpg";
 
 export interface Props {
   className?: string;
@@ -9,35 +8,13 @@ export interface Props {
 const CaseStudyDetail = ({ className = "" }: Props) => {
   const { state } = useLocation();
 
-  const DEMO_DATA = [
-    {
-      name: "Experience",
-      content:
-        "Fashion is a form of self-expression and autonomy at a particular period and place and in a specific context, of clothing, footwear, lifestyle, accessories, makeup, hairstyle, and body posture.",
-    },
-    {
-      name: "Specialization",
-      content: `<ul class="list-disc list-inside leading-7">
-      <li>Made from a sheer Belgian power micromesh.</li>
-      <li>
-      74% Polyamide (Nylon) 26% Elastane (Spandex)
-      </li>
-      <li>
-      Adjustable hook & eye closure and straps
-      </li>
-      <li>
-      Hand wash in cold water, dry flat
-      </li>
-    </ul>`,
-    },
-    {
-      name: "Highlights",
-      content:
-        "Use this as a guide. Preference is a huge factor — if you're near the top of a size range and/or prefer more coverage, you may want to size up.",
-    },
-  ];
-
   const renderSectionContent = () => {
+    const accordionData = [
+      { name: "Case Details", content: state.caseStudy.case_details },
+      { name: "Diagnosis", content: state.caseStudy.diagnosis },
+      { name: "Result", content: state.caseStudy.result },
+    ];
+
     return (
       <div className="space-y-7 2xl:space-y-8">
         <div className="w-full max-w bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -45,9 +22,12 @@ const CaseStudyDetail = ({ className = "" }: Props) => {
             <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white pb-2">
               {state.caseStudy.title}
             </h5>
-            <span className="text-md text-gray-500 dark:text-gray-400 pb-2">
-              {state.caseStudy.description}
-            </span>
+            <span
+              className="text-md text-gray-500 dark:text-gray-400 pb-2"
+              dangerouslySetInnerHTML={{
+                __html: state.caseStudy.description,
+              }}
+            ></span>
             {/* <span className="text-md text-gray-500 dark:text-gray-400">
               Designation: {state.caseStudy.designation}
             </span> */}
@@ -80,7 +60,7 @@ const CaseStudyDetail = ({ className = "" }: Props) => {
           </ButtonPrimary>
         </div> */}
         {/* ---------- 5 ----------  */}
-        <AccordionInfo data={DEMO_DATA} />
+        <AccordionInfo data={accordionData} />
       </div>
     );
   };
@@ -96,7 +76,7 @@ const CaseStudyDetail = ({ className = "" }: Props) => {
             <div className="relative">
               <div className="aspect-w-16 aspect-h-16">
                 <img
-                  src={articles1Img}
+                  src={state.caseStudy.image_url}
                   className="w-full rounded-2xl object-cover"
                   alt={state.caseStudy.title}
                 />
