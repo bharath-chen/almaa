@@ -15,7 +15,6 @@ const CaseStudyCard = ({ caseStudy, className, onClick }: Props) => {
     <div
       className={`nc-Card12 group relative flex flex-col cursor-pointer ${className}`}
       data-nc-id="Card12"
-      onClick={onClick}
     >
       <div className="block flex-shrink-0 flex-grow relative w-full h-0 aspect-w-4 aspect-h-3 rounded-3xl overflow-hidden">
         <NcImage
@@ -31,7 +30,11 @@ const CaseStudyCard = ({ caseStudy, className, onClick }: Props) => {
         <h2
           className={`nc-card-title block font-semibold text-neutral-900 dark:text-neutral-100 transition-colors text-lg sm:text-2xl`}
         >
-          <div className="line-clamp-2 capitalize" title={caseStudy.title}>
+          <div
+            className="line-clamp-2 capitalize"
+            title={caseStudy.title}
+            onClick={onClick}
+          >
             {caseStudy.title}
           </div>
         </h2>
