@@ -56,7 +56,7 @@ const BlogCard: FC<BlogCardProps> = ({
         className={`block relative h-full flex-shrink-0 w-2/5 sm:w-1/3 ml-3 sm:ml-5`}
       >
         <NcImage
-          src={src}
+          src={blog.image_url}
           containerClassName="absolute inset-0 "
           className="object-cover w-full h-full rounded-xl sm:rounded-3xl"
         />

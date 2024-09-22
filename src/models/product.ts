@@ -42,4 +42,5 @@ export interface Product {
   created?: string;
   isLiked?: boolean;
   qty?: number;
+  suitablefor?: string;
 }

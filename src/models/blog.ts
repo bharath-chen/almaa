@@ -5,4 +5,5 @@ export interface Blog {
   author: string;
   published_date: string;
   status: string;
+  image_url: string;
 }

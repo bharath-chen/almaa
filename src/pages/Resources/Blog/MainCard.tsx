@@ -27,7 +27,7 @@ const MainCard: FC<MainCardProps> = ({
     >
       <div className="block flex-shrink-0 flex-grow relative w-full h-0 aspect-w-4 aspect-h-3 rounded-3xl overflow-hidden">
         <NcImage
-          src={src || articles1Img}
+          src={blog.image_url || articles1Img}
           containerClassName="absolute inset-0"
           alt={"title"}
         />
