@@ -1,55 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Helmet } from "react-helmet-async";
 import SectionLatestPosts from "./SectionLatestPosts";
 import BgGlassmorphism from "../../../components/BgGlassmorphism/BgGlassmorphism";
 import SectionPromo3 from "../../../components/SectionPromo3";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import blogListService from "../../../services/blog-list-service";
-import { CanceledError } from "axios";
-import SectionMagazine5 from "../../../containers/BlogPage/SectionMagazine5";
-import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
-import { useAppDispatch } from "../../../hooks/hooks";
-import { featuredImgs } from "../../../contains/fakeData";
 import BlogCard from "./BlogCard";
 import MainCard from "./MainCard";
 import { type Blog } from "../../../models/blog";
-import { getFormattedDate } from "../../../utils/date-utils";
-
-// DEMO DATA
+import useBlogs from "../../../hooks/useBlogs";
+import { useNavigate } from "react-router-dom";
 
 const Blog: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const [mainCardData, setMainCardData] = useState<Blog>();
-  const [blogList, setBlogList] = useState<Blog[]>([]);
-  const [error, setError] = useState("");
-
-  const routeToBlogDetailPage = () => {};
-
-  useEffect(() => {
-    const { request, cancel } = blogListService.getAll<Blog>();
-
-    dispatch(showLoader());
-
-    request
-      .then((res) => {
-        dispatch(hideLoader());
-        const data =
-          res.data.map((d) => ({
-            ...d,
-            published_date: getFormattedDate(d.published_date),
-          })) || [];
-
-        setMainCardData(data[0]);
-        setBlogList(data.slice(1));
-      })
-      .catch((err) => {
-        dispatch(hideLoader());
-        if (err instanceof CanceledError) return;
-        setError(err.message);
-      });
-
-    return () => cancel();
-  }, []);
+  const { mainCardData, blogList } = useBlogs();
+  const navigate = useNavigate();
+  const routeToBlogDetailPage = () => {
+    navigate("/blog-single");
+  };
 
   return (
     <div className="nc-BlogPage overflow-hidden relative">

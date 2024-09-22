@@ -58,6 +58,9 @@ import client7Image from "../../assets/00-Home/Golden Words from our Customers/7
 
 import useCategory from "../../hooks/useCategory";
 import useDoctors from "../../hooks/useDoctors";
+import useBlogs from "../../hooks/useBlogs";
+import MainCard from "../Resources/Blog/MainCard";
+import BlogCard from "../Resources/Blog/BlogCard";
 
 export const pageAnimation = {
   initial: { opacity: 0, y: 100 },
@@ -70,6 +73,7 @@ const Home = () => {
   const [error, setError] = useState("");
   const { categories } = useCategory();
   const { doctors } = useDoctors();
+  const { mainCardData, blogList } = useBlogs();
 
   const handleSliderCardClick = (item: CardCategoryData) => {
     const selectedDoctor = doctors.find((doc) => doc.doctor_id === item.id);
@@ -79,6 +83,10 @@ const Home = () => {
         doctor: selectedDoctor,
       },
     });
+  };
+
+  const routeToBlogDetailPage = () => {
+    navigate("/blog-single");
   };
 
   const renderCategoryCard = (item: {
@@ -651,7 +659,27 @@ const Home = () => {
           <BackgroundSection />
           <div>
             <Heading rightDescText="Doctors Team">Articles from our</Heading>
-            <SectionMagazine5 />
+            {/* <SectionMagazine5 /> */}
+            <div className="nc-SectionMagazine5">
+              <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
+                {mainCardData && (
+                  <MainCard
+                    blog={mainCardData}
+                    onClick={routeToBlogDetailPage}
+                  />
+                )}
+                <div className="grid gap-6 md:gap-8">
+                  {blogList.map((item, index) => (
+                    <BlogCard
+                      key={index}
+                      // src={item}
+                      blog={item}
+                      onClick={routeToBlogDetailPage}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
             <div className="flex mt-16 justify-center">
               <ButtonSecondary>
                 <Link to="/blog">Show all Blogs</Link>
