@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import heroImg from "../../assets/HOME PAGE/1-slider-image.jpg";
 import ButtonSecondary from "../../shared/Button/ButtonSecondary";
 import aboutSectionImg from "../../assets/HOME PAGE/2-about-section.jpg";
-import whyAlmaaImg from "../../assets/HOME PAGE/10-why-section.jpg";
-import certification1Img from "../../assets/HOME PAGE/11-certificates.jpg";
+// import whyAlmaaImg from "../../assets/HOME PAGE/10-why-section.jpg";
+import faqImg from "../../assets/00-Home/FAQ.jpg";
+import certificationsImg from "../../assets/00-Home/Certificate.jpg";
 import Heading from "../../components/Heading/Heading";
 import CardCategory3 from "../../components/CardCategories/CardCategory3";
 import AccordionInfo from "../../containers/ProductDetailPage/AccordionInfo";
@@ -12,16 +13,16 @@ import NcImage from "../../shared/NcImage/NcImage";
 import SectionClientSay from "../../components/SectionClientSay/SectionClientSay";
 import BackgroundSection from "../../components/BackgroundSection/BackgroundSection";
 import SectionMagazine5 from "../../containers/BlogPage/SectionMagazine5";
-import SectionSliderCategories from "../../components/SectionSliderCategories/SectionSliderCategories";
+import SectionSliderCategories, {
+  CardCategoryData,
+} from "../../components/SectionSliderCategories/SectionSliderCategories";
 import SectionGridMoreExplore from "../../components/SectionGridMoreExplore/SectionGridMoreExplore";
 import Button from "../../shared/Button/Button";
-import mdSectionImg from "../../assets/HOME PAGE/5-md-section.png";
+import siddhargalAndSiddhaMedicineImage from "../../assets/00-Home/Siddhargal & Siddha medicine.png";
 import ProductCard from "../../components/ProductCard";
 import AppSlider from "../../components/AppSlider/AppSlider";
 import {
   ABOUTS,
-  MEDIC_SLIDERS,
-  CATEGORY_SLIDERS,
   ACCORDION_INFO,
   MEDICAL_CONSULTANTS,
   TABS,
@@ -47,6 +48,17 @@ import homeService, {
 import Nav from "../../shared/Nav/Nav";
 import NavItem from "../../shared/NavItem/NavItem";
 
+import client1Image from "../../assets/00-Home/Golden Words from our Customers/1.png";
+import client2Image from "../../assets/00-Home/Golden Words from our Customers/2.png";
+import client3Image from "../../assets/00-Home/Golden Words from our Customers/3.png";
+import client4Image from "../../assets/00-Home/Golden Words from our Customers/4.png";
+import client5Image from "../../assets/00-Home/Golden Words from our Customers/5.png";
+import client6Image from "../../assets/00-Home/Golden Words from our Customers/6.png";
+import client7Image from "../../assets/00-Home/Golden Words from our Customers/7.png";
+
+import useCategory from "../../hooks/useCategory";
+import useDoctors from "../../hooks/useDoctors";
+
 export const pageAnimation = {
   initial: { opacity: 0, y: 100 },
   animate: { opacity: 1, y: 0 },
@@ -56,6 +68,18 @@ const Home = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [error, setError] = useState("");
+  const { categories } = useCategory();
+  const { doctors } = useDoctors();
+
+  const handleSliderCardClick = (item: CardCategoryData) => {
+    const selectedDoctor = doctors.find((doc) => doc.doctor_id === item.id);
+
+    navigate("/doctor-detail", {
+      state: {
+        doctor: selectedDoctor,
+      },
+    });
+  };
 
   const renderCategoryCard = (item: {
     name: string;
@@ -269,19 +293,28 @@ const Home = () => {
 
       {/* EXPLORE PRODUCTS BY MEDICAL CONDITIONS SECTION */}
       <section className="mb-40">
-        <AppSlider
-          className="nc-DiscoverMoreSlider nc-p-l-container "
-          data={MEDIC_SLIDERS}
-          renderChildren={renderCategoryCard}
-        >
-          <Heading
-            className="mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 nc-p-r-container "
-            rightDescText="by Medical Conditions"
-            hasNextPrev
+        {categories && categories.length > 0 && (
+          <AppSlider
+            className="nc-DiscoverMoreSlider nc-p-l-container "
+            // data={MEDIC_SLIDERS}
+            data={categories.map((c, index) => ({
+              name: c.tagline,
+              desc: c.cat_name,
+              featuredImage: c.cat_image,
+              color: "bg-slate-50",
+              // color: MEDIC_SLIDERS,
+            }))}
+            renderChildren={renderCategoryCard}
           >
-            Explore Products
-          </Heading>
-        </AppSlider>
+            <Heading
+              className="mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 nc-p-r-container "
+              rightDescText="by Medical Conditions"
+              hasNextPrev
+            >
+              Explore Products
+            </Heading>
+          </AppSlider>
+        )}
       </section>
 
       {/* FEATURED PRODUCTS SECTION */}
@@ -389,8 +422,8 @@ const Home = () => {
             </div>
 
             <NcImage
-              containerClassName="relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(55%-40px)]"
-              src={mdSectionImg}
+              containerClassName="relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(50%-40px)]"
+              src={siddhargalAndSiddhaMedicineImage}
               alt="Almaa Groups Founder"
             />
           </div>
@@ -418,28 +451,40 @@ const Home = () => {
       </section>
 
       {/* MEDICAL CONSULTATIONS SECTION */}
-      <section className="container mb-40">
-        <SectionSliderCategories
-          heading="Almaa's"
-          rightDescText="Medical Consultants"
-          data={MEDICAL_CONSULTANTS}
-        />
-        <ButtonSecondary className="focus:ring-2 focus:ring-offset-2 focus:ring-transparent tracking-tight ml-3 mt-6 md:text-xl sm:px-14 border sm:py-5 sm:text-dark sm:bg-white-900 sm:hover:bg-white sm:hover:text-primary-900 border border-slate-300 dark:border-slate-700">
-          <Link to="/doctors-team">Visit all Doctors</Link>
-        </ButtonSecondary>
-      </section>
+      {doctors && doctors.length > 0 && (
+        <section className="container mb-40">
+          <SectionSliderCategories
+            heading="Almaa's"
+            rightDescText="Medical Consultants"
+            // data={MEDICAL_CONSULTANTS}
+            data={doctors.map((d) => ({
+              id: d.doctor_id,
+              name: d.name,
+              desc: d.specialization,
+              img: d.profile_picture,
+              color: "",
+            }))}
+            onClick={handleSliderCardClick}
+          />
+          <ButtonSecondary className="focus:ring-2 focus:ring-offset-2 focus:ring-transparent tracking-tight ml-3 mt-6 md:text-xl sm:px-14 border sm:py-5 sm:text-dark sm:bg-white-900 sm:hover:bg-white sm:hover:text-primary-900 border border-slate-300 dark:border-slate-700">
+            <Link to="/doctors-team">Visit all Doctors</Link>
+          </ButtonSecondary>
+        </section>
+      )}
 
       {/* EXPLORE PRODUCTS BY CATEGORIES SECTION  */}
       {natProducts.length && (
         <section className="mb-40">
           <AppSlider
             // data={CATEGORY_SLIDERS}
-            data={natProducts.map((p) => ({
-              name: p.tagline,
-              desc: p.name,
-              featuredImage: "",
-              color: "bg-slate-50",
-            }))}
+            data={natProducts.map((p) => {
+              return {
+                name: p.tagline,
+                desc: p.name,
+                featuredImage: p.image,
+                color: "bg-slate-50",
+              };
+            })}
             className="nc-DiscoverMoreSlider nc-p-l-container "
             renderChildren={renderCategoryCard}
           >
@@ -517,7 +562,7 @@ const Home = () => {
           <div className="lg:pl-20">
             <NcImage
               className="h-auto object-contain"
-              src={whyAlmaaImg}
+              src={faqImg}
               alt="Almaa Greatness"
             />
           </div>
@@ -538,13 +583,23 @@ const Home = () => {
           Certifications, Liceneses
         </Heading>
         <div className="grid grid-cols-1 gap-4">
-          {<NcImage src={certification1Img} />}
+          {<NcImage src={certificationsImg} />}
         </div>
       </section>
 
       {/* CLIENTS SECTION */}
       <section className="container mb-40">
-        <SectionClientSay />
+        <SectionClientSay
+          clientImages={[
+            client1Image,
+            client2Image,
+            client3Image,
+            client4Image,
+            client5Image,
+            client6Image,
+            client7Image,
+          ]}
+        />
       </section>
 
       {/* SAVE AND EARN SECTION */}

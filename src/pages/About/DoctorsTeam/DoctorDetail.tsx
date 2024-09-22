@@ -2,7 +2,6 @@ import { FC, useState } from "react";
 import ButtonPrimary from "../../../shared/Button/ButtonPrimary";
 import AccordionInfo from "../../../containers/ProductDetailPage/AccordionInfo";
 import { useLocation } from "react-router-dom";
-import { People } from "../../Library/SectionFounder";
 import { IDoctor } from "../../../services/doctors-service";
 
 export interface ProductDetailPageProps {
@@ -25,31 +24,20 @@ const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
   };
 
   const DEMO_DATA = [
-    {
-      name: "Experience",
-      content:
-        "Fashion is a form of self-expression and autonomy at a particular period and place and in a specific context, of clothing, footwear, lifestyle, accessories, makeup, hairstyle, and body posture.",
-    },
+    // {
+    //   name: "Experience",
+    //   content:
+    //     "Fashion is a form of self-expression and autonomy at a particular period and place and in a specific context, of clothing, footwear, lifestyle, accessories, makeup, hairstyle, and body posture.",
+    // },
     {
       name: "Specialization",
-      content: `<ul class="list-disc list-inside leading-7">
-      <li>Made from a sheer Belgian power micromesh.</li>
-      <li>
-      74% Polyamide (Nylon) 26% Elastane (Spandex)
-      </li>
-      <li>
-      Adjustable hook & eye closure and straps
-      </li>
-      <li>
-      Hand wash in cold water, dry flat
-      </li>
-    </ul>`,
+      content: state.doctor.specialization,
     },
-    {
-      name: "Highlights",
-      content:
-        "Use this as a guide. Preference is a huge factor — if you're near the top of a size range and/or prefer more coverage, you may want to size up.",
-    },
+    // {
+    //   name: "Highlights",
+    //   content:
+    //     "Use this as a guide. Preference is a huge factor — if you're near the top of a size range and/or prefer more coverage, you may want to size up.",
+    // },
   ];
 
   const renderSectionContent = () => {
@@ -61,11 +49,11 @@ const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
               Name: {doctorDetail.name}
             </h5>
             <span className="text-md text-gray-500 dark:text-gray-400 pb-2">
-              Degree: {doctorDetail.qualification}
+              Qualification: {doctorDetail.qualification}
             </span>
-            <span className="text-md text-gray-500 dark:text-gray-400">
+            {/* <span className="text-md text-gray-500 dark:text-gray-400">
               Designation: {doctorDetail.specialization}
-            </span>
+            </span> */}
           </div>
         </div>
 
@@ -76,25 +64,22 @@ const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
             onClick={handleConnect}
           >
             <svg
-              className="w-6 h-6 text-gray-800 text-white dark:text-white"
-              aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
               fill="none"
               viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-6 h-6 text-gray-800 text-white dark:text-white"
             >
               <path
-                stroke="currentColor"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth="2"
-                d="M14 6H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1Zm7 11-6-2V9l6-2v10Z"
+                d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
               />
             </svg>
 
             {/* <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" /> */}
-            <span className="ml-3">Connect</span>
+            <span className="ml-3">Call us</span>
           </ButtonPrimary>
           <ButtonPrimary
             className="flex-1 flex-shrink-0"

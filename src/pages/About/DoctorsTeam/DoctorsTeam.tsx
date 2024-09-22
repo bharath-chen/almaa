@@ -4,49 +4,23 @@ import SectionHero from "../../Library/SectionHero";
 import rightImg from "../../../images/hero-right1.png";
 import { useNavigate } from "react-router-dom";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import { useEffect, useState } from "react";
-import doctorsService, { IDoctor } from "../../../services/doctors-service";
-import { CanceledError } from "axios";
+import { IDoctor } from "../../../services/doctors-service";
 import Doctors from "./Doctors";
-import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
-import { useAppDispatch } from "../../../hooks/hooks";
 import Heading from "../../../shared/Heading/Heading";
+import useDoctors from "../../../hooks/useDoctors";
 
 interface DoctorsTeamProps {
   className?: string;
 }
 
 const DoctorsTeam = ({ className = "" }: DoctorsTeamProps) => {
-  const dispatch = useAppDispatch();
-  const [doctors, setDoctors] = useState<IDoctor[]>([]);
-  const [error, setError] = useState("");
-
+  const { doctors, error } = useDoctors();
   const navigate = useNavigate();
 
   const routeToDoctorDetail = (doctor: IDoctor) => {
     console.log(doctor);
     navigate("/doctor-detail", { state: { doctor } });
   };
-
-  useEffect(() => {
-    const { request, cancel } = doctorsService.getAll<IDoctor>();
-
-    dispatch(showLoader());
-
-    request
-      .then((res) => {
-        dispatch(hideLoader());
-        setDoctors(res.data);
-        console.log(res.data);
-      })
-      .catch((err) => {
-        if (err instanceof CanceledError) return;
-        dispatch(hideLoader());
-        setError(err.message);
-      });
-
-    return () => cancel();
-  }, []);
 
   return (
     <div

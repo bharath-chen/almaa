@@ -1,5 +1,5 @@
 import NcImage from "../../../shared/NcImage/NcImage";
-import aboutSectionImg from "../../../assets/HOME PAGE/2-about-section.jpg";
+import sindhanaiSiddharImg from "../../../assets/01-About/2- Founder/Who is Sindhanai Siddhar.jpg";
 import SectionFounder, { People } from "../../Library/SectionFounder";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import SEO from "../../../shared/SEO/SEO";
@@ -182,7 +182,7 @@ const Founder = () => {
           <div>
             <NcImage
               className="w-full h-full object-contain lg:object-cover"
-              src={aboutSectionImg}
+              src={sindhanaiSiddharImg}
               alt="about almaa"
             />
           </div>
