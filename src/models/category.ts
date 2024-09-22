@@ -6,4 +6,5 @@ export interface Category {
   status: string;
   created_date: string;
   modified_date: string;
+  tagline: string;
 }
