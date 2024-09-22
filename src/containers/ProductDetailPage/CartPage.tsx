@@ -84,6 +84,7 @@ const CartPage = () => {
       selling_price,
       product_name,
       quantity,
+      suitablefor,
     } = item;
 
     return (
@@ -113,7 +114,7 @@ const CartPage = () => {
                   </Link>
                 </h3>
                 <div className="mt-1.5 sm:mt-2.5 flex text-sm text-slate-600 dark:text-slate-300">
-                  <div className="flex items-center space-x-1.5">
+                  {/* <div className="flex items-center space-x-1.5">
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
                       <path
                         d="M7.01 18.0001L3 13.9901C1.66 12.6501 1.66 11.32 3 9.98004L9.68 3.30005L17.03 10.6501C17.4 11.0201 17.4 11.6201 17.03 11.9901L11.01 18.0101C9.69 19.3301 8.35 19.3301 7.01 18.0001Z"
@@ -190,11 +191,12 @@ const CartPage = () => {
                         strokeLinejoin="round"
                       />
                     </svg>
-
-                    {/* <span>
-                      {sizes || sizes?.length > 0 ? sizes[0] : "200g"}
-                    </span> */}
-                  </div>
+                  </div> */}
+                  <p
+                    className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}
+                  >
+                    {suitablefor}
+                  </p>
                 </div>
 
                 <div className="mt-3 flex justify-between w-full sm:hidden relative">
