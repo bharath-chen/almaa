@@ -28,7 +28,7 @@ const ABOUTS = [
   },
   {
     id: 2,
-    label: "300+ Products",
+    label: "500+ Products",
     descripiton: "100% natural products with herbal ingredients",
   },
   {
@@ -94,63 +94,31 @@ const CATEGORY_SLIDERS = [
 
 const ACCORDION_INFO = [
   {
-    name: "Enhanced Lifestyle",
+    id: "a1",
+    name: "Is Siddha medicine costly? ",
     content:
-      "Fashion is a form of self-expression and autonomy at a particular period and place and in a specific context, of clothing, footwear, lifestyle, accessories, makeup, hairstyle, and body posture.",
+      "It Depends on many criteria. For common Problems, Cost-effective Solutions are easily Available. When it comes to treating a Patient Oriented Level the prices may go up.",
   },
   {
-    name: "Taking care of your whole family",
-    content: `<ul class="list-disc list-inside leading-7">
-      <li>Made from a sheer Belgian power micromesh.</li>
-      <li>
-      74% Polyamide (Nylon) 26% Elastane (Spandex)
-      </li>
-      <li>
-      Adjustable hook & eye closure and straps
-      </li>
-      <li>
-      Hand wash in cold water, dry flat
-      </li>
-    </ul>`,
+    id: "a2",
+    name: "Does Siddha Medicine have side effects?",
+    content: `Certainly Not, If Taken as prescribed by the doctor, the chances of having side effects are very low `,
   },
   {
-    name: "Genuine and perfect health care solutions",
+    id: "a3",
+    name: "Can Allopathy and Siddha be taken together?",
     content:
-      "Use this as a guide. Preference is a huge factor — if you're near the top of a size range and/or prefer more coverage, you may want to size up.",
+      "Yes. Allopathy & Siddha medicine can be taken together under medical supervision ",
   },
   {
-    name: "Best in industry products at high quality and own manufacturing to ensure quality of products",
-    content: `
-      <ul class="list-disc list-inside leading-7">
-      <li>All full-priced, unworn items, with tags attached and in their original packaging are eligible for return or exchange within 30 days of placing your order.</li>
-      <li>
-      Please note, packs must be returned in full. We do not accept partial returns of packs.
-      </li>
-      <li>
-      Want to know our full returns policies? Here you go.
-      </li>
-      <li>
-      Want more info about shipping, materials or care instructions? Here!
-      </li>
-    </ul>
-      `,
+    id: "a4",
+    name: "What foods to avoid while taking Siddha medicine? ",
+    content: `Commonly Vegetables like Brinjal, Bitter Gourd, and Tamarind are contraindicated. A specific  diet will be prescribed by the doctor for individuals based on their body type, season & health condition`,
   },
   {
-    name: "Spiritual touch which gives 100% solutions",
-    content: `
-      <ul class="list-disc list-inside leading-7">
-      <li>All full-priced, unworn items, with tags attached and in their original packaging are eligible for return or exchange within 30 days of placing your order.</li>
-      <li>
-      Please note, packs must be returned in full. We do not accept partial returns of packs.
-      </li>
-      <li>
-      Want to know our full returns policies? Here you go.
-      </li>
-      <li>
-      Want more info about shipping, materials or care instructions? Here!
-      </li>
-    </ul>
-      `,
+    id: "a5",
+    name: "What diseases are cured by Siddha?",
+    content: `Almost every health condition can be effectively managed and cured by Siddha medicine.`,
   },
 ];
 
