@@ -24,6 +24,7 @@ import award2 from "../../../assets/01-About/1-Almaa Groups/Awards/Award 1.jpg";
 import award3 from "../../../assets/01-About/1-Almaa Groups/Awards/Award 2.jpg";
 import award4 from "../../../assets/01-About/1-Almaa Groups/Awards/Award 3.jpg";
 import mdSectionImg from "../../../assets/HOME PAGE/5-md-section.png";
+import subscribeImg from "../../../assets/01-About/1-Almaa Groups/14-subscribe-CiUj4EyT.png";
 
 interface AlmaaGroupProps {
   className?: string;
@@ -252,7 +253,7 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
         </div>
       </section>
       {/* EMAIL SUBSCRIBE SECTION */}
-      <EmailSubscribeSection />
+      <EmailSubscribeSection subscribeImg={subscribeImg} />
     </div>
   );
 };

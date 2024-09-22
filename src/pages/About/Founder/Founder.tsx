@@ -1,68 +1,66 @@
-import Button from "../../../shared/Button/Button";
 import NcImage from "../../../shared/NcImage/NcImage";
-import mdSectionImg from "../../../assets/HOME PAGE/5-md-section.png";
-import { ABOUTS } from "../../../data/home";
 import aboutSectionImg from "../../../assets/HOME PAGE/2-about-section.jpg";
 import SectionFounder, { People } from "../../Library/SectionFounder";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import SEO from "../../../shared/SEO/SEO";
+import environmentConferenceImg from "../../../assets/01-About/2- Founder/Environment Conference.jpg";
+import coimbatoreConferenceImg from "../../../assets/01-About/2- Founder/Coimbatore.jpg";
+import malaysiaConferenceImg from "../../../assets/01-About/2- Founder/Malaysia.jpg";
+import ilamvambadiConferenceImg from "../../../assets/01-About/2- Founder/Elavambadi.jpg";
+import maduraiConferenceImg from "../../../assets/01-About/2- Founder/Madurai.jpg";
+import velloreConferenceImg from "../../../assets/01-About/2- Founder/Vellore.jpg";
+import chennaiConferenceImg from "../../../assets/01-About/2- Founder/Chennai Conference.jpg";
+import siddharThiruvizhaImg from "../../../assets/01-About/2- Founder/Siddhar Thiruvizha.jpg";
+import subscribeImg from "../../../assets/01-About/2- Founder/14-subscribe-CiUj4EyT.png";
 
 const FOUNDER_DEMO: People[] = [
   {
     id: "1",
-    name: `Niamh O'Shea`,
-    job: "Co-founder and Chief Executive",
-    avatar:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
-  },
-  {
-    id: "4",
-    name: `Danien Jame`,
-    job: "Co-founder and Chief Executive",
-    avatar:
-      "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
-  },
-  {
-    id: "3",
-    name: `Orla Dwyer`,
-    job: "Co-founder, Chairman",
-    avatar:
-      "https://images.unsplash.com/photo-1560365163-3e8d64e762ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+    name: `Environment awareness seminar for students on the occasion of World Ozone Day`,
+    job: "(Chennai - 2024)",
+    avatar: environmentConferenceImg,
   },
   {
     id: "2",
-    name: `Dara Frazier`,
-    job: "Co-Founder, Chief Strategy Officer",
-    avatar:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+    name: `Luxury Travel Show - 1st Edition`,
+    job: "(Coimbatore - 2024)",
+    avatar: coimbatoreConferenceImg,
+  },
+  {
+    id: "3",
+    name: `National Occupational Skills Standard (NOSS)`,
+    job: "(Cyberjaya, Malaysia - 2024)",
+    avatar: malaysiaConferenceImg,
+  },
+  {
+    id: "4",
+    name: `Vela Siddha Wellness Village Resorts`,
+    job: "(Ilamvambadi - 2024)",
+    avatar: ilamvambadiConferenceImg,
   },
   {
     id: "5",
-    name: `Niamh O'Shea`,
-    job: "Co-founder and Chief Executive",
-    avatar:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+    name: `Madurai Conference`,
+    job: "(Madurai - 2016)",
+    avatar: maduraiConferenceImg,
   },
   {
     id: "6",
-    name: `Danien Jame`,
-    job: "Co-founder and Chief Executive",
-    avatar:
-      "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+    name: `Vellore Conference`,
+    job: "(Vellore - 2016)",
+    avatar: velloreConferenceImg,
   },
   {
     id: "7",
-    name: `Orla Dwyer`,
-    job: "Co-founder, Chairman",
-    avatar:
-      "https://images.unsplash.com/photo-1560365163-3e8d64e762ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+    name: `Chennai Conference`,
+    job: "(Chennai – 2018)",
+    avatar: chennaiConferenceImg,
   },
   {
     id: "8",
-    name: `Dara Frazier`,
-    job: "Co-Founder, Chief Strategy Officer",
-    avatar:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+    name: `Siddhar Thiruvizha`,
+    job: "(Madurai - 2023)",
+    avatar: siddharThiruvizhaImg,
   },
 ];
 
@@ -205,14 +203,14 @@ const Founder = () => {
       <section className="container mb-40">
         <SectionFounder
           heading="	Nature & Sindhanai Siddhar"
-          desc={`"Health for All with Affordable Siddha Medicines" is the primary vision of our founder Sindhanai Siddhar Thiru.Velayudham avargal.`}
+          desc={`Health for All with Affordable Siddha Medicines" is the primary vision of our founder Sindhanai Siddhar Thiru.Velayudham avargal.`}
           founders={FOUNDER_DEMO}
         />
       </section>
       {/* MEET SINDHANAI SIDDHAR SECTION */}
       <section className="container mb-40"></section>
       {/* EMAIL SUBSCRIBE SECTION */}
-      <EmailSubscribeSection />
+      <EmailSubscribeSection subscribeImg={subscribeImg} />
     </>
   );
 };

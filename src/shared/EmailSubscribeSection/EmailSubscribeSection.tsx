@@ -3,10 +3,11 @@ import BackgroundSection from "../../components/BackgroundSection/BackgroundSect
 import Heading from "../../components/Heading/Heading";
 import NcImage from "../NcImage/NcImage";
 
-// Better discussions, better decisions.Talk to our doctor for any of your health concerns, from the
-// comfort of your home.
+interface Props {
+  subscribeImg?: string;
+}
 
-const EmailSubscribeSection = () => {
+const EmailSubscribeSection = ({ subscribeImg = emailSubscribeImg }: Props) => {
   return (
     <section className="container">
       <div className="relative py-16 lg:py-16">
@@ -65,7 +66,7 @@ const EmailSubscribeSection = () => {
           <div className="relative md:top-[-150px]">
             <NcImage
               className="w-full h-auto object-contain md:object-cover rounded-lg"
-              src={emailSubscribeImg}
+              src={subscribeImg}
             />
           </div>
         </div>
