@@ -29,7 +29,7 @@ import product4Img from "../../assets/PRODUCT DETAIL/1-product-pic-4.jpg";
 import AppProductChip from "../../components/AppProductChip/AppProductChip";
 import { useShoppingCartContext } from "../../store/shopping-cart-context";
 import benefitsImage from "../../assets/PRODUCT DETAIL/2-benefits.png";
-import faqImg from "../../assets/PRODUCT DETAIL/7-FAQ.jpg";
+import faqImg from "../../assets/02-Products/FAQ.jpg";
 import ingredient1 from "../../assets/PRODUCT DETAIL/3-ingredient-1.jpg";
 import ingredient2 from "../../assets/PRODUCT DETAIL/3-ingredient-2.jpg";
 import ingredient3 from "../../assets/PRODUCT DETAIL/3-ingredient-3.jpg";
@@ -1017,36 +1017,11 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 <li>Brushing your teeth twice a day is good for health</li>
                 <li>Enhances Immunity</li>
               </ul>
-              <div className="flex space-x-2 sm:space-x-5 mt-6 sm:mt-12">
-                <ButtonPrimary
-                  // href="/page-search"
-                  className="md:px-14 md:py-5 md:text-2xl bg-primary-700 dark:bg-slate-200 dark:text-slate-900"
-                >
-                  Buy Now
-                </ButtonPrimary>
-                <span className="self-center">
-                  <svg
-                    className="w-14 h-14 text-primary-700 dark:text-white"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"
-                    />
-                  </svg>
-                </span>
-              </div>
             </div>
 
             <NcImage
-              containerClassName="relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(55%-40px)]"
-              src={benefitsImage}
+              containerClassName="relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(52%-42px)]"
+              src={productDetail?.product_details[0]?.bottom_image}
             />
           </div>
         </div>
