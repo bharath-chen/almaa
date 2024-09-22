@@ -13,16 +13,16 @@ import whyAlmaaImg from "../../../assets/HOME PAGE/10-why-section.jpg";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import SEO from "../../../shared/SEO/SEO";
 import { ALMAA_GROUP } from "./ALMAA_GROUP";
-import exploreImg1 from "../../../assets/HOME PAGE/6-explore-1.png";
-import exploreImg2 from "../../../assets/HOME PAGE/6-explore-2.png";
-import exploreImg3 from "../../../assets/HOME PAGE/6-explore-3.png";
-import exploreImg4 from "../../../assets/HOME PAGE/6-explore-4.png";
-import exploreImg5 from "../../../assets/HOME PAGE/6-explore-5.png";
-import exploreImg6 from "../../../assets/HOME PAGE/6-explore-6.png";
-import medicalConsultant1 from "../../../assets/HOME PAGE/7-doctor-1.jpg";
-import medicalConsultant2 from "../../../assets/HOME PAGE/7-doctor-2.jpg";
-import medicalConsultant3 from "../../../assets/HOME PAGE/7-doctor-3.jpg";
-import medicalConsultant4 from "../../../assets/HOME PAGE/7-doctor-4.jpg";
+import almaHerbalImg from "../../../assets/01-About/1-Almaa Groups/Our Companies/Almaa Herbal.png";
+import almaHospitalImg from "../../../assets/01-About/1-Almaa Groups/Our Companies/Almaa hospital.png";
+import siddhaFoodTechImg from "../../../assets/01-About/1-Almaa Groups/Our Companies/Siddha Food Tech.png";
+import almaaTherapyCenter from "../../../assets/01-About/1-Almaa Groups/Our Companies/Almaa Therapy Center.png";
+import drsSiddhaImg from "../../../assets/01-About/1-Almaa Groups/Our Companies/DRS Siddha.png";
+import velaSiddhaVillageResortImg from "../../../assets/01-About/1-Almaa Groups/Our Companies/Vela Siddha Village Resort.png";
+import award1 from "../../../assets/01-About/1-Almaa Groups/Awards/YT Button.jpg";
+import award2 from "../../../assets/01-About/1-Almaa Groups/Awards/Award 1.jpg";
+import award3 from "../../../assets/01-About/1-Almaa Groups/Awards/Award 2.jpg";
+import award4 from "../../../assets/01-About/1-Almaa Groups/Awards/Award 3.jpg";
 import mdSectionImg from "../../../assets/HOME PAGE/5-md-section.png";
 
 interface AlmaaGroupProps {
@@ -34,7 +34,7 @@ const EXPLORE_SECTION_DATA = [
     id: 1,
     name: "Almaa Herbal",
     desc: "",
-    image: exploreImg1,
+    image: almaHerbalImg,
     svgBg: "",
     color: "bg-indigo-50",
     btnLabel: "Explore Now",
@@ -45,7 +45,7 @@ const EXPLORE_SECTION_DATA = [
     id: 2,
     name: "Almaa Hospital",
     desc: "",
-    image: exploreImg2,
+    image: almaHospitalImg,
     svgBg: "",
     color: "bg-slate-100/80",
     btnLabel: "Explore Now",
@@ -56,7 +56,7 @@ const EXPLORE_SECTION_DATA = [
     id: 3,
     name: "Siddha Food Tech",
     desc: "",
-    image: exploreImg3,
+    image: siddhaFoodTechImg,
     svgBg: "",
     color: "bg-violet-50",
     btnLabel: "Explore Now",
@@ -67,7 +67,7 @@ const EXPLORE_SECTION_DATA = [
     id: 4,
     name: "Almaa Therapy Center",
     desc: "",
-    image: exploreImg4,
+    image: almaaTherapyCenter,
     svgBg: "",
     color: "bg-orange-50",
     btnLabel: "Explore Now",
@@ -78,7 +78,7 @@ const EXPLORE_SECTION_DATA = [
     id: 5,
     name: "DR'S Siddha",
     desc: "",
-    image: exploreImg5,
+    image: drsSiddhaImg,
     svgBg: "",
     color: "bg-blue-50",
     btnLabel: "Explore Now",
@@ -89,7 +89,7 @@ const EXPLORE_SECTION_DATA = [
     id: 6,
     name: "Vela Siddha Village Resort",
     desc: "",
-    image: exploreImg6,
+    image: velaSiddhaVillageResortImg,
     svgBg: "",
     color: "bg-orange-50",
     btnLabel: "Explore Now",
@@ -102,25 +102,25 @@ const AWARDS_AND_ACCOLADES = [
   {
     name: "YouTube Silver Play Button",
     desc: "",
-    img: medicalConsultant1,
+    img: award1,
     color: "",
   },
   {
     name: "Arogyam Health & Fitness.",
     desc: "",
-    img: medicalConsultant2,
+    img: award2,
     color: "",
   },
   {
     name: "21st Century Millennium Award for Art & Culture.",
     desc: "",
-    img: medicalConsultant3,
+    img: award3,
     color: "",
   },
   {
     name: "International Ayush Natural Award.",
     desc: "",
-    img: medicalConsultant4,
+    img: award4,
     color: "",
   },
 ];
