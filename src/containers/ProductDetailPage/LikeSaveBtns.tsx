@@ -1,7 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-const LikeSaveBtns = () => {
+interface Props {
+  onClick?: (liked: boolean) => void;
+}
+
+const LikeSaveBtns = ({ onClick }: Props) => {
   const [isLiked, setIsLiked] = useState(false);
+
+  const handleLike = () => {
+    const likeState = !isLiked;
+    setIsLiked(likeState);
+    onClick(likeState);
+  };
 
   return (
     <div className="flow-root">
@@ -25,7 +35,7 @@ const LikeSaveBtns = () => {
         </span>
         <span
           className={`py-1.5 px-3 flex rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 cursor-pointer `}
-          onClick={() => setIsLiked(!isLiked)}
+          onClick={handleLike}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
