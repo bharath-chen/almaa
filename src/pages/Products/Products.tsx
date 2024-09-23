@@ -214,8 +214,8 @@ const Products: FC<Props> = ({ className = "" }) => {
     );
     const product = updatedProducts.find((p) => p.product_id === id);
 
-    if (product.isLiked) dispatch(addItemToWishlist(product));
-    else dispatch(removeItemFromWishlist(product));
+    if (product.isLiked) dispatch(addItemToWishlist(product.product_id));
+    else dispatch(removeItemFromWishlist(product.product_id));
 
     setProducts(updatedProducts);
   };

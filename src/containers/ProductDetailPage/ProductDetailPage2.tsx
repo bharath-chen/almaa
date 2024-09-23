@@ -51,6 +51,10 @@ import { useAppDispatch } from "../../hooks/hooks";
 import { Product } from "../../models/product";
 import { Transition } from "@headlessui/react";
 import Prices from "../../components/Prices";
+import {
+  addItemToWishlist,
+  removeItemFromWishlist,
+} from "../../features/wishlist/wishlistSlice";
 
 const calculateOriginalPrice = (price: number, pack: number) => price * pack;
 
@@ -198,6 +202,12 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
     return () => cancel();
   }, []);
+
+  const handleWishlist = (liked: boolean) => {
+    const productId = productDetail.product_details[0].product_id;
+    if (liked) dispatch(addItemToWishlist(productId));
+    else dispatch(removeItemFromWishlist(productId));
+  };
 
   const handleOpenModal = (index: number) => {
     setIsOpen(true);
@@ -615,7 +625,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             {renderStatus()}
 
             <div className="ml-auto">
-              <LikeSaveBtns />
+              <LikeSaveBtns onClick={handleWishlist} />
             </div>
           </div>
         </div>

@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Wishlist } from "../../models/wishlist";
 import apiClient from "../../services/api-client";
-import { Product } from "../../models/product";
 
 interface WishlistState {
   wishlist: Wishlist;
@@ -31,12 +30,12 @@ export const fetchWishlist = createAsyncThunk(
 
 export const addItemToWishlist = createAsyncThunk(
   "wishlist/addItemToWishlist",
-  async (item: Product) => {
+  async (productId: string) => {
     const authInfo = JSON.parse(localStorage.getItem("authState"));
     const payload = {
       goFor: "addwishlist",
       customer_id: authInfo?.customer_id,
-      product_id: item.product_id,
+      product_id: productId,
     };
     const response = await apiClient.post(null, payload);
     return response.data;
@@ -45,12 +44,12 @@ export const addItemToWishlist = createAsyncThunk(
 
 export const removeItemFromWishlist = createAsyncThunk(
   "wishlist/updateItemToWishlist",
-  async (item: Product) => {
+  async (productId: string) => {
     const authInfo = JSON.parse(localStorage.getItem("authState"));
     const payload = {
       goFor: "updatewishlist",
       customer_id: authInfo?.customer_id,
-      product_id: item.product_id,
+      product_id: productId,
     };
     const response = await apiClient.post(null, payload);
     return response.data;
