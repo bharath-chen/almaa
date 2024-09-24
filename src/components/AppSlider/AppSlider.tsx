@@ -17,6 +17,9 @@ const AppSlider: FC<SliderProps> = ({
   renderChildren,
   glideClassName = "",
   glideOptions = {
+    autoplay: 2000,
+    rewind: true,
+    hoverpause: true,
     perView: 2.8,
     gap: 32,
     bound: true,

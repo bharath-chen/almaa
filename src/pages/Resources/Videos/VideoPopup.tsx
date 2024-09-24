@@ -1,15 +1,19 @@
 import ReactPlayer from "react-player/youtube";
-
+import "./VideoPopup.css";
 interface VideoPopupProps {
   url: string;
   isOpen: boolean;
   closeModal: () => void;
   backdropClick: () => void;
+  width?: string;
+  height?: string;
 }
 
 const VideoPopup = ({
   url,
   isOpen,
+  width = "100%",
+  height = "100%",
   closeModal,
   backdropClick,
 }: VideoPopupProps) => {
@@ -47,8 +51,9 @@ const VideoPopup = ({
                 <ReactPlayer
                   url={url}
                   className="react-player"
-                  width="100%"
-                  height="100%"
+                  width={width}
+                  height={height}
+                  playing
                 />
               </div>
             </div>

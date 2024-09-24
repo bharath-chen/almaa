@@ -34,6 +34,7 @@ interface ProductDetails {
   status: string;
   created_date: string;
   modified_date: string;
+  key_benefits: string;
 }
 
 interface ProductAttributes {

@@ -15,12 +15,14 @@ import ProductQuickView from "./ProductQuickView";
 import ProductStatus from "./ProductStatus";
 import { useShoppingCartContext } from "../store/shopping-cart-context";
 import StarIcon from "@heroicons/react/24/solid/StarIcon";
-import { useAppDispatch } from "../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import {
   addItemToWishlist,
   removeItemFromWishlist,
 } from "../features/wishlist/wishlistSlice";
 import AppText from "./AppText/AppText";
+import { RootState } from "../state/store";
+import { selectIsLoggedIn } from "../features/auth/authSlice";
 
 export interface ProductCardProps {
   className?: string;
@@ -38,17 +40,14 @@ const ProductCard: FC<ProductCardProps> = ({
   const {
     product_id,
     product_name,
-    unit_price,
-    short_description,
-    status,
     selling_price,
     product_image1,
-    user_ratings,
-    almaa_ratings,
+    suitablefor,
   } = data;
   const [variantActive, setVariantActive] = React.useState(0);
   const [showModalQuickView, setShowModalQuickView] = React.useState(false);
   const { cart, addItemToCart } = useShoppingCartContext();
+  const customer = useAppSelector((state: RootState) => state.auth);
 
   const notifyAddTocart = ({ size }: { size?: string }) => {
     toast.custom(
@@ -269,11 +268,13 @@ const ProductCard: FC<ProductCardProps> = ({
           </Link>
           {/* <ProductStatus status={status} /> */}
 
-          <LikeButton
-            liked={isLiked}
-            onLike={onLike}
-            className="absolute top-3 right-3 z-10"
-          />
+          {customer.customer_id && (
+            <LikeButton
+              liked={isLiked}
+              onLike={onLike}
+              className="absolute top-3 right-3 z-10"
+            />
+          )}
 
           {/* {sizes ? renderSizeList() : renderGroupButtons()} */}
         </div>
@@ -287,7 +288,10 @@ const ProductCard: FC<ProductCardProps> = ({
               >
                 {product_name}
               </h2>
-              <AppText>{short_description}</AppText>
+              <p className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}>
+                {suitablefor}
+              </p>
+              {/* <AppText>{short_description}</AppText> */}
             </div>
           </Link>
 

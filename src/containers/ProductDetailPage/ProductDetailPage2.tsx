@@ -55,6 +55,7 @@ import {
   addItemToWishlist,
   removeItemFromWishlist,
 } from "../../features/wishlist/wishlistSlice";
+import VideoPopup from "../../pages/Resources/Videos/VideoPopup";
 
 const calculateOriginalPrice = (price: number, pack: number) => price * pack;
 
@@ -149,6 +150,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [productDetail, setProductDetail] = useState<ProductDetail>();
+  const [showVideoPopup, setShowVideoPopup] = useState<boolean>(false);
 
   useEffect(() => {
     const { request, cancel } = productDetailService.get<
@@ -164,8 +166,8 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
         const price = +details.product_attributes[0].selling_price;
         dispatch(hideLoader());
         setProductDetail(details);
-        setBuyingOptions((bo) =>
-          bo.map((b) => ({
+        setBuyingOptions((buyingOption) =>
+          buyingOption.map((b) => ({
             ...b,
             originalPrice: calculateOriginalPrice(price, b.pack),
             discountedPrice: calculateDiscountedPrice(price, b.pack, b.offer),
@@ -625,7 +627,10 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             {renderStatus()}
 
             <div className="ml-auto">
-              <LikeSaveBtns onClick={handleWishlist} />
+              <LikeSaveBtns
+                audioUrl={productDetail?.product_details[0]?.audio}
+                onClick={handleWishlist}
+              />
             </div>
           </div>
         </div>
@@ -1021,12 +1026,23 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 Fashion is a form of self-expression and autonomy at a
                 particular period and place.
               </span> */}
-              <ul className="text-lg list-disc list-inside leading-7 text-yellow-950 mt-3">
-                <li>Essential to control plaque of teeth</li>
+              {productDetail?.product_details[0]?.key_benefits && (
+                <div
+                  // className="text-lg list-disc list-inside leading-7 text-yellow-950 mt-3"
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      productDetail?.product_details[0]?.key_benefits.replace(
+                        "<ul>",
+                        '<ul class="text-lg list-disc list-inside leading-7 text-yellow-950 mt-3">'
+                      ),
+                  }}
+                >
+                  {/* <li>Essential to control plaque of teeth</li>
                 <li>Removes odour from teeth</li>
                 <li>Brushing your teeth twice a day is good for health</li>
-                <li>Enhances Immunity</li>
-              </ul>
+                <li>Enhances Immunity</li> */}
+                </div>
+              )}
             </div>
 
             <NcImage
@@ -1117,6 +1133,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
         <div
           className="group aspect-w-16 aspect-h-16 sm:aspect-h-9 bg-neutral-800 rounded-3xl overflow-hidden border-4 border-white dark:border-neutral-900 sm:rounded-[50px] sm:border-[10px] z-0"
           title={"expert Meditating"}
+          onClick={() => setShowVideoPopup(!showVideoPopup)}
         >
           <div className="cursor-pointer absolute inset-0 flex items-center justify-center z-10">
             <img src={videoIcon} alt="icon" />
@@ -1124,12 +1141,20 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
           <NcImage
             containerClassName="absolute inset-0 rounded-3xl overflow-hidden z-0"
             className="object-cover w-full h-full transition-transform group-hover:scale-105 duration-300  "
-            src={productDetail?.product_details[0]?.video}
+            src={video}
             title={"expert Meditating"}
             alt={"expert Meditating"}
           />
         </div>
       </section>
+      {showVideoPopup && (
+        <VideoPopup
+          url={productDetail?.product_details[0]?.video}
+          isOpen={showVideoPopup}
+          closeModal={() => setShowVideoPopup(false)}
+          backdropClick={() => setShowVideoPopup(false)}
+        />
+      )}
 
       {/* OTHER SECTION */}
       <section className="container pb-24 lg:pb-28 mb-10 space-y-14">
