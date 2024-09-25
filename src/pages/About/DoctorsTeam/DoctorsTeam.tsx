@@ -1,8 +1,9 @@
 import { Helmet } from "react-helmet-async";
 import BgGlassmorphism from "../../../components/BgGlassmorphism/BgGlassmorphism";
 import SectionHero from "../../Library/SectionHero";
-import rightImg from "../../../images/hero-right1.png";
+import rightImg from "../../../assets/01-About/3-Doctors Team/About Us.png";
 import { useNavigate } from "react-router-dom";
+import subscribeImg from "../../../assets/01-About/3-Doctors Team/14-subscribe-CiUj4EyT.png";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import { IDoctor } from "../../../services/doctors-service";
 import Doctors from "./Doctors";
@@ -64,7 +65,7 @@ const DoctorsTeam = ({ className = "" }: DoctorsTeamProps) => {
 
         <section className="pt-20">
           {/* EMAIL SUBSCRIBE SECTION */}
-          <EmailSubscribeSection />
+          <EmailSubscribeSection subscribeImg={subscribeImg} />
         </section>
       </div>
     </div>
