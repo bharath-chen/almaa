@@ -34,6 +34,14 @@ const BranchDetailPopup = ({ branch, onClose }: BranchDetailPopupProps) => {
     setEnteredPhoneNumber("");
   };
 
+  const handleWhatsapp = () => {
+    window.open(`https://wa.me/${branch.contact_number}`, "_blank");
+  };
+
+  const handleCall = () => {
+    window.location.href = `tel:${branch.contact_number}`;
+  };
+
   return (
     <div
       className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center popup-overlay z-[999]"
@@ -61,11 +69,11 @@ const BranchDetailPopup = ({ branch, onClose }: BranchDetailPopupProps) => {
         </button>
         <div className="p-8 max-h-[700px] overflow-y-auto">
           {/* Add overflow-y-auto to make the content scrollable */}
-          <img
+          {/* <img
             src=""
             alt="Branch"
             className="w-32 h-32 rounded-full mb-2 mx-auto"
-          />
+          /> */}
           <h2 className="text-xl font-bold text-center mb-2">
             {branch.branch_name}
           </h2>
@@ -76,7 +84,7 @@ const BranchDetailPopup = ({ branch, onClose }: BranchDetailPopupProps) => {
           <GMap />
           <div className="flex flex-col justify-between mt-5">
             <div className="flex sm:flex-col md:flex-row justify-center">
-              <ButtonPrimary className="mr-5 w-full">
+              <ButtonPrimary className="mr-5 w-full" onClick={handleWhatsapp}>
                 <svg
                   className="w-6 h-6 text-gray-800 text-white"
                   aria-hidden="true"
@@ -106,7 +114,7 @@ const BranchDetailPopup = ({ branch, onClose }: BranchDetailPopupProps) => {
                   Whatsapp
                 </a> */}
               </ButtonPrimary>
-              <ButtonPrimary className="w-full">
+              <ButtonPrimary className="w-full" onClick={handleCall}>
                 <svg
                   className="w-6 h-6 text-gray-800 text-white"
                   aria-hidden="true"
@@ -127,7 +135,7 @@ const BranchDetailPopup = ({ branch, onClose }: BranchDetailPopupProps) => {
                 {/* <a className="btn mr-4">Phone Call</a> */}
               </ButtonPrimary>
             </div>
-            <div className="grid grid-cols-3 gap-4 my-5">
+            {/* <div className="grid grid-cols-3 gap-4 my-5">
               <div className="col-span-3 text-center mt-4">
                 <p className="text-lg font-bold">Entered Phone Number:</p>
                 <p className="text-xl">{enteredPhoneNumber}</p>
@@ -148,7 +156,7 @@ const BranchDetailPopup = ({ branch, onClose }: BranchDetailPopupProps) => {
               <ButtonPrimary className="col-span-3" onClick={clearPhoneNumber}>
                 Clear
               </ButtonPrimary>
-            </div>
+            </div> */}
 
             {/* <ButtonPrimary className="mt-0">
               <svg

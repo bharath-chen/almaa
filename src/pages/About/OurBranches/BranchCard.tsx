@@ -18,9 +18,9 @@ const BranchCard = ({ branch, className, onCardClick }: Props) => {
       onClick={onCardClick}
     >
       <div>
-        <div className="absolute bottom-0 right-0 max-w-[280px] opacity-80">
-          {/* <img src={bgSVG} alt="" /> */}
-        </div>
+        {/* <div className="absolute bottom-0 right-0 max-w-[280px] opacity-80">
+          <img src={bgSVG} alt="" />
+        </div> */}
 
         <div className="absolute inset-5 sm:inset-8 flex flex-col justify-between">
           {/* <div className="flex justify-between items-center">
@@ -35,14 +35,14 @@ const BranchCard = ({ branch, className, onCardClick }: Props) => {
           </div> */}
 
           <div className="">
+            <h2 className={`text-2xl sm:text-3xl font-semibold`}>
+              {branch.branch_name}
+            </h2>
             <span
               className={`block mb-2 text-sm text-slate-500 dark:text-slate-400`}
             >
               {branch.location}
             </span>
-            <h2 className={`text-2xl sm:text-3xl font-semibold`}>
-              {branch.branch_name}
-            </h2>
           </div>
 
           {/* <Link
