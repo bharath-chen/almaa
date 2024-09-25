@@ -1,13 +1,12 @@
-import BgGlassmorphism from "../../components/BgGlassmorphism/BgGlassmorphism";
 import SectionHero from "../Library/SectionHero";
-import rightImg from "../../images/hero-right1.png";
+import rightImg from "../../assets/04-Production Unit/About Us.png";
 import SectionSliderCategories from "../../components/SectionSliderCategories/SectionSliderCategories";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import SEO from "../../shared/SEO/SEO";
-import medicalConsultant1 from "../../assets/HOME PAGE/7-doctor-1.jpg";
-import medicalConsultant2 from "../../assets/HOME PAGE/7-doctor-2.jpg";
-import medicalConsultant3 from "../../assets/HOME PAGE/7-doctor-3.jpg";
-import medicalConsultant4 from "../../assets/HOME PAGE/7-doctor-4.jpg";
+import fssaiCertifiedImg from "../../assets/04-Production Unit/Certificate 2.jpg";
+import gmpCertifiedImg from "../../assets/04-Production Unit/Certificate 1.jpg";
+import twentyFirstCenturyMillenniumAwardImg from "../../assets/04-Production Unit/Award 1.jpg";
+import internationalAyushNaturalAwardImg from "../../assets/04-Production Unit/Award 2.jpg";
 import AccordionInfo from "../../containers/ProductDetailPage/AccordionInfo";
 
 interface ProductionUnitProps {
@@ -39,25 +38,25 @@ const AWARDS_AND_CERTIFICATIONS = [
   {
     name: "fssai Certified Company",
     desc: "",
-    img: medicalConsultant1,
+    img: fssaiCertifiedImg,
     color: "",
   },
   {
     name: "GMP Certified Company.",
     desc: "",
-    img: medicalConsultant2,
+    img: gmpCertifiedImg,
     color: "",
   },
   {
     name: "21st Century Millennium Award for Art & Culture.",
     desc: "",
-    img: medicalConsultant3,
+    img: twentyFirstCenturyMillenniumAwardImg,
     color: "",
   },
   {
     name: "International Ayush Natural Award.",
     desc: "",
-    img: medicalConsultant4,
+    img: internationalAyushNaturalAwardImg,
     color: "",
   },
 ];

@@ -20,7 +20,7 @@ export interface LocationStates {
   "/cart"?: {};
   "/checkout"?: {};
   "/blog"?: {};
-  "/blog-single"?: {};
+  "/blog/:id"?: {};
   "/case-studies"?: {};
   "/case-study"?: {};
   "/news-&-events"?: {};

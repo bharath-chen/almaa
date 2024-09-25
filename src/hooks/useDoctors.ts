@@ -18,7 +18,6 @@ const useDoctors = () => {
       .then((res) => {
         dispatch(hideLoader());
         setDoctors(res.data);
-        console.log(res.data);
       })
       .catch((err) => {
         if (err instanceof CanceledError) return;

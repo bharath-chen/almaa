@@ -13,8 +13,8 @@ import { useNavigate } from "react-router-dom";
 const Blog: React.FC = () => {
   const { mainCardData, blogList } = useBlogs();
   const navigate = useNavigate();
-  const routeToBlogDetailPage = () => {
-    navigate("/blog-single");
+  const routeToBlogDetailPage = (id: string) => {
+    navigate(`/blog/${id}`);
   };
 
   return (
@@ -33,7 +33,10 @@ const Blog: React.FC = () => {
           <div className="nc-SectionMagazine5">
             <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
               {mainCardData && (
-                <MainCard blog={mainCardData} onClick={routeToBlogDetailPage} />
+                <MainCard
+                  blog={mainCardData}
+                  onClick={() => routeToBlogDetailPage(mainCardData.blog_id)}
+                />
               )}
               <div className="grid gap-6 md:gap-8">
                 {blogList.map((item, index) => (
@@ -41,7 +44,7 @@ const Blog: React.FC = () => {
                     key={index}
                     // src={item}
                     blog={item}
-                    onClick={routeToBlogDetailPage}
+                    onClick={() => routeToBlogDetailPage(item.blog_id)}
                   />
                 ))}
               </div>

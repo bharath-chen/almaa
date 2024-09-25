@@ -52,6 +52,7 @@ interface ProductAttributes {
   attstatus: string;
   created_date: string;
   modified_date: string;
+  measurement_name: string;
 }
 
 interface ProductExpertTalk {

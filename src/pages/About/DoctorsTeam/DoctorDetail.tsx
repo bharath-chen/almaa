@@ -23,21 +23,11 @@ const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
     console.log("Whatsapp Clicked!");
   };
 
-  const DEMO_DATA = [
-    // {
-    //   name: "Experience",
-    //   content:
-    //     "Fashion is a form of self-expression and autonomy at a particular period and place and in a specific context, of clothing, footwear, lifestyle, accessories, makeup, hairstyle, and body posture.",
-    // },
+  const accordionData = [
     {
       name: "Specialization",
-      content: state.doctor.specialization,
+      content: doctorDetail.specialization,
     },
-    // {
-    //   name: "Highlights",
-    //   content:
-    //     "Use this as a guide. Preference is a huge factor — if you're near the top of a size range and/or prefer more coverage, you may want to size up.",
-    // },
   ];
 
   const renderSectionContent = () => {
@@ -51,9 +41,6 @@ const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
             <span className="text-md text-gray-500 dark:text-gray-400 pb-2">
               Qualification: {doctorDetail.qualification}
             </span>
-            {/* <span className="text-md text-gray-500 dark:text-gray-400">
-              Designation: {doctorDetail.specialization}
-            </span> */}
           </div>
         </div>
 
@@ -112,7 +99,7 @@ const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
         </div>
 
         {/* ---------- 5 ----------  */}
-        <AccordionInfo data={DEMO_DATA} />
+        <AccordionInfo data={accordionData} />
       </div>
     );
   };

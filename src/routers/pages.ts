@@ -79,7 +79,7 @@ export const pages: Page[] = [
   { path: "/checkout", component: CheckoutPage, protectedRoute: true },
   //
   { path: "/blog", component: Blog },
-  { path: "/blog-single", component: BlogSingle },
+  { path: "/blog/:id", component: BlogSingle },
   //
   { path: "/almaa-groups", component: AlmaaGroups },
   { path: "/founder", component: Founder },
