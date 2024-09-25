@@ -1,4 +1,4 @@
-import rightImg from "../../images/hero-right1.png";
+import rightImg from "../../assets/06-Library/About.png";
 import React, { FC } from "react";
 import { Helmet } from "react-helmet-async";
 import BgGlassmorphism from "../../components/BgGlassmorphism/BgGlassmorphism";
@@ -13,13 +13,14 @@ import {
 import CardCategory3 from "../../components/CardCategories/CardCategory3";
 import Button from "../../shared/Button/Button";
 import NcImage from "../../shared/NcImage/NcImage";
-import mdSectionImg from "../../assets/HOME PAGE/5-md-section.png";
+import uyirvazhiImg from "../../assets/06-Library/Uyirvazhi.png";
 import SectionSliderCategories from "../../components/SectionSliderCategories/SectionSliderCategories";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import medicalConsultant1 from "../../assets/HOME PAGE/7-doctor-1.jpg";
-import medicalConsultant2 from "../../assets/HOME PAGE/7-doctor-2.jpg";
-import medicalConsultant3 from "../../assets/HOME PAGE/7-doctor-3.jpg";
-import medicalConsultant4 from "../../assets/HOME PAGE/7-doctor-4.jpg";
+import unavumVazhvumImg from "../../assets/06-Library/Our Books/Unavum Vazhvum.jpg";
+import keeraiIlaUnavuImg from "../../assets/06-Library/Our Books/Keerai illa Unavu.jpg";
+import pillaiPeruImg from "../../assets/06-Library/Our CDs/Pillai Peru.jpg";
+import sugarImg from "../../assets/06-Library/Our CDs/Sugar.jpg";
+import unavaeUyirImg from "../../assets/06-Library/Our CDs/Unave Uyir.jpg";
 import whyAlmaaImg from "../../assets/HOME PAGE/10-why-section.jpg";
 import AccordionInfo from "../../containers/ProductDetailPage/AccordionInfo";
 
@@ -31,13 +32,13 @@ const OUR_BOOKS = [
   {
     name: "Unavum Vazhvum",
     desc: "",
-    img: medicalConsultant1,
+    img: unavumVazhvumImg,
     color: "",
   },
   {
     name: "Keerai illa Unavu",
     desc: "",
-    img: medicalConsultant2,
+    img: keeraiIlaUnavuImg,
     color: "",
   },
 ];
@@ -46,19 +47,19 @@ const OUR_CDS = [
   {
     name: "Pillai Peru",
     desc: "",
-    img: medicalConsultant1,
+    img: pillaiPeruImg,
     color: "",
   },
   {
     name: "Nlamudan Vaazha",
     desc: "",
-    img: medicalConsultant2,
+    img: sugarImg,
     color: "",
   },
   {
     name: "Unave Uyir",
     desc: "",
-    img: medicalConsultant3,
+    img: unavaeUyirImg,
     color: "",
   },
 ];
@@ -263,8 +264,8 @@ informed decisions for your well-being.
             </div>
 
             <NcImage
-              containerClassName="relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(55%-40px)]"
-              src={mdSectionImg}
+              containerClassName="relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(50%-40px)]"
+              src={uyirvazhiImg}
               alt="Almaa Groups Founder"
             />
           </div>
