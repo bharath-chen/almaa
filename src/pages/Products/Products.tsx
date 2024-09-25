@@ -241,6 +241,19 @@ const Products: FC<Props> = ({ className = "" }) => {
               {wishlist.success}
             </Alert>
           )}
+          <div className="flex overflow-x-scroll whitespace-nowrap">
+            {subCategories.map((item) => (
+              <Chip
+                active={
+                  item.subcategory_id === selectedSubCategory?.subcategory_id
+                }
+                key={item.subcategory_id}
+                id={item.subcategory_id}
+                name={item.subcat_name}
+                onClick={() => handleSelectedChip(item)}
+              />
+            ))}
+          </div>
           <main>
             {/* LOOP ITEMS */}
             <div className="flex flex-col lg:flex-row">
@@ -254,20 +267,6 @@ const Products: FC<Props> = ({ className = "" }) => {
               </div>
               <div className="flex-shrink-0 mb-10 lg:mb-0 lg:mx-4 border-t lg:border-t-0"></div>
               <div className="flex-1 ">
-                <div className="flex flex-row">
-                  {subCategories.map((item) => (
-                    <Chip
-                      active={
-                        item.subcategory_id ===
-                        selectedSubCategory?.subcategory_id
-                      }
-                      key={item.subcategory_id}
-                      id={item.subcategory_id}
-                      name={item.subcat_name}
-                      onClick={() => handleSelectedChip(item)}
-                    />
-                  ))}
-                </div>
                 <div className="flex-1 grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 ">
                   {products.length > 0 &&
                     products.map((item, index) => (
