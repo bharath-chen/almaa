@@ -61,6 +61,9 @@ import useDoctors from "../../hooks/useDoctors";
 import useBlogs from "../../hooks/useBlogs";
 import MainCard from "../Resources/Blog/MainCard";
 import BlogCard from "../Resources/Blog/BlogCard";
+import { IVideo } from "../../services/video-service";
+import HealthAndLifestyleCard from "./HealthAndLifestyleCard";
+import useVideos from "../../hooks/useVideos";
 
 export const pageAnimation = {
   initial: { opacity: 0, y: 100 },
@@ -74,6 +77,7 @@ const Home = () => {
   const { categories } = useCategory();
   const { doctors } = useDoctors();
   const { mainCardData, blogList } = useBlogs();
+  const { videos } = useVideos();
 
   const handleSliderCardClick = (item: CardCategoryData) => {
     const selectedDoctor = doctors.find((doc) => doc.doctor_id === item.id);
@@ -107,55 +111,8 @@ const Home = () => {
     );
   };
 
-  const renderHealthAndLifestyleCard = (item: {
-    id: number;
-    src: string;
-    heading: string;
-    categoryType: string;
-    dateAdded: string;
-  }) => {
-    return (
-      <div className="grid grid-cols-1 gap-3 w-full">
-        <div className="flex flex-col">
-          <NcImage
-            className="rounded-[30px] object-contain w-full h-auto"
-            src={item.src}
-            alt={item.heading}
-          />
-          <div>
-            <h2 className="px-2 w-full font-semibold mt-3 mb-2">
-              {item.heading}
-            </h2>
-          </div>
-          <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 justify-items-between gap-5 px-2">
-              <div className="flex flex-col">
-                <div className="text-sm rounded-lg text-green-500 border border-green-500 py-1 px-2 flex-grow">
-                  {item.categoryType}
-                </div>
-              </div>
-              <div className="flex flex-col">
-                <div className="flex flex-row items-stretch text-sm text-slate-500">
-                  <span>
-                    <svg
-                      className="w-6 h-6 text-slate-500 dark:text-white"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    ></svg>
-                  </span>
-                  <span
-                    className="self-center"
-                    dangerouslySetInnerHTML={{ __html: item.dateAdded }}
-                  ></span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  const renderHealthAndLifestyleCard = (item: IVideo) => {
+    return <HealthAndLifestyleCard video={item} />;
   };
 
   const [tabActive, setTabActive] = useState(TABS[0]);
@@ -517,45 +474,47 @@ const Home = () => {
       )}
 
       {/* HEALTHY AND LIFESTYLE VIDEOS SECTION */}
-      <section className="container mb-40">
-        <AppSlider
-          data={LIFE_STYLE_CARDS}
-          className="glidejs_rb_ flow-root glide--swipeable glide--ltr glide--slider"
-          glideClassName="glide__track"
-          renderChildren={renderHealthAndLifestyleCard}
-          glideOptions={{
-            perView: 3,
-            gap: 32,
-            bound: true,
-            breakpoints: {
-              1280: {
-                perView: 3,
+      {videos.length > 0 && (
+        <section className="container mb-40">
+          <AppSlider
+            data={videos}
+            className="glidejs_rb_ flow-root glide--swipeable glide--ltr glide--slider"
+            glideClassName="glide__track"
+            renderChildren={renderHealthAndLifestyleCard}
+            glideOptions={{
+              perView: 3,
+              gap: 32,
+              bound: true,
+              breakpoints: {
+                1280: {
+                  perView: 3,
+                },
+                1024: {
+                  gap: 20,
+                  perView: 3,
+                },
+                768: {
+                  gap: 20,
+                  perView: 2,
+                },
+                640: {
+                  gap: 20,
+                  perView: 1,
+                },
+                500: {
+                  gap: 20,
+                  perView: 1,
+                },
               },
-              1024: {
-                gap: 20,
-                perView: 3,
-              },
-              768: {
-                gap: 20,
-                perView: 2,
-              },
-              640: {
-                gap: 20,
-                perView: 1,
-              },
-              500: {
-                gap: 20,
-                perView: 1,
-              },
-            },
-          }}
-          itemWrapperClassName="w-full"
-        >
-          <Heading rightDescText="Videos" hasNextPrev>
-            Health & Lifestyle
-          </Heading>
-        </AppSlider>
-      </section>
+            }}
+            itemWrapperClassName="w-full"
+          >
+            <Heading rightDescText="Videos" hasNextPrev>
+              Health & Lifestyle
+            </Heading>
+          </AppSlider>
+        </section>
+      )}
 
       {/* WHY SHOULD YOU BE WITH ALMA SECTION */}
       <section className="container mb-40">

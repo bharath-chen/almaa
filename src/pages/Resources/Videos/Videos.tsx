@@ -1,33 +1,9 @@
 import Video from "./Video";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import videoService, { IVideo } from "../../../services/video-service";
-import { useEffect, useState } from "react";
-import { CanceledError } from "axios";
+import useVideos from "../../../hooks/useVideos";
 
 const Videos = () => {
-  const [videos, setVideos] = useState<IVideo[]>([]);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const { request, cancel } = videoService.getAll<IVideo>();
-
-    setLoading(true);
-
-    request
-      .then((res) => {
-        setLoading(false);
-        setVideos(res.data);
-      })
-      .catch((err) => {
-        setLoading(false);
-        if (err instanceof CanceledError) return;
-
-        setError(err.message);
-      });
-
-    return () => cancel();
-  }, []);
+  const { videos } = useVideos();
 
   return (
     <div className="container my-20">
