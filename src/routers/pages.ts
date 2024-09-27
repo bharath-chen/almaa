@@ -46,7 +46,8 @@ import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
 export const pages: Page[] = [
   { path: "/", component: Home },
   { path: "/products", component: Products },
-  { path: "/products/:filter", component: Products },
+  { path: "/products/:natProductId/:natProduct", component: Products },
+  { path: "/products/:categoryId/:category", component: Products },
   {
     path: "/product-detail/:id",
     component: ProductDetailPage2,

@@ -3,7 +3,8 @@ import { ComponentType } from "react";
 export interface LocationStates {
   "/"?: {};
   "/products"?: {};
-  "/products/:filter": {};
+  "/products/:natProductId/:natProduct": {};
+  "/products/:categoryId/:category": {};
   "/home2"?: {};
   "/home3"?: {};
   "/product-detail/:id"?: {};

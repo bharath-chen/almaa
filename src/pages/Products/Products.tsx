@@ -15,11 +15,13 @@ import {
   removeItemFromWishlist,
 } from "../../features/wishlist/wishlistSlice";
 import { Alert } from "../../shared/Alert/Alert";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { NavItemType } from "../../shared/Navigation/NavigationItem";
 import subcategoryService from "../../services/subcategory-service";
 import { type SubCategory } from "../../models/subCategory";
 import filterProductsService from "../../services/filter-products-service";
+import useNatProducts from "../../hooks/useNatProducts";
+import { TabFilterItem } from "../../components/AppFilterTabs/AppFilterTabs";
 
 interface Props {
   className?: string;
@@ -27,9 +29,13 @@ interface Props {
 
 const Products: FC<Props> = ({ className = "" }) => {
   const location = useLocation();
-  const [selectedCategory, setSelectedCategory] = useState<NavItemType>();
+  const queryParams = new URLSearchParams(location.search);
+  const navigate = useNavigate();
+  const { natProducts } = useNatProducts();
+  const [productForms, setProductForms] = useState<TabFilterItem[]>([]);
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
-  const [selectedSubCategory, setSelectedSubCategory] = useState<SubCategory>();
+  const [selectedSubCategory, setSelectedSubCategory] =
+    useState<SubCategory | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState("");
   const [selectedSortOrder, setSelectedSortOrder] = useState<SortOrder>();
@@ -42,13 +48,17 @@ const Products: FC<Props> = ({ className = "" }) => {
   const [close, setClose] = useState(false);
   const dispatch = useAppDispatch();
   const wishlist = useAppSelector((state) => state.wishlist);
+  const categoryId = queryParams.get("category_id"); // Extracts category_id (1)
+  const category = queryParams.get("category");
+  const natProductId = queryParams.get("nat_prod_id");
+  const natProduct = queryParams.get("nat_product");
 
-  const getSubCategories = () => {
+  const getSubCategories = (id: string) => {
     const { request } = subcategoryService.getAll<
       SubCategory,
       { category_id: string }
     >({
-      category_id: location.state.item.id,
+      category_id: id,
     });
 
     dispatch(showLoader());
@@ -62,15 +72,14 @@ const Products: FC<Props> = ({ className = "" }) => {
         if (err instanceof CanceledError) return;
 
         dispatch(hideLoader());
-        console.log(error);
       });
   };
 
-  const getProductsByCategory = () => {
+  const getProductsByCategory = (id: string) => {
     dispatch(showLoader());
 
     const { request } = productService.getAll<Product, { category_id: string }>(
-      { category_id: location.state.item.id }
+      { category_id: id }
     );
 
     request
@@ -103,17 +112,7 @@ const Products: FC<Props> = ({ className = "" }) => {
       });
   };
 
-  useEffect(() => {
-    setSelectedCategory(location.state ? location.state?.item : []);
-
-    if (location.state?.item) {
-      getSubCategories();
-      getProductsByCategory();
-    }
-  }, [location.state]);
-
-  // Products
-  useEffect(() => {
+  const fetchProducts = () => {
     const { request, cancel } = productService.getAll<Product>();
 
     dispatch(showLoader());
@@ -129,7 +128,31 @@ const Products: FC<Props> = ({ className = "" }) => {
         setError(err.message);
       });
 
-    return () => cancel();
+    return cancel;
+  };
+
+  useEffect(() => {
+    setProductForms(
+      natProducts.map((natProduct) => ({
+        id: natProduct.natprod_id,
+        name: natProduct.name,
+        checked: natProduct.natprod_id === natProductId,
+      }))
+    );
+  }, [natProducts, natProductId, natProduct]);
+
+  useEffect(() => {
+    if (location.state?.item || categoryId) {
+      setSelectedSubCategory(null);
+      getSubCategories(location.state?.item?.id || categoryId);
+      getProductsByCategory(location.state?.item?.id || categoryId);
+    }
+  }, [location.state, categoryId]);
+
+  // Products
+  useEffect(() => {
+    const cancelFetchProducts = fetchProducts();
+    return () => cancelFetchProducts();
   }, []);
 
   useEffect(() => {
@@ -200,11 +223,31 @@ const Products: FC<Props> = ({ className = "" }) => {
     }
   }, [selectedFilter]);
 
+  useEffect(() => {
+    if (natProductId && natProduct) {
+      setSelectedFilter((prevSelectedFilter) => ({
+        ...prevSelectedFilter,
+        nat_of_prod: [natProductId],
+      }));
+    }
+  }, [natProductId, natProduct]);
+
   const handleSortingProducts = (selectedSort: SortOrder) => {
     setSelectedSortOrder(selectedSort);
   };
 
-  const handleFilterChange = (filter: Filters) => {
+  const handleFilterChange = (filter: Filters, items: TabFilterItem[]) => {
+    if (filter.nat_of_prod.length === 0) navigate("/products");
+
+    if (
+      filter.nat_of_prod.length === 0 &&
+      !filter.herb_type &&
+      !filter.is_nutraceutical &&
+      !filter.pres_req
+    )
+      fetchProducts();
+
+    setProductForms(items);
     setSelectedFilter(filter);
   };
 
@@ -263,6 +306,7 @@ const Products: FC<Props> = ({ className = "" }) => {
                   onSort={handleSortingProducts}
                   selectedFilter={selectedFilter}
                   onFilterChange={handleFilterChange}
+                  productForms={productForms}
                 />
               </div>
               <div className="flex-shrink-0 mb-10 lg:mb-0 lg:mx-4 border-t lg:border-t-0"></div>

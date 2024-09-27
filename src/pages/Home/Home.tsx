@@ -64,6 +64,7 @@ import BlogCard from "../Resources/Blog/BlogCard";
 import { IVideo } from "../../services/video-service";
 import HealthAndLifestyleCard from "./HealthAndLifestyleCard";
 import useVideos from "../../hooks/useVideos";
+import useNatProducts from "../../hooks/useNatProducts";
 
 export const pageAnimation = {
   initial: { opacity: 0, y: 100 },
@@ -78,6 +79,7 @@ const Home = () => {
   const { doctors } = useDoctors();
   const { mainCardData, blogList } = useBlogs();
   const { videos } = useVideos();
+  const { natProducts } = useNatProducts();
 
   const handleSliderCardClick = (item: CardCategoryData) => {
     const selectedDoctor = doctors.find((doc) => doc.doctor_id === item.id);
@@ -98,6 +100,7 @@ const Home = () => {
     desc: string;
     featuredImage: string;
     color: string;
+    search: any;
   }) => {
     return (
       <CardCategory3
@@ -106,7 +109,7 @@ const Home = () => {
         featuredImage={item.featuredImage}
         color={item.color}
         btnText="View Products"
-        href="/products"
+        href={`/products${item.search}`}
       />
     );
   };
@@ -119,7 +122,6 @@ const Home = () => {
 
   const [featuredProducts, setFeaturedProducts] =
     useState<FeatureProductResponse>();
-  const [natProducts, setNatProducts] = useState<NatProduct[]>([]);
   const images = [
     heroImg,
     heroImg,
@@ -145,24 +147,6 @@ const Home = () => {
       });
 
     return () => cancel();
-  }, []);
-
-  useEffect(() => {
-    const { request, cancel } = homeCategoryService.getAll<NatProduct>();
-
-    dispatch(showLoader());
-
-    request
-      .then((res) => {
-        dispatch(hideLoader());
-        setNatProducts(res.data);
-      })
-      .catch((err) => {
-        if (err instanceof CanceledError) return;
-
-        dispatch(hideLoader());
-        setError(err.message);
-      });
   }, []);
 
   return (
@@ -267,6 +251,7 @@ const Home = () => {
               desc: c.cat_name,
               featuredImage: c.cat_image,
               color: "bg-slate-50",
+              search: `?category_id=${c.category_id}&category=${c.cat_name}`,
               // color: MEDIC_SLIDERS,
             }))}
             renderChildren={renderCategoryCard}
@@ -448,6 +433,7 @@ const Home = () => {
                 desc: p.name,
                 featuredImage: p.image,
                 color: "bg-slate-50",
+                search: `?nat_prod_id=${p.natprod_id}&nat_product=${p.name}`,
               };
             })}
             className="nc-DiscoverMoreSlider nc-p-l-container "
