@@ -1,19 +1,21 @@
 import { NoSymbolIcon, CheckIcon } from "@heroicons/react/24/outline";
 import NcInputNumber from "../../components/NcInputNumber";
 import Prices from "../../components/Prices";
-// import { Product } from "../../data/data";
 import { Product } from "../../models/product";
 import { Link, useNavigate } from "react-router-dom";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
-import { useShoppingCartContext } from "../../store/shopping-cart-context";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import Label from "../../components/Label/Label";
-import Input from "../../shared/Input/Input";
 import Select from "../../shared/Select/Select";
 import cartService from "../../services/cart-service";
-import { useAppSelector } from "../../hooks/hooks";
 import { RootState } from "../../state/store";
 import { useEffect, useState } from "react";
 import deliveryChargeService from "../../services/delivery-charge-service";
+import {
+  removeFromCart,
+  updateCartQuantity,
+  selectCartTotal,
+} from "../../features/cart/cartSlice"; // Adjust the import path as needed
 
 const STATES = [
   "Andhra Pradesh",
@@ -48,36 +50,32 @@ const STATES = [
 
 const CartPage = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const user = useAppSelector((state: RootState) => state.auth);
+  const cartItems = useAppSelector((state: RootState) => state.cart.items);
+  const subTotal = useAppSelector(selectCartTotal);
+  console.log(subTotal);
   const [form, setForm] = useState({ state: "" });
   const [shippingEstimate, setShippingEstimate] = useState<number>();
 
-  const {
-    cart,
-    totalPrice: subTotal,
-    removeItemFromCart,
-    updateQuantity,
-  } = useShoppingCartContext();
+  const renderStatusSoldout = () => (
+    <div className="rounded-full flex items-center justify-center px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+      <NoSymbolIcon className="w-3.5 h-3.5" />
+      <span className="ml-1 leading-none">Sold Out</span>
+    </div>
+  );
 
-  const renderStatusSoldout = () => {
-    return (
-      <div className="rounded-full flex items-center justify-center px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-        <NoSymbolIcon className="w-3.5 h-3.5" />
-        <span className="ml-1 leading-none">Sold Out</span>
-      </div>
-    );
-  };
+  const renderStatusInstock = () => (
+    <div className="rounded-full flex items-center justify-center px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+      <CheckIcon className="w-3.5 h-3.5" />
+      <span className="ml-1 leading-none">In Stock</span>
+    </div>
+  );
 
-  const renderStatusInstock = () => {
-    return (
-      <div className="rounded-full flex items-center justify-center px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-        <CheckIcon className="w-3.5 h-3.5" />
-        <span className="ml-1 leading-none">In Stock</span>
-      </div>
-    );
-  };
-
-  const renderProduct = (item: Product, index: number) => {
+  const renderProduct = (
+    item: Product & { quantity: number },
+    index: number
+  ) => {
     const {
       product_id,
       product_image1,
@@ -86,6 +84,8 @@ const CartPage = () => {
       quantity,
       suitablefor,
     } = item;
+
+    console.log(item);
 
     return (
       <div
@@ -114,86 +114,8 @@ const CartPage = () => {
                   </Link>
                 </h3>
                 <div className="mt-1.5 sm:mt-2.5 flex text-sm text-slate-600 dark:text-slate-300">
-                  {/* <div className="flex items-center space-x-1.5">
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M7.01 18.0001L3 13.9901C1.66 12.6501 1.66 11.32 3 9.98004L9.68 3.30005L17.03 10.6501C17.4 11.0201 17.4 11.6201 17.03 11.9901L11.01 18.0101C9.69 19.3301 8.35 19.3301 7.01 18.0001Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeMiterlimit="10"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M8.35 1.94995L9.69 3.28992"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeMiterlimit="10"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M2.07 11.92L17.19 11.26"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeMiterlimit="10"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M3 22H16"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeMiterlimit="10"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M18.85 15C18.85 15 17 17.01 17 18.24C17 19.26 17.83 20.09 18.85 20.09C19.87 20.09 20.7 19.26 20.7 18.24C20.7 17.01 18.85 15 18.85 15Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-
-                    <span>{`2`}</span>
-                  </div>
-                  <span className="mx-4 border-l border-slate-200 dark:border-slate-700 "></span>
-                  <div className="flex items-center space-x-1.5">
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M21 9V3H15"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M3 15V21H9"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M21 3L13.5 10.5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M10.5 13.5L3 21"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div> */}
                   <p
-                    className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}
+                    className={`text-sm text-slate-500 dark:text-slate-400 mt-1`}
                   >
                     {suitablefor}
                   </p>
@@ -203,15 +125,25 @@ const CartPage = () => {
                   <select
                     name="qty"
                     id="qty"
-                    className="form-select text-sm rounded-md py-1 border-slate-200 dark:border-slate-700 relative z-10 dark:bg-slate-800 "
+                    className="form-select text-sm rounded-md py-1 border-slate-200 dark:border-slate-700 relative z-10 dark:bg-slate-800"
+                    onChange={(e) => {
+                      const newQuantity = +e.target.value;
+                      if (newQuantity > 0) {
+                        dispatch(
+                          updateCartQuantity({
+                            product_id,
+                            quantity: newQuantity,
+                          })
+                        );
+                      }
+                    }}
+                    value={quantity}
                   >
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
+                    {[...Array(7).keys()].map((i) => (
+                      <option key={i + 1} value={i + 1}>
+                        {i + 1}
+                      </option>
+                    ))}
                   </select>
                   <Prices
                     contentClass="py-1 px-2 md:py-1.5 md:px-2.5 text-sm font-medium h-full"
@@ -222,8 +154,12 @@ const CartPage = () => {
 
               <div className="hidden sm:block text-center relative">
                 <NcInputNumber
-                  defaultValue={+quantity}
-                  onChange={(value) => updateQuantity(+product_id, value)}
+                  defaultValue={quantity}
+                  onChange={(value) =>
+                    dispatch(
+                      updateCartQuantity({ product_id, quantity: value })
+                    )
+                  }
                   className="relative z-10"
                 />
               </div>
@@ -235,16 +171,11 @@ const CartPage = () => {
           </div>
 
           <div className="flex mt-auto pt-4 items-end justify-between text-sm">
-            {
-              // Math.random() > 0.6
-              //   ? renderStatusSoldout()
-              //   :
-              renderStatusInstock()
-            }
+            {renderStatusInstock()}
 
             <a
-              onClick={() => removeItemFromCart(+item.product_id)}
-              className="cursor-pointer relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
+              onClick={() => dispatch(removeFromCart(product_id))}
+              className="cursor-pointer relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm"
             >
               <span>Remove</span>
             </a>
@@ -261,13 +192,11 @@ const CartPage = () => {
       product_details: { product_id: string; quantity: string }[];
     }
 
-    const productDetails = JSON.parse(localStorage.getItem("shoppingCart"));
-
     const payload: AddCartRequest = {
       gofor: "addcart",
       cust_id: user.customer_id,
-      product_details: productDetails.cart.map((p) => ({
-        productId: p.product.product_id,
+      product_details: cartItems.map((p) => ({
+        product_id: p.product_id,
         quantity: p.quantity.toString(),
       })),
     };
@@ -283,26 +212,26 @@ const CartPage = () => {
   };
 
   useEffect(() => {
-    const { request } = deliveryChargeService.get<string, { state: string }>({
-      state: form.state,
-    });
+    if (form.state) {
+      const { request } = deliveryChargeService.get<string, { state: string }>({
+        state: form.state,
+      });
 
-    request.then((res) => {
-      if (res.data) {
-        setShippingEstimate(+res.data);
-      }
-    });
+      request.then((res) => {
+        if (res.data) {
+          setShippingEstimate(+res.data);
+        }
+      });
+    } else {
+      setShippingEstimate(null);
+    }
   }, [form]);
 
   return (
     <div className="nc-CartPage">
-      {/* <Helmet>
-        <title>Shopping Cart || Ciseco Ecommerce Template</title>
-      </Helmet> */}
-
-      <main className="container py-16 lg:pb-28 lg:pt-20 ">
+      <main className="container py-16 lg:pb-28 lg:pt-20">
         <div className="mb-12 sm:mb-16">
-          <h2 className="block text-2xl sm:text-3xl lg:text-4xl font-semibold ">
+          <h2 className="block text-2xl sm:text-3xl lg:text-4xl font-semibold">
             Shopping Cart
           </h2>
           <div className="block mt-3 sm:mt-5 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-400">
@@ -317,67 +246,57 @@ const CartPage = () => {
             <span className="underline">Shopping Cart</span>
           </div>
         </div>
-        {cart && cart.length <= 0 && (
+        {cartItems.length <= 0 && (
           <p className="text-md font-semibold text-center">
             No Items were added in the cart
           </p>
         )}
 
-        {cart.length > 0 && (
+        {cartItems.length > 0 && (
           <>
             <hr className="border-slate-200 dark:border-slate-700 my-10 xl:my-12" />
 
             <div className="flex flex-col lg:flex-row">
-              <div className="w-full lg:w-[60%] xl:w-[55%] divide-y divide-slate-200 dark:divide-slate-700 ">
-                {cart.map((c, index: number) =>
-                  renderProduct(
-                    { ...c.product, quantity: c.quantity.toString() },
-                    index
-                  )
-                )}
+              <div className="w-full lg:w-[60%]">
+                {cartItems.map(renderProduct)}
               </div>
-              <div className="border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:mx-16 2xl:mx-20 flex-shrink-0"></div>
-              <div className="flex-1">
-                <div className="sticky top-28">
-                  <h3 className="text-lg font-semibold ">Order Summary</h3>
-                  <div className="mt-7 text-sm text-slate-500 dark:text-slate-400 divide-y divide-slate-200/70 dark:divide-slate-700/80">
-                    <div className="flex justify-between pb-4">
-                      <span>Subtotal</span>
-                      <span className="font-semibold text-slate-900 dark:text-slate-200">
-                        ₹{subTotal.toFixed(2)}
-                      </span>
-                    </div>
-                    {shippingEstimate && (
-                      <div className="flex justify-between py-4">
-                        <span>Shpping estimate</span>
-                        <span className="font-semibold text-slate-900 dark:text-slate-200">
-                          ₹{shippingEstimate.toFixed(2)}
-                        </span>
-                      </div>
-                    )}
-                    <div className="flex justify-between py-4">
-                      <span>Tax estimate</span>
-                      <span className="font-semibold text-slate-900 dark:text-slate-200">
-                        ₹24.90
-                      </span>
-                    </div>
-                    <div className="max-w-lg py-3">
-                      <Label className="text-sm">State</Label>
-                      <Select
-                        className="mt-1.5 mb-3"
-                        value={form.state}
-                        onChange={(e) =>
-                          setForm({ ...form, state: e.target.value })
-                        }
-                      >
-                        <option value=""></option>
-                        {STATES.map((state) => (
-                          <option key={state} value={state}>
-                            {state}
-                          </option>
-                        ))}
-                      </Select>
-                      {/* <Label className="text-sm">Pincode</Label>
+              <div className="mt-6 lg:mt-0 lg:ml-8 lg:w-[40%]">
+                <h4 className="mb-5 text-lg font-semibold">Order Summary</h4>
+                <div className="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+                  <span>Subtotal</span>
+                  <span className="font-semibold">₹ {subTotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between py-4">
+                  <span>Tax estimate</span>
+                  <span className="font-semibold text-slate-900 dark:text-slate-200">
+                    ₹24.90
+                  </span>
+                </div>
+                {shippingEstimate && (
+                  <div className="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-3 mt-2">
+                    <span>Shipping Estimate</span>
+                    <span className="font-semibold">
+                      ₹ {shippingEstimate.toFixed(2)}
+                    </span>
+                  </div>
+                )}
+                <div className="max-w-lg py-3">
+                  <Label className="text-sm">State</Label>
+                  <Select
+                    className="mt-1.5 mb-3"
+                    value={form.state}
+                    onChange={(e) =>
+                      setForm({ ...form, state: e.target.value })
+                    }
+                  >
+                    <option value=""></option>
+                    {STATES.map((state) => (
+                      <option key={state} value={state}>
+                        {state}
+                      </option>
+                    ))}
+                  </Select>
+                  {/* <Label className="text-sm">Pincode</Label>
                       <Input
                         className="mt-1.5"
                         type={"text"}
@@ -386,74 +305,16 @@ const CartPage = () => {
                           setForm({ ...form, pinCode: e.target.value })
                         }
                       /> */}
-                    </div>
-                    <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
-                      <span>Order total</span>
-                      <span>
-                        ₹
-                        {(subTotal + (shippingEstimate || 0) + 24.9).toFixed(2)}
-                      </span>
-                    </div>
-                  </div>
-                  <ButtonPrimary
-                    onClick={handleCheckout}
-                    className="mt-8 w-full"
-                  >
-                    Checkout
-                  </ButtonPrimary>
-                  <div className="mt-5 text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center">
-                    <p className="block relative pl-5">
-                      <svg
-                        className="w-4 h-4 absolute -left-1 top-0.5"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <path
-                          d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M12 8V13"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M11.9945 16H12.0035"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      Learn more{` `}
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href="##"
-                        className="text-slate-900 dark:text-slate-200 underline font-medium"
-                      >
-                        Taxes
-                      </a>
-                      <span>
-                        {` `}and{` `}
-                      </span>
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href="##"
-                        className="text-slate-900 dark:text-slate-200 underline font-medium"
-                      >
-                        Shipping
-                      </a>
-                      {` `} infomation
-                    </p>
-                  </div>
                 </div>
+                <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
+                  <span>Order total</span>
+                  <span>
+                    ₹{(subTotal + (shippingEstimate || 0) + 24.9).toFixed(2)}
+                  </span>
+                </div>
+                <ButtonPrimary onClick={handleCheckout} className="mt-8 w-full">
+                  Proceed to Checkout
+                </ButtonPrimary>
               </div>
             </div>
           </>

@@ -36,7 +36,7 @@ export interface Product {
   unit_price?: string;
   discount?: string;
   selling_price?: string;
-  quantity?: string;
+  quantity?: number;
   reordered_level?: string;
   attstatus?: string;
   created?: string;

@@ -15,8 +15,7 @@ import {
   removeItemFromWishlist,
 } from "../../features/wishlist/wishlistSlice";
 import { Alert } from "../../shared/Alert/Alert";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { NavItemType } from "../../shared/Navigation/NavigationItem";
+import { useLocation, useNavigate } from "react-router-dom";
 import subcategoryService from "../../services/subcategory-service";
 import { type SubCategory } from "../../models/subCategory";
 import filterProductsService from "../../services/filter-products-service";

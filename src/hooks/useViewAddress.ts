@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { Address } from "../models/address";
 import apiClient, { CanceledError } from "../services/api-client";
 import { hideLoader, showLoader } from "../features/loader/loaderSlice";
-import { useAppDispatch } from "./hooks";
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { RootState } from "../state/store";
 
 const useViewAddressess = () => {
+  const customer = useAppSelector((state: RootState) => state.auth);
   const [addressList, setAddressList] = useState<Address[]>([]);
   const [error, setError] = useState("");
 
@@ -13,13 +15,12 @@ const useViewAddressess = () => {
   useEffect(() => {
     const controller = new AbortController();
 
-    const customerDetails = JSON.parse(localStorage.getItem("customerDetails"));
-    if (!customerDetails) return;
+    if (!customer) return;
 
     dispatch(showLoader());
     apiClient
       .get<Address[]>(
-        `?gofor=addresslist&customer_id=${customerDetails.customer_id}`,
+        `?gofor=addresslist&customer_id=${customer.customer_id}`,
         { signal: controller.signal }
       )
       .then((res) => {

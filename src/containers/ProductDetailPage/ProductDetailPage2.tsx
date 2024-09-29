@@ -19,21 +19,9 @@ import toast from "react-hot-toast";
 import { StarIcon } from "@heroicons/react/24/solid";
 import SectionSliderProductCard from "../../components/SectionSliderProductCard";
 import ModalViewAllReviews, { Review } from "./ModalViewAllReviews";
-import NotifyAddTocart from "../../components/NotifyAddTocart";
 import { Link, useParams } from "react-router-dom";
-import productsService from "../../services/products-service";
-import product1Img from "../../assets/PRODUCT DETAIL/1-product-pic-1.jpg";
-import product2Img from "../../assets/PRODUCT DETAIL/1-product-pic-2.jpg";
-import product3Img from "../../assets/PRODUCT DETAIL/1-product-pic-3.jpg";
-import product4Img from "../../assets/PRODUCT DETAIL/1-product-pic-4.jpg";
 import AppProductChip from "../../components/AppProductChip/AppProductChip";
-import { useShoppingCartContext } from "../../store/shopping-cart-context";
-import benefitsImage from "../../assets/PRODUCT DETAIL/2-benefits.png";
 import faqImg from "../../assets/02-Products/FAQ.jpg";
-import ingredient1 from "../../assets/PRODUCT DETAIL/3-ingredient-1.jpg";
-import ingredient2 from "../../assets/PRODUCT DETAIL/3-ingredient-2.jpg";
-import ingredient3 from "../../assets/PRODUCT DETAIL/3-ingredient-3.jpg";
-import ingredient4 from "../../assets/PRODUCT DETAIL/3-ingredient-4.jpg";
 import Expert from "../../assets/PRODUCT DETAIL/4-Expert.jpg";
 import video from "../../assets/PRODUCT DETAIL/5-video.jpg";
 import videoIcon from "../../assets/PRODUCT DETAIL/5-video-icon.png";
@@ -56,6 +44,8 @@ import {
   removeItemFromWishlist,
 } from "../../features/wishlist/wishlistSlice";
 import VideoPopup from "../../pages/Resources/Videos/VideoPopup";
+import faqService, { IFaq } from "../../services/faq-service";
+import { addItemToCartWithQuantity } from "../../features/cart/cartSlice";
 
 const calculateOriginalPrice = (price: number, pack: number) => price * pack;
 
@@ -74,8 +64,8 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   // const relatedProducts = productsService
   //   .getAllProducts()
   //   .filter((_, i) => i < 8 && i > 2);
-  const product = productsService.getProduct(+id);
-  const { name, sizes, variants, status, allOfSizes, price, image } = product;
+  // const product = productsService.getProduct(+id);
+  // const { name, sizes, variants, status, allOfSizes, price, image } = product;
   // const LIST_IMAGES_DEMO: string[] = [
   //   product1Img,
   //   product2Img,
@@ -113,24 +103,24 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       id: 1,
       offer: 10,
       pack: 2,
-      discountedPrice: price * 2 - price * 2 * 0.1,
-      originalPrice: price * 2,
+      discountedPrice: 0,
+      originalPrice: 0,
       selected: false,
     },
     {
       id: 2,
       offer: 20,
       pack: 4,
-      discountedPrice: price * 4 - price * 4 * 0.2,
-      originalPrice: price * 4,
+      discountedPrice: 0,
+      originalPrice: 0,
       selected: false,
     },
     {
       id: 3,
       offer: 30,
       pack: 10,
-      discountedPrice: price * 10 - price * 10 * 0.3,
-      originalPrice: price * 10,
+      discountedPrice: 0,
+      originalPrice: 0,
       selected: false,
     },
   ]);
@@ -138,9 +128,9 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     id: 1,
     label: "100 g",
   });
-  const { addItemToCartWithQuantity } = useShoppingCartContext();
+  // const { addItemToCartWithQuantity } = useShoppingCartContext();
   const [variantActive, setVariantActive] = React.useState(0);
-  const [sizeSelected, setSizeSelected] = React.useState(sizes ? sizes[0] : "");
+  const [sizeSelected, setSizeSelected] = React.useState("");
   const [quantitySelected, setQuantitySelected] = React.useState(1);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -151,6 +141,8 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [productDetail, setProductDetail] = useState<ProductDetail>();
   const [showVideoPopup, setShowVideoPopup] = useState<boolean>(false);
+  const [faqs, setFaqs] = useState<{ name: string; content: string }[]>([]);
+  const [sellingPrice, setSellingPrice] = useState(0);
 
   useEffect(() => {
     const { request, cancel } = productDetailService.get<
@@ -166,6 +158,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
         const price = +details.product_attributes[0].selling_price;
         dispatch(hideLoader());
         setProductDetail(details);
+        setSellingPrice(price);
         setBuyingOptions((buyingOption) =>
           buyingOption.map((b) => ({
             ...b,
@@ -200,6 +193,32 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
         if (err instanceof CanceledError) return;
 
         console.log(err.message);
+      });
+
+    return () => cancel();
+  }, []);
+
+  useEffect(() => {
+    const { request, cancel } = faqService.get<IFaq[], { product_id: number }>({
+      product_id: +id,
+    });
+
+    dispatch(showLoader());
+
+    request
+      .then((res) => {
+        dispatch(hideLoader());
+        const data = res.data.map((r) => ({
+          name: r.question,
+          content: r.answer,
+        }));
+        setFaqs(data);
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+
+        dispatch(hideLoader());
+        console.log(err);
       });
 
     return () => cancel();
@@ -246,17 +265,32 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   const addToCart = () => {
     notifyAddTocart({ size: "" });
     const selected = buyingOptions.find((o) => o.selected);
-    addItemToCartWithQuantity(
-      {
-        ...productDetail.product_details[0],
-        ...productDetail.product_attributes[0],
-      },
-      selected ? selected.pack : quantitySelected
+    // console.log(selected.discountedPrice);
+    dispatch(
+      addItemToCartWithQuantity({
+        product: {
+          ...productDetail.product_details[0],
+          selling_price:
+            selected.discountedPrice.toFixed(2).toString() ||
+            sellingPrice.toString(),
+        },
+        quantity: selected ? selected.pack : quantitySelected,
+      })
     );
+    // addItemToCartWithQuantity(
+    //   {
+    //     ...productDetail.product_details[0],
+    //     ...productDetail.product_attributes[0],
+    //     selling_price:
+    //       `${selected.discountedPrice.toFixed(2)}` || `${sellingPrice}`,
+    //   },
+    //   selected ? selected.pack : quantitySelected
+    // );
   };
 
   const renderProductCartOnNotify = ({ size }: { size?: string }) => {
     const selected = buyingOptions.find((o) => o.selected);
+    console.log(selected);
     return (
       <div className="flex ">
         <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
@@ -282,10 +316,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                   <span>{quantityOption.label}</span>
                 </p>
               </div>
-              <Prices
-                price={+productDetail.product_attributes[0].selling_price}
-                className="mt-0.5"
-              />
+              <Prices price={sellingPrice} className="mt-0.5" />
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
@@ -313,48 +344,49 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
         ? { ...o, selected: (o.selected = !o.selected) }
         : { ...o, selected: false }
     );
+    if (updatedBuyingOptions.every((o) => !o.selected)) setQuantitySelected(1);
     setBuyingOptions(updatedBuyingOptions);
   };
 
-  const renderVariants = () => {
-    if (!variants || !variants.length) {
-      return null;
-    }
+  // const renderVariants = () => {
+  //   if (!variants || !variants.length) {
+  //     return null;
+  //   }
 
-    return (
-      <div>
-        <label htmlFor="">
-          <span className="text-sm font-medium">
-            Color:
-            <span className="ml-1 font-semibold">
-              {variants[variantActive].name}
-            </span>
-          </span>
-        </label>
-        <div className="flex mt-3">
-          {variants.map((variant, index) => (
-            <div
-              key={index}
-              onClick={() => setVariantActive(index)}
-              className={`relative flex-1 max-w-[75px] h-10 sm:h-11 rounded-full border-2 cursor-pointer ${
-                variantActive === index
-                  ? "border-primary-6000 dark:border-primary-500"
-                  : "border-transparent"
-              }`}
-            >
-              <div className="absolute inset-0.5 rounded-full overflow-hidden z-0">
-                <img
-                  src={variant.thumbnail}
-                  alt=""
-                  className="absolute w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
+  //   return (
+  //     <div>
+  //       <label htmlFor="">
+  //         <span className="text-sm font-medium">
+  //           Color:
+  //           <span className="ml-1 font-semibold">
+  //             {variants[variantActive].name}
+  //           </span>
+  //         </span>
+  //       </label>
+  //       <div className="flex mt-3">
+  //         {variants.map((variant, index) => (
+  //           <div
+  //             key={index}
+  //             onClick={() => setVariantActive(index)}
+  //             className={`relative flex-1 max-w-[75px] h-10 sm:h-11 rounded-full border-2 cursor-pointer ${
+  //               variantActive === index
+  //                 ? "border-primary-6000 dark:border-primary-500"
+  //                 : "border-transparent"
+  //             }`}
+  //           >
+  //             <div className="absolute inset-0.5 rounded-full overflow-hidden z-0">
+  //               <img
+  //                 src={variant.thumbnail}
+  //                 alt=""
+  //                 className="absolute w-full h-full object-cover"
+  //               />
+  //             </div>
+  //           </div>
+  //         ))}
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
   // const notifyAddTocart = () => {
   //   const selected = buyingOptions.find((o) => o.selected);
@@ -372,60 +404,60 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   //   );
   // };
 
-  const renderSizeList = () => {
-    if (!allOfSizes || !sizes || !sizes.length) {
-      return null;
-    }
-    return (
-      <div>
-        <div className="flex justify-between font-medium text-sm">
-          <label htmlFor="">
-            <span className="">
-              Size:
-              <span className="ml-1 font-semibold">{sizeSelected}</span>
-            </span>
-          </label>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="##"
-            className="text-primary-6000 hover:text-primary-500"
-          >
-            See sizing chart
-          </a>
-        </div>
-        <div className="grid grid-cols-4 gap-2 mt-3">
-          {allOfSizes.map((size, index) => {
-            const isActive = size === sizeSelected;
-            const sizeOutStock = !sizes.includes(size);
-            return (
-              <div
-                key={index}
-                className={`relative h-10 sm:h-11 rounded-2xl border flex items-center justify-center 
-                text-sm sm:text-base uppercase font-semibold select-none overflow-hidden z-0 ${
-                  sizeOutStock
-                    ? "text-opacity-20 dark:text-opacity-20 cursor-not-allowed"
-                    : "cursor-pointer"
-                } ${
-                  isActive
-                    ? "bg-primary-6000 border-primary-6000 text-white hover:bg-primary-6000"
-                    : "border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-200 hover:bg-neutral-50 dark:hover:bg-neutral-700"
-                }`}
-                onClick={() => {
-                  if (sizeOutStock) {
-                    return;
-                  }
-                  setSizeSelected(size);
-                }}
-              >
-                {size}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    );
-  };
+  // const renderSizeList = () => {
+  //   if (!allOfSizes || !sizes || !sizes.length) {
+  //     return null;
+  //   }
+  //   return (
+  //     <div>
+  //       <div className="flex justify-between font-medium text-sm">
+  //         <label htmlFor="">
+  //           <span className="">
+  //             Size:
+  //             <span className="ml-1 font-semibold">{sizeSelected}</span>
+  //           </span>
+  //         </label>
+  //         <a
+  //           target="_blank"
+  //           rel="noopener noreferrer"
+  //           href="##"
+  //           className="text-primary-6000 hover:text-primary-500"
+  //         >
+  //           See sizing chart
+  //         </a>
+  //       </div>
+  //       <div className="grid grid-cols-4 gap-2 mt-3">
+  //         {allOfSizes.map((size, index) => {
+  //           const isActive = size === sizeSelected;
+  //           const sizeOutStock = !sizes.includes(size);
+  //           return (
+  //             <div
+  //               key={index}
+  //               className={`relative h-10 sm:h-11 rounded-2xl border flex items-center justify-center
+  //               text-sm sm:text-base uppercase font-semibold select-none overflow-hidden z-0 ${
+  //                 sizeOutStock
+  //                   ? "text-opacity-20 dark:text-opacity-20 cursor-not-allowed"
+  //                   : "cursor-pointer"
+  //               } ${
+  //                 isActive
+  //                   ? "bg-primary-6000 border-primary-6000 text-white hover:bg-primary-6000"
+  //                   : "border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-200 hover:bg-neutral-50 dark:hover:bg-neutral-700"
+  //               }`}
+  //               onClick={() => {
+  //                 if (sizeOutStock) {
+  //                   return;
+  //                 }
+  //                 setSizeSelected(size);
+  //               }}
+  //             >
+  //               {size}
+  //             </div>
+  //           );
+  //         })}
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
   const renderStatus = () => {
     if (!status) {
@@ -468,17 +500,34 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     return null;
   };
 
-  const renderSectionSidebar = () => {
-    const quantityOptions = [
-      { id: 1, label: "100 g" },
-      { id: 2, label: "200 g" },
-    ];
+  const handleQuantityOptionChange = (selectedQuantity: {
+    id: number;
+    label: string;
+  }) => {
+    const attributeSelected = productDetail?.product_attributes.find(
+      (a) => a.measurement_name === selectedQuantity.label
+    );
+    const price = +attributeSelected.selling_price;
+    setQuantityOption(selectedQuantity);
+    setSellingPrice(price);
+    setBuyingOptions((prevBuyingOptions) =>
+      prevBuyingOptions.map((b) => ({
+        ...b,
+        selected: false,
+        originalPrice: calculateOriginalPrice(price, b.pack),
+        discountedPrice: calculateDiscountedPrice(price, b.pack, b.offer),
+      }))
+    );
+  };
 
-    // const buyingOptions = [
-    //   { id: 1, label: "One Time" },
-    //   { id: 2, label: "6 Months" },
-    //   { id: 3, label: "1 Year" },
-    // ];
+  const renderSectionSidebar = () => {
+    const quantityOptions =
+      productDetail?.product_attributes.map((a, i) => ({
+        id: i + 1,
+        label: a.measurement_name,
+      })) || [];
+
+    const hasBuyingOptionSelected = buyingOptions.filter((b) => b.selected);
 
     return (
       <div className="listingSectionSidebar__wrap lg:shadow-lg">
@@ -490,9 +539,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
               <div className="flex text-2xl font-semibold">
                 {/* Rs.{price.toFixed(2)} */}
                 Rs.
-                {parseInt(
-                  productDetail?.product_attributes[0].selling_price
-                ).toFixed(2)}
+                {sellingPrice.toFixed(2)}
               </div>
 
               <a
@@ -516,8 +563,8 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
             {/* ---------- 3 VARIANTS AND SIZE LIST ----------  */}
             <div className="mt-6 space-y-7 lg:space-y-8">
-              <div className="">{renderVariants()}</div>
-              <div className="">{renderSizeList()}</div>
+              {/* <div className="">{renderVariants()}</div> */}
+              {/* <div className="">{renderSizeList()}</div> */}
             </div>
           </div>
 
@@ -526,7 +573,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             label="Select Quantity"
             items={quantityOptions}
             selectedItem={quantityOption}
-            onItemChange={setQuantityOption}
+            onItemChange={handleQuantityOptionChange}
           />
 
           {/* BUYING OPTION */}
@@ -554,12 +601,14 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
           {/*  ---------- 4  QTY AND ADD TO CART BUTTON */}
           <div className="flex space-x-3.5">
-            <div className="flex items-center justify-center bg-slate-100/70 dark:bg-slate-800/70 px-2 py-3 sm:p-3.5 rounded-full">
-              <NcInputNumber
-                defaultValue={quantitySelected}
-                onChange={setQuantitySelected}
-              />
-            </div>
+            {hasBuyingOptionSelected.length === 0 && (
+              <div className="flex items-center justify-center bg-slate-100/70 dark:bg-slate-800/70 px-2 py-3 sm:p-3.5 rounded-full">
+                <NcInputNumber
+                  defaultValue={quantitySelected}
+                  onChange={setQuantitySelected}
+                />
+              </div>
+            )}
             <ButtonPrimary className="flex-1 flex-shrink-0" onClick={addToCart}>
               <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
               <span className="ml-3">Add to cart</span>
@@ -1172,7 +1221,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
               <img src={faqImg} alt="FAQ" />
             </div>
             <div className="col-span-2">
-              <AccordionInfo />
+              <AccordionInfo data={faqs} />
             </div>
           </div>
         </section>
