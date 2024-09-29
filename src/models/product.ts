@@ -43,4 +43,5 @@ export interface Product {
   isLiked?: boolean;
   qty?: number;
   suitablefor?: string;
+  measurement_name?: string;
 }

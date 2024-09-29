@@ -159,7 +159,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                 static
                 className="sub-menu absolute transform z-10 w-56 top-full left-0"
               >
-                <ul className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-white dark:ring-opacity-10 text-sm relative bg-white dark:bg-neutral-900 py-4 grid space-y-1">
+                <ul className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-white dark:ring-opacity-10 text-sm relative bg-white dark:bg-neutral-900 py-4 grid space-y-1 max-h-60 overflow-y-auto">
                   {menuDropdown.children?.map((i) => {
                     if (i.type) {
                       return renderDropdownMenuNavlinkHasChild(i);
