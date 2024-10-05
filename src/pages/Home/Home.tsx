@@ -91,8 +91,8 @@ const Home = () => {
     });
   };
 
-  const routeToBlogDetailPage = () => {
-    navigate("/blog-single");
+  const routeToBlogDetailPage = (blogId: string) => {
+    navigate(`/blog/${blogId}`);
   };
 
   const renderCategoryCard = (item: {
@@ -610,7 +610,7 @@ const Home = () => {
                 {mainCardData && (
                   <MainCard
                     blog={mainCardData}
-                    onClick={routeToBlogDetailPage}
+                    onClick={() => routeToBlogDetailPage(mainCardData.blog_id)}
                   />
                 )}
                 <div className="grid gap-6 md:gap-8">
@@ -619,7 +619,7 @@ const Home = () => {
                       key={index}
                       // src={item}
                       blog={item}
-                      onClick={routeToBlogDetailPage}
+                      onClick={() => routeToBlogDetailPage(item.blog_id)}
                     />
                   ))}
                 </div>
