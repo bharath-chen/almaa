@@ -5,15 +5,23 @@ import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "../../../shared/Button/ButtonPrimary";
 import ButtonSecondary from "../../../shared/Button/ButtonSecondary";
-import { useShoppingCartContext } from "../../../store/shopping-cart-context";
+import { useSelector } from "react-redux";
+import {
+  removeFromCart,
+  selectCartTotal,
+  selectCartItemCount,
+} from "../../../features/cart/cartSlice";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { RootState } from "../../../state/store";
 
 export default function CartDropdown() {
-  const {
-    cart,
-    totalItemsCount: itemsCount,
-    totalPrice: subTotal,
-    removeItemFromCart,
-  } = useShoppingCartContext();
+  const dispatch = useAppDispatch();
+
+  // Select cart items and totals from Redux store
+  const cart = useAppSelector((state: RootState) => state.cart);
+  const itemsCount = useAppSelector(selectCartItemCount);
+  const subTotal = useSelector(selectCartTotal);
+  const cartItems = cart.items;
 
   const renderProduct = (item: Product, index: number, close: () => void) => {
     const {
@@ -48,11 +56,6 @@ export default function CartDropdown() {
                     {product_name}
                   </Link>
                 </h3>
-                {/* <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                  <span>{`Natural`}</span>
-                  <span className="mx-2 border-l border-slate-200 dark:border-slate-700 h-4"></span>
-                  <span>{"XL"}</span>
-                </p> */}
               </div>
               <Prices price={+selling_price} className="mt-0.5" />
             </div>
@@ -66,7 +69,10 @@ export default function CartDropdown() {
               <button
                 type="button"
                 className="font-medium text-primary-900 dark:text-primary-500 "
-                onClick={() => removeItemFromCart(+product_id)}
+                onClick={() => {
+                  dispatch(removeFromCart(product_id));
+                  close(); // Close the dropdown after removing
+                }}
               >
                 Remove
               </button>
@@ -86,7 +92,7 @@ export default function CartDropdown() {
                 ${open ? "" : "text-opacity-90"}
                  group w-10 h-10 sm:w-12 sm:h-12 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full inline-flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 relative`}
           >
-            {cart.length > 0 && (
+            {itemsCount > 0 && (
               <div className="w-3.5 h-3.5 flex items-center justify-center bg-primary-900 absolute top-1.5 right-1.5 rounded-full text-[10px] leading-none text-white font-medium">
                 <span className="mt-[1px]">{itemsCount}</span>
               </div>
@@ -148,17 +154,17 @@ export default function CartDropdown() {
                   <div className="max-h-[60vh] p-5 overflow-y-auto hiddenScrollbar">
                     <h3 className="text-xl font-semibold">Shopping cart</h3>
                     <div className="divide-y divide-slate-100 dark:divide-slate-700">
-                      {cart.length === 0 && (
+                      {cartItems.length === 0 && (
                         <p className="text-md font-normal text-center my-5">
                           No Items were added in the cart
                         </p>
                       )}
-                      {cart.map((item, index) =>
-                        renderProduct({ ...item.product }, index, close)
+                      {cartItems.map((item, index) =>
+                        renderProduct({ ...(item as Product) }, index, close)
                       )}
                     </div>
                   </div>
-                  {cart.length > 0 && (
+                  {cartItems.length > 0 && (
                     <div className="bg-neutral-50 dark:bg-slate-900 p-5">
                       <p className="flex justify-between font-semibold text-slate-900 dark:text-slate-100">
                         <span>
@@ -177,13 +183,13 @@ export default function CartDropdown() {
                         >
                           View cart
                         </ButtonSecondary>
-                        <ButtonPrimary
+                        {/* <ButtonPrimary
                           href="/checkout"
                           onClick={close}
                           className="flex-1"
                         >
                           Check out
-                        </ButtonPrimary>
+                        </ButtonPrimary> */}
                       </div>
                     </div>
                   )}

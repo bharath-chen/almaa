@@ -1,4 +1,5 @@
 import Navbar from "./Navbar/Navbar";
+import "./AppHeader.css";
 
 const AppHeader = () => {
   return (

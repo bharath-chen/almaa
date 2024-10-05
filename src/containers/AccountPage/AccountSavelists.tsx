@@ -13,7 +13,7 @@ const AccountSavelists = () => {
 
   useEffect(() => {
     dispatch(fetchWishlist());
-  }, [items.wishlist.length]);
+  }, [items?.wishlist && items?.wishlist?.length > 0]);
 
   const renderSection1 = () => {
     return (
@@ -25,10 +25,10 @@ const AccountSavelists = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3 ">
-          {!items.productdetail.length && (
+          {!items?.productdetail?.length && (
             <h3 className="text-center">No wishlist added!</h3>
           )}
-          {items.productdetail.map((p) => {
+          {items?.productdetail?.map((p) => {
             p.isLiked = true;
             return <ProductCard key={p.product_id} data={p} />;
           })}

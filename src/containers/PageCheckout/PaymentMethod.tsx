@@ -1,135 +1,35 @@
-import Label from "../../components/Label/Label";
-import { FC, useState } from "react";
+import { FC } from "react";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import ButtonSecondary from "../../shared/Button/ButtonSecondary";
-import Input from "../../shared/Input/Input";
 import Radio from "../../shared/Radio/Radio";
 
 interface Props {
+  method: "onlinePayment" | "cod";
   isActive: boolean;
+  onChange: (value: "onlinePayment" | "cod") => void;
+  onConfirmOrder: () => void;
   onCloseActive: () => void;
   onOpenActive: () => void;
 }
 
 const PaymentMethod: FC<Props> = ({
+  method,
   isActive,
+  onChange,
+  onConfirmOrder,
   onCloseActive,
   onOpenActive,
 }) => {
-  const [mothodActive, setMethodActive] = useState<
-    "Credit-Card" | "Internet-banking" | "Wallet"
-  >("Credit-Card");
-
-  const renderDebitCredit = () => {
-    const active = mothodActive === "Credit-Card";
-    return (
-      <div className="flex items-start space-x-4 sm:space-x-6">
-        <Radio
-          className="pt-3.5"
-          name="payment-method"
-          id="Credit-Card"
-          defaultChecked={active}
-          onChange={(e) => setMethodActive(e as any)}
-        />
-        <div className="flex-1">
-          <label
-            htmlFor="Credit-Card"
-            className="flex items-center space-x-4 sm:space-x-6"
-          >
-            <div
-              className={`p-2.5 rounded-xl border-2 ${
-                active
-                  ? "border-slate-600 dark:border-slate-300"
-                  : "border-gray-200 dark:border-slate-600"
-              }`}
-            >
-              <svg
-                className="w-6 h-6 sm:w-7 sm:h-7"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <path
-                  d="M2 12.6101H19"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeMiterlimit="10"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M19 10.28V17.43C18.97 20.28 18.19 21 15.22 21H5.78003C2.76003 21 2 20.2501 2 17.2701V10.28C2 7.58005 2.63 6.71005 5 6.57005C5.24 6.56005 5.50003 6.55005 5.78003 6.55005H15.22C18.24 6.55005 19 7.30005 19 10.28Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M22 6.73V13.72C22 16.42 21.37 17.29 19 17.43V10.28C19 7.3 18.24 6.55 15.22 6.55H5.78003C5.50003 6.55 5.24 6.56 5 6.57C5.03 3.72 5.81003 3 8.78003 3H18.22C21.24 3 22 3.75 22 6.73Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M5.25 17.8101H6.96997"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeMiterlimit="10"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M9.10986 17.8101H12.5499"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeMiterlimit="10"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-            <p className="font-medium">Debit / Credit Card</p>
-          </label>
-
-          <div
-            className={`mt-6 mb-4 space-y-3 sm:space-y-5 ${
-              active ? "block" : "hidden"
-            }`}
-          >
-            <div className="max-w-lg">
-              <Label className="text-sm">Card number</Label>
-              <Input className="mt-1.5" type={"text"} />
-            </div>
-            <div className="max-w-lg">
-              <Label className="text-sm">Name on Card</Label>
-              <Input className="mt-1.5" />
-            </div>
-            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
-              <div className="sm:w-2/3">
-                <Label className="text-sm">Expiration date (MM/YY)</Label>
-                <Input className="mt-1.5" placeholder="MM/YY" />
-              </div>
-              <div className="flex-1">
-                <Label className="text-sm">CVC</Label>
-                <Input className="mt-1.5" placeholder="CVC" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   const renderInterNetBanking = () => {
-    const active = mothodActive === "Internet-banking";
     return (
       <div className="flex items-start space-x-4 sm:space-x-6">
         <Radio
           className="pt-3.5"
           name="payment-method"
           id="Internet-banking"
-          defaultChecked={active}
-          onChange={(e) => setMethodActive(e as any)}
+          defaultChecked={method === "onlinePayment"}
+          // checked={method === "onlinePayment"}
+          onChange={() => onChange("onlinePayment")}
         />
         <div className="flex-1">
           <label
@@ -138,7 +38,7 @@ const PaymentMethod: FC<Props> = ({
           >
             <div
               className={`p-2.5 rounded-xl border-2 ${
-                active
+                method === "onlinePayment"
                   ? "border-slate-600 dark:border-slate-300"
                   : "border-gray-200 dark:border-slate-600"
               }`}
@@ -186,9 +86,9 @@ const PaymentMethod: FC<Props> = ({
                 />
               </svg>
             </div>
-            <p className="font-medium">Internet banking</p>
+            <p className="font-medium">Online Payment</p>
           </label>
-          <div className={`mt-6 mb-4 ${active ? "block" : "hidden"}`}>
+          {/* <div className={`mt-6 mb-4 ${active ? "block" : "hidden"}`}>
             <p className="text-sm dark:text-slate-300">
               Your order will be delivered to you after you transfer to:
             </p>
@@ -234,22 +134,21 @@ const PaymentMethod: FC<Props> = ({
                 </span>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </div>
     );
   };
 
   const renderWallet = () => {
-    const active = mothodActive === "Wallet";
     return (
       <div className="flex items-start space-x-4 sm:space-x-6">
         <Radio
           className="pt-3.5"
           name="payment-method"
           id="Wallet"
-          defaultChecked={active}
-          onChange={(e) => setMethodActive(e as any)}
+          defaultChecked={method === "cod"}
+          onChange={() => onChange("cod")}
         />
         <div className="flex-1">
           <label
@@ -258,7 +157,7 @@ const PaymentMethod: FC<Props> = ({
           >
             <div
               className={`p-2.5 rounded-xl border-2 ${
-                active
+                method === "cod"
                   ? "border-slate-600 dark:border-slate-300"
                   : "border-gray-200 dark:border-slate-600"
               }`}
@@ -298,20 +197,16 @@ const PaymentMethod: FC<Props> = ({
                 />
               </svg>
             </div>
-            <p className="font-medium">Google / Apple Wallet</p>
+            <p className="font-medium">COD</p>
           </label>
-          <div className={`mt-6 mb-4 space-y-6 ${active ? "block" : "hidden"}`}>
-            <div className="text-sm prose dark:prose-invert">
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-                dolore quod quas fugit perspiciatis architecto, temporibus quos
-                ducimus libero explicabo?
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     );
+  };
+
+  const handleSubmit = () => {
+    onConfirmOrder();
+    onCloseActive();
   };
 
   const renderPaymentMethod = () => {
@@ -382,10 +277,10 @@ const PaymentMethod: FC<Props> = ({
                 />
               </svg>
             </h3>
-            <div className="font-semibold mt-1 text-sm">
+            {/* <div className="font-semibold mt-1 text-sm">
               <span className="">Google / Apple Wallet</span>
               <span className="ml-3">xxx-xxx-xx55</span>
-            </div>
+            </div> */}
           </div>
           <ButtonSecondary
             sizeClass="py-2 px-4 "
@@ -403,7 +298,7 @@ const PaymentMethod: FC<Props> = ({
           }`}
         >
           {/* ==================== */}
-          <div>{renderDebitCredit()}</div>
+          {/* <div>{renderDebitCredit()}</div> */}
 
           {/* ==================== */}
           <div>{renderInterNetBanking()}</div>
@@ -414,7 +309,7 @@ const PaymentMethod: FC<Props> = ({
           <div className="flex pt-6">
             <ButtonPrimary
               className="w-full max-w-[240px]"
-              onClick={onCloseActive}
+              onClick={handleSubmit}
             >
               Confirm order
             </ButtonPrimary>

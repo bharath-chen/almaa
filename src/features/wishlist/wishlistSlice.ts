@@ -33,7 +33,7 @@ export const addItemToWishlist = createAsyncThunk(
   async (productId: string) => {
     const authInfo = JSON.parse(localStorage.getItem("authState"));
     const payload = {
-      goFor: "addwishlist",
+      gofor: "addwishlist",
       customer_id: authInfo?.customer_id,
       product_id: productId,
     };
@@ -47,7 +47,7 @@ export const removeItemFromWishlist = createAsyncThunk(
   async (productId: string) => {
     const authInfo = JSON.parse(localStorage.getItem("authState"));
     const payload = {
-      goFor: "updatewishlist",
+      gofor: "updatewishlist",
       customer_id: authInfo?.customer_id,
       product_id: productId,
     };

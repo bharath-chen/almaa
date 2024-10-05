@@ -8,20 +8,28 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import almaaLogo from "../../../assets/almaa-logo-small.png";
 import productsSearch from "../../../services/products-search";
 import { Product } from "../../../models/product";
-import { useAppDispatch } from "../../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
+import { selectIsLoggedIn } from "../../../features/auth/authSlice";
+import searchSuggestionService from "../../../services/search-suggestion-service";
+import recentSearchService from "../../../services/recent-search-service";
 import { RootState } from "../../../state/store";
 import { useSelector } from "react-redux";
-import { selectIsLoggedIn } from "../../../features/auth/authSlice";
 
 export interface NavbarProps {}
 
 const Navbar: FC<NavbarProps> = () => {
   const inputRef = React.createRef<HTMLInputElement>();
   const [showSearchForm, setShowSearchForm] = useState(false);
+  const [searchSuggestions, setSearchSuggestions] = useState<
+    { product_name: string }[]
+  >([]);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]); // State for recent searches
+  const [searchTerm, setSearchTerm] = useState(""); // Store the current search term
   const dispatch = useAppDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const navigate = useNavigate();
+  const customer = useAppSelector((state: RootState) => state.auth);
 
   const renderMagnifyingGlassIcon = () => {
     return (
@@ -53,6 +61,8 @@ const Navbar: FC<NavbarProps> = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!inputRef.current?.value) return;
+
     const { request } = productsSearch.getAll<
       Product,
       { ["item_search_text"]: string }
@@ -68,7 +78,7 @@ const Navbar: FC<NavbarProps> = () => {
         navigate("/page-search", {
           state: {
             products: res.data,
-            searchText: inputRef.current.value,
+            searchText: inputRef.current?.value,
           },
         });
       })
@@ -77,27 +87,120 @@ const Navbar: FC<NavbarProps> = () => {
       });
   };
 
+  const getSearchSuggestion = (e: React.ChangeEvent) => {
+    const query = (e.target as HTMLInputElement).value;
+
+    setSearchTerm(query); // Update the search term state
+    if (query) {
+      const { request } = searchSuggestionService.getAll<
+        { product_name: string },
+        { item_search_text: string }
+      >({
+        item_search_text: query,
+      });
+
+      request
+        .then((res) => {
+          setSearchSuggestions(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      setSearchSuggestions([]); // Clear suggestions when input is empty
+    }
+  };
+
+  const getRecentSearch = () => {
+    if (customer.customer_id) {
+      const { request } = recentSearchService.getAll<
+        string,
+        { customer_id: string }
+      >({
+        customer_id: customer.customer_id,
+      });
+
+      request
+        .then((res) => {
+          setRecentSearches(res.data); // Update recent searches state
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setSearchTerm(suggestion);
+    inputRef.current!.value = suggestion;
+    setSearchSuggestions([]);
+    handleSearch(new Event("submit") as unknown as React.FormEvent);
+  };
+
+  const handleClose = () => {
+    setShowSearchForm(false);
+    setSearchTerm("");
+    navigate("/");
+  };
+
   const renderSearchForm = () => {
     return (
-      <form
-        onSubmit={handleSearch}
-        className="flex-1 py-2 text-slate-900 dark:text-slate-100"
-      >
-        <div className="bg-slate-50 dark:bg-slate-800 flex items-center space-x-1.5 px-5 h-full rounded">
-          {renderMagnifyingGlassIcon()}
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder="Type and press enter"
-            className="border-none bg-transparent focus:outline-none focus:ring-0 w-full text-base"
-            autoFocus
-          />
-          <button type="button" onClick={() => setShowSearchForm(false)}>
-            <XMarkIcon className="w-5 h-5" />
-          </button>
-        </div>
-        <input type="submit" hidden value="" />
-      </form>
+      <div className="relative w-full">
+        <form
+          onSubmit={handleSearch}
+          className="flex-1 py-2 text-slate-900 dark:text-slate-100"
+        >
+          <div className="bg-slate-50 dark:bg-slate-800 flex items-center space-x-1.5 px-5 h-full rounded">
+            {renderMagnifyingGlassIcon()}
+            <input
+              ref={inputRef}
+              type="text"
+              value={searchTerm} // Controlled input with searchTerm
+              placeholder="Type and press enter"
+              className="border-none bg-transparent focus:outline-none focus:ring-0 w-full text-base"
+              autoFocus
+              onFocus={getRecentSearch} // Fetch recent searches on input focus
+              onChange={getSearchSuggestion}
+            />
+            <button type="button" onClick={handleClose}>
+              <XMarkIcon className="w-5 h-5" />
+            </button>
+          </div>
+          <input type="submit" hidden value="" />
+        </form>
+
+        {/* Suggestions Dropdown */}
+        {searchSuggestions.length > 0 && (
+          <div className="absolute top-12 left-0 right-0 bg-white shadow-lg rounded-md border border-gray-200 max-h-60 overflow-auto z-50">
+            <ul className="py-2">
+              {searchSuggestions.map((suggestion, index) => (
+                <li
+                  key={index}
+                  onClick={() => handleSuggestionClick(suggestion.product_name)}
+                  className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                >
+                  {suggestion.product_name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Recent Searches Dropdown */}
+        {recentSearches.length > 0 && searchTerm === "" && (
+          <div className="absolute top-12 left-0 right-0 bg-white shadow-lg rounded-md border border-gray-200 max-h-60 overflow-auto z-50">
+            <ul className="py-2">
+              {recentSearches.map((search, index) => (
+                <li
+                  key={index}
+                  onClick={() => handleSuggestionClick(search)}
+                  className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                >
+                  {search}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     );
   };
 
@@ -109,7 +212,6 @@ const Navbar: FC<NavbarProps> = () => {
         </div>
 
         <div className="flex flex-1 items-center justify-center">
-          {/* <Logo className="flex-shrink-0" /> */}
           <h1>
             <NavLink to="/">
               <img src={almaaLogo} alt="Almaa logo" />

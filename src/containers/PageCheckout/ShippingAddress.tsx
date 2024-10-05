@@ -3,69 +3,116 @@ import { FC, useEffect, useState } from "react";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import ButtonSecondary from "../../shared/Button/ButtonSecondary";
 import Input from "../../shared/Input/Input";
-import Radio from "../../shared/Radio/Radio";
 import Select from "../../shared/Select/Select";
 import { Address } from "../../models/address";
-
-interface AddressForm {
-  firstName: string;
-  lastName: string;
-  address: string;
-  apt: string;
-  city: string;
-  country: string;
-  state: string;
-  pincode: string;
-  addressType: string;
-}
+import { useAppSelector } from "../../hooks/hooks";
+import { RootState } from "../../state/store";
+import { countries } from "../../data/countries";
+import { states } from "../../data/states";
+import Radio from "../../shared/Radio/Radio";
 
 interface Props {
+  selectedAddress?: Address | null;
+  onSelectedAddressChange?: (address: Address) => void;
+  index?: number;
   address?: Address;
   isActive: boolean;
+  onAddressChange: (address: Address, index: number) => void;
   onCloseActive: () => void;
   onOpenActive: () => void;
+  onDeleteAddress: (address: Address, index: number) => void;
+  onAddAddress: (address: Address, index: number) => void;
 }
 
 const ShippingAddress: FC<Props> = ({
+  index,
   address,
   isActive,
+  selectedAddress,
+  onSelectedAddressChange,
+  onAddressChange,
   onCloseActive,
   onOpenActive,
+  onAddAddress,
+  onDeleteAddress,
 }) => {
-  const [addressForm, setAddressForm] = useState<AddressForm>({
-    firstName: "",
-    lastName: "",
-    address: "",
-    apt: "",
-    city: "",
-    country: "",
-    state: "",
-    pincode: "",
-    addressType: "Address-type-home",
+  const customer = useAppSelector((state: RootState) => state.auth);
+  const [addressForm, setAddressForm] = useState<Address>({
+    address_id: address.address_id || "",
+    customer_id: customer.customer_id,
+    doorno: address.doorno || "",
+    street: address.street || "",
+    location: address.location || "",
+    pincode: address.pincode || "",
+    city: address.city || "",
+    state: address.state || "TamilNadu",
+    primary_use: "1",
+    recently_use: "0",
   });
 
   useEffect(() => {
-    const customerDetails = JSON.parse(localStorage.getItem("customerDetails"));
-
-    if (!customerDetails || !address) return;
-
     setAddressForm({
-      ...addressForm,
-      address: `${address.doorno}, ${address.street}, ${address.location}`,
-      city: address.city,
-      state: address.state,
-      firstName: customerDetails.first_name,
-      lastName: customerDetails.last_name,
-      pincode: address.pincode,
-      country: "India",
-      addressType: "Address-type-home",
+      address_id: address.address_id || "",
+      customer_id: customer.customer_id,
+      doorno: address.doorno || "",
+      street: address.street || "",
+      location: address.location || "",
+      pincode: address.pincode || "",
+      city: address.city || "",
+      state: address.state || "TamilNadu",
+      primary_use: "1",
+      recently_use: "0",
     });
   }, [address]);
+
+  const handleFormValueChanges = (name: string, value: string) => {
+    setAddressForm((prevAddress) => ({ ...prevAddress, [name]: value }));
+  };
+
+  const saveBtnText = address?.address_id
+    ? "Continue to payment"
+    : "Save and next to Payment";
+
+  const handleSubmit = () => {
+    if (!address.address_id) {
+      const updatedAddress = { ...addressForm };
+      onAddAddress(updatedAddress, index);
+    }
+    setAddressForm({
+      address_id: "",
+      customer_id: customer.customer_id,
+      doorno: "",
+      street: "",
+      location: "",
+      pincode: "",
+      city: "",
+      state: "",
+      primary_use: "1",
+      recently_use: "0",
+    });
+    onCloseActive();
+  };
+
+  const handleDelete = () => {
+    onDeleteAddress(address, index);
+    onCloseActive();
+  };
 
   const renderShippingAddress = () => {
     return (
       <div className="border border-slate-200 dark:border-slate-700 rounded-xl mb-4">
         <div className="p-6 flex flex-col sm:flex-row items-start">
+          {addressForm.address_id && (
+            <Radio
+              name="selectedAddress"
+              id="selected-address"
+              defaultChecked={
+                selectedAddress?.address_id === address.address_id
+              }
+              onChange={() => onSelectedAddressChange(address)}
+              className="mr-5"
+            />
+          )}
           <span className="hidden sm:block">
             <svg
               className="w-6 h-6 text-slate-700 dark:text-slate-400 mt-0.5"
@@ -128,15 +175,17 @@ const ShippingAddress: FC<Props> = ({
                 />
               </svg>
             </h3>
-            <div className="font-semibold mt-1 text-sm">
-              <span className="">
-                {`${addressForm?.address || ""}, ${addressForm?.city || ""}, ${
-                  addressForm?.state || ""
-                }, ${addressForm?.country || ""} - ${
-                  addressForm?.pincode || ""
-                }`}
-              </span>
-            </div>
+            {address.address_id && (
+              <div className="font-semibold mt-1 text-sm">
+                <span className="">
+                  {`${address?.doorno || ""}, ${address.street || ""}, ${
+                    address.location
+                  }, ${address.city || ""}, ${address?.state || ""}, ${
+                    "India" || ""
+                  } - ${address.pincode || ""}`}
+                </span>
+              </div>
+            )}
           </div>
           <ButtonSecondary
             sizeClass="py-2 px-4 "
@@ -146,6 +195,24 @@ const ShippingAddress: FC<Props> = ({
           >
             Change
           </ButtonSecondary>
+          {address?.address_id && (
+            <ButtonPrimary
+              sizeClass="ms-2 py-2 px-4 "
+              fontSize="text-sm font-medium"
+              className="bg-slate-50 dark:bg-slate-800 mt-5 sm:mt-0 sm:ml-auto !rounded-lg"
+              onClick={handleDelete}
+            >
+              Delete
+            </ButtonPrimary>
+          )}
+          {/* <ButtonPrimary
+            sizeClass="py-2 px-4 "
+            fontSize="text-sm font-medium"
+            className="bg-slate-50 dark:bg-slate-800 mt-5 sm:mt-0 sm:ml-auto !rounded-lg"
+            onClick={onOpenActive}
+          >
+            Delete
+          </ButtonPrimary> */}
         </div>
         <div
           className={`border-t border-slate-200 dark:border-slate-700 px-6 py-7 space-y-4 sm:space-y-6 ${
@@ -157,95 +224,109 @@ const ShippingAddress: FC<Props> = ({
             {/* defaultValue="Cole" */}
             <div>
               <Label className="text-sm">First name</Label>
-              <Input
-                className="mt-1.5"
-                value={addressForm?.firstName}
-                onChange={(e) =>
-                  setAddressForm({ ...addressForm, firstName: e.target.value })
-                }
-              />
+              <Input className="mt-1.5" value={customer.first_name} disabled />
             </div>
             <div>
               <Label className="text-sm">Last name</Label>
-              <Input
-                className="mt-1.5"
-                value={addressForm?.lastName}
-                onChange={(e) =>
-                  setAddressForm({ ...addressForm, lastName: e.target.value })
-                }
-              />
-            </div>
-          </div>
-
-          {/* ============ */}
-          <div className="sm:flex space-y-4 sm:space-y-0 sm:space-x-3">
-            <div className="flex-1">
-              <Label className="text-sm">Address</Label>
-              <Input
-                className="mt-1.5"
-                value={addressForm?.address}
-                onChange={(e) =>
-                  setAddressForm({ ...addressForm, address: e.target.value })
-                }
-                type={"text"}
-              />
-              {/* defaultValue={"123, Dream Avenue, USA"} */}
-            </div>
-            <div className="sm:w-1/3">
-              <Label className="text-sm">Apt, Suite *</Label>
-              <Input className="mt-1.5" defaultValue="55U - DD5 " />
+              <Input className="mt-1.5" value={customer.lastName} disabled />
             </div>
           </div>
 
           {/* ============ */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
+            <div className="flex-1">
+              <Label className="text-sm">Door no</Label>
+              <Input
+                className="mt-1.5"
+                value={addressForm.doorno}
+                type={"text"}
+                name="doorno"
+                onChange={(e) =>
+                  handleFormValueChanges("doorno", e.target.value)
+                }
+              />
+            </div>
+            <div className="flex-1">
+              <Label className="text-sm">Street</Label>
+              <Input
+                className="mt-1.5"
+                value={addressForm.street}
+                name="street"
+                onChange={(e) =>
+                  handleFormValueChanges("street", e.target.value)
+                }
+              />
+            </div>
+          </div>
+
+          {/* ============ */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
+            <div>
+              <Label className="text-sm">Location</Label>
+              <Input
+                className="mt-1.5"
+                value={addressForm.location}
+                type={"text"}
+                name="doorno"
+                onChange={(e) =>
+                  handleFormValueChanges("location", e.target.value)
+                }
+              />
+            </div>
+
             <div>
               <Label className="text-sm">City</Label>
               <Input
                 className="mt-1.5"
-                value={addressForm?.city}
-                onChange={(e) =>
-                  setAddressForm({ ...addressForm, city: e.target.value })
-                }
+                value={addressForm.city}
+                name="city"
+                onChange={(e) => handleFormValueChanges("city", e.target.value)}
               />
               {/* defaultValue="Norris" */}
-            </div>
-            <div>
-              <Label className="text-sm">Country</Label>
-              <Select className="mt-1.5" defaultValue={"India"}>
-                <option value="United States">United States</option>
-                <option value="United States">Canada</option>
-                <option value="United States">Mexico</option>
-                <option value="United States">Israel</option>
-                <option value="United States">France</option>
-                <option value="United States">England</option>
-                <option value="United States">Laos</option>
-                <option value="United States">China</option>
-                <option value="India">India</option>
-              </Select>
             </div>
           </div>
 
           {/* ============ */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
             <div>
+              <Label className="text-sm">Country</Label>
+              <Select className="mt-1.5" defaultValue={"India"} disabled>
+                {countries.map((country) => (
+                  <option key={country} value={country}>
+                    {country}
+                  </option>
+                ))}
+              </Select>
+            </div>
+
+            <div>
               <Label className="text-sm">State/Province</Label>
-              <Input
+              {/* <Input className="mt-1.5" value={address.state} /> */}
+              <Select
                 className="mt-1.5"
-                value={addressForm?.state}
-                onChange={(e) =>
-                  setAddressForm({ ...addressForm, state: e.target.value })
-                }
-              />
+                value={addressForm.state || "TamilNadu"}
+                disabled
+              >
+                {states.map((state) => (
+                  <option key={state.label} value={state.value}>
+                    {state.label}
+                  </option>
+                ))}
+              </Select>
               {/* defaultValue="Texas" */}
             </div>
+          </div>
+
+          {/* ============ */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
             <div>
               <Label className="text-sm">Postal code</Label>
               <Input
                 className="mt-1.5"
-                value={addressForm?.pincode}
+                name="pincode"
+                value={addressForm.pincode}
                 onChange={(e) =>
-                  setAddressForm({ ...addressForm, pincode: e.target.value })
+                  handleFormValueChanges("pincode", e.target.value)
                 }
               />
               {/* defaultValue="Texas" */}
@@ -253,7 +334,7 @@ const ShippingAddress: FC<Props> = ({
           </div>
 
           {/* ============ */}
-          <div>
+          {/* <div>
             <Label className="text-sm">Address type</Label>
             <div className="mt-1.5 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
               <Radio
@@ -278,17 +359,15 @@ const ShippingAddress: FC<Props> = ({
                 // }
               />
             </div>
-          </div>
+          </div> */}
 
           {/* ============ */}
           <div className="flex flex-col sm:flex-row pt-6">
             <ButtonPrimary
               className="sm:!px-7 shadow-none"
-              onClick={onCloseActive}
+              onClick={handleSubmit}
             >
-              {address?.address_id
-                ? "Continue to payment"
-                : "Save and next to Payment"}
+              {saveBtnText}
             </ButtonPrimary>
             <ButtonSecondary
               className="mt-3 sm:mt-0 sm:ml-3"

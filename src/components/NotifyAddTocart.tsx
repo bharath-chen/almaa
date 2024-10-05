@@ -1,7 +1,7 @@
 import { Transition } from "@headlessui/react";
 import Prices from "../components/Prices";
 import { PRODUCTS } from "../data/data";
-import React, { FC } from "react";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 
 interface Props {

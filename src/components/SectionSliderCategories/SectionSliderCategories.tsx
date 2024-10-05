@@ -9,6 +9,7 @@ import department4Png from "../../images/collections/department4.png";
 import { Link } from "react-router-dom";
 
 export interface CardCategoryData {
+  id?: string;
   name: string;
   desc: string;
   img: string;
@@ -47,6 +48,7 @@ export interface SectionSliderCategoriesProps {
   subHeading?: string;
   data?: CardCategoryData[];
   rightDescText?: string;
+  onClick?: (item: CardCategoryData) => void;
 }
 
 const SectionSliderCategories: FC<SectionSliderCategoriesProps> = ({
@@ -56,6 +58,7 @@ const SectionSliderCategories: FC<SectionSliderCategoriesProps> = ({
   itemClassName = "",
   rightDescText = "",
   data = CATS,
+  onClick,
 }) => {
   const id = useId();
   const UNIQUE_CLASS = "glidejs" + id.replace(/:/g, "_");
@@ -105,7 +108,11 @@ const SectionSliderCategories: FC<SectionSliderCategoriesProps> = ({
         <div className="glide__track" data-glide-el="track">
           <ul className="glide__slides">
             {data.map((item, index) => (
-              <li key={index} className={`glide__slide ${itemClassName}`}>
+              <li
+                key={index}
+                className={`glide__slide ${itemClassName}`}
+                onClick={() => onClick(item)}
+              >
                 <CardCategory2
                   featuredImage={item.img}
                   name={item.name}

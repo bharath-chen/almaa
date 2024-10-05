@@ -5,12 +5,12 @@ export interface LocationStates {
   "/products"?: {};
   "/products/:natProductId/:natProduct": {};
   "/products/:categoryId/:category": {};
-  "/home2"?: {};
-  "/home3"?: {};
+  // "/home2"?: {};
+  // "/home3"?: {};
   "/product-detail/:id"?: {};
   "/product-detail-2"?: {};
-  "/page-collection"?: {};
-  "/page-collection-2"?: {};
+  // "/page-collection"?: {};
+  // "/page-collection-2"?: {};
   "/page-search"?: {};
   "/home-header-2"?: {};
   "/account"?: {};

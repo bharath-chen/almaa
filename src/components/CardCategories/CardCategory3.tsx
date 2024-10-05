@@ -24,6 +24,9 @@ const CardCategory3: FC<CardCategory3Props> = ({
   btnText = "Show me all",
   href = "/page-collection",
 }) => {
+  const formattedDesc =
+    desc.split(" ").length > 1 ? desc.split(" ").join("<br />") : desc;
+
   return (
     <Link
       to={href}
@@ -51,7 +54,7 @@ const CardCategory3: FC<CardCategory3Props> = ({
               {desc && (
                 <h2
                   className={`text-xl md:text-2xl text-slate-900 font-semibold`}
-                  dangerouslySetInnerHTML={{ __html: desc }}
+                  dangerouslySetInnerHTML={{ __html: formattedDesc }}
                 ></h2>
               )}
             </div>

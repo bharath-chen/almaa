@@ -90,7 +90,7 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
             isActive ? "block" : "hidden"
           }`}
         >
-          <div className="flex justify-between flex-wrap items-baseline">
+          {/* <div className="flex justify-between flex-wrap items-baseline">
             <h3 className="text-lg font-semibold">Contact infomation</h3>
             <span className="block text-sm my-1 md:my-0">
               Do not have an account?{` `}
@@ -98,7 +98,7 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
                 Log in
               </a>
             </span>
-          </div>
+          </div> */}
           <div className="max-w-lg">
             <Label className="text-sm">Your phone number</Label>
             <Input
@@ -115,14 +115,14 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
               defaultValue={user.email}
             />
           </div>
-          <div>
+          {/* <div>
             <Checkbox
               className="!text-sm"
               name="uudai"
               label="Email me news and offers"
               defaultChecked
             />
-          </div>
+          </div> */}
 
           {/* ============ */}
           <div className="flex flex-col sm:flex-row pt-6">
@@ -130,7 +130,7 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
               className="sm:!px-7 shadow-none"
               onClick={() => onCloseActive()}
             >
-              Save and next to Shipping
+              Save
             </ButtonPrimary>
             <ButtonSecondary
               className="mt-3 sm:mt-0 sm:ml-3"

@@ -1,18 +1,8 @@
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import Pagination from "../shared/Pagination/Pagination";
-import ButtonPrimary from "../shared/Button/ButtonPrimary";
-import SectionSliderCollections from "../components/SectionSliderLargeProduct";
-import SectionPromo1 from "../components/SectionPromo1";
-import HeaderFilterSearchPage from "../components/HeaderFilterSearchPage";
-import Input from "../shared/Input/Input";
-import ButtonCircle from "../shared/Button/ButtonCircle";
 import ProductCard from "../components/ProductCard";
-import { PRODUCTS } from "../data/data";
 import { useLocation } from "react-router-dom";
-import { Product } from "../models/product";
 import Heading from "../shared/Heading/Heading";
-import Chip from "../pages/Products/Chip/Chip";
 
 export interface PageSearchProps {
   className?: string;

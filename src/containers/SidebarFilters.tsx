@@ -1,15 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Radio from "../shared/Radio/Radio";
 import MySwitch from "../components/MySwitch";
 import AppFilterTabs, {
   TabFilterItem,
 } from "../components/AppFilterTabs/AppFilterTabs";
-import sidebarFilterService, {
-  ISidebarFilter,
-} from "../services/sidebar-filter-service";
-import { CanceledError } from "axios";
 import { SortOrder } from "../models/sort-order";
+import useCategory from "../hooks/useCategory";
+import useNatProducts from "../hooks/useNatProducts";
 
 const DATA_sortOrderRadios = [
   { name: "Most Popular", id: "most-popular", value: "popular" },
@@ -30,71 +28,18 @@ interface Props {
   selectedSortOrder: SortOrder;
   onSort: (selectedSortOrder: SortOrder) => void;
   selectedFilter: Filters;
-  onFilterChange: (filter: Filters) => void;
+  onFilterChange: (filter: Filters, productForms: TabFilterItem[]) => void;
+  productForms: TabFilterItem[];
 }
-
-//https://almaherbal.top/App/api.php?gofor=filterproducts&herb_type=Single&is_combo=1&recomm_gender=2
 
 const SidebarFilters = ({
   selectedSortOrder,
   onSort,
   selectedFilter,
   onFilterChange,
+  productForms,
 }: Props) => {
-  const [productForms, setProductForms] = useState<TabFilterItem[]>([
-    {
-      name: "Powders",
-      checked: false,
-    },
-    {
-      name: "Capsules",
-      checked: false,
-    },
-    {
-      name: "Juices",
-      checked: false,
-    },
-    {
-      name: "Cosmetics",
-      checked: false,
-    },
-    {
-      name: "Food",
-      checked: false,
-    },
-    {
-      name: "Special Products",
-      checked: false,
-    },
-    {
-      name: "Chooranam",
-      checked: false,
-    },
-    {
-      name: "Books & CDs",
-      checked: false,
-    },
-    {
-      name: "Child Care",
-      checked: false,
-    },
-    {
-      name: "Combo Packs",
-      checked: false,
-    },
-    {
-      name: "Spiritual",
-      checked: false,
-    },
-    {
-      name: "Organic",
-      checked: false,
-    },
-    {
-      name: "Country Drugs",
-      checked: false,
-    },
-  ]);
+  const { natProducts } = useNatProducts();
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [sortOrderStates, setSortOrderStates] = useState<string>("");
 
@@ -103,16 +48,11 @@ const SidebarFilters = ({
     checked: boolean
   ) => {
     const items = [...productForms].map((item) => {
-      if (item.name === productForm.name) item.checked = checked;
+      if (item.id === productForm.id) item.checked = checked;
       return item;
     });
-    setProductForms(items);
-
-    const checkedItems = items
-      .filter((item) => item.checked)
-      .map((c) => c.name);
-
-    onFilterChange({ ...selectedFilter, nat_of_prod: checkedItems });
+    const checkedItems = items.filter((item) => item.checked).map((c) => c.id);
+    onFilterChange({ ...selectedFilter, nat_of_prod: checkedItems }, items);
   };
 
   const renderTabsSortOrder = () => {
@@ -138,11 +78,13 @@ const SidebarFilters = ({
   return (
     <div className="divide-y divide-slate-200 dark:divide-slate-700">
       <div className="py-8 pr-2">
-        <AppFilterTabs
-          heading="Product Form"
-          items={productForms}
-          onItemCheck={handleProductFormChange}
-        />
+        {productForms.length > 0 && (
+          <AppFilterTabs
+            heading="Product Form"
+            items={productForms}
+            onItemCheck={handleProductFormChange}
+          />
+        )}
       </div>
       <div className="py-8 pr-2">
         <MySwitch
@@ -151,7 +93,10 @@ const SidebarFilters = ({
           label="Nutraceutical Product"
           enabled={selectedFilter.is_nutraceutical}
           onChange={(enabled) =>
-            onFilterChange({ ...selectedFilter, is_nutraceutical: enabled })
+            onFilterChange(
+              { ...selectedFilter, is_nutraceutical: enabled },
+              productForms
+            )
           }
         />
         <MySwitch
@@ -160,7 +105,10 @@ const SidebarFilters = ({
           desc=""
           enabled={selectedFilter.pres_req}
           onChange={(enabled) =>
-            onFilterChange({ ...selectedFilter, pres_req: enabled })
+            onFilterChange(
+              { ...selectedFilter, pres_req: enabled },
+              productForms
+            )
           }
         />
 
@@ -170,7 +118,10 @@ const SidebarFilters = ({
           label="Single herb"
           enabled={selectedFilter.herb_type}
           onChange={(enabled) =>
-            onFilterChange({ ...selectedFilter, herb_type: enabled })
+            onFilterChange(
+              { ...selectedFilter, herb_type: enabled },
+              productForms
+            )
           }
         />
       </div>

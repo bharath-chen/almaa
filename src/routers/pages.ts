@@ -52,14 +52,14 @@ export const pages: Page[] = [
     path: "/product-detail/:id",
     component: ProductDetailPage2,
   },
-  { path: "/home2", component: PageHome2 },
-  { path: "/home3", component: PageHome3 },
+  // { path: "/home2", component: PageHome2 },
+  // { path: "/home3", component: PageHome3 },
   //
   { path: "/home-header-2", component: PageHome },
   { path: "/product-detail-2", component: ProductDetailPage },
   //
-  { path: "/page-collection-2", component: PageCollection2 },
-  { path: "/page-collection", component: PageCollection },
+  // { path: "/page-collection-2", component: PageCollection2 },
+  // { path: "/page-collection", component: PageCollection },
   { path: "/page-search", component: PageSearch },
   //
   { path: "/account", component: AccountPage, protectedRoute: true },

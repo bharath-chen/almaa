@@ -1,6 +1,7 @@
 import Checkbox from "../../shared/Checkbox/Checkbox";
 
 export interface TabFilterItem {
+  id: string;
   name: string;
   checked?: boolean;
 }
@@ -21,7 +22,7 @@ const AppFilterTabs = ({ heading, items, onItemCheck }: Props) => {
         }`}
       >
         {items.map((item) => (
-          <div key={item.name}>
+          <div key={item.id}>
             <Checkbox
               name={item.name}
               label={item.name}

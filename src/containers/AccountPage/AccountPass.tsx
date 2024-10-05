@@ -4,7 +4,6 @@ import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import Input from "../../shared/Input/Input";
 import CommonLayout from "./CommonLayout";
 import updatePasswordService from "../../services/update-password-service";
-import { Customer } from "../../models/customer";
 import { useAppSelector } from "../../hooks/hooks";
 import { RootState } from "../../state/store";
 

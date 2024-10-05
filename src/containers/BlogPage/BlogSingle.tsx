@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import Avatar from "../../shared/Avatar/Avatar";
 import Badge from "../../shared/Badge/Badge";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
@@ -15,24 +15,58 @@ import {
   _getTitleRd,
 } from "../../contains/fakeData";
 import Tag from "../../shared/Tag/Tag";
+import { BlogDetail } from "../../models/blogDetail";
+import blogDetailService from "../../services/blog-detail-service";
+import { useAppDispatch } from "../../hooks/hooks";
+import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
+import { CanceledError } from "axios";
+import { getFormattedDate } from "../../utils/date-utils";
 
 const BlogSingle = () => {
+  const params = useParams();
+  const [blogDetail, setBlogDetail] = useState<BlogDetail>();
+  const [error, setError] = useState("");
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const { request, cancel } = blogDetailService.get<
+      BlogDetail,
+      { blog_id: string }
+    >({ blog_id: params.id });
+
+    dispatch(showLoader());
+
+    request
+      .then((res) => {
+        setBlogDetail(res.data);
+        dispatch(hideLoader());
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+
+        dispatch(hideLoader());
+        setError(err.message);
+      });
+
+    return () => cancel();
+  }, []);
+
   const renderHeader = () => {
     return (
       <header className="container rounded-xl">
         <div className="max-w-screen-md mx-auto space-y-5">
-          <Badge href="##" color="purple" name="Traveler" />
+          {/* <Badge href="##" color="purple" name="Traveler" /> */}
           <h1
             className=" text-neutral-900 font-semibold text-3xl md:text-4xl md:!leading-[120%] lg:text-4xl dark:text-neutral-100 max-w-4xl "
             title="Quiet ingenuity: 120,000 lunches and counting"
           >
-            Keep up the spirit of the desire to travel around the world
+            {blogDetail?.title}
           </h1>
-          <span className="block text-base text-neutral-500 md:text-lg dark:text-neutral-400 pb-1">
+          {/* <span className="block text-base text-neutral-500 md:text-lg dark:text-neutral-400 pb-1">
             We’re an online magazine dedicated to covering the best in
             international product design. We started as a little blog back in
             2002 covering student work and over time
-          </span>
+          </span> */}
 
           <div className="w-full border-b border-neutral-100 dark:border-neutral-800"></div>
           <div className="flex flex-col items-center sm:flex-row sm:justify-between">
@@ -44,17 +78,18 @@ const BlogSingle = () => {
               <div className="ml-3">
                 <div className="flex items-center">
                   <a className="block font-semibold" href="##">
-                    Fones Mimi
+                    {blogDetail?.author}
                   </a>
                 </div>
                 <div className="text-xs mt-[6px]">
                   <span className="text-neutral-700 dark:text-neutral-300">
-                    May 20, 2021
+                    {/* May 20, 2021 */}
+                    {getFormattedDate(blogDetail?.published_date)}
                   </span>
-                  <span className="mx-2 font-semibold">·</span>
-                  <span className="text-neutral-700 dark:text-neutral-300">
+                  {/* <span className="mx-2 font-semibold">·</span> */}
+                  {/* <span className="text-neutral-700 dark:text-neutral-300">
                     6 min read
-                  </span>
+                  </span> */}
                 </div>
               </div>
             </div>
@@ -72,8 +107,9 @@ const BlogSingle = () => {
       <div
         id="single-entry-content"
         className="prose prose-sm !max-w-screen-md sm:prose lg:prose-lg mx-auto dark:prose-invert"
+        dangerouslySetInnerHTML={{ __html: blogDetail?.content }}
       >
-        <p>
+        {/* <p>
           Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iure vel
           officiis ipsum placeat itaque neque dolorem modi perspiciatis dolor
           distinctio veritatis sapiente, minima corrupti dolores necessitatibus
@@ -167,7 +203,7 @@ const BlogSingle = () => {
         <p>
           What I've written here is probably long enough, but adding this final
           sentence can't hurt.
-        </p>
+        </p> */}
       </div>
     );
   };
@@ -292,27 +328,26 @@ const BlogSingle = () => {
       <NcImage
         className="w-full rounded-xl"
         containerClassName="container my-10 sm:my-12 "
-        src="https://images.unsplash.com/photo-1605487903301-a1dff2e6bbbe?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1957&q=80"
+        // src="https://images.unsplash.com/photo-1605487903301-a1dff2e6bbbe?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1957&q=80"
+        src={blogDetail?.image_url}
       />
 
       <div className="nc-SingleContent container space-y-10">
         {renderContent()}
-        {renderTags()}
+        {/* {renderTags()} */}
         <div className="max-w-screen-md mx-auto border-b border-t border-neutral-100 dark:border-neutral-700"></div>
-        {renderAuthor()}
-        {renderCommentForm()}
+        {/* {renderAuthor()} */}
+        {/* {renderCommentForm()} */}
         {/* {renderCommentLists()} */}
       </div>
-      <div className="relative bg-neutral-100 dark:bg-neutral-800 py-16 lg:py-28 mt-16 lg:mt-24">
+      {/* <div className="relative bg-neutral-100 dark:bg-neutral-800 py-16 lg:py-28 mt-16 lg:mt-24">
         <div className="container ">
           <h2 className="text-3xl font-semibold">Related posts</h2>
           <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-            {/*  */}
             {[1, 1, 1, 1].filter((_, i) => i < 4).map(renderPostRelated)}
-            {/*  */}
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

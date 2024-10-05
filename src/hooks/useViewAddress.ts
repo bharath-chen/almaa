@@ -37,7 +37,7 @@ const useViewAddressess = () => {
     return () => controller.abort();
   }, []);
 
-  return { addressList, error, setAddressList };
+  return { addressList, error, setAddressList, customer };
 };
 
 export default useViewAddressess;

@@ -1,7 +1,5 @@
 import Label from "../../components/Label/Label";
-import NcInputNumber from "../../components/NcInputNumber";
 import Prices from "../../components/Prices";
-// import { Product } from "../../data/data";
 import { Product } from "../../models/product";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -10,34 +8,47 @@ import Input from "../../shared/Input/Input";
 import ContactInfo from "./ContactInfo";
 import PaymentMethod from "./PaymentMethod";
 import ShippingAddress from "./ShippingAddress";
-import { useShoppingCartContext } from "../../store/shopping-cart-context";
 import AppOfferCodes, {
   OfferCode,
 } from "../../components/AppOfferCodes/AppOfferCodes";
 import useViewAddressess from "../../hooks/useViewAddress";
 import { Address } from "../../models/address";
-import useViewCart, { CartDetailPayload } from "../../hooks/useViewCart";
+import useViewCart from "../../hooks/useViewCart";
 import orderService from "../../services/order-service";
-import { CartDetail } from "../../models/cartDetail";
-import { useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { RootState } from "../../state/store";
+import { setItems, selectCartTotal } from "../../features/cart/cartSlice";
 import addressService from "../../services/address-service";
+import apiClient, { CanceledError } from "../../services/api-client";
+import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
+import coupounService from "../../services/coupoun-service";
+import { Coupon } from "../../models/Coupon";
+import paymentGatewayService from "../../services/payment-gateway-service";
+import { OrdersPayload } from "../AccountPage/AccountOrder";
+import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
+import { environment } from "../../environments/environment.prod";
 
+const razorpayKey = environment.razorPayApiKey;
 const CheckoutPage = () => {
-  const {
-    cart,
-    setCartItems,
-    totalPrice,
-    removeItemFromCart,
-    updateQuantity,
-    orderPlaced,
-  } = useShoppingCartContext();
-
+  const { error, isLoading, Razorpay } = useRazorpay();
   const { cartDetails, setCartDetails } = useViewCart();
-  const { addressList, setAddressList } = useViewAddressess();
+  const { addressList, setAddressList, customer } = useViewAddressess();
+  const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
+    "onlinePayment" | "cod"
+  >("onlinePayment");
   const navigate = useNavigate();
   const location = useLocation();
   const user = useAppSelector((state: RootState) => state.auth);
+  const totalPrice = useAppSelector(selectCartTotal);
+  const dispatch = useAppDispatch();
+  const cart = useAppSelector((state: RootState) => state.cart);
+  const [tabActive, setTabActive] = useState<string>("ContactInfo");
+  const [offerCodes, setOfferCodes] = useState<OfferCode[]>([]);
+  const [offerCode, setOfferCode] = useState<string>("");
+  const [discountCodeError, setDiscountCodeError] = useState<string>("");
+  const [offerCodeApplied, setOfferCodeApplied] = useState(false);
+  const [discount, setDiscount] = useState(0);
 
   useEffect(() => {
     const productDetails: Product[] =
@@ -46,42 +57,40 @@ const CheckoutPage = () => {
             .filter((p) => p)
             .map((p, index) => ({
               ...p,
-              qty: +cartDetails.cartDetail[index].quantity,
+              quantity: +cartDetails.cartDetail[index].quantity,
             }))
         : [];
 
-    setCartItems(productDetails);
+    dispatch(setItems(productDetails));
   }, [cartDetails]);
 
-  const [tabActive, setTabActive] = useState<
-    "ContactInfo" | "ShippingAddress" | "PaymentMethod"
-  >("ShippingAddress");
+  useEffect(() => {
+    const { request, cancel } = coupounService.getAll<
+      Coupon,
+      { gofor: string }
+    >({ gofor: "couponslist" });
 
-  const [offerCodes, setOfferCodes] = useState<OfferCode[]>([
-    {
-      id: 1,
-      code: "CODE10",
-      description: "Get 10% discount on purchase",
-      discount: 10,
-    },
-    {
-      id: 2,
-      code: "CODE20",
-      description: "Get 20% discount on purchase",
-      discount: 20,
-    },
-    {
-      id: 3,
-      code: "CODE30",
-      description: "Get 30% discount on purchase",
-      discount: 30,
-    },
-  ]);
+    dispatch(showLoader());
 
-  const [offerCode, setOfferCode] = useState<string>("");
-  const [discountCodeError, setDiscountCodeError] = useState<string>("");
-  const [offerCodeApplied, setOfferCodeApplied] = useState(false);
-  const [discount, setDiscount] = useState(0);
+    request
+      .then((res) => {
+        dispatch(hideLoader());
+        const offerCodes = res.data.map((r) => ({
+          id: r.coupon_id,
+          code: r.coupon_code,
+          description: r.coupon_name,
+          discount: +r.percentage,
+        }));
+        setOfferCodes(offerCodes);
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+
+        dispatch(hideLoader());
+      });
+
+    return () => cancel();
+  }, []);
 
   const applyOfferCode = (code: string) => {
     const validCode = offerCodes.find((o) => o.code === code);
@@ -93,10 +102,31 @@ const CheckoutPage = () => {
       return;
     }
 
-    setDiscountCodeError(null);
-    setOfferCode(validCode.code);
-    setOfferCodeApplied(true);
-    setDiscount(validCode.discount);
+    coupounService
+      .create<{
+        gofor: string;
+        customer_id: string;
+        coupon_code: string;
+        coprice: string;
+      }>({
+        gofor: "couponcode",
+        customer_id: user.customer_id,
+        coupon_code: validCode.code,
+        coprice: calculateDiscount(totalPrice, +validCode.discount)
+          .discountedPrice,
+      })
+      .then((res) => {
+        if (res.data.status === "Coupon Code Expired") {
+          setDiscountCodeError(res.data.status);
+          setOfferCodeApplied(false);
+          setDiscount(0);
+        } else {
+          setDiscountCodeError(null);
+          setOfferCode(validCode.code);
+          setOfferCodeApplied(true);
+          setDiscount(validCode.discount);
+        }
+      });
   };
 
   const removeOfferCode = () => {
@@ -113,14 +143,6 @@ const CheckoutPage = () => {
   };
 
   const calculateDiscount = (originalPrice: number, discountPercentage = 0) => {
-    // if (
-    //   originalPrice <= 0 ||
-    //   discountPercentage < 0 ||
-    //   discountPercentage > 100
-    // ) {
-    //   return "Invalid input. Please provide valid values.";
-    // }
-
     if (discountPercentage === 0) {
       return {
         discountAmount: 0.0,
@@ -175,86 +197,7 @@ const CheckoutPage = () => {
                   <Link to="/product-detail">{product_name}</Link>
                 </h3>
                 <div className="mt-1.5 sm:mt-2.5 flex text-sm text-slate-600 dark:text-slate-300">
-                  <div className="flex items-center space-x-1.5">
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M7.01 18.0001L3 13.9901C1.66 12.6501 1.66 11.32 3 9.98004L9.68 3.30005L17.03 10.6501C17.4 11.0201 17.4 11.6201 17.03 11.9901L11.01 18.0101C9.69 19.3301 8.35 19.3301 7.01 18.0001Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeMiterlimit="10"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M8.35 1.94995L9.69 3.28992"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeMiterlimit="10"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M2.07 11.92L17.19 11.26"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeMiterlimit="10"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M3 22H16"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeMiterlimit="10"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M18.85 15C18.85 15 17 17.01 17 18.24C17 19.26 17.83 20.09 18.85 20.09C19.87 20.09 20.7 19.26 20.7 18.24C20.7 17.01 18.85 15 18.85 15Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-
-                    <span>{`Black`}</span>
-                  </div>
-                  <span className="mx-4 border-l border-slate-200 dark:border-slate-700 "></span>
-                  <div className="flex items-center space-x-1.5">
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M21 9V3H15"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M3 15V21H9"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M21 3L13.5 10.5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M10.5 13.5L3 21"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-
-                    {/* <span>{item.sizes[0]}</span> */}
-                  </div>
+                  <p>{item.suitablefor}</p>
                 </div>
 
                 <div className="mt-3 flex justify-between w-full sm:hidden relative">
@@ -286,22 +229,41 @@ const CheckoutPage = () => {
 
           <div className="flex mt-auto pt-4 items-end justify-between text-sm">
             <div className="hidden sm:block text-center relative">
-              <NcInputNumber
+              x {+qty || +quantity}
+              {/* <NcInputNumber
                 defaultValue={+qty || +quantity}
-                onChange={(value) => updateQuantity(+product_id, value)}
+                onChange={(value) =>
+                  dispatch(
+                    updateCartQuantity({
+                      product_id: product_id,
+                      quantity: value,
+                    })
+                  )
+                }
                 className="relative z-10"
-              />
+              /> */}
             </div>
 
-            <a
+            {/* <a
               className="cursor-pointer relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
-              onClick={() => removeItemFromCart(+product_id)}
+              onClick={() => dispatch(removeFromCart(product_id))}
             >
               <span>Remove</span>
-            </a>
+            </a> */}
           </div>
         </div>
       </div>
+    );
+  };
+
+  const handleAddressChange = (updatedAddress: Address, index: number) => {
+    console.log(updatedAddress);
+    setAddressList((prevAddress) =>
+      prevAddress.map((address, idx) => {
+        if (index === idx) return { ...address, ...updatedAddress };
+
+        return address;
+      })
     );
   };
 
@@ -316,8 +278,13 @@ const CheckoutPage = () => {
               handleScrollToEl("ContactInfo");
             }}
             onCloseActive={() => {
-              setTabActive("ShippingAddress");
-              handleScrollToEl("ShippingAddress");
+              if (addressList.length > 0) {
+                setTabActive("ShippingAddress0");
+                handleScrollToEl("ShippingAddress0");
+              } else {
+                setTabActive(`PaymentMethod`);
+                handleScrollToEl("PaymentMethod");
+              }
             }}
           />
         </div>
@@ -333,10 +300,15 @@ const CheckoutPage = () => {
             <ShippingAddress
               address={address}
               key={index}
-              isActive={tabActive === "ShippingAddress"}
+              onAddressChange={handleAddressChange}
+              onAddAddress={addAddress}
+              onDeleteAddress={deleteAddress}
+              selectedAddress={selectedAddress}
+              onSelectedAddressChange={setSelectedAddress}
+              isActive={tabActive === "ShippingAddress" + index}
               onOpenActive={() => {
-                setTabActive("ShippingAddress");
-                handleScrollToEl("ShippingAddress");
+                setTabActive(("ShippingAddress" + index) as string);
+                handleScrollToEl("ShippingAddress" + index);
               }}
               onCloseActive={() => {
                 setTabActive("PaymentMethod");
@@ -349,10 +321,13 @@ const CheckoutPage = () => {
         <div id="PaymentMethod" className="scroll-mt-24">
           <PaymentMethod
             isActive={tabActive === "PaymentMethod"}
+            method={selectedPaymentMethod}
+            onChange={setSelectedPaymentMethod}
             onOpenActive={() => {
               setTabActive("PaymentMethod");
               handleScrollToEl("PaymentMethod");
             }}
+            onConfirmOrder={handleConfirmOrder}
             onCloseActive={() => setTabActive("PaymentMethod")}
           />
         </div>
@@ -361,67 +336,318 @@ const CheckoutPage = () => {
   };
 
   const handleAddAddress = () => {
-    if (addressList.length <= 5) {
-      const list = [...addressList];
-      list.push({} as Address);
-      setAddressList(list);
+    const index = addressList.length;
+    if (index !== -1) {
+      if (addressList.length <= 2) {
+        const list = [...addressList];
+        list.push({} as Address);
+        setAddressList(list);
+        setTabActive("ShippingAddress" + index);
+        handleScrollToEl("ShippingAddress" + index);
+      }
     }
   };
 
-  const addAddress = () => {
-    //     "gofor" : "addaddress",
-    // "customer_id": "1",
-    // "doorno": "81",
-    // "street": "Balamurugan Garden",
-    // "location": "Thoraipakkam",
-    // "pincode": "600097",
-    // "city": "Chennai",
-    // "state": "TamilNadu",
-    // "primary_use": "1",
-    // "recently_use": "0"
-    // addressService.create<{
-    //   gofor: string;
-    //   customer_id: string;
-    //   doorno: string;
-    //   street: string;
-    //   location: string;
-    //   pincode: string;
-    //   city: string;
-    //   state: string;
-    //   primary_use: string;
-    //   recently_use: string;
-    // }>();
+  const getAddressList = () => {
+    const controller = new AbortController();
+
+    dispatch(showLoader());
+
+    apiClient
+      .get<Address[]>(
+        `?gofor=addresslist&customer_id=${customer.customer_id}`,
+        { signal: controller.signal }
+      )
+      .then((res) => {
+        dispatch(hideLoader());
+        setAddressList(res.data);
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+
+        dispatch(hideLoader());
+        console.log(err.message);
+      });
   };
 
-  const handleConfirmOrder = () => {
+  const addAddress = (address: Address, index: number) => {
+    const payload = {
+      gofor: "addaddress",
+      customer_id: user.customer_id,
+      doorno: address.doorno,
+      street: address.street,
+      location: address.location,
+      pincode: address.pincode,
+      city: address.city,
+      state: address.state,
+      primary_use: "1",
+      recently_use: "0",
+    };
+
+    addressService
+      .create<{
+        gofor: string;
+        customer_id: string;
+        doorno: string;
+        street: string;
+        location: string;
+        pincode: string;
+        city: string;
+        state: string;
+        primary_use: string;
+        recently_use: string;
+      }>(payload)
+      .then((res) => {
+        console.log(res.data);
+        getAddressList();
+      });
+  };
+
+  const deleteAddress = (address: Address, index: number) => {
+    const prevAddressList = addressList;
+    const updatedAddressList = [...addressList].filter(
+      (a) => a.address_id !== address.address_id
+    );
+    setAddressList(updatedAddressList);
+    const { request } = addressService.get<
+      null,
+      { gofor: string; address_id: string }
+    >({ gofor: "deleteaddress", address_id: address.address_id });
+
+    dispatch(showLoader());
+
+    request
+      .then((res) => {
+        console.log(res.data);
+        dispatch(hideLoader());
+        getAddressList();
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+
+        dispatch(hideLoader());
+        setAddressList(prevAddressList);
+      });
+  };
+
+  // const handleConfirmOrder = () => {
+  //   interface CreateOrderPayload {
+  //     gofor: string;
+  //     customer_id: string;
+  //     address_id: string;
+  //     invoice_amount: string;
+  //     product_details: { product_id: string; quantity: string }[];
+  //   }
+
+  //   if (
+  //     !selectedAddress ||
+  //     !selectedAddress.address_id ||
+  //     !selectedPaymentMethod ||
+  //     cart.items.length === 0
+  //   ) {
+  //     return;
+  //   }
+
+  //   const payload: CreateOrderPayload = {
+  //     gofor: "createorders",
+  //     customer_id: user.customer_id,
+  //     address_id: selectedAddress?.address_id || "1",
+  //     invoice_amount: totalPrice.toString(),
+  //     product_details: cart.items.map((c) => ({
+  //       product_id: c.product_id,
+  //       quantity: c.quantity.toString(),
+  //     })),
+  //   };
+  //   console.log(cart.items);
+
+  //   dispatch(showLoader());
+
+  //   orderService.create<CreateOrderPayload>(payload).then(async (res) => {
+  //     if (selectedPaymentMethod === "onlinePayment") {
+  //       try {
+  //         const ordersRes = await orderService.get<
+  //           OrdersPayload,
+  //           { gofor: string; customer_id: string }
+  //         >({ gofor: "vieworders", customer_id: customer?.customer_id })
+  //           .request;
+  //         const filteredOrders = ordersRes.data.viewOrders.filter(
+  //           (o) => o.order_id
+  //         );
+  //         dispatch(hideLoader());
+  //         if (ordersRes && filteredOrders.length > 0) {
+  //           const { request } = paymentGatewayService.onlinePayment(
+  //             user.customer_id,
+  //             filteredOrders[0].order_id
+  //           );
+
+  //           request.then((res) => {
+  //             dispatch(hideLoader());
+  //             console.log(res);
+  //             const options: RazorpayOrderOptions = {
+  //               key: environment.REACT_APP_API_RAZOR_PAY_API_TEST_KEY,
+  //               amount: totalPrice, // Amount in paise
+  //               currency: "INR",
+  //               name: "Test Company",
+  //               description: "Test Transaction",
+  //               order_id: res.data.order_id,
+  //               handler: (response) => {
+  //                 const { request } =
+  //                   paymentGatewayService.verifyPayment(response);
+  //                 request
+  //                   .then((res) => {
+  //                     if (res.data.response === "Payment Successful") {
+  //                       navigate("/account-my-order");
+  //                     }
+  //                   })
+  //                   .catch((err) => console.log(err));
+  //               },
+  //               prefill: {
+  //                 name: `${user.first_name} ${user.last_name}`,
+  //                 email: user.email,
+  //                 contact: user.mobilenumber,
+  //               },
+  //               theme: {
+  //                 color: "#F37254",
+  //               },
+  //             };
+
+  //             const razorpayInstance = new Razorpay(options);
+  //             razorpayInstance.open();
+  //           });
+  //         }
+  //       } catch (err) {
+  //         if (err instanceof CanceledError) return;
+
+  //         dispatch(hideLoader());
+  //         console.log(err.message);
+  //       }
+  //     } else {
+  //       navigate("/account-my-order");
+  //     }
+  //   });
+  // };
+
+  const handleConfirmOrder = async () => {
     interface CreateOrderPayload {
       gofor: string;
       customer_id: string;
+      address_id: string;
       invoice_amount: string;
       product_details: { product_id: string; quantity: string }[];
+    }
+
+    // Validate input fields
+    if (
+      !selectedAddress ||
+      !selectedAddress.address_id ||
+      !selectedPaymentMethod ||
+      cart.items.length === 0
+    ) {
+      alert("Please complete all required fields.");
+      return;
     }
 
     const payload: CreateOrderPayload = {
       gofor: "createorders",
       customer_id: user.customer_id,
+      address_id: selectedAddress?.address_id || "1",
       invoice_amount: totalPrice.toString(),
-      product_details: cart.map((c) => ({
-        product_id: c.product.product_id,
+      product_details: cart.items.map((c) => ({
+        product_id: c.product_id,
         quantity: c.quantity.toString(),
       })),
     };
+    console.log("Cart Items:", cart.items);
 
-    orderService.create<CreateOrderPayload>(payload).then((res) => {
-      orderPlaced();
-      navigate("/account-my-order");
-    });
+    dispatch(showLoader()); // Show loader at the start
+
+    try {
+      const orderResponse = await orderService.create<CreateOrderPayload>(
+        payload
+      );
+
+      if (selectedPaymentMethod === "onlinePayment") {
+        const ordersRes = await orderService.get<
+          OrdersPayload,
+          { gofor: string; customer_id: string }
+        >({
+          gofor: "vieworders",
+          customer_id: customer?.customer_id,
+        }).request;
+
+        const filteredOrders = ordersRes.data.viewOrders.filter(
+          (o) => o.order_id
+        );
+        dispatch(hideLoader());
+
+        if (filteredOrders.length > 0) {
+          const { request } = paymentGatewayService.onlinePayment(
+            user.customer_id,
+            filteredOrders[0].order_id
+          );
+
+          dispatch(showLoader());
+          const paymentResponse = await request;
+
+          const options: RazorpayOrderOptions = {
+            key: razorpayKey,
+            amount: totalPrice,
+            currency: "INR",
+            name: "Almaa Herbal Nature Pvt Ltd",
+            description: "Test Transaction",
+            order_id: paymentResponse.data.order_id,
+            handler: async (response) => {
+              try {
+                const { request } =
+                  paymentGatewayService.verifyPayment(response);
+                const verificationResponse = await request;
+
+                if (
+                  verificationResponse.data.response === "Payment Successful"
+                ) {
+                  // alert("Payment Successful!");
+                  navigate("/account-my-order");
+                }
+              } catch (verificationError) {
+                console.error(
+                  "Payment verification failed:",
+                  verificationError
+                );
+              }
+            },
+            prefill: {
+              name: `${user.first_name} ${user.last_name}`,
+              email: user.email,
+              contact: user.mobilenumber,
+            },
+            theme: {
+              color: "#F37254",
+            },
+          };
+
+          const razorpayInstance = new Razorpay(options);
+          razorpayInstance.open();
+          dispatch(hideLoader());
+        } else {
+          alert("No valid orders found.");
+        }
+      } else {
+        navigate("/account-my-order");
+      }
+    } catch (error) {
+      dispatch(hideLoader());
+      if (error instanceof CanceledError) return;
+
+      console.error("Error in processing the order:", error);
+      // alert("Failed to process the order. Please try again.");
+    }
   };
 
   return (
     <div className="nc-CheckoutPage">
       {/* <Helmet>
         <title>Checkout || Ciseco Ecommerce Template</title>
-      </Helmet> */}
+        </Helmet> */}
 
       <main className="container py-16 lg:pb-28 lg:pt-20 ">
         <div className="mb-16">
@@ -442,14 +668,16 @@ const CheckoutPage = () => {
         </div>
 
         <div className="flex flex-col lg:flex-row">
-          <div className="flex-1">{renderLeft()}</div>
+          {cart.items.length > 0 && (
+            <div className="flex-1">{renderLeft()}</div>
+          )}
 
           <div className="flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:lg:mx-14 2xl:mx-16 "></div>
 
           <div className="w-full lg:w-[36%] ">
             <h3 className="text-lg font-semibold">Order summary</h3>
             <div className="mt-8 divide-y divide-slate-200/70 dark:divide-slate-700 ">
-              {cart && cart.length <= 0 && (
+              {cart.items && cart.items.length <= 0 && (
                 <>
                   <p className="text-md font-semibold text-center">
                     No Items were added in the cart
@@ -460,18 +688,13 @@ const CheckoutPage = () => {
                 </>
               )}
               {cart &&
-                cart.length > 0 &&
-                cart.map((item, index) => {
-                  return renderProduct(
-                    {
-                      ...item.product,
-                    },
-                    index
-                  );
+                cart.items.length > 0 &&
+                cart.items.map((item, index) => {
+                  return renderProduct(item as Product, index);
                 })}
             </div>
 
-            {cart.length > 0 && (
+            {cart.items.length > 0 && (
               <>
                 <div className="mt-10 pt-6 text-sm text-slate-500 dark:text-slate-400 border-t border-slate-200/70 dark:border-slate-700 ">
                   <div>

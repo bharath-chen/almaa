@@ -9,7 +9,7 @@ export interface Address {
   state: string;
   primary_use: string;
   recently_use: string;
-  status: string;
-  created_date: string;
-  updated: string;
+  status?: string;
+  created_date?: string;
+  updated?: string;
 }

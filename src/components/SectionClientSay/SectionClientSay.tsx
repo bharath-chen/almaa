@@ -14,6 +14,7 @@ import quotationImg2 from "../../images/quotation2.png";
 import { StarIcon } from "@heroicons/react/24/solid";
 
 export interface SectionClientSayProps {
+  clientImages?: string[];
   className?: string;
 }
 
@@ -41,9 +42,14 @@ const DEMO_DATA = [
   },
 ];
 
-const SectionClientSay: FC<SectionClientSayProps> = ({ className = "" }) => {
+const SectionClientSay: FC<SectionClientSayProps> = ({
+  clientImages = [],
+  className = "",
+}) => {
   const id = useId();
   const UNIQUE_CLASS = "glidejs" + id.replace(/:/g, "_");
+
+  const [c1, c2, c3, c4, c5, c6, c7] = clientImages;
 
   useEffect(() => {
     // @ts-ignore
@@ -61,28 +67,36 @@ const SectionClientSay: FC<SectionClientSayProps> = ({ className = "" }) => {
   const renderBg = () => {
     return (
       <div className="hidden md:block">
-        <img className="absolute top-9 -left-20" src={clientSay1} alt="" />
+        <img
+          className="absolute top-9 -left-20"
+          src={c1 || clientSay1}
+          alt=""
+        />
         <img
           className="absolute bottom-[100px] right-full mr-40"
-          src={clientSay2}
+          src={c2 || clientSay2}
           alt=""
         />
         <img
           className="absolute top-full left-[140px]"
-          src={clientSay3}
+          src={c3 || clientSay3}
           alt=""
         />
         <img
           className="absolute -bottom-10 right-[140px]"
-          src={clientSay4}
+          src={c4 || clientSay4}
           alt=""
         />
         <img
           className="absolute left-full ml-32 bottom-[80px]"
-          src={clientSay5}
+          src={c5 || clientSay5}
           alt=""
         />
-        <img className="absolute -right-10 top-10 " src={clientSay6} alt="" />
+        <img
+          className="absolute -right-10 top-10 "
+          src={c6 || clientSay6}
+          alt=""
+        />
       </div>
     );
   };

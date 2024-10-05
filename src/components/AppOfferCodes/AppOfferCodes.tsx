@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export interface OfferCode {
-  id: number;
+  id: string;
   code: string;
   description: string;
   discount: number;
