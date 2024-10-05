@@ -84,4 +84,12 @@ export const wishlistSlice = createSlice({
   },
 });
 
+export const removeItemFromWishlistAndUpdate = createAsyncThunk(
+  "wishlist/removeItemFromWishlistAndUpdate",
+  async (productId: string, { dispatch }) => {
+    await dispatch(removeItemFromWishlist(productId));
+    await dispatch(fetchWishlist());
+  }
+);
+
 export default wishlistSlice.reducer;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export interface LikeButtonProps {
   className?: string;
@@ -11,12 +11,18 @@ const LikeButton: React.FC<LikeButtonProps> = ({
   liked = false,
   onLike,
 }) => {
-  const [isLiked, setIsLiked] = useState(liked);
+  const [isLiked, setIsLiked] = useState(false);
+
+  useEffect(() => {
+    setIsLiked(liked);
+  }, [liked]);
 
   const handleClick = () => {
     setIsLiked((liked) => !liked);
     onLike();
   };
+
+  console.log(isLiked);
 
   return (
     <button

@@ -278,11 +278,11 @@ const Products: FC<Props> = ({ className = "" }) => {
     >
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 sm:space-y-20 lg:space-y-28">
         <div className="space-y-10 lg:space-y-14">
-          {wishlist.success && (
+          {/* {wishlist.success && (
             <Alert type="success" onClose={handleClose}>
               {wishlist.success}
             </Alert>
-          )}
+          )} */}
           <div className="flex overflow-x-scroll whitespace-nowrap">
             {subCategories.map((item) => (
               <Chip
