@@ -20,7 +20,7 @@ const BlogCard: FC<BlogCardProps> = ({
 }) => {
   return (
     <div
-      className={`nc-Card13 relative flex ${className}`}
+      className={`nc-Card13 relative flex cursor-pointer ${className}`}
       data-nc-id="Card13"
       onClick={onClick}
     >
