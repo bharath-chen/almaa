@@ -13,8 +13,9 @@ export interface SocialsListProps {
   socials?: {
     name: string;
     icon: JSX.Element;
-    href: string;
+    href?: string;
   }[];
+  onClick?: ({ name, icon }: { name: string; icon: JSX.Element }) => void;
 }
 
 const socialsDemo: {
@@ -48,20 +49,34 @@ const SocialsList: FC<SocialsListProps> = ({
   className = "",
   itemClass = "block w-8 h-8",
   socials = socialsDemo,
+  onClick,
 }) => {
   return (
     <nav
-      className={`nc-SocialsList flex space-x-3 text-2xl text-neutral-6000 dark:text-neutral-300 ${className}`}
+      className={`nc-SocialsList flex space-x-3 text-2xl text-neutral-6000 dark:text-neutral-300 cursor-pointer ${className}`}
       data-nc-id="SocialsList"
     >
       {socials.map((item, i) => {
+        if (item.href) {
+          return (
+            <a
+              key={i}
+              className={`${itemClass}`}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={item.name}
+            >
+              {item.icon}
+            </a>
+          );
+        }
+
         return (
           <a
             key={i}
             className={`${itemClass}`}
-            href={item.href}
-            target="_blank"
-            rel="noopener noreferrer"
+            onClick={() => onClick(item)}
             title={item.name}
           >
             {item.icon}

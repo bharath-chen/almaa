@@ -1,5 +1,6 @@
 import { useState } from "react";
 import AudioPlayerPopup from "../../components/Audio/AudioPlayerPopup";
+import SharePopup from "../../components/SharePopup/SharePopup"; // Adjust the import path accordingly
 
 interface Props {
   audioUrl?: string;
@@ -9,11 +10,12 @@ interface Props {
 const LikeSaveBtns = ({ audioUrl = "", onClick }: Props) => {
   const [isLiked, setIsLiked] = useState(false);
   const [showAudioPlayer, setShowAudioPlayer] = useState(false);
+  const [showSharePopup, setShowSharePopup] = useState(false);
 
   const handleLike = () => {
     const likeState = !isLiked;
     setIsLiked(likeState);
-    onClick(likeState);
+    onClick && onClick(likeState);
   };
 
   const handleAudioClick = () => {
@@ -22,6 +24,14 @@ const LikeSaveBtns = ({ audioUrl = "", onClick }: Props) => {
 
   const handleCloseAudioPlayer = () => {
     setShowAudioPlayer(false); // Close the audio popup
+  };
+
+  const handleShareClick = () => {
+    setShowSharePopup(true); // Show the share popup
+  };
+
+  const handleCloseSharePopup = () => {
+    setShowSharePopup(false); // Close the share popup
   };
 
   return (
@@ -46,7 +56,10 @@ const LikeSaveBtns = ({ audioUrl = "", onClick }: Props) => {
             <span className="hidden sm:block ml-2">Audio</span>
           </span>
         </div>
-        <span className="py-1.5 px-3 flex rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 cursor-pointer">
+        <span
+          className="py-1.5 px-3 flex rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 cursor-pointer"
+          onClick={handleShareClick} // Attach share functionality
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -92,6 +105,9 @@ const LikeSaveBtns = ({ audioUrl = "", onClick }: Props) => {
           onClose={handleCloseAudioPlayer}
         />
       )}
+
+      {/* Conditionally render share popup */}
+      {showSharePopup && <SharePopup onClose={handleCloseSharePopup} />}
     </div>
   );
 };
