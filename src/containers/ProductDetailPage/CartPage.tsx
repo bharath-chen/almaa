@@ -236,12 +236,12 @@ const CartPage = () => {
                   <span>Subtotal</span>
                   <span className="font-semibold">₹ {subTotal.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between py-4">
+                {/* <div className="flex justify-between py-4">
                   <span>Tax estimate</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-200">
                     ₹24.90
                   </span>
-                </div>
+                </div> */}
                 {shippingEstimate && (
                   <div className="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-3 mt-2">
                     <span>Shipping Estimate</span>
@@ -279,7 +279,8 @@ const CartPage = () => {
                 <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
                   <span>Order total</span>
                   <span>
-                    ₹{(subTotal + (shippingEstimate || 0) + 24.9).toFixed(2)}
+                    {/* + 24.9 */}₹
+                    {(subTotal + (shippingEstimate || 0)).toFixed(2)}
                   </span>
                 </div>
                 <ButtonPrimary onClick={handleCheckout} className="mt-8 w-full">

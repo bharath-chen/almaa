@@ -1,6 +1,6 @@
 import Glide from "@glidejs/glide";
 import Heading from "../../components/Heading/Heading";
-import React, { FC, useId } from "react";
+import { FC, useId } from "react";
 import { useEffect } from "react";
 import clientSayMain from "../../images/clientSayMain.png";
 import clientSay1 from "../../images/clientSay1.png";
@@ -12,10 +12,12 @@ import clientSay6 from "../../images/clientSay6.png";
 import quotationImg from "../../images/quotation.png";
 import quotationImg2 from "../../images/quotation2.png";
 import { StarIcon } from "@heroicons/react/24/solid";
+import { Testimonial } from "models/testimonial";
 
 export interface SectionClientSayProps {
   clientImages?: string[];
   className?: string;
+  clients?: Testimonial[];
 }
 
 const DEMO_DATA = [
@@ -44,6 +46,7 @@ const DEMO_DATA = [
 
 const SectionClientSay: FC<SectionClientSayProps> = ({
   clientImages = [],
+  clients = [],
   className = "",
 }) => {
   const id = useId();
@@ -130,18 +133,18 @@ const SectionClientSay: FC<SectionClientSayProps> = ({
           />
           <div className="glide__track " data-glide-el="track">
             <ul className="glide__slides ">
-              {DEMO_DATA.map((item) => (
+              {clients.map((item) => (
                 <li
-                  key={item.id}
+                  key={item.testimonial_id}
                   className="glide__slide flex flex-col items-center text-center"
                 >
-                  <span className="block text-2xl">{item.content}</span>
+                  <span className="block text-2xl">{item.testimonial}</span>
                   <span className="block mt-8 text-2xl font-semibold">
-                    {item.clientName}
+                    {item.author}
                   </span>
-                  <span className="block mt-1 text-lg text-slate-400 font-semibold">
+                  {/* <span className="block mt-1 text-lg text-slate-400 font-semibold">
                     {item.profession}
-                  </span>
+                  </span> */}
                   <div className="flex items-center space-x-0.5 mt-3.5 text-yellow-500">
                     <StarIcon className="w-6 h-6" />
                     <StarIcon className="w-6 h-6" />
@@ -157,9 +160,9 @@ const SectionClientSay: FC<SectionClientSayProps> = ({
             className="mt-10 glide__bullets flex items-center justify-center"
             data-glide-el="controls[nav]"
           >
-            {DEMO_DATA.map((item, index) => (
+            {clients.map((item, index) => (
               <button
-                key={item.id}
+                key={item.testimonial_id}
                 className="glide__bullet w-2 h-2 rounded-full bg-neutral-300 mx-1 focus:outline-none"
                 data-glide-dir={`=${index}`}
               ></button>

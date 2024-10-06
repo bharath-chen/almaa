@@ -4,6 +4,7 @@ import MyRouter from "./routers/index";
 import Spinner from "./components/Spinner/Spinner";
 import { useAppDispatch } from "./hooks/hooks";
 import { hideLoader, showLoader } from "./features/loader/loaderSlice";
+import ModalPopup from "./shared/ModalPopup/ModalPopup";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -26,6 +27,7 @@ function App() {
       <Spinner size="large" color="primary" />
       <div className="bg-white text-base dark:bg-slate-900 text-slate-900 dark:text-slate-200">
         <MyRouter />
+        <ModalPopup />
       </div>
     </HelmetProvider>
   );

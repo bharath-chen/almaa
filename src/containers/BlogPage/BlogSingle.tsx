@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Avatar from "../../shared/Avatar/Avatar";
 import Badge from "../../shared/Badge/Badge";

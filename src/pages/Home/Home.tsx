@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import heroImg from "../../assets/HOME PAGE/1-slider-image.jpg";
 import ButtonSecondary from "../../shared/Button/ButtonSecondary";
 import aboutSectionImg from "../../assets/HOME PAGE/2-about-section.jpg";
-// import whyAlmaaImg from "../../assets/HOME PAGE/10-why-section.jpg";
 import faqImg from "../../assets/00-Home/FAQ.jpg";
 import certificationsImg from "../../assets/00-Home/Certificate.jpg";
 import Heading from "../../components/Heading/Heading";
@@ -12,7 +11,6 @@ import AccordionInfo from "../../containers/ProductDetailPage/AccordionInfo";
 import NcImage from "../../shared/NcImage/NcImage";
 import SectionClientSay from "../../components/SectionClientSay/SectionClientSay";
 import BackgroundSection from "../../components/BackgroundSection/BackgroundSection";
-import SectionMagazine5 from "../../containers/BlogPage/SectionMagazine5";
 import SectionSliderCategories, {
   CardCategoryData,
 } from "../../components/SectionSliderCategories/SectionSliderCategories";
@@ -24,24 +22,15 @@ import AppSlider from "../../components/AppSlider/AppSlider";
 import {
   ABOUTS,
   ACCORDION_INFO,
-  MEDICAL_CONSULTANTS,
   TABS,
   EXPLORE_SECTION_DATA,
-  LIFE_STYLE_CARDS,
 } from "../../data/home";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import AppCarousel from "../../components/AppCarousel/AppCarousel";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import productService from "../../services/product-service";
-import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
 import { CanceledError } from "axios";
-import topDealsService from "../../services/top-deals-service";
 import { useAppDispatch } from "../../hooks/hooks";
-import { Product } from "../../models/product";
-import homeCategoryService, {
-  NatProduct,
-} from "../../services/home-category-service";
 import homeService, {
   FeatureProductResponse,
 } from "../../services/home-service";
@@ -65,6 +54,7 @@ import { IVideo } from "../../services/video-service";
 import HealthAndLifestyleCard from "./HealthAndLifestyleCard";
 import useVideos from "../../hooks/useVideos";
 import useNatProducts from "../../hooks/useNatProducts";
+import useTestimonials from "../../hooks/useTestimonials";
 
 export const pageAnimation = {
   initial: { opacity: 0, y: 100 },
@@ -73,13 +63,12 @@ export const pageAnimation = {
 
 const Home = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const [error, setError] = useState("");
   const { categories } = useCategory();
   const { doctors } = useDoctors();
   const { mainCardData, blogList } = useBlogs();
   const { videos } = useVideos();
   const { natProducts } = useNatProducts();
+  const { testimonials } = useTestimonials();
 
   const handleSliderCardClick = (item: CardCategoryData) => {
     const selectedDoctor = doctors.find((doc) => doc.doctor_id === item.id);
@@ -541,19 +530,22 @@ const Home = () => {
       </section>
 
       {/* CLIENTS SECTION */}
-      <section className="container mb-40">
-        <SectionClientSay
-          clientImages={[
-            client1Image,
-            client2Image,
-            client3Image,
-            client4Image,
-            client5Image,
-            client6Image,
-            client7Image,
-          ]}
-        />
-      </section>
+      {testimonials.length > 0 && (
+        <section className="container mb-40">
+          <SectionClientSay
+            clientImages={[
+              client1Image,
+              client2Image,
+              client3Image,
+              client4Image,
+              client5Image,
+              client6Image,
+              client7Image,
+            ]}
+            clients={testimonials}
+          />
+        </section>
+      )}
 
       {/* SAVE AND EARN SECTION */}
       {/* <section className="container mb-40">

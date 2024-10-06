@@ -9,12 +9,14 @@ import BackgroundSection from "../../components/BackgroundSection/BackgroundSect
 import SectionHero from "./SectionHero";
 import SectionClientSay from "../../components/SectionClientSay/SectionClientSay";
 import SectionPromo3 from "../../components/SectionPromo3";
+import useTestimonials from "../../hooks/useTestimonials";
 
 export interface PageAboutProps {
   className?: string;
 }
 
 const PageAbout: FC<PageAboutProps> = ({ className = "" }) => {
+  const { testimonials } = useTestimonials();
   return (
     <div
       className={`nc-PageAbout overflow-hidden relative ${className}`}
@@ -38,12 +40,14 @@ const PageAbout: FC<PageAboutProps> = ({ className = "" }) => {
         <SectionFounder />
         <div className="relative py-16">
           <BackgroundSection />
-          <SectionClientSay />
+          {testimonials.length > 0 && (
+            <SectionClientSay clients={testimonials} />
+          )}
         </div>
 
-        <SectionStatistic />
+        {/* <SectionStatistic />
 
-        <SectionPromo3 />
+        <SectionPromo3 /> */}
       </div>
     </div>
   );

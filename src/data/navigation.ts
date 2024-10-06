@@ -8,9 +8,9 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
     name: "Home Page",
     children: [
       { id: ncNanoId(), href: "/", name: "Home  1" },
-      { id: ncNanoId(), href: "/home2", name: "Home  2", isNew: true },
+      // { id: ncNanoId(), href: "/home2", name: "Home  2", isNew: true },
       { id: ncNanoId(), href: "/", name: "Header  1" },
-      { id: ncNanoId(), href: "/home2", name: "Header  2", isNew: true },
+      // { id: ncNanoId(), href: "/home2", name: "Header  2", isNew: true },
       { id: ncNanoId(), href: "/", name: "Coming Soon" },
     ],
   },
@@ -19,8 +19,8 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
     href: "/",
     name: "Shop Pages",
     children: [
-      { id: ncNanoId(), href: "/page-collection", name: "Category Page 1" },
-      { id: ncNanoId(), href: "/page-collection-2", name: "Category Page 2" },
+      // { id: ncNanoId(), href: "/page-collection", name: "Category Page 1" },
+      // { id: ncNanoId(), href: "/page-collection-2", name: "Category Page 2" },
       { id: ncNanoId(), href: "/product-detail/:id", name: "Product Page 1" },
       { id: ncNanoId(), href: "/product-detail-2", name: "Product Page 2" },
       { id: ncNanoId(), href: "/cart", name: "Cart Page" },
@@ -46,7 +46,7 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
     name: "Blog Page",
     children: [
       { id: ncNanoId(), href: "/blog", name: "Blog Page" },
-      { id: ncNanoId(), href: "/blog-single", name: "Blog Single" },
+      { id: ncNanoId(), href: "/blog", name: "Blog Single" },
       { id: ncNanoId(), href: "/about", name: "About Page" },
       { id: ncNanoId(), href: "/support", name: "Support Page" },
       { id: ncNanoId(), href: "/login", name: "Login" },
@@ -61,29 +61,29 @@ const OTHER_PAGE_CHILD: NavItemType[] = [
     href: "/",
     name: "Home Demo 1",
   },
-  {
-    id: ncNanoId(),
-    href: "/home2",
-    name: "Home Demo 2",
-  },
-  {
-    id: ncNanoId(),
-    href: "/page-collection",
-    name: "Category Pages",
-    type: "dropdown",
-    children: [
-      {
-        id: ncNanoId(),
-        href: "/page-collection",
-        name: "Category page 1",
-      },
-      {
-        id: ncNanoId(),
-        href: "/page-collection-2",
-        name: "Category page 2",
-      },
-    ],
-  },
+  // {
+  //   id: ncNanoId(),
+  //   href: "/home2",
+  //   name: "Home Demo 2",
+  // },
+  // {
+  //   id: ncNanoId(),
+  //   href: "/page-collection",
+  //   name: "Category Pages",
+  //   type: "dropdown",
+  //   children: [
+  //     {
+  //       id: ncNanoId(),
+  //       href: "/page-collection",
+  //       name: "Category page 1",
+  //     },
+  //     {
+  //       id: ncNanoId(),
+  //       href: "/page-collection-2",
+  //       name: "Category page 2",
+  //     },
+  //   ],
+  // },
   {
     id: ncNanoId(),
     href: "/product-detail/:id",
@@ -168,7 +168,7 @@ const OTHER_PAGE_CHILD: NavItemType[] = [
       },
       {
         id: ncNanoId(),
-        href: "/blog-single",
+        href: "/blog",
         name: "Blog Single",
       },
     ],
