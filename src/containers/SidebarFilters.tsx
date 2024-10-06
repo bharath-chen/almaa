@@ -1,13 +1,9 @@
-import { useEffect, useState } from "react";
-
 import Radio from "../shared/Radio/Radio";
 import MySwitch from "../components/MySwitch";
 import AppFilterTabs, {
   TabFilterItem,
 } from "../components/AppFilterTabs/AppFilterTabs";
 import { SortOrder } from "../models/sort-order";
-import useCategory from "../hooks/useCategory";
-import useNatProducts from "../hooks/useNatProducts";
 
 const DATA_sortOrderRadios = [
   { name: "Most Popular", id: "most-popular", value: "popular" },
@@ -39,10 +35,6 @@ const SidebarFilters = ({
   onFilterChange,
   productForms,
 }: Props) => {
-  const { natProducts } = useNatProducts();
-  const [selectedFilters, setSelectedFilters] = useState([]);
-  const [sortOrderStates, setSortOrderStates] = useState<string>("");
-
   const handleProductFormChange = (
     productForm: TabFilterItem,
     checked: boolean

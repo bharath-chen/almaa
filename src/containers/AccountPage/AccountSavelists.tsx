@@ -1,5 +1,3 @@
-// import ProductCard from "../../components/ProductCard";
-// import { PRODUCTS } from "../../data/data";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import CommonLayout from "./CommonLayout";
@@ -8,7 +6,7 @@ import {
   removeItemFromWishlistAndUpdate,
 } from "../../features/wishlist/wishlistSlice";
 import ProductCard from "../../components/ProductCard";
-import { Product } from "models/product";
+import { Product } from "../../models/product";
 
 const AccountSavelists = () => {
   const dispatch = useAppDispatch();
@@ -35,19 +33,20 @@ const AccountSavelists = () => {
           {!items?.productdetail?.length && (
             <h3 className="text-center">No wishlist added!</h3>
           )}
-          {items?.productdetail?.map((p: Product, index: number) => {
-            const updatedProduct = { ...p, isLiked: true };
-            return (
-              <ProductCard
-                key={index}
-                data={updatedProduct}
-                isLiked={updatedProduct.isLiked}
-                onLike={() =>
-                  handleRemoveItemFromWishList(updatedProduct.product_id)
-                }
-              />
-            );
-          })}
+          {items.productdetail.length > 0 &&
+            items?.productdetail?.map((p: Product, index: number) => {
+              const updatedProduct = { ...p, isLiked: true };
+              return (
+                <ProductCard
+                  key={updatedProduct.product_id + index}
+                  data={updatedProduct}
+                  isLiked={updatedProduct.isLiked}
+                  onLike={() =>
+                    handleRemoveItemFromWishList(updatedProduct.product_id)
+                  }
+                />
+              );
+            })}
         </div>
         {/* <div className="flex !mt-20 justify-center items-center">
           <ButtonSecondary loading>Show me more</ButtonSecondary>

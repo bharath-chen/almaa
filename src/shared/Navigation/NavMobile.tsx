@@ -1,7 +1,7 @@
 import React from "react";
 import ButtonClose from "../../shared/ButtonClose/ButtonClose";
 import { Disclosure } from "@headlessui/react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { NavItemType } from "./NavigationItem";
 import { NAVIGATION_DEMO_2 } from "../../data/navigation";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
@@ -16,6 +16,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
   data = NAVIGATION_DEMO_2,
   onClickClose,
 }) => {
+  const navigate = useNavigate();
   const _renderMenuChild = (
     item: NavItemType,
     itemClass = " pl-3 text-neutral-900 dark:text-neutral-200 font-medium "
@@ -23,8 +24,43 @@ const NavMobile: React.FC<NavMobileProps> = ({
     return (
       <ul className="nav-mobile-sub-menu pl-6 pb-1 text-base">
         {item.children?.map((i, index) => (
-          <Disclosure key={i.href + index} as="li">
-            {item.href && (
+          <Disclosure key={i.href || index} as="li">
+            {!i.href && (
+              <span
+                className={`flex text-sm rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 mt-0.5 pr-4 text-secondary pl-3 text-neutral-900 dark:text-neutral-200 font-medium`}
+              >
+                <span
+                  className={`py-2.5 ${!i.children ? "block w-full" : ""}`}
+                  onClick={() => {
+                    navigate("/products", {
+                      state: {
+                        item: { ...i },
+                      },
+                    });
+                    onClickClose();
+                  }}
+                >
+                  {i.name}
+                </span>
+                {i.children && (
+                  <span
+                    className="flex items-center flex-grow"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <Disclosure.Button
+                      as="span"
+                      className="flex justify-end flex-grow"
+                    >
+                      <ChevronDownIcon
+                        className="ml-2 h-4 w-4 text-slate-500"
+                        aria-hidden="true"
+                      />
+                    </Disclosure.Button>
+                  </span>
+                )}
+              </span>
+            )}
+            {i.href && (
               <NavLink
                 to={{
                   pathname: i.href || undefined,
@@ -76,7 +112,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
   const _renderItem = (item: NavItemType, index: number) => {
     return (
       <Disclosure
-        key={index}
+        key={item.id || index}
         as="li"
         className="text-slate-900 dark:text-white"
       >

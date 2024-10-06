@@ -55,6 +55,11 @@ import HealthAndLifestyleCard from "./HealthAndLifestyleCard";
 import useVideos from "../../hooks/useVideos";
 import useNatProducts from "../../hooks/useNatProducts";
 import useTestimonials from "../../hooks/useTestimonials";
+import { Product } from "../../models/product";
+import {
+  addItemToWishlist,
+  removeItemFromWishlist,
+} from "../../features/wishlist/wishlistSlice";
 
 export const pageAnimation = {
   initial: { opacity: 0, y: 100 },
@@ -63,6 +68,7 @@ export const pageAnimation = {
 
 const Home = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { categories } = useCategory();
   const { doctors } = useDoctors();
   const { mainCardData, blogList } = useBlogs();
@@ -137,6 +143,21 @@ const Home = () => {
 
     return () => cancel();
   }, []);
+
+  const handleLike = (id: string) => {
+    const updatedProducts = featuredProducts[tabActive.key].map((p) =>
+      p.product_id === id ? { ...p, isLiked: (p.isLiked = !p.isLiked) } : p
+    );
+    const product = updatedProducts.find((p) => p.product_id === id);
+
+    if (product.isLiked) dispatch(addItemToWishlist(product.product_id));
+    else dispatch(removeItemFromWishlist(product.product_id));
+
+    setFeaturedProducts({
+      ...featuredProducts,
+      [tabActive.key]: updatedProducts,
+    });
+  };
 
   return (
     <motion.main
@@ -279,9 +300,19 @@ const Home = () => {
           </Nav>
           <hr className="my-8" />
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-            {featuredProducts[tabActive.key]?.map((product) => {
-              product.selling_price = product?.price || product.selling_price;
-              return <ProductCard key={product.product_id} data={product} />;
+            {featuredProducts[tabActive.key]?.map((product: Product) => {
+              const updatedProduct = {
+                ...product,
+                isLiked: false,
+              };
+              return (
+                <ProductCard
+                  key={updatedProduct.product_id}
+                  data={updatedProduct}
+                  isLiked={updatedProduct.isLiked}
+                  onLike={() => handleLike(updatedProduct.product_id)}
+                />
+              );
             })}
           </div>
         </section>

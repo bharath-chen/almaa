@@ -1,5 +1,5 @@
 import Navbar from "./Navbar/Navbar";
-import "./AppHeader.css";
+// import "./AppHeader.css";
 
 const AppHeader = () => {
   return (

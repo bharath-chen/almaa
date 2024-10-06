@@ -14,19 +14,20 @@ import {
   addItemToWishlist,
   removeItemFromWishlist,
 } from "../../features/wishlist/wishlistSlice";
-import { Alert } from "../../shared/Alert/Alert";
 import { useLocation, useNavigate } from "react-router-dom";
 import subcategoryService from "../../services/subcategory-service";
 import { type SubCategory } from "../../models/subCategory";
 import filterProductsService from "../../services/filter-products-service";
 import useNatProducts from "../../hooks/useNatProducts";
 import { TabFilterItem } from "../../components/AppFilterTabs/AppFilterTabs";
+import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 
 interface Props {
   className?: string;
 }
 
 const Products: FC<Props> = ({ className = "" }) => {
+  const [showFilters, setShowFilters] = useState(false);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const navigate = useNavigate();
@@ -278,12 +279,7 @@ const Products: FC<Props> = ({ className = "" }) => {
     >
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 sm:space-y-20 lg:space-y-28">
         <div className="space-y-10 lg:space-y-14">
-          {/* {wishlist.success && (
-            <Alert type="success" onClose={handleClose}>
-              {wishlist.success}
-            </Alert>
-          )} */}
-          <div className="flex overflow-x-scroll whitespace-nowrap">
+          <div className="flex overflow-x-auto whitespace-nowrap sm:overflow-x-scroll">
             {subCategories.map((item) => (
               <Chip
                 active={
@@ -296,10 +292,11 @@ const Products: FC<Props> = ({ className = "" }) => {
               />
             ))}
           </div>
+
           <main>
             {/* LOOP ITEMS */}
             <div className="flex flex-col lg:flex-row">
-              <div className="lg:w-1/3 xl:w-1/4 pr-4">
+              <div className="lg:w-1/3 xl:w-1/4 pr-4 hidden lg:block">
                 <SidebarFilters
                   selectedSortOrder={selectedSortOrder}
                   onSort={handleSortingProducts}
@@ -308,6 +305,58 @@ const Products: FC<Props> = ({ className = "" }) => {
                   productForms={productForms}
                 />
               </div>
+              {/* Filter modal/toolbar for mobile view */}
+              <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg p-4 z-40">
+                <ButtonPrimary
+                  className="w-full py-3 text-white rounded-lg"
+                  onClick={() => setShowFilters(!showFilters)}
+                >
+                  {showFilters ? "Close Filters" : "Open Filters"}
+                </ButtonPrimary>
+              </div>
+
+              {showFilters && (
+                <div
+                  className="fixed inset-0 bg-gray-800 bg-opacity-75 z-40"
+                  onClick={() => setShowFilters(false)}
+                >
+                  <div
+                    className="fixed inset-0 bg-white w-4/4 p-6 overflow-y-auto z-30"
+                    onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+                  >
+                    {/* Flexbox container for Close Button */}
+                    <div className="flex justify-end mb-4">
+                      <button
+                        className="text-sm p-2"
+                        onClick={() => setShowFilters(false)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="size-6"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+
+                    {/* Sidebar Filters */}
+                    <SidebarFilters
+                      selectedSortOrder={selectedSortOrder}
+                      onSort={handleSortingProducts}
+                      selectedFilter={selectedFilter}
+                      onFilterChange={handleFilterChange}
+                      productForms={productForms}
+                    />
+                  </div>
+                </div>
+              )}
+
               <div className="flex-shrink-0 mb-10 lg:mb-0 lg:mx-4 border-t lg:border-t-0"></div>
               <div className="flex-1 ">
                 <div className="flex-1 grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 ">
