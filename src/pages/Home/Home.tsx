@@ -60,11 +60,16 @@ import {
   addItemToWishlist,
   removeItemFromWishlist,
 } from "../../features/wishlist/wishlistSlice";
+import AudioPlayerPopup from "../../components/Audio/AudioPlayerPopup";
+import VideoPopup from "../../pages/Resources/Videos/VideoPopup";
 
 export const pageAnimation = {
   initial: { opacity: 0, y: 100 },
   animate: { opacity: 1, y: 0 },
 };
+
+const audioUrl = "https://www.almaherbal.top/App/assets/audio/md-general.mp3";
+const videoUrl = "https://youtu.be/n58PFwrmxsg";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -75,6 +80,8 @@ const Home = () => {
   const { videos } = useVideos();
   const { natProducts } = useNatProducts();
   const { testimonials } = useTestimonials();
+  const [showAudioPlayer, setShowAudioPlayer] = useState(false);
+  const [showVideoPopup, setShowVideoPopup] = useState(false);
 
   const handleSliderCardClick = (item: CardCategoryData) => {
     const selectedDoctor = doctors.find((doc) => doc.doctor_id === item.id);
@@ -145,9 +152,11 @@ const Home = () => {
   }, []);
 
   const handleLike = (id: string) => {
-    const updatedProducts = featuredProducts[tabActive.key].map((p) =>
-      p.product_id === id ? { ...p, isLiked: (p.isLiked = !p.isLiked) } : p
-    );
+    const updatedProducts = featuredProducts[tabActive.key]
+      .slice(0, 4)
+      .map((p) =>
+        p.product_id === id ? { ...p, isLiked: (p.isLiked = !p.isLiked) } : p
+      );
     const product = updatedProducts.find((p) => p.product_id === id);
 
     if (product.isLiked) dispatch(addItemToWishlist(product.product_id));
@@ -300,20 +309,22 @@ const Home = () => {
           </Nav>
           <hr className="my-8" />
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-            {featuredProducts[tabActive.key]?.map((product: Product) => {
-              const updatedProduct = {
-                ...product,
-                isLiked: false,
-              };
-              return (
-                <ProductCard
-                  key={updatedProduct.product_id}
-                  data={updatedProduct}
-                  isLiked={updatedProduct.isLiked}
-                  onLike={() => handleLike(updatedProduct.product_id)}
-                />
-              );
-            })}
+            {featuredProducts[tabActive.key]
+              ?.slice(0, 4)
+              ?.map((product: Product) => {
+                const updatedProduct = {
+                  ...product,
+                  isLiked: false,
+                };
+                return (
+                  <ProductCard
+                    key={updatedProduct.product_id}
+                    data={updatedProduct}
+                    isLiked={updatedProduct.isLiked}
+                    onLike={() => handleLike(updatedProduct.product_id)}
+                  />
+                );
+              })}
           </div>
         </section>
       )}
@@ -336,10 +347,16 @@ const Home = () => {
                   <li>100% Scientific</li>
                   <li>Solutions for 4448 diseases</li>
                   <li>Completely written in Tamil literature</li>
+                  <li>It is an ancient Indian healing system</li>
+                  <li>Offers treatments for common and rare diseases</li>
+                  <li>Helps to manage chronic diseases</li>
                 </ul>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 sm:gap-5 md:gap-5 my-5">
-                <Button className="bg-primary-900 text-white sm:text-white sm:bg-primary-900 sm:hover:bg-white sm:hover:text-primary-900 shadow-xl dark:bg-slate-200 dark:text-slate-900 mb-3 md:m-0">
+                <Button
+                  onClick={() => setShowVideoPopup(true)}
+                  className="bg-primary-900 text-white sm:text-white sm:bg-primary-900 sm:hover:bg-white sm:hover:text-primary-900 shadow-xl dark:bg-slate-200 dark:text-slate-900 mb-3 md:m-0"
+                >
                   Watch Video{" "}
                   <span className="ml-3 p-1 bg-green-400 rounded-full">
                     <svg
@@ -357,7 +374,10 @@ const Home = () => {
                     </svg>
                   </span>
                 </Button>
-                <Button className="bg-primary-900 text-white sm:text-white sm:bg-primary-900 sm:hover:bg-white sm:hover:text-primary-900 shadow-xl dark:bg-slate-200 dark:text-slate-900">
+                <Button
+                  onClick={() => setShowAudioPlayer(true)}
+                  className="bg-primary-900 text-white sm:text-white sm:bg-primary-900 sm:hover:bg-white sm:hover:text-primary-900 shadow-xl dark:bg-slate-200 dark:text-slate-900"
+                >
                   Listen Audio
                   <span className="ml-3 p-1 bg-green-400 rounded-full">
                     <svg
@@ -382,23 +402,34 @@ const Home = () => {
                   </span>
                 </Button>
               </div>
-              <div className="pl-3">
-                <h3 className="font-bold text-xl sm:text-3xl mt-2 sm:mt-2 !leading-[1.13] tracking-tight">
-                  Almaa Velayudham
-                </h3>
-                <p className="text-slate-600 font-medium">Founder & Chairman</p>
-                <p className="text-slate-600 font-medium">Almaa Groups</p>
-              </div>
             </div>
 
             <NcImage
-              containerClassName="relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(50%-40px)]"
+              containerClassName="relative block lg:absolute lg:left-0 lg:bottom-10 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(50%-40px)]"
               src={siddhargalAndSiddhaMedicineImage}
               alt="Almaa Groups Founder"
             />
           </div>
         </div>
       </section>
+
+      {/* Audio Player */}
+      {showAudioPlayer && (
+        <AudioPlayerPopup
+          audioUrl={audioUrl}
+          onClose={() => setShowAudioPlayer(false)}
+        />
+      )}
+
+      {/* Video Player */}
+      {showVideoPopup && (
+        <VideoPopup
+          url={videoUrl}
+          isOpen={showVideoPopup}
+          closeModal={() => setShowVideoPopup(false)}
+          backdropClick={() => setShowVideoPopup(false)}
+        />
+      )}
 
       {/* EXPLORE SECTIONS */}
       <section className="container mb-40">
