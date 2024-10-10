@@ -16,7 +16,7 @@ import BagIcon from "../../components/BagIcon";
 import AccordionInfo from "./AccordionInfo";
 import Policy from "./Policy";
 import toast from "react-hot-toast";
-import { StarIcon } from "@heroicons/react/24/solid";
+import { CheckIcon, StarIcon } from "@heroicons/react/24/solid";
 import SectionSliderProductCard from "../../components/SectionSliderProductCard";
 import ModalViewAllReviews, { Review } from "./ModalViewAllReviews";
 import { Link, useParams } from "react-router-dom";
@@ -61,43 +61,6 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 }) => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  // const relatedProducts = productsService
-  //   .getAllProducts()
-  //   .filter((_, i) => i < 8 && i > 2);
-  // const product = productsService.getProduct(+id);
-  // const { name, sizes, variants, status, allOfSizes, price, image } = product;
-  // const LIST_IMAGES_DEMO: string[] = [
-  //   product1Img,
-  //   product2Img,
-  //   product3Img,
-  //   product4Img,
-  // ];
-  // const ingredients = [
-  //   {
-  //     id: 1,
-  //     title: "Vengaram",
-  //     shortDesc: "Strengthens gums",
-  //     src: ingredient1,
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Milagu",
-  //     shortDesc: "Anti Immunity Property",
-  //     src: ingredient2,
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Induppu",
-  //     shortDesc: "Controls Teeth Erosion",
-  //     src: ingredient3,
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "Kaluppu",
-  //     shortDesc: "Cleanse & Anti fungal",
-  //     src: ingredient4,
-  //   },
-  // ];
   const [buyingOptions, setBuyingOptions] = useState([
     {
       id: 1,
@@ -128,10 +91,10 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     id: 1,
     label: "100 g",
   });
-  // const { addItemToCartWithQuantity } = useShoppingCartContext();
   const [variantActive, setVariantActive] = React.useState(0);
   const [sizeSelected, setSizeSelected] = React.useState("");
   const [quantitySelected, setQuantitySelected] = React.useState(1);
+  const [inStock, setInStock] = React.useState(true);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenModalViewAllReviews, setIsOpenModalViewAllReviews] =
@@ -166,6 +129,11 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             discountedPrice: calculateDiscountedPrice(price, b.pack, b.offer),
           }))
         );
+        setQuantityOption({
+          id: 1,
+          label: details.product_attributes[0].product_measuring_unit_id,
+        });
+        setInStock(details.product_attributes[0].attstatus === "1");
       })
       .catch((err) => {
         if (err instanceof CanceledError) return;
@@ -186,8 +154,8 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
     request
       .then((res) => {
-        console.log(res.data);
-        setRelatedProducts(res.data);
+        const updatedProducts = res.data.map((p) => ({ ...p, isLiked: false }));
+        setRelatedProducts(updatedProducts);
       })
       .catch((err) => {
         if (err instanceof CanceledError) return;
@@ -223,6 +191,20 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
     return () => cancel();
   }, []);
+
+  const renderStatusSoldout = () => (
+    <div className="rounded-full flex items-center justify-center px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+      <NoSymbolIcon className="w-3.5 h-3.5" />
+      <span className="ml-1 leading-none">Sold Out</span>
+    </div>
+  );
+
+  const renderStatusInstock = () => (
+    <div className="rounded-full flex items-center justify-center px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+      <CheckIcon className="w-3.5 h-3.5" />
+      <span className="ml-1 leading-none">In Stock</span>
+    </div>
+  );
 
   const handleWishlist = (liked: boolean) => {
     const productId = productDetail.product_details[0].product_id;
@@ -265,15 +247,27 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   const addToCart = () => {
     notifyAddTocart({ size: "" });
     const selected = buyingOptions.find((o) => o.selected);
-    // console.log(selected.discountedPrice);
+
+    let originalPrice = sellingPrice.toString();
+    if (selected && selected.pack >= quantitySelected) {
+      originalPrice = calculateDiscountedPrice(
+        +originalPrice,
+        1,
+        selected.offer
+      )
+        .toFixed(2)
+        .toString();
+    }
+
+    const productPayload = {
+      ...productDetail.product_details[0],
+      selling_price: originalPrice,
+      product_measuring_unit_id: quantityOption.label,
+    };
+
     dispatch(
       addItemToCartWithQuantity({
-        product: {
-          ...productDetail.product_details[0],
-          selling_price:
-            selected.discountedPrice.toFixed(2).toString() ||
-            sellingPrice.toString(),
-        },
+        product: productPayload,
         quantity: selected ? selected.pack : quantitySelected,
       })
     );
@@ -284,13 +278,13 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     //     selling_price:
     //       `${selected.discountedPrice.toFixed(2)}` || `${sellingPrice}`,
     //   },
-    //   selected ? selected.pack : quantitySelected
+    //   quantity: selected ? selected.pack : quantitySelected
     // );
   };
 
   const renderProductCartOnNotify = ({ size }: { size?: string }) => {
     const selected = buyingOptions.find((o) => o.selected);
-    console.log(selected);
+
     return (
       <div className="flex ">
         <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
@@ -316,7 +310,17 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                   <span>{quantityOption.label}</span>
                 </p>
               </div>
-              <Prices price={sellingPrice} className="mt-0.5" />
+              {!selected && <Prices price={sellingPrice} className="mt-0.5" />}
+              {selected && (
+                <Prices
+                  price={calculateDiscountedPrice(
+                    sellingPrice,
+                    selected.pack,
+                    selected.offer
+                  )}
+                  className="mt-0.5"
+                />
+              )}
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
@@ -347,117 +351,6 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     if (updatedBuyingOptions.every((o) => !o.selected)) setQuantitySelected(1);
     setBuyingOptions(updatedBuyingOptions);
   };
-
-  // const renderVariants = () => {
-  //   if (!variants || !variants.length) {
-  //     return null;
-  //   }
-
-  //   return (
-  //     <div>
-  //       <label htmlFor="">
-  //         <span className="text-sm font-medium">
-  //           Color:
-  //           <span className="ml-1 font-semibold">
-  //             {variants[variantActive].name}
-  //           </span>
-  //         </span>
-  //       </label>
-  //       <div className="flex mt-3">
-  //         {variants.map((variant, index) => (
-  //           <div
-  //             key={index}
-  //             onClick={() => setVariantActive(index)}
-  //             className={`relative flex-1 max-w-[75px] h-10 sm:h-11 rounded-full border-2 cursor-pointer ${
-  //               variantActive === index
-  //                 ? "border-primary-6000 dark:border-primary-500"
-  //                 : "border-transparent"
-  //             }`}
-  //           >
-  //             <div className="absolute inset-0.5 rounded-full overflow-hidden z-0">
-  //               <img
-  //                 src={variant.thumbnail}
-  //                 alt=""
-  //                 className="absolute w-full h-full object-cover"
-  //               />
-  //             </div>
-  //           </div>
-  //         ))}
-  //       </div>
-  //     </div>
-  //   );
-  // };
-
-  // const notifyAddTocart = () => {
-  //   const selected = buyingOptions.find((o) => o.selected);
-  //   toast.custom(
-  //     (t) => (
-  //       <NotifyAddTocart
-  //         productImage={productDetail.product_details[0].product_image1}
-  //         qualitySelected={selected ? selected.pack : quantitySelected}
-  //         show={t.visible}
-  //         sizeSelected={quantityOption.label}
-  //         variantActive={variantActive}
-  //       />
-  //     ),
-  //     { position: "top-right", id: "nc-product-notify", duration: 3000 }
-  //   );
-  // };
-
-  // const renderSizeList = () => {
-  //   if (!allOfSizes || !sizes || !sizes.length) {
-  //     return null;
-  //   }
-  //   return (
-  //     <div>
-  //       <div className="flex justify-between font-medium text-sm">
-  //         <label htmlFor="">
-  //           <span className="">
-  //             Size:
-  //             <span className="ml-1 font-semibold">{sizeSelected}</span>
-  //           </span>
-  //         </label>
-  //         <a
-  //           target="_blank"
-  //           rel="noopener noreferrer"
-  //           href="##"
-  //           className="text-primary-6000 hover:text-primary-500"
-  //         >
-  //           See sizing chart
-  //         </a>
-  //       </div>
-  //       <div className="grid grid-cols-4 gap-2 mt-3">
-  //         {allOfSizes.map((size, index) => {
-  //           const isActive = size === sizeSelected;
-  //           const sizeOutStock = !sizes.includes(size);
-  //           return (
-  //             <div
-  //               key={index}
-  //               className={`relative h-10 sm:h-11 rounded-2xl border flex items-center justify-center
-  //               text-sm sm:text-base uppercase font-semibold select-none overflow-hidden z-0 ${
-  //                 sizeOutStock
-  //                   ? "text-opacity-20 dark:text-opacity-20 cursor-not-allowed"
-  //                   : "cursor-pointer"
-  //               } ${
-  //                 isActive
-  //                   ? "bg-primary-6000 border-primary-6000 text-white hover:bg-primary-6000"
-  //                   : "border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-200 hover:bg-neutral-50 dark:hover:bg-neutral-700"
-  //               }`}
-  //               onClick={() => {
-  //                 if (sizeOutStock) {
-  //                   return;
-  //                 }
-  //                 setSizeSelected(size);
-  //               }}
-  //             >
-  //               {size}
-  //             </div>
-  //           );
-  //         })}
-  //       </div>
-  //     </div>
-  //   );
-  // };
 
   const renderStatus = () => {
     if (!status) {
@@ -505,10 +398,11 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     label: string;
   }) => {
     const attributeSelected = productDetail?.product_attributes.find(
-      (a) => a.measurement_name === selectedQuantity.label
+      (a) => a.product_measuring_unit_id === selectedQuantity.label
     );
     const price = +attributeSelected.selling_price;
     setQuantityOption(selectedQuantity);
+    setInStock(attributeSelected.attstatus === "1");
     setSellingPrice(price);
     setBuyingOptions((prevBuyingOptions) =>
       prevBuyingOptions.map((b) => ({
@@ -524,7 +418,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     const quantityOptions =
       productDetail?.product_attributes.map((a, i) => ({
         id: i + 1,
-        label: a.measurement_name,
+        label: a.product_measuring_unit_id,
       })) || [];
 
     const hasBuyingOptionSelected = buyingOptions.filter((b) => b.selected);
@@ -541,7 +435,6 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 Rs.
                 {sellingPrice.toFixed(2)}
               </div>
-
               <a
                 href="#reviews"
                 className="flex items-center text-sm font-medium"
@@ -563,6 +456,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
             {/* ---------- 3 VARIANTS AND SIZE LIST ----------  */}
             <div className="mt-6 space-y-7 lg:space-y-8">
+              {inStock ? renderStatusInstock() : renderStatusSoldout()}
               {/* <div className="">{renderVariants()}</div> */}
               {/* <div className="">{renderSizeList()}</div> */}
             </div>
@@ -609,7 +503,13 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 />
               </div>
             )}
-            <ButtonPrimary className="flex-1 flex-shrink-0" onClick={addToCart}>
+            <ButtonPrimary
+              disabled={!inStock}
+              className={`flex-1 flex-shrink-0 ${
+                !inStock ? "not-allowed" : ""
+              }`}
+              onClick={addToCart}
+            >
               <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
               <span className="ml-3">Add to cart</span>
             </ButtonPrimary>
@@ -804,7 +704,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 data={{
                   comment: feedback.comments,
                   date: new Date().toString(),
-                  name: "Stiven Hokinhs",
+                  name: feedback.name,
                   starPoint: +feedback.user_ratings,
                 }}
               />
@@ -949,6 +849,19 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     },
   };
 
+  const handleLike = (id: string) => {
+    console.log(relatedProducts);
+    const updatedProducts = relatedProducts.map((p) =>
+      p.product_id === id ? { ...p, isLiked: (p.isLiked = !p.isLiked) } : p
+    );
+    const product = updatedProducts.find((p) => p.product_id === id);
+
+    if (product.isLiked) dispatch(addItemToWishlist(product.product_id));
+    else dispatch(removeItemFromWishlist(product.product_id));
+
+    setRelatedProducts(updatedProducts);
+  };
+
   return (
     <div
       className={`ListingDetailPage nc-ProductDetailPage2 ${className}`}
@@ -964,7 +877,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 onClick={() => handleOpenModal(0)}
               >
                 <NcImage
-                  containerClassName="aspect-w-6 aspect-h-8 lg:aspect-h-8 md:absolute md:inset-0"
+                  containerClassName="aspect-w-6 aspect-h-6 lg:aspect-h-6 md:absolute md:inset-0"
                   className="object-cover w-full h-full rounded-md sm:rounded-xl"
                   // src={LIST_IMAGES_DEMO[0]}
                   src={productDetail?.product_details[0]?.product_image1}
@@ -977,7 +890,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 onClick={() => handleOpenModal(1)}
               >
                 <NcImage
-                  containerClassName="aspect-w-6 aspect-h-8 lg:aspect-h-8"
+                  containerClassName="aspect-w-6 aspect-h-6 lg:aspect-h-6"
                   className="object-cover w-full h-full rounded-md sm:rounded-xl"
                   // src={LIST_IMAGES_DEMO[1]}
                   src={productDetail?.product_details[0]?.product_image2}
@@ -990,7 +903,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 onClick={() => handleOpenModal(2)}
               >
                 <NcImage
-                  containerClassName="aspect-w-6 aspect-h-8 lg:aspect-h-8"
+                  containerClassName="aspect-w-6 aspect-h-6 lg:aspect-h-6"
                   className="object-cover w-full h-full rounded-md sm:rounded-xl"
                   // src={LIST_IMAGES_DEMO[2]}
                   src={productDetail?.product_details[0]?.product_image3}
@@ -1235,6 +1148,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             headingFontClassName="text-3xl font-semibold"
             headingClassName="mb-10 text-neutral-900 dark:text-neutral-50"
             data={relatedProducts}
+            onLike={handleLike}
           />
         )}
       </section>

@@ -68,6 +68,7 @@ interface ProductExpertTalk {
 interface ProductFeedback {
   prodcustfb_id: string;
   customer_id: string;
+  name: string;
   product_id: string;
   user_ratings: string;
   comments: string;
