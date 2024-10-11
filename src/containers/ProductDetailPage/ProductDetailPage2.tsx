@@ -35,7 +35,7 @@ import productDetailService, {
   ProductDetail,
 } from "../../services/product-detail-service";
 import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
-import { useAppDispatch } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { Product } from "../../models/product";
 import { Transition } from "@headlessui/react";
 import Prices from "../../components/Prices";
@@ -45,7 +45,11 @@ import {
 } from "../../features/wishlist/wishlistSlice";
 import VideoPopup from "../../pages/Resources/Videos/VideoPopup";
 import faqService, { IFaq } from "../../services/faq-service";
-import { addItemToCartWithQuantity } from "../../features/cart/cartSlice";
+import {
+  addItemToCartWithQuantity,
+  clearCart,
+} from "../../features/cart/cartSlice";
+import { RootState } from "state/store";
 
 const calculateOriginalPrice = (price: number, pack: number) => price * pack;
 
@@ -106,6 +110,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   const [showVideoPopup, setShowVideoPopup] = useState<boolean>(false);
   const [faqs, setFaqs] = useState<{ name: string; content: string }[]>([]);
   const [sellingPrice, setSellingPrice] = useState(0);
+  const cart = useAppSelector((state: RootState) => state.cart);
 
   useEffect(() => {
     const { request, cancel } = productDetailService.get<
@@ -139,7 +144,6 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
         if (err instanceof CanceledError) return;
 
         dispatch(hideLoader());
-        console.log(err.message);
       });
 
     return () => cancel();
@@ -264,6 +268,10 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       selling_price: originalPrice,
       product_measuring_unit_id: quantityOption.label,
     };
+
+    if (selected && cart.items.length > 0) {
+      dispatch(clearCart());
+    }
 
     dispatch(
       addItemToCartWithQuantity({
