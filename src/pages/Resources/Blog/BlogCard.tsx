@@ -27,7 +27,6 @@ const BlogCard: FC<BlogCardProps> = ({
       <div className="flex flex-col h-full py-2 px-4 order-last">
         <h2 className={`nc-card-title block font-semibold text-base`}>
           <div className="line-clamp-2 capitalize" title={"title"}>
-            {/* {_getTitleRd()} */}
             {blog.title}
           </div>
         </h2>
@@ -35,13 +34,9 @@ const BlogCard: FC<BlogCardProps> = ({
           <span
             className="line-clamp-2"
             dangerouslySetInnerHTML={{ __html: blog.content }}
-          >
-            {/* Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-            dolorem voluptatibus numquam ut pariatur officiis? */}
-          </span>
+          ></span>
         </span>
         <span className="mt-4 block sm:hidden text-sm text-slate-500 ">
-          {/* May 20, 2021 · 2 min read */}
           {blog.published_date} . 2 min read
         </span>
         <div className="mt-auto hidden sm:block">

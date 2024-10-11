@@ -7,7 +7,7 @@ export interface LocationStates {
   "/products/:categoryId/:category": {};
   // "/home2"?: {};
   // "/home3"?: {};
-  "/product-detail/:id"?: {};
+  "/product-detail/:name"?: {};
   "/product-detail-2"?: {};
   // "/page-collection"?: {};
   // "/page-collection-2"?: {};
@@ -42,6 +42,7 @@ export interface LocationStates {
   "/support"?: {};
   "/login"?: {};
   "/signup"?: {};
+  "/forgot-password"?: {};
   "/faq"?: {};
   "/forgot-pass"?: {};
   "/page404"?: {};

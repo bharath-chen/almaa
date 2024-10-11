@@ -7,7 +7,6 @@ import blogListService from "../services/blog-list-service";
 import { getFormattedDate } from "../utils/date-utils";
 
 const useBlogs = () => {
-  const [mainCardData, setMainCardData] = useState<Blog>();
   const [blogList, setBlogList] = useState<Blog[]>([]);
   const [error, setError] = useState("");
   const dispatch = useAppDispatch();
@@ -26,8 +25,7 @@ const useBlogs = () => {
             published_date: getFormattedDate(d.published_date),
           })) || [];
 
-        setMainCardData(data[0]);
-        setBlogList(data.slice(1));
+        setBlogList(data);
       })
       .catch((err) => {
         dispatch(hideLoader());
@@ -38,7 +36,7 @@ const useBlogs = () => {
     return () => cancel();
   }, []);
 
-  return { mainCardData, blogList, error };
+  return { blogList, error };
 };
 
 export default useBlogs;

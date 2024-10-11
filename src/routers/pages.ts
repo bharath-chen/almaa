@@ -42,6 +42,7 @@ import CaseStudyDetail from "../pages/Resources/CaseStudies/CaseStudyDetail";
 import Faq from "../pages/Faq";
 import TermsAndConditions from "../pages/TermsAndConditions/TermsAndConditions";
 import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
+import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -49,7 +50,7 @@ export const pages: Page[] = [
   { path: "/products/:natProductId/:natProduct", component: Products },
   { path: "/products/:categoryId/:category", component: Products },
   {
-    path: "/product-detail/:id",
+    path: "/product-detail/:name",
     component: ProductDetailPage2,
   },
   // { path: "/home2", component: PageHome2 },
@@ -103,6 +104,7 @@ export const pages: Page[] = [
   { path: "/about", component: PageAbout },
   { path: "/signup", component: PageSignUp },
   { path: "/login", component: Login },
+  { path: "/forgot-password", component: ForgotPassword },
   { path: "/faq", component: Faq },
   { path: "/subscription", component: PageSubcription },
   { path: "/terms-of-service", component: TermsAndConditions },

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NcImage from "../shared/NcImage/NcImage";
 import LikeButton from "./LikeButton";
 import Prices from "./Prices";
@@ -14,7 +14,7 @@ import ModalQuickView from "./ModalQuickView";
 import ProductQuickView from "./ProductQuickView";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { RootState } from "../state/store";
-import { addToCart, CartProduct } from "../features/cart/cartSlice"; // Import the action from cartSlice
+import AppText from "./AppText/AppText";
 
 export interface ProductCardProps {
   className?: string;
@@ -36,6 +36,7 @@ const ProductCard: FC<ProductCardProps> = ({
     product_image1,
     suitablefor,
   } = data;
+  const navigate = useNavigate();
   const [variantActive, setVariantActive] = React.useState(0);
   const [showModalQuickView, setShowModalQuickView] = React.useState(false);
   const dispatch = useAppDispatch(); // Get the dispatch function from Redux
@@ -106,15 +107,23 @@ const ProductCard: FC<ProductCardProps> = ({
     );
   };
 
-  const handleAddToCart = () => {
-    const cartProduct: CartProduct = {
-      ...data, // Add the image property
-      quantity: 1, // Default quantity
-      // qty: qty,
-    };
+  // const handleAddToCart = () => {
+  //   const cartProduct: CartProduct = {
+  //     ...data, // Add the image property
+  //     quantity: 1, // Default quantity
+  //     // qty: qty,
+  //   };
 
-    dispatch(addToCart(cartProduct));
-    notifyAddTocart({ size: "XL" });
+  //   dispatch(addToCart(cartProduct));
+  //   notifyAddTocart({ size: "XL" });
+  // };
+
+  const routeToProductDetail = () => {
+    navigate(`/product-detail/${product_name}`, {
+      state: {
+        id: product_id,
+      },
+    });
   };
 
   const renderGroupButtons = () => {
@@ -124,7 +133,7 @@ const ProductCard: FC<ProductCardProps> = ({
           className="shadow-lg"
           fontSize="text-xs"
           sizeClass="py-2 px-4"
-          onClick={handleAddToCart}
+          // onClick={handleAddToCart}
         >
           <BagIcon className="w-3.5 h-3.5 mb-0.5" />
           <span className="ml-1">Add to cart</span>
@@ -149,13 +158,13 @@ const ProductCard: FC<ProductCardProps> = ({
         data-nc-id="ProductCard"
       >
         <div className="relative flex-shrink-0 bg-slate-50 dark:bg-slate-300 rounded-3xl overflow-hidden z-1 group">
-          <Link to={"/product-detail/" + product_id} className="block">
+          <span onClick={routeToProductDetail} className="block">
             <NcImage
               containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0"
               src={product_image1}
               className="object-cover w-full h-full drop-shadow-xl"
             />
-          </Link>
+          </span>
 
           {customer.customer_id && (
             <LikeButton
@@ -167,29 +176,46 @@ const ProductCard: FC<ProductCardProps> = ({
         </div>
 
         <div className="space-y-4 px-2.5 pt-5 pb-2.5">
-          <Link to={"/product-detail/" + product_id} className="block">
+          <span onClick={routeToProductDetail} className="block">
             <div>
               <h2
                 className={`nc-ProductCard__title text-base font-semibold transition-colors`}
               >
                 {product_name}
               </h2>
-              <p className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}>
+              <AppText
+                className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}
+              >
                 {suitablefor}
-              </p>
+              </AppText>
             </div>
-          </Link>
+          </span>
 
           <div className="flex justify-between items-end ">
             <Prices price={+selling_price} />
 
             <div className="flex items-center mb-0.5">
               <button
-                onClick={handleAddToCart}
+                onClick={routeToProductDetail}
                 type="button"
                 className="border-2 border-white rounded-lg py-1 px-2 md:py-1 md:px-2.5 text-sm font-medium"
               >
                 <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                  />
+                </svg>
+
+                {/* <svg
                   className="w-6 h-6 text-primary-900 dark:text-white"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
@@ -205,7 +231,7 @@ const ProductCard: FC<ProductCardProps> = ({
                     strokeWidth="2"
                     d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4"
                   />
-                </svg>
+                </svg> */}
               </button>
             </div>
           </div>

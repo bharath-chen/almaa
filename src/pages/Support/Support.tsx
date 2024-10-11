@@ -5,10 +5,13 @@ import Label from "../../components/Label/Label";
 import Input from "../../shared/Input/Input";
 import Textarea from "../../shared/Textarea/Textarea";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
-import BackgroundSection from "../../components/BackgroundSection/BackgroundSection";
-import SectionPromo1 from "../../components/SectionPromo1";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import GMap from "../../components/GMap/GMap";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import InputErrorMessage from "../../components/InputErrorMessage/InputErrorMessage";
+import MandatoryIcon from "../../components/MandatoryIcon/MandatoryIcon";
 
 export interface PageContactProps {
   className?: string;
@@ -16,20 +19,56 @@ export interface PageContactProps {
 
 const info = [
   {
-    title: "🗺 ADDRESS",
+    title: "ADDRESS",
     desc: `#10, Pillaiyar Koil Street, Saidapet, Chennai - 600015, Tamil Nadu, India`,
   },
   {
-    title: "💌 EMAIL",
+    title: "EMAIL",
     desc: "almaahospital@gmail.com",
   },
   {
-    title: "☎ PHONE",
+    title: "PHONE",
     desc: "+91-7401403002",
   },
 ];
+const mobilePattern = /^\d{10}$/;
+const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+const schema = z.object({
+  name: z.string().nonempty("Name is required"),
+  mobileNumber: z
+    .string()
+    .nonempty("Mobile Number is required")
+    .refine(
+      (value) => mobilePattern.test(value),
+      "Please enter a valid 10-digit mobile number"
+    ),
+  emailAddress: z
+    .string()
+    .nonempty("Email is required")
+    .refine(
+      (value) => emailPattern.test(value),
+      "Please enter a valid email address"
+    ),
+  location: z.string().nonempty("Location is required"),
+  subject: z.string().nonempty("Subject is required"),
+  message: z.string().nonempty("Message is required"),
+});
+
+type SupportFormInputs = z.infer<typeof schema>;
 
 const Support: FC<PageContactProps> = ({ className = "" }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<SupportFormInputs>({ resolver: zodResolver(schema) });
+
+  const submit = (data: SupportFormInputs) => {
+    console.log(data);
+  };
+
   return (
     <div
       className={`nc-PageContact overflow-hidden ${className}`}
@@ -40,7 +79,7 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
       </Helmet>
       <div className="">
         <h2 className="my-20 flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
-          Contact
+          Support
         </h2>
         <div className="container max-w-7xl mx-auto">
           <div className="flex-shrink-0 grid grid-cols-1 md:grid-cols-2 gap-12 ">
@@ -62,35 +101,117 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
               ))}
               <div>
                 <h3 className="uppercase font-semibold text-sm dark:text-neutral-200 tracking-wider">
-                  🌏 SOCIALS
+                  SOCIALS
                 </h3>
                 <SocialsList className="mt-2" />
               </div>
             </div>
             <div>
-              <form className="grid grid-cols-1 gap-6" action="#" method="post">
+              <form
+                onSubmit={handleSubmit(submit)}
+                className="grid grid-cols-1 gap-6"
+              >
                 <label className="block">
-                  <Label>Full name</Label>
+                  <Label>
+                    Name <MandatoryIcon />
+                  </Label>
 
                   <Input
-                    placeholder="Example Doe"
+                    placeholder="Enter Name"
                     type="text"
                     className="mt-1"
+                    {...register("name")}
                   />
+
+                  {errors.name && (
+                    <InputErrorMessage>{errors.name.message}</InputErrorMessage>
+                  )}
                 </label>
                 <label className="block">
-                  <Label>Email address</Label>
+                  <Label>
+                    Mobile Number <MandatoryIcon />
+                  </Label>
+
+                  <Input
+                    placeholder="Enter Mobile Number"
+                    type="text"
+                    className="mt-1"
+                    {...register("mobileNumber")}
+                  />
+                  {errors.mobileNumber && (
+                    <InputErrorMessage>
+                      {errors.mobileNumber.message}
+                    </InputErrorMessage>
+                  )}
+                </label>
+                <label className="block">
+                  <Label>
+                    Email address <MandatoryIcon />
+                  </Label>
 
                   <Input
                     type="email"
-                    placeholder="example@example.com"
+                    placeholder="Enter Mail Address"
                     className="mt-1"
+                    {...register("emailAddress")}
                   />
+
+                  {errors.emailAddress && (
+                    <InputErrorMessage>
+                      {errors.emailAddress.message}
+                    </InputErrorMessage>
+                  )}
                 </label>
                 <label className="block">
-                  <Label>Message</Label>
+                  <Label>
+                    Location <MandatoryIcon />
+                  </Label>
 
-                  <Textarea className="mt-1" rows={6} />
+                  <Input
+                    type="text"
+                    placeholder="Enter Location"
+                    className="mt-1"
+                    {...register("location")}
+                  />
+                  {errors.location && (
+                    <InputErrorMessage>
+                      {errors.location.message}
+                    </InputErrorMessage>
+                  )}
+                </label>
+                <label className="block">
+                  <Label>
+                    Subject <MandatoryIcon />{" "}
+                  </Label>
+
+                  <Input
+                    type="text"
+                    placeholder="Enter Subject"
+                    className="mt-1"
+                    {...register("subject")}
+                  />
+                  {errors.subject && (
+                    <InputErrorMessage>
+                      {errors.subject.message}
+                    </InputErrorMessage>
+                  )}
+                </label>
+                <label className="block">
+                  <Label>
+                    Message <MandatoryIcon />{" "}
+                  </Label>
+
+                  <Textarea
+                    placeholder="Enter Message"
+                    className="mt-1"
+                    rows={6}
+                    {...register("message")}
+                  />
+                  {errors.message && (
+                    <InputErrorMessage>
+                      {errors.message.message}
+                    </InputErrorMessage>
+                  )}
                 </label>
                 <div>
                   <ButtonPrimary type="submit">Send Message</ButtonPrimary>

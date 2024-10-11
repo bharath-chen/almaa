@@ -17,6 +17,25 @@ import {
   selectCartTotal,
 } from "../../features/cart/cartSlice"; // Adjust the import path as needed
 import { states } from "../../data/states";
+import MandatoryIcon from "../../components/MandatoryIcon/MandatoryIcon";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import InputErrorMessage from "../../components/InputErrorMessage/InputErrorMessage";
+import { showModal } from "../../features/modal/modalSlice";
+
+const stateValues = [...states.map((state) => state.value)] as [
+  string,
+  ...string[]
+];
+
+const schema = z.object({
+  state: z.enum(stateValues, {
+    errorMap: () => ({ message: "Please select a valid state" }), // Custom error message
+  }),
+});
+
+type StateFormData = z.infer<typeof schema>;
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -24,9 +43,14 @@ const CartPage = () => {
   const user = useAppSelector((state: RootState) => state.auth);
   const cartItems = useAppSelector((state: RootState) => state.cart.items);
   const subTotal = useAppSelector(selectCartTotal);
-  console.log(subTotal);
-  const [form, setForm] = useState({ state: "" });
   const [shippingEstimate, setShippingEstimate] = useState<number>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<StateFormData>({ resolver: zodResolver(schema) });
+  const state = watch("state");
 
   const renderStatusSoldout = () => (
     <div className="rounded-full flex items-center justify-center px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
@@ -53,9 +77,8 @@ const CartPage = () => {
       product_name,
       quantity,
       suitablefor,
+      product_measuring_unit_id,
     } = item;
-
-    console.log(item);
 
     return (
       <div
@@ -69,7 +92,7 @@ const CartPage = () => {
             className="h-full w-full object-contain object-center"
           />
           <Link
-            to={"/product-detail/" + product_id}
+            to={"/product-detail/" + product_name}
             className="absolute inset-0"
           ></Link>
         </div>
@@ -79,8 +102,8 @@ const CartPage = () => {
             <div className="flex justify-between ">
               <div className="flex-[1.5] ">
                 <h3 className="text-base font-semibold">
-                  <Link to={"/product-detail/" + product_id}>
-                    {product_name}
+                  <Link to={"/product-detail/" + product_name}>
+                    {product_name} ({product_measuring_unit_id})
                   </Link>
                 </h3>
                 <div className="mt-1.5 sm:mt-2.5 flex text-sm text-slate-600 dark:text-slate-300">
@@ -102,6 +125,7 @@ const CartPage = () => {
                         dispatch(
                           updateCartQuantity({
                             product_id,
+                            product_measuring_unit_id,
                             quantity: newQuantity,
                           })
                         );
@@ -127,7 +151,11 @@ const CartPage = () => {
                   defaultValue={quantity}
                   onChange={(value) =>
                     dispatch(
-                      updateCartQuantity({ product_id, quantity: value })
+                      updateCartQuantity({
+                        product_id,
+                        product_measuring_unit_id,
+                        quantity: value,
+                      })
                     )
                   }
                   className="relative z-10"
@@ -144,7 +172,11 @@ const CartPage = () => {
             {renderStatusInstock()}
 
             <a
-              onClick={() => dispatch(removeFromCart(product_id))}
+              onClick={() =>
+                dispatch(
+                  removeFromCart({ product_id, product_measuring_unit_id })
+                )
+              }
               className="cursor-pointer relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm"
             >
               <span>Remove</span>
@@ -155,7 +187,20 @@ const CartPage = () => {
     );
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = (data: StateFormData) => {
+    const totalPrice = subTotal + (shippingEstimate || 0);
+
+    if (totalPrice < 330) {
+      dispatch(
+        showModal({
+          type: "info",
+          message:
+            "Oops! Your order needs to be at least ₹330 to proceed. Please add a few more items to your cart!",
+        })
+      );
+      return;
+    }
+
     interface AddCartRequest {
       gofor: string;
       cust_id: string;
@@ -168,6 +213,7 @@ const CartPage = () => {
       product_details: cartItems.map((p) => ({
         product_id: p.product_id,
         quantity: p.quantity.toString(),
+        amount: p.selling_price,
       })),
     };
 
@@ -182,9 +228,9 @@ const CartPage = () => {
   };
 
   useEffect(() => {
-    if (form.state) {
+    if (state) {
       const { request } = deliveryChargeService.get<string, { state: string }>({
-        state: form.state,
+        state: state,
       });
 
       request.then((res) => {
@@ -195,7 +241,7 @@ const CartPage = () => {
     } else {
       setShippingEstimate(null);
     }
-  }, [form]);
+  }, [state]);
 
   return (
     <div className="nc-CartPage">
@@ -250,23 +296,25 @@ const CartPage = () => {
                     </span>
                   </div>
                 )}
-                <div className="max-w-lg py-3">
-                  <Label className="text-sm">State</Label>
-                  <Select
-                    className="mt-1.5 mb-3"
-                    value={form.state}
-                    onChange={(e) =>
-                      setForm({ ...form, state: e.target.value })
-                    }
-                  >
-                    <option value=""></option>
-                    {states.map((state) => (
-                      <option key={state.label} value={state.value}>
-                        {state.label}
-                      </option>
-                    ))}
-                  </Select>
-                  {/* <Label className="text-sm">Pincode</Label>
+                <form onSubmit={handleSubmit(handleCheckout)}>
+                  <div className="max-w-lg py-3">
+                    <Label className="text-sm">
+                      State <MandatoryIcon />
+                    </Label>
+                    <Select className="mt-1.5 mb-3" {...register("state")}>
+                      <option value="">Select State</option>
+                      {states.map((state) => (
+                        <option key={state.label} value={state.value}>
+                          {state.label}
+                        </option>
+                      ))}
+                    </Select>
+                    {errors.state && (
+                      <InputErrorMessage>
+                        {errors.state.message}
+                      </InputErrorMessage>
+                    )}
+                    {/* <Label className="text-sm">Pincode</Label>
                       <Input
                         className="mt-1.5"
                         type={"text"}
@@ -275,17 +323,18 @@ const CartPage = () => {
                           setForm({ ...form, pinCode: e.target.value })
                         }
                       /> */}
-                </div>
-                <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
-                  <span>Order total</span>
-                  <span>
-                    {/* + 24.9 */}₹
-                    {(subTotal + (shippingEstimate || 0)).toFixed(2)}
-                  </span>
-                </div>
-                <ButtonPrimary onClick={handleCheckout} className="mt-8 w-full">
-                  Proceed to Checkout
-                </ButtonPrimary>
+                  </div>
+                  <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
+                    <span>Order total</span>
+                    <span>
+                      {/* + 24.9 */}₹
+                      {(subTotal + (shippingEstimate || 0)).toFixed(2)}
+                    </span>
+                  </div>
+                  <ButtonPrimary type="submit" className="mt-8 w-full">
+                    Proceed to Checkout
+                  </ButtonPrimary>
+                </form>
               </div>
             </div>
           </>

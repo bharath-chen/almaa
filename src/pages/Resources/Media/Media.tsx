@@ -43,9 +43,9 @@ const Media = () => {
 
   return (
     <>
-      <div className="container mx-auto my-20">
+      {/* <div className="container mx-auto my-20">
         <SectionFounder />
-      </div>
+      </div> */}
 
       <div className="container mx-auto my-10">
         <h2 className="text-3xl font-semibold text-center mb-8">Gallery</h2>

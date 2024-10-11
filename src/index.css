@@ -56,3 +56,54 @@ ul.dashed li:before {
 .slick-next {
   right: 10px;
 }
+
+/* Scrollbar width */
+/* WebKit Scrollbar (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px; /* Set the width for vertical scrollbars */
+  height: 8px; /* Set the height for horizontal scrollbars */
+  background-color: transparent; /* Transparent background */
+}
+
+/* Scrollbar track */
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Light background */
+}
+
+/* Scrollbar handle */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(136, 136, 136, 0.8); /* Semi-transparent gray */
+  border-radius: 10px; /* Round corners */
+  border: 3px solid transparent; /* Create space between thumb and track */
+  background-clip: padding-box; /* Ensure the border is transparent */
+}
+
+/* Scrollbar handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(85, 85, 85, 0.9); /* Darker on hover */
+  transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+/* Scrollbar corner for resizable scrollbars */
+::-webkit-scrollbar-corner {
+  background-color: transparent; /* Transparent corner */
+}
+
+/* For Firefox */
+html {
+  scrollbar-width: thin; /* Thin scrollbar for Firefox */
+  scrollbar-color: rgba(136, 136, 136, 0.8) transparent; /* Match colors */
+}
+
+/* For Firefox on hover */
+html:hover {
+  scrollbar-color: rgba(85, 85, 85, 0.9) transparent; /* Darker on hover */
+}
+
+.not-allowed {
+  cursor: not-allowed;
+}
+
+svg.star-svg {
+  display: inline;
+}

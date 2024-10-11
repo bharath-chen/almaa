@@ -76,7 +76,7 @@ const Home = () => {
   const dispatch = useAppDispatch();
   const { categories } = useCategory();
   const { doctors } = useDoctors();
-  const { mainCardData, blogList } = useBlogs();
+  const { blogList } = useBlogs();
   const { videos } = useVideos();
   const { natProducts } = useNatProducts();
   const { testimonials } = useTestimonials();
@@ -653,40 +653,42 @@ const Home = () => {
       </section> */}
 
       {/* ARTICLES DOCTORS TEAM SECTION */}
-      <section className="container mb-40">
-        <div className="relative py-24 lg:py-32">
-          <BackgroundSection />
-          <div>
-            <Heading rightDescText="Doctors Team">Articles from our</Heading>
-            {/* <SectionMagazine5 /> */}
-            <div className="nc-SectionMagazine5">
-              <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
-                {mainCardData && (
-                  <MainCard
-                    blog={mainCardData}
-                    onClick={() => routeToBlogDetailPage(mainCardData.blog_id)}
-                  />
-                )}
-                <div className="grid gap-6 md:gap-8">
-                  {blogList.map((item, index) => (
-                    <BlogCard
-                      key={index}
-                      // src={item}
-                      blog={item}
-                      onClick={() => routeToBlogDetailPage(item.blog_id)}
+      {blogList && blogList.length > 0 && (
+        <section className="container mb-40">
+          <div className="relative py-24 lg:py-32">
+            <BackgroundSection />
+            <div>
+              <Heading rightDescText="Doctors Team">Articles from our</Heading>
+              {/* <SectionMagazine5 /> */}
+              <div className="nc-SectionMagazine5">
+                <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
+                  {blogList[0] && (
+                    <MainCard
+                      blog={blogList[0]}
+                      onClick={() => routeToBlogDetailPage(blogList[0].blog_id)}
                     />
-                  ))}
+                  )}
+                  <div className="grid gap-6 md:gap-8">
+                    {blogList.map((item, index) => (
+                      <BlogCard
+                        key={index}
+                        // src={item}
+                        blog={item}
+                        onClick={() => routeToBlogDetailPage(item.blog_id)}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="flex mt-16 justify-center">
-              <ButtonSecondary>
-                <Link to="/blog">Show all Blogs</Link>
-              </ButtonSecondary>
+              <div className="flex mt-16 justify-center">
+                <ButtonSecondary>
+                  <Link to="/blog">Show all Blogs</Link>
+                </ButtonSecondary>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* EMAIL SUBSCRIBE SECTION */}
       <EmailSubscribeSection />

@@ -120,7 +120,12 @@ const Products: FC<Props> = ({ className = "" }) => {
     request
       .then((res) => {
         dispatch(hideLoader());
-        setProducts(res.data);
+        setProducts(
+          res.data.filter(
+            (obj, index, self) =>
+              index === self.findIndex((t) => t.product_id === obj.product_id)
+          )
+        );
       })
       .catch((err) => {
         if (err instanceof CanceledError) return;
@@ -253,7 +258,13 @@ const Products: FC<Props> = ({ className = "" }) => {
 
   const handleLike = (id: string) => {
     const updatedProducts = [...products].map((p) =>
-      p.product_id === id ? { ...p, isLiked: (p.isLiked = !p.isLiked) } : p
+      p.product_id === id
+        ? {
+            ...p,
+            isLiked: (p.is_in_wishlist = !p.is_in_wishlist),
+            is_in_wishlist: (p.is_in_wishlist = !p.is_in_wishlist),
+          }
+        : p
     );
     const product = updatedProducts.find((p) => p.product_id === id);
 
@@ -279,6 +290,11 @@ const Products: FC<Props> = ({ className = "" }) => {
     >
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 sm:space-y-20 lg:space-y-28">
         <div className="space-y-10 lg:space-y-14">
+          {(location?.state?.item?.name || category) && (
+            <h2 className="ml-1 text-2xl md:text-3xl font-semibold">
+              {location.state?.item?.name || category}
+            </h2>
+          )}
           <div className="flex overflow-x-auto whitespace-nowrap sm:overflow-x-scroll">
             {subCategories.map((item) => (
               <Chip
@@ -364,6 +380,7 @@ const Products: FC<Props> = ({ className = "" }) => {
                     products.map((item, index) => (
                       <ProductCard
                         data={item}
+                        isLiked={item.is_in_wishlist}
                         onLike={() => handleLike(item.product_id)}
                         key={index}
                       />

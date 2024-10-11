@@ -19,7 +19,7 @@ import toast from "react-hot-toast";
 import { CheckIcon, StarIcon } from "@heroicons/react/24/solid";
 import SectionSliderProductCard from "../../components/SectionSliderProductCard";
 import ModalViewAllReviews, { Review } from "./ModalViewAllReviews";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import AppProductChip from "../../components/AppProductChip/AppProductChip";
 import faqImg from "../../assets/02-Products/FAQ.jpg";
 import Expert from "../../assets/PRODUCT DETAIL/4-Expert.jpg";
@@ -59,7 +59,7 @@ export interface ProductDetailPage2Props {
 const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   className = "",
 }) => {
-  const { id } = useParams();
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const [buyingOptions, setBuyingOptions] = useState([
     {
@@ -111,7 +111,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     const { request, cancel } = productDetailService.get<
       ProductDetail,
       { product_id: number }
-    >({ product_id: +id });
+    >({ product_id: +location.state.id });
 
     dispatch(showLoader());
 
@@ -150,7 +150,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     const { request, cancel } = relatedProductsService.getAll<
       Product,
       { product_id: number }
-    >({ product_id: +id });
+    >({ product_id: +location.state.id });
 
     request
       .then((res) => {
@@ -168,7 +168,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
   useEffect(() => {
     const { request, cancel } = faqService.get<IFaq[], { product_id: number }>({
-      product_id: +id,
+      product_id: +location.state.id,
     });
 
     dispatch(showLoader());

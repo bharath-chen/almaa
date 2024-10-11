@@ -16,6 +16,7 @@ import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import signupService from "../../services/signup-service";
 import InputErrorMessage from "../../components/InputErrorMessage/InputErrorMessage";
 import MandatoryIcon from "../../components/MandatoryIcon/MandatoryIcon";
+import { login } from "../../features/auth/authSlice";
 
 const schema = z
   .object({
@@ -142,6 +143,12 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
       .create(payload)
       .then((res) => {
         dispatch(hideLoader());
+        if (res.data.message) {
+          dispatch(showModal({ type: "error", message: res.data.message }));
+          return;
+        }
+
+        dispatch(login(res.data));
         dispatch(
           showModal({
             type: "success",

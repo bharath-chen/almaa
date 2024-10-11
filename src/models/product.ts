@@ -40,6 +40,7 @@ export interface Product {
   reordered_level?: string;
   attstatus?: string;
   created?: string;
+  is_in_wishlist?: boolean;
   isLiked?: boolean;
   qty?: number;
   suitablefor?: string;

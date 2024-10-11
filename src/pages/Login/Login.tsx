@@ -46,7 +46,9 @@ const Login: FC = () => {
   });
 
   const handleLogin = async (data: LoginFormInputs) => {
-    let usernameKey = emailPattern.test(data.username) ? "email" : "mobile";
+    let usernameKey = emailPattern.test(data.username)
+      ? "email"
+      : "mobilenumber";
 
     try {
       const { request } = loginService.get<
@@ -67,7 +69,7 @@ const Login: FC = () => {
         );
         navigate("/");
       } else {
-        setError(response.data.status);
+        dispatch(showModal({ type: "error", message: response.data.status }));
       }
     } catch (err: any) {
       setError(err.message);
@@ -147,7 +149,7 @@ const Login: FC = () => {
                 <span className="text-neutral-800 dark:text-neutral-200">
                   Password <MandatoryIcon />
                 </span>
-                <Link to="/forgot-pass" className="text-sm text-green-600">
+                <Link to="/forgot-password" className="text-sm text-green-600">
                   Forgot password?
                 </Link>
               </div>

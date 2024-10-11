@@ -6,4 +6,5 @@ export interface Blog {
   published_date: string;
   status: string;
   image_url: string;
+  category?: string;
 }

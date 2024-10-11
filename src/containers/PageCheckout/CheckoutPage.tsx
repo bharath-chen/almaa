@@ -26,7 +26,8 @@ import { Coupon } from "../../models/Coupon";
 import paymentGatewayService from "../../services/payment-gateway-service";
 import { OrdersPayload } from "../AccountPage/AccountOrder";
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
-import { environment } from "../../environments/environment.prod";
+import { environment } from "../../environments/environment";
+import { showModal } from "../../features/modal/modalSlice";
 
 const razorpayKey = environment.razorPayApiKey;
 const CheckoutPage = () => {
@@ -49,6 +50,7 @@ const CheckoutPage = () => {
   const [discountCodeError, setDiscountCodeError] = useState<string>("");
   const [offerCodeApplied, setOfferCodeApplied] = useState(false);
   const [discount, setDiscount] = useState(0);
+  const [offerCodePrice, setOfferCodePrice] = useState(0);
 
   useEffect(() => {
     const productDetails: Product[] =
@@ -99,6 +101,7 @@ const CheckoutPage = () => {
       setDiscountCodeError("Oops! Invalid Discount Code");
       setOfferCodeApplied(false);
       setDiscount(0);
+      setOfferCodePrice(0);
       return;
     }
 
@@ -118,13 +121,16 @@ const CheckoutPage = () => {
       .then((res) => {
         if (res.data.status === "Coupon Code Expired") {
           setDiscountCodeError(res.data.status);
+          setOfferCode("");
           setOfferCodeApplied(false);
           setDiscount(0);
+          setOfferCodePrice(0);
         } else {
           setDiscountCodeError(null);
           setOfferCode(validCode.code);
           setOfferCodeApplied(true);
           setDiscount(validCode.discount);
+          setOfferCodePrice(res.data);
         }
       });
   };
@@ -134,6 +140,7 @@ const CheckoutPage = () => {
     setOfferCode("");
     setOfferCodeApplied(false);
     setDiscount(0);
+    setOfferCodePrice(0);
   };
 
   const handleOfferCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -178,15 +185,24 @@ const CheckoutPage = () => {
 
     if (!item) return;
 
+    const routeToProductDetail = () => {
+      navigate(`/product-detail/${product_name}`, {
+        state: {
+          id: product_id,
+        },
+      });
+    };
+
     return (
       <div key={index} className="relative flex py-7 first:pt-0 last:pb-0">
         <div className="relative h-36 w-24 sm:w-28 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
-          <img
-            src={product_image1}
-            alt={product_name}
-            className="h-full w-full object-contain object-center"
-          />
-          <Link to="/product-detail" className="absolute inset-0"></Link>
+          <span onClick={routeToProductDetail} className="absolute inset-0">
+            <img
+              src={product_image1}
+              alt={product_name}
+              className="h-full w-full object-contain object-center"
+            />
+          </span>
         </div>
 
         <div className="ml-3 sm:ml-6 flex flex-1 flex-col">
@@ -194,7 +210,7 @@ const CheckoutPage = () => {
             <div className="flex justify-between ">
               <div className="flex-[1.5] ">
                 <h3 className="text-base font-semibold">
-                  <Link to="/product-detail">{product_name}</Link>
+                  <span onClick={routeToProductDetail}>{product_name}</span>
                 </h3>
                 <div className="mt-1.5 sm:mt-2.5 flex text-sm text-slate-600 dark:text-slate-300">
                   <p>{item.suitablefor}</p>
@@ -527,7 +543,24 @@ const CheckoutPage = () => {
   //   });
   // };
 
+  const calculatedTotalAmount = () =>
+    +calculateDiscount(totalPrice, discount).discountedPrice +
+    (+location?.state?.shippingEstimate || 0);
+
   const handleConfirmOrder = async () => {
+    const isLessThan330 = +calculatedTotalAmount() < 330;
+
+    if (isLessThan330) {
+      dispatch(
+        showModal({
+          type: "info",
+          message:
+            "Oops! Your order needs to be at least ₹330 to proceed. Please add a few more items to your cart!",
+        })
+      );
+      return;
+    }
+
     interface CreateOrderPayload {
       gofor: string;
       customer_id: string;
@@ -536,14 +569,14 @@ const CheckoutPage = () => {
       product_details: { product_id: string; quantity: string }[];
     }
 
-    // Validate input fields
-    if (
-      !selectedAddress ||
-      !selectedAddress.address_id ||
-      !selectedPaymentMethod ||
-      cart.items.length === 0
-    ) {
-      alert("Please complete all required fields.");
+    if (!selectedAddress || !selectedAddress.address_id) {
+      // alert("Please complete all required fields.");
+      dispatch(
+        showModal({
+          type: "error",
+          message: "Kindly select a primary address",
+        })
+      );
       return;
     }
 
@@ -605,13 +638,17 @@ const CheckoutPage = () => {
                 if (
                   verificationResponse.data.response === "Payment Successful"
                 ) {
-                  // alert("Payment Successful!");
+                  dispatch(
+                    showModal({
+                      type: "success",
+                      message: "Order Proccessed Successfully!",
+                    })
+                  );
                   navigate("/account-my-order");
                 }
               } catch (verificationError) {
-                console.error(
-                  "Payment verification failed:",
-                  verificationError
+                dispatch(
+                  showModal({ type: "error", message: "Payment Failed" })
                 );
               }
             },
@@ -672,7 +709,9 @@ const CheckoutPage = () => {
             <div className="flex-1">{renderLeft()}</div>
           )}
 
-          <div className="flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:lg:mx-14 2xl:mx-16 "></div>
+          {cart.items && cart.items.length > 0 && (
+            <div className="flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:lg:mx-14 2xl:mx-16 "></div>
+          )}
 
           <div className="w-full lg:w-[36%] ">
             <h3 className="text-lg font-semibold">Order summary</h3>
@@ -774,21 +813,16 @@ const CheckoutPage = () => {
                       </span>
                     </div>
                   )}
-                  <div className="flex justify-between py-2.5">
+                  {/* <div className="flex justify-between py-2.5">
                     <span>Tax estimate</span>
                     <span className="font-semibold text-slate-900 dark:text-slate-200">
                       ₹24.90
                     </span>
-                  </div>
+                  </div> */}
                   <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
                     <span>Order total</span>
                     <span>
-                      ₹
-                      {(
-                        +calculateDiscount(totalPrice, discount)
-                          .discountedPrice +
-                        ((location.state?.shippingEstimate || 0) + 24.9)
-                      ).toFixed(2)}
+                      {/* + 24.9 */}₹{(+calculatedTotalAmount()).toFixed(2)}
                     </span>
                   </div>
                 </div>

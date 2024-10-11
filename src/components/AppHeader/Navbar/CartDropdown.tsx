@@ -2,8 +2,7 @@ import { Popover, Transition } from "@headlessui/react";
 import Prices from "../../../components/Prices";
 import { Product } from "../../../models/product";
 import { Fragment } from "react";
-import { Link } from "react-router-dom";
-import ButtonPrimary from "../../../shared/Button/ButtonPrimary";
+import { Link, useNavigate } from "react-router-dom";
 import ButtonSecondary from "../../../shared/Button/ButtonSecondary";
 import { useSelector } from "react-redux";
 import {
@@ -22,6 +21,7 @@ export default function CartDropdown() {
   const itemsCount = useAppSelector(selectCartItemCount);
   const subTotal = useSelector(selectCartTotal);
   const cartItems = cart.items;
+  const navigate = useNavigate();
 
   const renderProduct = (item: Product, index: number, close: () => void) => {
     const {
@@ -31,20 +31,32 @@ export default function CartDropdown() {
       product_image1,
       quantity,
       qty,
+      product_measuring_unit_id,
     } = item;
+
+    const routeToProductDetail = () => {
+      navigate(`/product-detail/${product_name}`, {
+        state: {
+          id: product_id,
+        },
+      });
+    };
+
+    const handleClose = () => {
+      routeToProductDetail();
+      close();
+    };
+
     return (
       <div key={index} className="flex py-5 last:pb-0">
         <div className="relative h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
-          <img
-            src={product_image1}
-            alt={product_name}
-            className="h-full w-full object-contain object-center"
-          />
-          <Link
-            onClick={close}
-            className="absolute inset-0"
-            to={"/product-detail/" + product_id}
-          />
+          <span onClick={handleClose} className="absolute inset-0">
+            <img
+              src={product_image1}
+              alt={product_name}
+              className="h-full w-full object-contain object-center"
+            />
+          </span>
         </div>
 
         <div className="ml-4 flex flex-1 flex-col">
@@ -52,25 +64,25 @@ export default function CartDropdown() {
             <div className="flex justify-between ">
               <div>
                 <h3 className="text-base font-medium ">
-                  <Link onClick={close} to={"/product-detail/" + product_id}>
-                    {product_name}
-                  </Link>
+                  <span onClick={handleClose}>
+                    {product_name} ({product_measuring_unit_id})
+                  </span>
                 </h3>
               </div>
               <Prices price={+selling_price} className="mt-0.5" />
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
-            <p className="text-gray-500 dark:text-slate-400">{`Qty ${
-              qty || quantity
-            }`}</p>
+            <p className="text-gray-500 dark:text-slate-400">{`Qty ${quantity}`}</p>
 
             <div className="flex">
               <button
                 type="button"
                 className="font-medium text-primary-900 dark:text-primary-500 "
                 onClick={() => {
-                  dispatch(removeFromCart(product_id));
+                  dispatch(
+                    removeFromCart({ product_id, product_measuring_unit_id })
+                  );
                   close(); // Close the dropdown after removing
                 }}
               >
