@@ -12,6 +12,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputErrorMessage from "../../components/InputErrorMessage/InputErrorMessage";
 import MandatoryIcon from "../../components/MandatoryIcon/MandatoryIcon";
+import supportService from "../../services/support-service";
+import { type Support as SupportData } from "../../models/support";
+import { useAppDispatch } from "../../hooks/hooks";
+import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
+import { showModal } from "../../features/modal/modalSlice";
+import { CanceledError } from "axios";
 
 export interface PageContactProps {
   className?: string;
@@ -65,8 +71,44 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
     reset,
   } = useForm<SupportFormInputs>({ resolver: zodResolver(schema) });
 
+  const dispatch = useAppDispatch();
+
   const submit = (data: SupportFormInputs) => {
-    console.log(data);
+    const payload = {
+      name: data.name,
+      email: data.emailAddress,
+      mobilenumber: data.mobileNumber,
+      location: data.location,
+      subject: data.subject,
+      message: data.message,
+      gofor: "contactform",
+    };
+    reset();
+
+    dispatch(showLoader());
+
+    supportService
+      .create<SupportData>(payload)
+      .then((res) => {
+        dispatch(hideLoader());
+        dispatch(
+          showModal({
+            type: "success",
+            message: "Your message has been submitted successfully.",
+          })
+        );
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+
+        dispatch(hideLoader());
+        dispatch(
+          showModal({
+            type: "error",
+            message: "Something went wrong! Please try again later.",
+          })
+        );
+      });
   };
 
   return (

@@ -34,19 +34,25 @@ const AccountSavelists = () => {
             <h3 className="text-center">No wishlist added!</h3>
           )}
           {items.productdetail.length > 0 &&
-            items?.productdetail?.map((p: Product, index: number) => {
-              const updatedProduct = { ...p, isLiked: true };
-              return (
-                <ProductCard
-                  key={updatedProduct.product_id + index}
-                  data={updatedProduct}
-                  isLiked={updatedProduct.isLiked}
-                  onLike={() =>
-                    handleRemoveItemFromWishList(updatedProduct.product_id)
-                  }
-                />
-              );
-            })}
+            items?.productdetail
+              ?.filter(
+                (obj, index, self) =>
+                  index ===
+                  self.findIndex((t) => t.product_id === obj.product_id)
+              )
+              .map((p: Product, index: number) => {
+                const updatedProduct = { ...p, isLiked: true };
+                return (
+                  <ProductCard
+                    key={updatedProduct.product_id + index}
+                    data={updatedProduct}
+                    isLiked={updatedProduct.isLiked}
+                    onLike={() =>
+                      handleRemoveItemFromWishList(updatedProduct.product_id)
+                    }
+                  />
+                );
+              })}
         </div>
         {/* <div className="flex !mt-20 justify-center items-center">
           <ButtonSecondary loading>Show me more</ButtonSecondary>
