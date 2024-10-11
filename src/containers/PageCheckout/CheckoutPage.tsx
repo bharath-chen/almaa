@@ -26,7 +26,7 @@ import { Coupon } from "../../models/Coupon";
 import paymentGatewayService from "../../services/payment-gateway-service";
 import { OrdersPayload } from "../AccountPage/AccountOrder";
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
-import { environment } from "../../environments/environment";
+import { environment } from "../../environments/environment.prod";
 import { showModal } from "../../features/modal/modalSlice";
 
 const razorpayKey = environment.razorPayApiKey;

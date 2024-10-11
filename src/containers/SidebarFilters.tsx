@@ -72,7 +72,7 @@ const SidebarFilters = ({
       <div className="py-8 pr-2">
         {productForms.length > 0 && (
           <AppFilterTabs
-            heading="Product Form"
+            heading="Nature of Products"
             items={productForms}
             onItemCheck={handleProductFormChange}
           />

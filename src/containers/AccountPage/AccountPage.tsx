@@ -9,6 +9,8 @@ import { Helmet } from "react-helmet-async";
 import { avatarImgs } from "../../contains/fakeData";
 import { useAppSelector } from "../../hooks/hooks";
 import { RootState } from "../../state/store";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export interface AccountPageProps {
   className?: string;
@@ -20,7 +22,7 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
   return (
     <div className={`nc-AccountPage ${className}`} data-nc-id="AccountPage">
       <Helmet>
-        <title>Account || Ciseco ecommerce React Template</title>
+        <title>Almaa</title>
       </Helmet>
       <CommonLayout>
         <div className="space-y-10 sm:space-y-12">
