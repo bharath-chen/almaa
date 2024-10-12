@@ -24,8 +24,6 @@ const CaseStudyCard = ({ caseStudy, className, onClick }: Props) => {
         />
       </div>
 
-      <SocialsShare className="absolute hidden md:grid gap-[5px] right-4 top-4 opacity-0 z-[-1] group-hover:z-10 group-hover:opacity-100 transition-all duration-300" />
-
       <div className=" mt-8 pr-10 flex flex-col">
         <h2
           className={`nc-card-title block font-semibold text-neutral-900 dark:text-neutral-100 transition-colors text-lg sm:text-2xl`}
@@ -60,12 +58,12 @@ const CaseStudyCard = ({ caseStudy, className, onClick }: Props) => {
             </span>
           </Link> */}
           <>
-            <span className="text-neutral-500 dark:text-neutral-400 mx-[6px] font-medium">
+            {/* <span className="text-neutral-500 dark:text-neutral-400 mx-[6px] font-medium">
               ·
             </span>
             <span className="text-neutral-500 dark:text-neutral-400 font-normal line-clamp-1">
               {caseStudy.date}
-            </span>
+            </span> */}
           </>
         </div>
       </div>
