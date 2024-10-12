@@ -18,6 +18,7 @@ import { useAppDispatch } from "../../hooks/hooks";
 import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
 import { showModal } from "../../features/modal/modalSlice";
 import { CanceledError } from "axios";
+import Select from "../../shared/Select/Select";
 
 export interface PageContactProps {
   className?: string;
@@ -34,7 +35,7 @@ const info = [
   },
   {
     title: "PHONE",
-    desc: "+91-9003000888",
+    desc: "+91-7401403000",
   },
 ];
 const mobilePattern = /^\d{10}$/;
@@ -57,7 +58,12 @@ const schema = z.object({
       "Please enter a valid email address"
     ),
   location: z.string().nonempty("Location is required"),
-  subject: z.string().nonempty("Subject is required"),
+  subject: z
+    .string()
+    .nonempty("Enquiry for is required")
+    .refine((value) => {
+      return value !== "";
+    }, "Please select a Enquiry"),
   message: z.string().nonempty("Message is required"),
 });
 
@@ -223,15 +229,36 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
                 </label>
                 <label className="block">
                   <Label>
-                    Subject <MandatoryIcon />{" "}
+                    Enquiry for <MandatoryIcon />{" "}
                   </Label>
-
-                  <Input
-                    type="text"
-                    placeholder="Enter the subject of your message"
-                    className="mt-1"
-                    {...register("subject")}
-                  />
+                  <Select className="mt-1" {...register("subject")}>
+                    <option value="">Select</option>
+                    <option value="Almaa Product Details">
+                      Almaa Product Details{" "}
+                    </option>
+                    <option value="⁠Doctor Discussion">
+                      {" "}
+                      ⁠Doctor Discussion{" "}
+                    </option>
+                    <option value="⁠Therapy @ Chennai">
+                      {" "}
+                      ⁠Therapy @ Chennai{" "}
+                    </option>
+                    <option value="⁠Wellness @ Ilavambadi">
+                      {" "}
+                      ⁠Wellness @ Ilavambadi{" "}
+                    </option>
+                    <option value="⁠Treatment @ Ilavambadi">
+                      {" "}
+                      ⁠Treatment @ Ilavambadi{" "}
+                    </option>
+                    <option value="⁠Meet Almaa Velayudham">
+                      {" "}
+                      ⁠Meet Almaa Velayudham{" "}
+                    </option>
+                    <option value="⁠Become a Vendor"> ⁠Become a Vendor </option>
+                    <option value="⁠Others"> ⁠Others</option>
+                  </Select>
                   {errors.subject && (
                     <InputErrorMessage>
                       {errors.subject.message}
