@@ -10,6 +10,10 @@ import { RootState } from "../../state/store";
 import { countries } from "../../data/countries";
 import { states } from "../../data/states";
 import Radio from "../../shared/Radio/Radio";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import InputErrorMessage from "../../components/InputErrorMessage/InputErrorMessage";
 
 interface Props {
   selectedAddress?: Address | null;
@@ -22,7 +26,23 @@ interface Props {
   onOpenActive: () => void;
   onDeleteAddress: (address: Address, index: number) => void;
   onAddAddress: (address: Address, index: number) => void;
+  onUpdateAddress: (address: Address, index: number) => void;
 }
+
+// Zod schema for validation
+const addressSchema = z.object({
+  doorno: z.string().nonempty({ message: "Door number is required" }),
+  street: z.string().nonempty({ message: "Street is required" }),
+  location: z.string().nonempty({ message: "Location is required" }),
+  pincode: z
+    .string()
+    .nonempty({ message: "Pincode is required" })
+    .min(6, "Pincode must be 6 digits"),
+  city: z.string().nonempty({ message: "City is required" }),
+  state: z.string().nonempty(),
+});
+
+type AddressFormValues = z.infer<typeof addressSchema>;
 
 const ShippingAddress: FC<Props> = ({
   index,
@@ -34,62 +54,63 @@ const ShippingAddress: FC<Props> = ({
   onCloseActive,
   onOpenActive,
   onAddAddress,
+  onUpdateAddress,
   onDeleteAddress,
 }) => {
   const customer = useAppSelector((state: RootState) => state.auth);
-  const [addressForm, setAddressForm] = useState<Address>({
-    address_id: address.address_id || "",
-    customer_id: customer.customer_id,
-    doorno: address.doorno || "",
-    street: address.street || "",
-    location: address.location || "",
-    pincode: address.pincode || "",
-    city: address.city || "",
-    state: address.state || "TamilNadu",
-    primary_use: "1",
-    recently_use: "0",
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<AddressFormValues>({
+    resolver: zodResolver(addressSchema),
+    defaultValues: {
+      doorno: address?.doorno || "",
+      street: address?.street || "",
+      location: address?.location || "",
+      pincode: address?.pincode || "",
+      city: address?.city || "",
+      state: address?.state || "TamilNadu",
+    },
   });
 
   useEffect(() => {
-    setAddressForm({
-      address_id: address.address_id || "",
-      customer_id: customer.customer_id,
-      doorno: address.doorno || "",
-      street: address.street || "",
-      location: address.location || "",
-      pincode: address.pincode || "",
-      city: address.city || "",
-      state: address.state || "TamilNadu",
-      primary_use: "1",
-      recently_use: "0",
+    reset({
+      doorno: address?.doorno || "",
+      street: address?.street || "",
+      location: address?.location || "",
+      pincode: address?.pincode || "",
+      city: address?.city || "",
+      state: address?.state || "TamilNadu",
     });
-  }, [address]);
-
-  const handleFormValueChanges = (name: string, value: string) => {
-    setAddressForm((prevAddress) => ({ ...prevAddress, [name]: value }));
-  };
+  }, [address, reset]);
 
   const saveBtnText = address?.address_id
     ? "Continue to payment"
     : "Save and next to Payment";
 
-  const handleSubmit = () => {
-    if (!address.address_id) {
-      const updatedAddress = { ...addressForm };
-      onAddAddress(updatedAddress, index);
-    }
-    setAddressForm({
-      address_id: "",
+  const onSubmit: SubmitHandler<AddressFormValues> = (
+    data: AddressFormValues
+  ) => {
+    const updatedAddress = {
+      address_id: address.address_id || "",
       customer_id: customer.customer_id,
-      doorno: "",
-      street: "",
-      location: "",
-      pincode: "",
-      city: "",
-      state: "",
+      doorno: data.doorno,
+      street: data.state,
+      location: data.location,
+      pincode: data.pincode,
+      city: data.city,
+      state: data.state,
       primary_use: "1",
       recently_use: "0",
-    });
+    };
+
+    if (!address?.address_id) {
+      onAddAddress(updatedAddress, index);
+    } else {
+      onUpdateAddress(updatedAddress, index);
+    }
     onCloseActive();
   };
 
@@ -102,7 +123,7 @@ const ShippingAddress: FC<Props> = ({
     return (
       <div className="border border-slate-200 dark:border-slate-700 rounded-xl mb-4">
         <div className="p-6 flex flex-col sm:flex-row items-start">
-          {addressForm.address_id && (
+          {address.address_id && (
             <Radio
               name="selectedAddress"
               id="selected-address"
@@ -219,122 +240,116 @@ const ShippingAddress: FC<Props> = ({
             isActive ? "block" : "hidden"
           }`}
         >
-          {/* ============ */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
-            {/* defaultValue="Cole" */}
-            <div>
-              <Label className="text-sm">First name</Label>
-              <Input className="mt-1.5" value={customer.first_name} disabled />
-            </div>
-            <div>
-              <Label className="text-sm">Last name</Label>
-              <Input className="mt-1.5" value={customer.lastName} disabled />
-            </div>
-          </div>
-
-          {/* ============ */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
-            <div className="flex-1">
-              <Label className="text-sm">Door no</Label>
-              <Input
-                className="mt-1.5"
-                value={addressForm.doorno}
-                type={"text"}
-                name="doorno"
-                onChange={(e) =>
-                  handleFormValueChanges("doorno", e.target.value)
-                }
-              />
-            </div>
-            <div className="flex-1">
-              <Label className="text-sm">Street</Label>
-              <Input
-                className="mt-1.5"
-                value={addressForm.street}
-                name="street"
-                onChange={(e) =>
-                  handleFormValueChanges("street", e.target.value)
-                }
-              />
-            </div>
-          </div>
-
-          {/* ============ */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
-            <div>
-              <Label className="text-sm">Location</Label>
-              <Input
-                className="mt-1.5"
-                value={addressForm.location}
-                type={"text"}
-                name="doorno"
-                onChange={(e) =>
-                  handleFormValueChanges("location", e.target.value)
-                }
-              />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {/* ============ */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
+              {/* defaultValue="Cole" */}
+              <div>
+                <Label className="text-sm">First name</Label>
+                <Input
+                  className="mt-1.5"
+                  value={customer.first_name}
+                  disabled
+                />
+              </div>
+              <div>
+                <Label className="text-sm">Last name</Label>
+                <Input className="mt-1.5" value={customer.lastName} disabled />
+              </div>
             </div>
 
-            <div>
-              <Label className="text-sm">City</Label>
-              <Input
-                className="mt-1.5"
-                value={addressForm.city}
-                name="city"
-                onChange={(e) => handleFormValueChanges("city", e.target.value)}
-              />
-              {/* defaultValue="Norris" */}
-            </div>
-          </div>
-
-          {/* ============ */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
-            <div>
-              <Label className="text-sm">Country</Label>
-              <Select className="mt-1.5" defaultValue={"India"} disabled>
-                {countries.map((country) => (
-                  <option key={country} value={country}>
-                    {country}
-                  </option>
-                ))}
-              </Select>
+            {/* ============ */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3  my-3">
+              <div className="flex-1">
+                <Label className="text-sm">Door no</Label>
+                <Input
+                  className="mt-1.5"
+                  {...register("doorno")}
+                  type={"text"}
+                />
+                {errors.doorno && (
+                  <InputErrorMessage>{errors.doorno.message}</InputErrorMessage>
+                )}
+              </div>
+              <div className="flex-1">
+                <Label className="text-sm">Street</Label>
+                <Input type="text" className="mt-1.5" {...register("street")} />
+                {errors.street && (
+                  <InputErrorMessage>{errors.street.message}</InputErrorMessage>
+                )}
+              </div>
             </div>
 
-            <div>
-              <Label className="text-sm">State/Province</Label>
-              {/* <Input className="mt-1.5" value={address.state} /> */}
-              <Select
-                className="mt-1.5"
-                value={addressForm.state || "TamilNadu"}
-                disabled
-              >
-                {states.map((state) => (
-                  <option key={state.label} value={state.value}>
-                    {state.label}
-                  </option>
-                ))}
-              </Select>
-              {/* defaultValue="Texas" */}
-            </div>
-          </div>
+            {/* ============ */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
+              <div>
+                <Label className="text-sm">Location</Label>
+                <Input
+                  className="mt-1.5"
+                  type={"text"}
+                  {...register("location")}
+                />
+                {errors.location && (
+                  <InputErrorMessage>
+                    {errors.location.message}
+                  </InputErrorMessage>
+                )}
+              </div>
 
-          {/* ============ */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
-            <div>
-              <Label className="text-sm">Postal code</Label>
-              <Input
-                className="mt-1.5"
-                name="pincode"
-                value={addressForm.pincode}
-                onChange={(e) =>
-                  handleFormValueChanges("pincode", e.target.value)
-                }
-              />
-              {/* defaultValue="Texas" */}
+              <div>
+                <Label className="text-sm">City</Label>
+                <Input className="mt-1.5" {...register("city")} />
+                {errors.city && (
+                  <InputErrorMessage>{errors.city.message}</InputErrorMessage>
+                )}
+              </div>
             </div>
-          </div>
 
-          {/* ============ */}
-          {/* <div>
+            {/* ============ */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3 my-3">
+              <div>
+                <Label className="text-sm">Country</Label>
+                <Select className="mt-1.5" defaultValue={"India"} disabled>
+                  {countries.map((country) => (
+                    <option key={country} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+
+              <div>
+                <Label className="text-sm">State/Province</Label>
+                <Select className="mt-1.5" {...register("state")}>
+                  {states.map((state) => (
+                    <option key={state.label} value={state.value}>
+                      {state.label}
+                    </option>
+                  ))}
+                </Select>
+                {errors.state && (
+                  <InputErrorMessage>{errors.state.message}</InputErrorMessage>
+                )}
+              </div>
+            </div>
+
+            {/* ============ */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
+              <div>
+                <Label className="text-sm">Postal code</Label>
+                <Input
+                  type="text"
+                  className="mt-1.5"
+                  {...register("pincode")}
+                />
+                {errors.state && (
+                  <InputErrorMessage>{errors.state.message}</InputErrorMessage>
+                )}
+              </div>
+            </div>
+
+            {/* ============ */}
+            {/* <div>
             <Label className="text-sm">Address type</Label>
             <div className="mt-1.5 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
               <Radio
@@ -361,21 +376,19 @@ const ShippingAddress: FC<Props> = ({
             </div>
           </div> */}
 
-          {/* ============ */}
-          <div className="flex flex-col sm:flex-row pt-6">
-            <ButtonPrimary
-              className="sm:!px-7 shadow-none"
-              onClick={handleSubmit}
-            >
-              {saveBtnText}
-            </ButtonPrimary>
-            <ButtonSecondary
-              className="mt-3 sm:mt-0 sm:ml-3"
-              onClick={onCloseActive}
-            >
-              Cancel
-            </ButtonSecondary>
-          </div>
+            {/* ============ */}
+            <div className="flex flex-col sm:flex-row pt-6">
+              <ButtonPrimary type="submit" className="sm:!px-7 shadow-none">
+                {saveBtnText}
+              </ButtonPrimary>
+              <ButtonSecondary
+                className="mt-3 sm:mt-0 sm:ml-3"
+                onClick={onCloseActive}
+              >
+                Cancel
+              </ButtonSecondary>
+            </div>
+          </form>
         </div>
       </div>
     );

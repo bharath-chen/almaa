@@ -11,6 +11,7 @@ import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import { getFormattedDate } from "../../utils/date-utils";
 import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
 import { useNavigate } from "react-router-dom";
+import { Order, OrderData, ProductDetailData } from "models/order";
 
 export interface ViewOrder {
   order_detail_id: string;
@@ -36,10 +37,9 @@ export interface OrderHistory {
 }
 
 const AccountOrder = () => {
-  const [orders, setOrders] = useState<ViewOrder[]>([]);
+  const [orders, setOrders] = useState<{ orders: OrderData[] }>({ orders: [] });
   const [products, setProducts] = useState<Product[]>([]);
-  const [ordersHistory, setOrdersHistroy] = useState<OrderHistory[]>([]);
-  const [selectedOrder, setSelectedOrder] = useState<OrderHistory | null>(null); // For selected order
+  const [selectedOrder, setSelectedOrder] = useState<OrderData | null>(null); // For selected order
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility
   const customer = useAppSelector((state: RootState) => state.auth);
   const dispatch = useAppDispatch();
@@ -47,7 +47,7 @@ const AccountOrder = () => {
 
   useEffect(() => {
     const { request, cancel } = orderService.get<
-      OrdersPayload,
+      { orders: OrderData[] },
       { gofor: string; customer_id: string }
     >({
       gofor: "vieworders",
@@ -59,28 +59,8 @@ const AccountOrder = () => {
     request
       .then((res) => {
         dispatch(hideLoader());
-        const orderIds = [
-          ...new Set(res.data.viewOrders.map((o) => o.order_id)),
-        ];
-        const formattedOrders = orderIds.map((o) => {
-          const indexes = [];
-
-          res.data.viewOrders.forEach((co, i) => {
-            if (co.order_id === o) indexes.push(i);
-          });
-
-          return {
-            order_id: o,
-            indexes,
-            orders: indexes.map((num) => res.data.viewOrders[num]),
-            products: indexes.map((num) => res.data.productDetail[num]),
-          };
-        });
-        console.log(formattedOrders);
-        setOrdersHistroy(formattedOrders.reverse());
-        setOrders(res.data.viewOrders);
-        setProducts(res.data.productDetail);
         dispatch(clearCart());
+        setOrders(res.data);
       })
       .catch((err) => {
         if (err instanceof CanceledError) return;
@@ -92,8 +72,14 @@ const AccountOrder = () => {
     return () => cancel();
   }, []);
 
-  const renderProductItem = (product: Product, index: number) => {
-    const { product_image1, product_name, selling_price, product_id } = product;
+  const renderProductItem = (product: ProductDetailData, index: number) => {
+    const {
+      product_image1,
+      product_name,
+      selling_price,
+      product_id,
+      suitablefor,
+    } = product;
     return (
       <div key={product_id} className="flex py-4 sm:py-7 last:pb-0 first:pt-0">
         <div className="h-24 w-16 sm:w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
@@ -111,6 +97,9 @@ const AccountOrder = () => {
                 <h3 className="text-base font-medium line-clamp-1">
                   {product_name}
                 </h3>
+                <p className="text-gray-500 dark:text-slate-400 text-sm">
+                  {suitablefor}
+                </p>
               </div>
               <Prices price={+selling_price} className="mt-0.5 ml-2" />
             </div>
@@ -120,7 +109,7 @@ const AccountOrder = () => {
               <span className="hidden sm:inline-block">Qty</span>
               <span className="inline-block sm:hidden">x</span>
               <span className="ml-2">
-                {+selectedOrder.orders[index].quantity}
+                {+selectedOrder.orderDetails[index].quantity}
               </span>
             </p>
           </div>
@@ -129,36 +118,111 @@ const AccountOrder = () => {
     );
   };
 
-  const renderOrder = (order: OrderHistory) => {
+  const renderOrder = (order: OrderData) => {
     return (
-      <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden z-0">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-4 sm:p-8 bg-slate-50 dark:bg-slate-500/5">
-          <div>
-            <p className="text-lg font-semibold">{order.order_id}</p>
-            <p className="text-slate-500 dark:text-slate-400 text-sm mt-1.5 sm:mt-2">
-              <span>
-                {getFormattedDate(order.orders[0].order_detail_updated)}
+      <div className="w-full mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md transition-transform transform hover:scale-105">
+        <div className="border-b border-slate-300 dark:border-slate-700 pb-4 mb-4">
+          <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+            Order Details
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 my-2">
+            Invoice Number:{" "}
+            <span className="font-semibold">{order.order.invoice_number}</span>
+          </p>
+          <p className="text-gray-600 dark:text-gray-300">
+            Order ID:{" "}
+            <span className="font-semibold">{order.order.order_id}</span>
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="flex justify-between">
+            <span className="font-medium text-gray-700 dark:text-gray-300">
+              Order Date:
+            </span>
+            <span className="text-gray-600 dark:text-gray-400">
+              {getFormattedDate(order.order.date)}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="font-medium text-gray-700 dark:text-gray-300">
+              Total Amount:
+            </span>
+            <span className="text-gray-600 dark:text-gray-400">
+              ₹{order.order.total_amount}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="font-medium text-gray-700 dark:text-gray-300">
+              Delivery Charge:
+            </span>
+            <span className="text-gray-600 dark:text-gray-400">
+              ₹{order.order.delivery_charge}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="font-medium text-gray-700 dark:text-gray-300">
+              Payment Mode:
+            </span>
+            <span className="text-gray-600 dark:text-gray-400">
+              {order.order.payment_mode === "cod"
+                ? "Cash on delivery"
+                : "Online payment"}
+            </span>
+          </div>
+          {order.order.delivered_date && (
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-700 dark:text-gray-300">
+                Delivered Date:
               </span>
-              <span className="mx-2">·</span>
-              <span className="text-primary-500">Order Placed</span>
-            </p>
+              <span className="text-gray-600 dark:text-gray-400">
+                {new Date(order.order.delivered_date).toLocaleDateString()}
+              </span>
+            </div>
+          )}
+          {order.order.tracking_id && (
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-700 dark:text-gray-300">
+                Tracking ID:
+              </span>
+              <span className="text-gray-600 dark:text-gray-400">
+                {order.order.tracking_id}
+              </span>
+            </div>
+          )}
+          <div className="flex justify-between">
+            <span className="font-medium text-gray-700 dark:text-gray-300">
+              Order Status:
+            </span>
+            <span className="text-gray-600 dark:text-gray-400">
+              {order.order.order_status === "PEN" ? "Pending" : "Order Placed"}
+            </span>
           </div>
-          <div className="mt-3 sm:mt-0">
-            <ButtonPrimary
-              sizeClass="py-2.5 px-4 sm:px-6"
-              fontSize="text-sm font-medium"
-              onClick={() => handleViewOrder(order)} // Handle view order
-            >
-              View Order
-            </ButtonPrimary>
+          <div className="flex justify-between">
+            <span className="font-medium text-gray-700 dark:text-gray-300">
+              Currency:
+            </span>
+            <span className="text-gray-600 dark:text-gray-400">
+              {order.order.currency}
+            </span>
           </div>
+        </div>
+
+        <div className="mt-6">
+          <ButtonPrimary
+            sizeClass="py-3 px-4 w-full bg-primary-900 hover:bg-primary-900 text-white rounded-lg"
+            fontSize="text-sm font-medium"
+            onClick={() => handleViewOrder(order)}
+          >
+            View Order Detail
+          </ButtonPrimary>
         </div>
       </div>
     );
   };
 
   // Function to handle viewing an order
-  const handleViewOrder = (order: OrderHistory) => {
+  const handleViewOrder = (order: OrderData) => {
     setSelectedOrder(order); // Set the selected order
     setIsModalOpen(true); // Open modal
   };
@@ -174,9 +238,9 @@ const AccountOrder = () => {
           {/* HEADING */}
           <h2 className="text-2xl sm:text-3xl font-semibold">Order History</h2>
 
-          {ordersHistory && ordersHistory.length > 0 ? (
-            ordersHistory.map((order) => (
-              <Fragment key={order.order_id}>{renderOrder(order)}</Fragment>
+          {orders.orders && orders.orders.length > 0 ? (
+            orders.orders.map((o) => (
+              <Fragment key={o.order.invoice_number}>{renderOrder(o)}</Fragment>
             ))
           ) : (
             <div className="flex flex-col items-center justify-center py-20">
@@ -212,17 +276,15 @@ const AccountOrder = () => {
         </div>
       </CommonLayout>
 
-      {/* Modal for displaying order products */}
       {isModalOpen && selectedOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-4">
-          <div className="bg-white rounded-lg shadow-lg max-w-3xl w-full p-6 sm:p-8 overflow-y-auto max-h-[80vh] relative">
-            {/* Modal Header */}
-            <div className="flex justify-between items-center mb-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 px-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full p-8 sm:p-10 overflow-y-auto max-h-[80vh] relative">
+            <div className="flex justify-between items-center mb-8">
               <h3 className="text-2xl font-bold text-gray-800">
-                Order: {selectedOrder.order_id}
+                Order: {selectedOrder.order.invoice_number}
               </h3>
               <button
-                className="text-gray-600 hover:text-gray-900"
+                className="text-gray-600 hover:text-gray-900 focus:outline-none"
                 onClick={handleCloseModal}
                 aria-label="Close Modal"
               >
@@ -241,7 +303,6 @@ const AccountOrder = () => {
               </button>
             </div>
 
-            {/* Render Products */}
             <div className="space-y-6">
               {selectedOrder.products.map((product, index) => (
                 <Fragment key={product.product_id}>
@@ -250,24 +311,27 @@ const AccountOrder = () => {
               ))}
             </div>
 
-            {/* Divider */}
-            <div className="border-t border-gray-200 my-6"></div>
+            <div className="border-t border-gray-300 my-6"></div>
 
-            {/* Total Section */}
-            <div className="flex justify-between text-lg font-semibold">
-              <span>Total</span>
-              <span>
-                ₹
-                {selectedOrder.products
-                  .reduce((total, product, index) => {
-                    return (
-                      total +
-                      +product.selling_price *
-                        +selectedOrder.orders[index].quantity
-                    );
-                  }, 0)
-                  .toFixed(2)}
-              </span>
+            <div className="flex flex-col space-y-3">
+              <div className="flex justify-between text-lg font-semibold">
+                <span>SubTotal</span>
+                <span className="text-gray-800">
+                  ₹{selectedOrder.order.invoice_amount}
+                </span>
+              </div>
+              <div className="flex justify-between text-lg font-semibold">
+                <span>Delivery Charges</span>
+                <span className="text-gray-800">
+                  ₹{selectedOrder.order.delivery_charge}
+                </span>
+              </div>
+              <div className="flex justify-between text-xl font-bold border-t border-gray-400 pt-3 mt-3">
+                <span>Total</span>
+                <span className="text-gray-900">
+                  ₹{selectedOrder.order.total_amount}
+                </span>
+              </div>
             </div>
           </div>
         </div>

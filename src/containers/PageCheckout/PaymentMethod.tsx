@@ -288,7 +288,7 @@ const PaymentMethod: FC<Props> = ({
             className="bg-slate-50 dark:bg-slate-800 mt-5 sm:mt-0 sm:ml-auto !rounded-lg"
             onClick={onOpenActive}
           >
-            Change
+            Choose
           </ButtonSecondary>
         </div>
 
@@ -301,7 +301,7 @@ const PaymentMethod: FC<Props> = ({
           {/* <div>{renderDebitCredit()}</div> */}
 
           {/* ==================== */}
-          <div>{renderInterNetBanking()}</div>
+          {/* <div>{renderInterNetBanking()}</div> */}
 
           {/* ==================== */}
           <div>{renderWallet()}</div>

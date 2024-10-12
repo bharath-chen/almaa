@@ -17,7 +17,11 @@ import useViewCart from "../../hooks/useViewCart";
 import orderService from "../../services/order-service";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { RootState } from "../../state/store";
-import { setItems, selectCartTotal } from "../../features/cart/cartSlice";
+import {
+  setItems,
+  selectCartTotal,
+  selectCartItemCount,
+} from "../../features/cart/cartSlice";
 import addressService from "../../services/address-service";
 import apiClient, { CanceledError } from "../../services/api-client";
 import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
@@ -38,13 +42,14 @@ const CheckoutPage = () => {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     "onlinePayment" | "cod"
-  >("onlinePayment");
+  >("cod");
   const navigate = useNavigate();
   const location = useLocation();
   const user = useAppSelector((state: RootState) => state.auth);
   const totalPrice = useAppSelector(selectCartTotal);
   const dispatch = useAppDispatch();
   const cart = useAppSelector((state: RootState) => state.cart);
+  const totalQuantity = useAppSelector(selectCartItemCount);
   const [tabActive, setTabActive] = useState<string>("");
   const [offerCodes, setOfferCodes] = useState<OfferCode[]>([]);
   const [offerCode, setOfferCode] = useState<string>("");
@@ -216,7 +221,11 @@ const CheckoutPage = () => {
                   <p>{item.suitablefor}</p>
                 </div>
 
-                <div className="mt-3 flex justify-between w-full sm:hidden relative">
+                <div className="mt-3 flex justify-between w-full relative text-sm text-slate-600 dark:text-slate-300">
+                  Qty: {+qty || +quantity}
+                </div>
+
+                {/* <div className="mt-3 flex justify-between w-full sm:hidden relative">
                   <select
                     name="qty"
                     id="qty"
@@ -234,31 +243,22 @@ const CheckoutPage = () => {
                     contentClass="py-1 px-2 md:py-1.5 md:px-2.5 text-sm font-medium h-full"
                     price={+selling_price}
                   />
-                </div>
+                </div> */}
               </div>
 
-              <div className="hidden flex-1 sm:flex justify-end">
-                <Prices price={+selling_price} className="mt-0.5" />
+              <div className="flex justify-end">
+                <Prices
+                  price={+selling_price}
+                  className="text-lg font-medium"
+                />
               </div>
             </div>
           </div>
 
           <div className="flex mt-auto pt-4 items-end justify-between text-sm">
-            <div className="hidden sm:block text-center relative">
+            {/* <div className="hidden sm:block text-center relative">
               x {+qty || +quantity}
-              {/* <NcInputNumber
-                defaultValue={+qty || +quantity}
-                onChange={(value) =>
-                  dispatch(
-                    updateCartQuantity({
-                      product_id: product_id,
-                      quantity: value,
-                    })
-                  )
-                }
-                className="relative z-10"
-              /> */}
-            </div>
+            </div> */}
 
             {/* <a
               className="cursor-pointer relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
@@ -315,8 +315,9 @@ const CheckoutPage = () => {
           {addressList.map((address, index) => (
             <ShippingAddress
               address={address}
-              key={index}
+              key={address.address_id}
               onAddressChange={handleAddressChange}
+              onUpdateAddress={updateAddress}
               onAddAddress={addAddress}
               onDeleteAddress={deleteAddress}
               selectedAddress={selectedAddress}
@@ -344,7 +345,7 @@ const CheckoutPage = () => {
               handleScrollToEl("PaymentMethod");
             }}
             onConfirmOrder={handleConfirmOrder}
-            onCloseActive={() => setTabActive("PaymentMethod")}
+            onCloseActive={() => setTabActive("")}
           />
         </div>
       </div>
@@ -360,6 +361,10 @@ const CheckoutPage = () => {
         setAddressList(list);
         setTabActive("ShippingAddress" + index);
         handleScrollToEl("ShippingAddress" + index);
+      } else {
+        dispatch(
+          showModal({ type: "info", message: "Max of 3 address can be added" })
+        );
       }
     }
   };
@@ -400,6 +405,8 @@ const CheckoutPage = () => {
       recently_use: "0",
     };
 
+    dispatch(showLoader());
+
     addressService
       .create<{
         gofor: string;
@@ -414,41 +421,106 @@ const CheckoutPage = () => {
         recently_use: string;
       }>(payload)
       .then((res) => {
-        console.log(res.data);
+        dispatch(hideLoader());
+        if (res.data) {
+          dispatch(
+            showModal({
+              type: "success",
+              message: "Address added successfully!",
+            })
+          );
+        }
         getAddressList();
+      })
+      .catch((err) => {
+        dispatch(hideLoader());
+      });
+  };
+
+  const updateAddress = (address: Address, index: number) => {
+    const payload = {
+      gofor: "editaddress",
+      customer_id: user.customer_id,
+      doorno: address.doorno,
+      street: address.street,
+      location: address.location,
+      pincode: address.pincode,
+      city: address.city,
+      state: address.state,
+      primary_use: "1",
+      recently_use: "0",
+    };
+
+    dispatch(showLoader());
+
+    addressService
+      .create<{
+        gofor: string;
+        customer_id: string;
+        doorno: string;
+        street: string;
+        location: string;
+        pincode: string;
+        city: string;
+        state: string;
+        primary_use: string;
+        recently_use: string;
+      }>(payload)
+      .then((res) => {
+        dispatch(hideLoader());
+        if (res.data) {
+          dispatch(
+            showModal({
+              type: "success",
+              message: "Address updated successfully!",
+            })
+          );
+        }
+        getAddressList();
+      })
+      .catch((err) => {
+        dispatch(hideLoader());
       });
   };
 
   const deleteAddress = (address: Address, index: number) => {
     const prevAddressList = addressList;
-    const updatedAddressList = [...addressList].filter(
-      (a) => a.address_id !== address.address_id
-    );
+    const updatedAddressList = [...addressList];
+    updatedAddressList.splice(index, 1);
     setAddressList(updatedAddressList);
-    const { request } = addressService.get<
-      null,
-      { gofor: string; address_id: string }
-    >({ gofor: "deleteaddress", address_id: address.address_id });
 
-    dispatch(showLoader());
+    if (address.address_id) {
+      const { request } = addressService.get<
+        null,
+        { gofor: string; address_id: string }
+      >({ gofor: "deleteaddress", address_id: address.address_id });
 
-    request
-      .then((res) => {
-        console.log(res.data);
-        dispatch(hideLoader());
-        getAddressList();
-      })
-      .catch((err) => {
-        if (err instanceof CanceledError) return;
+      dispatch(showLoader());
 
-        dispatch(hideLoader());
-        setAddressList(prevAddressList);
-      });
+      request
+        .then((res) => {
+          console.log(res.data);
+          dispatch(hideLoader());
+          getAddressList();
+        })
+        .catch((err) => {
+          if (err instanceof CanceledError) return;
+
+          dispatch(hideLoader());
+          setAddressList(prevAddressList);
+        });
+    }
   };
 
   const calculatedTotalAmount = () =>
     +calculateDiscount(totalPrice, discount).discountedPrice +
     (+location?.state?.shippingEstimate || 0);
+
+  const subTotal = (
+    totalPrice - +calculateDiscount(totalPrice, discount).discountAmount
+  ).toFixed(2);
+
+  const total = (+calculatedTotalAmount()).toFixed(2);
 
   const handleConfirmOrder = async () => {
     const isLessThan330 = +calculatedTotalAmount() < 330;
@@ -471,6 +543,10 @@ const CheckoutPage = () => {
       customer_id: string;
       address_id: string;
       invoice_amount: string;
+      fullquantity: string;
+      delivery_charge: string;
+      total_amount: string;
+      payment_mode: string;
       product_details: { product_id: string; quantity: string }[];
     }
 
@@ -489,7 +565,11 @@ const CheckoutPage = () => {
       gofor: "createorders",
       customer_id: user.customer_id,
       address_id: selectedAddress?.address_id || "1",
-      invoice_amount: finalPrice.toString(),
+      invoice_amount: subTotal,
+      fullquantity: totalQuantity.toString(),
+      delivery_charge: location?.state?.shippingEstimate.toString() || "0",
+      total_amount: finalPrice.toString(),
+      payment_mode: selectedPaymentMethod,
       product_details: cart.items.map((c) => ({
         product_id: c.product_id,
         quantity: c.quantity.toString(),
@@ -528,7 +608,7 @@ const CheckoutPage = () => {
 
           const options: RazorpayOrderOptions = {
             key: razorpayKey,
-            amount: totalPrice,
+            amount: finalPrice * 100,
             currency: "INR",
             name: "Almaa Herbal Nature Pvt Ltd",
             description: "Test Transaction",
@@ -542,6 +622,7 @@ const CheckoutPage = () => {
                 if (
                   verificationResponse.data.response === "Payment Successful"
                 ) {
+                  dispatch(hideLoader());
                   dispatch(
                     showModal({
                       type: "success",
@@ -551,6 +632,7 @@ const CheckoutPage = () => {
                   navigate("/thanks");
                 }
               } catch (verificationError) {
+                dispatch(hideLoader());
                 dispatch(
                   showModal({ type: "error", message: "Payment Failed" })
                 );
@@ -576,6 +658,7 @@ const CheckoutPage = () => {
           });
         }
       } else {
+        dispatch(hideLoader());
         navigate("/thanks");
       }
     } catch (error) {
@@ -713,7 +796,11 @@ const CheckoutPage = () => {
                   <div className="mt-4 flex justify-between py-2.5">
                     <span>Subtotal</span>
                     <span className="font-semibold text-slate-900 dark:text-slate-200">
-                      ₹{totalPrice.toFixed(2)}
+                      ₹{subTotal}
+                      {/* {(
+                        totalPrice -
+                        +calculateDiscount(totalPrice, discount).discountAmount
+                      ).toFixed(2)} */}
                     </span>
                   </div>
                   {location.state?.shippingEstimate && (
@@ -733,7 +820,7 @@ const CheckoutPage = () => {
                   <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
                     <span>Order total</span>
                     <span>
-                      {/* + 24.9 */}₹{(+calculatedTotalAmount()).toFixed(2)}
+                      {/* + 24.9 */}₹{total}
                     </span>
                   </div>
                 </div>

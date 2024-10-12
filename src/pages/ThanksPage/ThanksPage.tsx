@@ -7,7 +7,7 @@ import SuccessImage from "../../assets/Almaa-Order-min.png";
 
 const ThanksPage: React.FC = () => {
   const navigate = useNavigate();
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(10);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -16,7 +16,7 @@ const ThanksPage: React.FC = () => {
 
     const redirectTimer = setTimeout(() => {
       navigate("/account-my-order");
-    }, 5000);
+    }, 10000);
 
     return () => {
       clearInterval(timer);
