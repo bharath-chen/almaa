@@ -253,7 +253,7 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
         </div>
       </section>
       {/* EMAIL SUBSCRIBE SECTION */}
-      <EmailSubscribeSection subscribeImg={subscribeImg} />
+      <EmailSubscribeSection />
     </div>
   );
 };

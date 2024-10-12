@@ -6,6 +6,7 @@ import { Banner } from "../../models/banner";
 import NcImage from "../../shared/NcImage/NcImage";
 import styles from "./AppCarousel.module.css";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
+import { Link } from "react-router-dom";
 
 // const SampleNextArrow = (props) => {
 //   const { className, style, onClick } = props;
@@ -95,7 +96,7 @@ const AppCarousel = () => {
             <div className={styles.bannerContent}>
               <h2>{banner.banner_content}</h2>
               <ButtonPrimary>
-                <a href={banner.link}>Buy now</a>
+                <Link to={banner.link}>Buy now</Link>
               </ButtonPrimary>
             </div>
           </div>

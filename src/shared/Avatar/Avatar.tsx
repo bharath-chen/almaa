@@ -2,6 +2,7 @@ import { avatarColors } from "../../contains/contants";
 import { FC } from "react";
 
 import { avatarImgs } from "../../contains/fakeData";
+import userPlaceholderImg from "../../assets/fff0263a-8f19-4b74-8f3d-fc24b9561a96.svg";
 import VerifyIcon from "../../components/VerifyIcon";
 
 export interface AvatarProps {
@@ -18,7 +19,7 @@ const Avatar: FC<AvatarProps> = ({
   containerClassName = "ring-1 ring-white dark:ring-neutral-900",
   sizeClass = "h-6 w-6 text-sm",
   radius = "rounded-full",
-  imgUrl = avatarImgs[Math.floor(Math.random() * avatarImgs.length)],
+  imgUrl = userPlaceholderImg,
   userName,
   hasChecked,
   hasCheckedClass = "w-4 h-4 bottom-1 -right-0.5",

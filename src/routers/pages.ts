@@ -43,6 +43,7 @@ import Faq from "../pages/Faq";
 import TermsAndConditions from "../pages/TermsAndConditions/TermsAndConditions";
 import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
+import ThanksPage from "../pages/ThanksPage/ThanksPage";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -79,6 +80,7 @@ export const pages: Page[] = [
   //
   { path: "/cart", component: CartPage, protectedRoute: true },
   { path: "/checkout", component: CheckoutPage, protectedRoute: true },
+  { path: "/thanks", component: ThanksPage, protectedRoute: true },
   //
   { path: "/blog", component: Blog },
   { path: "/blog/:id", component: BlogSingle },

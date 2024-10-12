@@ -14,6 +14,7 @@ import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
 import { CanceledError } from "axios";
 import { showModal } from "../../features/modal/modalSlice";
 import MandatoryIcon from "../../components/MandatoryIcon/MandatoryIcon";
+import { Customer } from "../../models/customer";
 
 const schema = z
   .object({
@@ -53,10 +54,18 @@ const AccountPass = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const onSubmit = (data: any) => {
-    const { request } = updatePasswordService.get({
+  const onSubmit = (data: PasswordFormData) => {
+    const { request } = updatePasswordService.get<
+      Customer,
+      {
+        customer_id: number;
+        password: string;
+        newpassword: string;
+      }
+    >({
       customer_id: +customer.customer_id,
-      password: data.newPassword,
+      password: data.currentPassword,
+      newpassword: data.newPassword,
     });
 
     dispatch(showLoader());
@@ -64,7 +73,16 @@ const AccountPass = () => {
     request
       .then((res) => {
         dispatch(hideLoader());
-        console.log(res.data);
+        if (res.data["message"] && !res?.data?.customer_id) {
+          dispatch(showModal({ type: "error", message: res.data["message"] }));
+        } else {
+          dispatch(
+            showModal({
+              type: "success",
+              message: "Password updated successfully!",
+            })
+          );
+        }
         reset();
       })
       .catch((err) => {
@@ -127,13 +145,14 @@ const AccountPass = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl space-y-6">
           <div>
             <Label>
-              Current password <MandatoryIcon />{" "}
+              Password <MandatoryIcon />{" "}
             </Label>
             <div className="relative">
               <Input
                 type={showCurrentPassword ? "text" : "password"}
                 className="mt-1.5"
                 {...register("currentPassword")}
+                placeholder="Enter your current password"
               />
               <button
                 type="button"
@@ -158,6 +177,7 @@ const AccountPass = () => {
                 type={showNewPassword ? "text" : "password"}
                 className="mt-1.5"
                 {...register("newPassword")}
+                placeholder="Enter your new password"
               />
               <button
                 type="button"
@@ -182,6 +202,7 @@ const AccountPass = () => {
                 type={showConfirmPassword ? "text" : "password"}
                 className="mt-1.5"
                 {...register("confirmPassword")}
+                placeholder="Re-enter your new password"
               />
               <button
                 type="button"

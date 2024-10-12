@@ -122,7 +122,7 @@ const Login: FC = () => {
   return (
     <div className="nc-PageLogin">
       <Helmet>
-        <title>Login || Ciseco React Template</title>
+        <title>Almaa</title>
       </Helmet>
       <div className="container mb-24 lg:mb-32">
         <h2 className="my-20 text-center text-3xl font-semibold text-neutral-900 dark:text-neutral-100">
@@ -136,8 +136,9 @@ const Login: FC = () => {
               </label>
               <Input
                 type="text"
-                placeholder="Email or Mobile No"
+                placeholder="Enter your email or mobile number"
                 {...register("username")}
+                className="mt-1.5"
               />
               {errors.username && (
                 <InputErrorMessage>{errors.username.message}</InputErrorMessage>
@@ -155,7 +156,7 @@ const Login: FC = () => {
               </div>
               <div className="relative">
                 <Input
-                  placeholder="Password"
+                  placeholder="Enter your password"
                   type={showPassword ? "text" : "password"}
                   className="mt-1.5"
                   {...register("password")}

@@ -26,8 +26,9 @@ import { Coupon } from "../../models/Coupon";
 import paymentGatewayService from "../../services/payment-gateway-service";
 import { OrdersPayload } from "../AccountPage/AccountOrder";
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
-import { environment } from "../../environments/environment.prod";
+import { environment } from "../../environments/environment";
 import { showModal } from "../../features/modal/modalSlice";
+import { Helmet } from "react-helmet-async";
 
 const razorpayKey = environment.razorPayApiKey;
 const CheckoutPage = () => {
@@ -44,7 +45,7 @@ const CheckoutPage = () => {
   const totalPrice = useAppSelector(selectCartTotal);
   const dispatch = useAppDispatch();
   const cart = useAppSelector((state: RootState) => state.cart);
-  const [tabActive, setTabActive] = useState<string>("ContactInfo");
+  const [tabActive, setTabActive] = useState<string>("");
   const [offerCodes, setOfferCodes] = useState<OfferCode[]>([]);
   const [offerCode, setOfferCode] = useState<string>("");
   const [discountCodeError, setDiscountCodeError] = useState<string>("");
@@ -115,8 +116,7 @@ const CheckoutPage = () => {
         gofor: "couponcode",
         customer_id: user.customer_id,
         coupon_code: validCode.code,
-        coprice: calculateDiscount(totalPrice, +validCode.discount)
-          .discountedPrice,
+        coprice: totalPrice.toString(),
       })
       .then((res) => {
         if (res.data.status === "Coupon Code Expired") {
@@ -446,109 +446,14 @@ const CheckoutPage = () => {
       });
   };
 
-  // const handleConfirmOrder = () => {
-  //   interface CreateOrderPayload {
-  //     gofor: string;
-  //     customer_id: string;
-  //     address_id: string;
-  //     invoice_amount: string;
-  //     product_details: { product_id: string; quantity: string }[];
-  //   }
-
-  //   if (
-  //     !selectedAddress ||
-  //     !selectedAddress.address_id ||
-  //     !selectedPaymentMethod ||
-  //     cart.items.length === 0
-  //   ) {
-  //     return;
-  //   }
-
-  //   const payload: CreateOrderPayload = {
-  //     gofor: "createorders",
-  //     customer_id: user.customer_id,
-  //     address_id: selectedAddress?.address_id || "1",
-  //     invoice_amount: totalPrice.toString(),
-  //     product_details: cart.items.map((c) => ({
-  //       product_id: c.product_id,
-  //       quantity: c.quantity.toString(),
-  //     })),
-  //   };
-  //   console.log(cart.items);
-
-  //   dispatch(showLoader());
-
-  //   orderService.create<CreateOrderPayload>(payload).then(async (res) => {
-  //     if (selectedPaymentMethod === "onlinePayment") {
-  //       try {
-  //         const ordersRes = await orderService.get<
-  //           OrdersPayload,
-  //           { gofor: string; customer_id: string }
-  //         >({ gofor: "vieworders", customer_id: customer?.customer_id })
-  //           .request;
-  //         const filteredOrders = ordersRes.data.viewOrders.filter(
-  //           (o) => o.order_id
-  //         );
-  //         dispatch(hideLoader());
-  //         if (ordersRes && filteredOrders.length > 0) {
-  //           const { request } = paymentGatewayService.onlinePayment(
-  //             user.customer_id,
-  //             filteredOrders[0].order_id
-  //           );
-
-  //           request.then((res) => {
-  //             dispatch(hideLoader());
-  //             console.log(res);
-  //             const options: RazorpayOrderOptions = {
-  //               key: environment.REACT_APP_API_RAZOR_PAY_API_TEST_KEY,
-  //               amount: totalPrice, // Amount in paise
-  //               currency: "INR",
-  //               name: "Test Company",
-  //               description: "Test Transaction",
-  //               order_id: res.data.order_id,
-  //               handler: (response) => {
-  //                 const { request } =
-  //                   paymentGatewayService.verifyPayment(response);
-  //                 request
-  //                   .then((res) => {
-  //                     if (res.data.response === "Payment Successful") {
-  //                       navigate("/account-my-order");
-  //                     }
-  //                   })
-  //                   .catch((err) => console.log(err));
-  //               },
-  //               prefill: {
-  //                 name: `${user.first_name} ${user.last_name}`,
-  //                 email: user.email,
-  //                 contact: user.mobilenumber,
-  //               },
-  //               theme: {
-  //                 color: "#F37254",
-  //               },
-  //             };
-
-  //             const razorpayInstance = new Razorpay(options);
-  //             razorpayInstance.open();
-  //           });
-  //         }
-  //       } catch (err) {
-  //         if (err instanceof CanceledError) return;
-
-  //         dispatch(hideLoader());
-  //         console.log(err.message);
-  //       }
-  //     } else {
-  //       navigate("/account-my-order");
-  //     }
-  //   });
-  // };
-
   const calculatedTotalAmount = () =>
     +calculateDiscount(totalPrice, discount).discountedPrice +
     (+location?.state?.shippingEstimate || 0);
 
   const handleConfirmOrder = async () => {
     const isLessThan330 = +calculatedTotalAmount() < 330;
+
+    const finalPrice = +calculatedTotalAmount();
 
     if (isLessThan330) {
       dispatch(
@@ -584,13 +489,12 @@ const CheckoutPage = () => {
       gofor: "createorders",
       customer_id: user.customer_id,
       address_id: selectedAddress?.address_id || "1",
-      invoice_amount: totalPrice.toString(),
+      invoice_amount: finalPrice.toString(),
       product_details: cart.items.map((c) => ({
         product_id: c.product_id,
         quantity: c.quantity.toString(),
       })),
     };
-    console.log("Cart Items:", cart.items);
 
     dispatch(showLoader()); // Show loader at the start
 
@@ -644,7 +548,7 @@ const CheckoutPage = () => {
                       message: "Order Proccessed Successfully!",
                     })
                   );
-                  navigate("/account-my-order");
+                  navigate("/thanks");
                 }
               } catch (verificationError) {
                 dispatch(
@@ -666,25 +570,32 @@ const CheckoutPage = () => {
           razorpayInstance.open();
           dispatch(hideLoader());
         } else {
-          alert("No valid orders found.");
+          showModal({
+            type: "info",
+            message: "No valid orders found.",
+          });
         }
       } else {
-        navigate("/account-my-order");
+        navigate("/thanks");
       }
     } catch (error) {
       dispatch(hideLoader());
       if (error instanceof CanceledError) return;
 
-      console.error("Error in processing the order:", error);
-      // alert("Failed to process the order. Please try again.");
+      dispatch(
+        showModal({
+          type: "error",
+          message: "Failed to process the order. Please try again.",
+        })
+      );
     }
   };
 
   return (
     <div className="nc-CheckoutPage">
-      {/* <Helmet>
-        <title>Checkout || Ciseco Ecommerce Template</title>
-        </Helmet> */}
+      <Helmet>
+        <title>Almaa</title>
+      </Helmet>
 
       <main className="container py-16 lg:pb-28 lg:pt-20 ">
         <div className="mb-16">

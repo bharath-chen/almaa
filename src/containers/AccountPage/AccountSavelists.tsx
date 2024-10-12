@@ -7,6 +7,7 @@ import {
 } from "../../features/wishlist/wishlistSlice";
 import ProductCard from "../../components/ProductCard";
 import { Product } from "../../models/product";
+import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 
 const AccountSavelists = () => {
   const dispatch = useAppDispatch();
@@ -25,15 +26,31 @@ const AccountSavelists = () => {
       <div className="space-y-10 sm:space-y-12">
         <div>
           <h2 className="text-2xl sm:text-3xl font-semibold">
-            List of saved products
+            Wishlist: Keep Track of What You Love
           </h2>
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3 ">
-          {!items?.productdetail?.length && (
-            <h3 className="text-center">No wishlist added!</h3>
-          )}
-          {items.productdetail.length > 0 &&
+          {!items?.productdetail?.length ? (
+            <div className="flex flex-col items-center justify-center p-6 bg-gray-100 rounded-lg">
+              <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                Your Wishlist is Empty!
+              </h3>
+              <p className="text-gray-500 mb-4">
+                Looks like you haven't saved any products yet. Start adding
+                items to your wishlist!
+              </p>
+              <ButtonPrimary
+                onClick={() => {
+                  /* Redirect to product page or search */
+                }}
+                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+              >
+                Browse Products
+              </ButtonPrimary>
+            </div>
+          ) : (
+            items.productdetail.length > 0 &&
             items?.productdetail
               ?.filter(
                 (obj, index, self) =>
@@ -52,11 +69,9 @@ const AccountSavelists = () => {
                     }
                   />
                 );
-              })}
+              })
+          )}
         </div>
-        {/* <div className="flex !mt-20 justify-center items-center">
-          <ButtonSecondary loading>Show me more</ButtonSecondary>
-        </div> */}
       </div>
     );
   };

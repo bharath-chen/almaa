@@ -452,7 +452,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 </div>
                 <span className="ml-1.5 flex">
                   <span>
-                    {productDetail?.product_details[0]?.user_ratings}{" "}
+                    {productDetail?.product_details[0]?.almaa_ratings}{" "}
                   </span>
                   <span className="mx-1.5">·</span>
                   <span className="text-slate-700 dark:text-slate-400 underline">
@@ -486,7 +486,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             onItemChange={setBuyingOption}
           /> */}
 
-          <div className="my-2">
+          {/* <div className="my-2">
             <h4 className="text-sm font-semibold">Buying Option</h4>
 
             <div className="grid grid-cols-2 gap-4 desktop:gap-6 desktop:flex desktop:flex-col">
@@ -499,7 +499,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 />
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/*  ---------- 4  QTY AND ADD TO CART BUTTON */}
           <div className="flex space-x-3.5">

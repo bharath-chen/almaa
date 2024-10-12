@@ -180,9 +180,9 @@ const ShippingAddress: FC<Props> = ({
                 <span className="">
                   {`${address?.doorno || ""}, ${address.street || ""}, ${
                     address.location
-                  }, ${address.city || ""}, ${address?.state || ""}, ${
-                    "India" || ""
-                  } - ${address.pincode || ""}`}
+                  }, ${address.city || ""}, ${
+                    address?.state || ""
+                  }, ${"India"} - ${address.pincode || ""}`}
                 </span>
               </div>
             )}

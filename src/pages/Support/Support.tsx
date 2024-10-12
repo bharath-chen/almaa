@@ -34,7 +34,7 @@ const info = [
   },
   {
     title: "PHONE",
-    desc: "+91-7401403002",
+    desc: "+91-9003000888",
   },
 ];
 const mobilePattern = /^\d{10}$/;
@@ -159,7 +159,7 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
                   </Label>
 
                   <Input
-                    placeholder="Enter Name"
+                    placeholder="Enter your full name"
                     type="text"
                     className="mt-1"
                     {...register("name")}
@@ -175,7 +175,7 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
                   </Label>
 
                   <Input
-                    placeholder="Enter Mobile Number"
+                    placeholder="Enter your 10-digit mobile number"
                     type="text"
                     className="mt-1"
                     {...register("mobileNumber")}
@@ -193,7 +193,7 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
 
                   <Input
                     type="email"
-                    placeholder="Enter Mail Address"
+                    placeholder="Enter your email address"
                     className="mt-1"
                     {...register("emailAddress")}
                   />
@@ -211,7 +211,7 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
 
                   <Input
                     type="text"
-                    placeholder="Enter Location"
+                    placeholder="Enter your city or location"
                     className="mt-1"
                     {...register("location")}
                   />
@@ -228,7 +228,7 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
 
                   <Input
                     type="text"
-                    placeholder="Enter Subject"
+                    placeholder="Enter the subject of your message"
                     className="mt-1"
                     {...register("subject")}
                   />
@@ -244,7 +244,7 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
                   </Label>
 
                   <Textarea
-                    placeholder="Enter Message"
+                    placeholder="Enter your message or inquiry"
                     className="mt-1"
                     rows={6}
                     {...register("message")}

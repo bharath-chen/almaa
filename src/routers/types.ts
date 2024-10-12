@@ -20,6 +20,7 @@ export interface LocationStates {
   "/account-my-order"?: {};
   "/cart"?: {};
   "/checkout"?: {};
+  "/thanks"?: {};
   "/blog"?: {};
   "/blog/:id"?: {};
   "/case-studies"?: {};

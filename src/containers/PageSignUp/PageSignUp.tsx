@@ -134,7 +134,7 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
       password: data.password,
       email: data.email,
       mobilenumber: data.mobileNumber,
-      resgistration_type: "Website",
+      // resgistration_type: "Website",
     };
 
     dispatch(showLoader());

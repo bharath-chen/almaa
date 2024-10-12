@@ -65,7 +65,7 @@ const DoctorsTeam = ({ className = "" }: DoctorsTeamProps) => {
 
         <section className="pt-20">
           {/* EMAIL SUBSCRIBE SECTION */}
-          <EmailSubscribeSection subscribeImg={subscribeImg} />
+          <EmailSubscribeSection />
         </section>
       </div>
     </div>

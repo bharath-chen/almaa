@@ -12,7 +12,7 @@ const useCategory = () => {
     apiClient
       .get("?gofor=categorylist", { signal: controller.signal })
       .then((res) => {
-        setCategories(res.data);
+        if (Array.isArray(res.data)) setCategories(res.data || []);
       })
       .catch((err) => {
         if (err instanceof CanceledError) return;

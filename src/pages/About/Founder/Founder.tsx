@@ -210,7 +210,7 @@ const Founder = () => {
       {/* MEET SINDHANAI SIDDHAR SECTION */}
       <section className="container mb-40"></section>
       {/* EMAIL SUBSCRIBE SECTION */}
-      <EmailSubscribeSection subscribeImg={subscribeImg} />
+      <EmailSubscribeSection />
     </>
   );
 };

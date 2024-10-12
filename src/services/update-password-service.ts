@@ -1,3 +1,3 @@
 import create from "./http-service";
 
-export default create("?gofor=updatepassword");
+export default create("?gofor=changepassword");

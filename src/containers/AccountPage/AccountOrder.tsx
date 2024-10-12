@@ -10,6 +10,7 @@ import { clearCart } from "../../features/cart/cartSlice";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import { getFormattedDate } from "../../utils/date-utils";
 import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
+import { useNavigate } from "react-router-dom";
 
 export interface ViewOrder {
   order_detail_id: string;
@@ -42,6 +43,7 @@ const AccountOrder = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility
   const customer = useAppSelector((state: RootState) => state.auth);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const { request, cancel } = orderService.get<
@@ -74,6 +76,7 @@ const AccountOrder = () => {
             products: indexes.map((num) => res.data.productDetail[num]),
           };
         });
+        console.log(formattedOrders);
         setOrdersHistroy(formattedOrders.reverse());
         setOrders(res.data.viewOrders);
         setProducts(res.data.productDetail);
@@ -116,7 +119,9 @@ const AccountOrder = () => {
             <p className="text-gray-500 dark:text-slate-400 flex items-center">
               <span className="hidden sm:inline-block">Qty</span>
               <span className="inline-block sm:hidden">x</span>
-              <span className="ml-2">{+orders[index].quantity}</span>
+              <span className="ml-2">
+                {+selectedOrder.orders[index].quantity}
+              </span>
             </p>
           </div>
         </div>
@@ -168,11 +173,42 @@ const AccountOrder = () => {
         <div className="space-y-10 sm:space-y-12">
           {/* HEADING */}
           <h2 className="text-2xl sm:text-3xl font-semibold">Order History</h2>
-          {ordersHistory &&
-            ordersHistory.length > 0 &&
+
+          {ordersHistory && ordersHistory.length > 0 ? (
             ordersHistory.map((order) => (
               <Fragment key={order.order_id}>{renderOrder(order)}</Fragment>
-            ))}
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center py-20">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-12 w-12 text-gray-400 mb-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 7v2a9 9 0 009 9h6m-6-9h6a9 9 0 009-9V3"
+                />
+              </svg>
+              <p className="text-lg text-gray-500">No orders found</p>
+              <p className="text-sm text-gray-400 mt-2">
+                It seems you haven't placed any orders yet.
+              </p>
+              <ButtonPrimary
+                sizeClass="mt-4 py-2.5 px-4 sm:px-6"
+                fontSize="text-sm font-medium"
+                onClick={() => {
+                  navigate("/products");
+                }}
+              >
+                Start Shopping
+              </ButtonPrimary>
+            </div>
+          )}
         </div>
       </CommonLayout>
 
@@ -225,7 +261,9 @@ const AccountOrder = () => {
                 {selectedOrder.products
                   .reduce((total, product, index) => {
                     return (
-                      total + +product.selling_price * +orders[index].quantity
+                      total +
+                      +product.selling_price *
+                        +selectedOrder.orders[index].quantity
                     );
                   }, 0)
                   .toFixed(2)}

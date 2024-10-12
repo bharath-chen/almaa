@@ -1,5 +1,5 @@
 import Label from "../../components/Label/Label";
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import Input from "../../shared/Input/Input";
 import Select from "../../shared/Select/Select";
@@ -7,17 +7,117 @@ import Textarea from "../../shared/Textarea/Textarea";
 import CommonLayout from "./CommonLayout";
 import { Helmet } from "react-helmet-async";
 import { avatarImgs } from "../../contains/fakeData";
-import { useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { RootState } from "../../state/store";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import customerService from "../../services/customer-service";
+import { Customer } from "../../models/customer";
+import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
+import { CanceledError } from "axios";
+import { z } from "zod";
+import MandatoryIcon from "../../components/MandatoryIcon/MandatoryIcon";
+import InputErrorMessage from "../../components/InputErrorMessage/InputErrorMessage";
+import { showModal } from "../../features/modal/modalSlice";
+import userPlaceholderImg from "../../assets/fff0263a-8f19-4b74-8f3d-fc24b9561a96.svg";
 
 export interface AccountPageProps {
   className?: string;
 }
 
+const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const mobilePattern = /^\d{10}$/;
+
+const schema = z.object({
+  firstName: z.string().nonempty("First Name is required"),
+  lastName: z.string().nonempty("Last Name is required"),
+  email: z
+    .string()
+    .nonempty("Email is required")
+    .refine(
+      (value) => emailPattern.test(value),
+      "Please enter a valid email address"
+    ),
+  dateOfBirth: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format. Use dd/mm/yyyy."),
+  phoneNumber: z
+    .string()
+    .nonempty("Mobile number is required")
+    .refine(
+      (value) => mobilePattern.test(value),
+      "Please enter a valid email address or 10-digit mobile number"
+    ),
+});
+
+type AccountFormData = z.infer<typeof schema>;
+
 const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
   const customer = useAppSelector((state: RootState) => state.auth);
+  const dispatch = useAppDispatch();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<AccountFormData>({ resolver: zodResolver(schema) });
+
+  const fetchCustomerDetails = () => {
+    const { request, cancel } = customerService.get<
+      Customer,
+      { gofor: string; customer_id: string }
+    >({ gofor: "customersget", customer_id: customer.customer_id });
+
+    dispatch(showLoader());
+
+    request
+      .then((res) => {
+        dispatch(hideLoader());
+        const data = res.data;
+        setValue("firstName", data.first_name);
+        setValue("lastName", data.last_name);
+        setValue("dateOfBirth", data.dob);
+        setValue("email", data.email);
+        setValue("phoneNumber", data.mobilenumber);
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+        dispatch(hideLoader());
+      });
+
+    return () => cancel(); // Call cancel on cleanup
+  };
+
+  useEffect(() => {
+    const cancelRequest = fetchCustomerDetails();
+
+    return () => cancelRequest();
+  }, []);
+
+  const handleAccountUpdate = (data: AccountFormData) => {
+    const payload = {
+      gofor: "customersedit",
+      customer_id: customer.customer_id,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      email: data.email,
+      mobilenumber: data.phoneNumber,
+      dob: data.dateOfBirth,
+    };
+
+    dispatch(showLoader());
+
+    customerService.create<Customer>(payload).then((res) => {
+      dispatch(hideLoader());
+      dispatch(
+        showModal({
+          type: "success",
+          message: "Account details has been updated successfully!",
+        })
+      );
+      fetchCustomerDetails();
+    });
+  };
 
   return (
     <div className={`nc-AccountPage ${className}`} data-nc-id="AccountPage">
@@ -35,7 +135,7 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
               {/* AVATAR */}
               <div className="relative rounded-full overflow-hidden flex">
                 <img
-                  src={avatarImgs[2]}
+                  src={userPlaceholderImg}
                   alt=""
                   className="w-32 h-32 rounded-full object-cover z-0"
                 />
@@ -58,100 +158,138 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
 
                   <span className="mt-1 text-xs">Change Image</span>
                 </div>
-                <input
+                {/* <input
                   type="file"
                   className="absolute inset-0 opacity-0 cursor-pointer"
-                />
+                /> */}
               </div>
             </div>
             <div className="flex-grow mt-10 md:mt-0 md:pl-16 max-w-3xl space-y-6">
-              <div>
-                <Label>Full name</Label>
-                <Input
-                  className="mt-1.5"
-                  // defaultValue="Enrico Cole"
-                  defaultValue={
-                    customer?.first_name + " " + customer?.last_name
-                  }
-                />
-              </div>
-
-              {/* ---- */}
-
-              {/* ---- */}
-              <div>
-                <Label>Email</Label>
-                <div className="mt-1.5 flex">
-                  <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
-                    <i className="text-2xl las la-envelope"></i>
-                  </span>
-                  <Input
-                    className="!rounded-l-none"
-                    // placeholder="example@email.com"
-                    placeholder={customer?.email}
-                  />
+              <form
+                onSubmit={handleSubmit(handleAccountUpdate)}
+                className="space-y-6"
+              >
+                <div>
+                  <Label>
+                    First name <MandatoryIcon />
+                  </Label>
+                  <Input className="mt-1.5" {...register("firstName")} />
+                  {errors.firstName && (
+                    <InputErrorMessage>
+                      {errors.firstName.message}
+                    </InputErrorMessage>
+                  )}
                 </div>
-              </div>
-
-              {/* ---- */}
-              <div className="max-w-lg">
-                <Label>Date of birth</Label>
-                <div className="mt-1.5 flex">
-                  <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
-                    <i className="text-2xl las la-calendar"></i>
-                  </span>
-                  <Input
-                    className="!rounded-l-none"
-                    type="date"
-                    defaultValue="1990-07-22"
-                  />
+                <div>
+                  <Label>
+                    Last name <MandatoryIcon />{" "}
+                  </Label>
+                  <Input className="mt-1.5" {...register("lastName")} />
+                  {errors.lastName && (
+                    <InputErrorMessage>
+                      {errors.lastName.message}
+                    </InputErrorMessage>
+                  )}
                 </div>
-              </div>
-              {/* ---- */}
-              <div>
-                <Label>Addess</Label>
-                <div className="mt-1.5 flex">
-                  <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
-                    <i className="text-2xl las la-map-signs"></i>
-                  </span>
-                  <Input
-                    className="!rounded-l-none"
-                    defaultValue="New york, USA"
-                  />
-                </div>
-              </div>
 
-              {/* ---- */}
-              <div>
+                {/* ---- */}
+
+                {/* ---- */}
+                <div>
+                  <Label>
+                    Email <MandatoryIcon />
+                  </Label>
+                  <div className="mt-1.5 flex">
+                    <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
+                      <i className="text-2xl las la-envelope"></i>
+                    </span>
+                    <Input
+                      className="!rounded-l-none"
+                      // placeholder="example@email.com"
+                      {...register("email")}
+                    />
+                  </div>
+                  {errors.email && (
+                    <InputErrorMessage>
+                      {errors.email.message}
+                    </InputErrorMessage>
+                  )}
+                </div>
+
+                {/* ---- */}
+                <div>
+                  <Label>
+                    Date of birth <MandatoryIcon />{" "}
+                  </Label>
+                  <div className="mt-1.5 flex">
+                    <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
+                      <i className="text-2xl las la-calendar"></i>
+                    </span>
+                    <Input
+                      className="!rounded-l-none"
+                      type="date"
+                      {...register("dateOfBirth")}
+                    />
+                  </div>
+                  {errors.dateOfBirth && (
+                    <InputErrorMessage>
+                      {errors.dateOfBirth.message}
+                    </InputErrorMessage>
+                  )}
+                </div>
+                {/* ---- */}
+                {/* <div>
+                  <Label>Addess</Label>
+                  <div className="mt-1.5 flex">
+                    <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
+                      <i className="text-2xl las la-map-signs"></i>
+                    </span>
+                    <Input
+                      className="!rounded-l-none"
+                      defaultValue="New york, USA"
+                    />
+                  </div>
+                </div> */}
+
+                {/* ---- */}
+                {/* <div>
                 <Label>Gender</Label>
                 <Select className="mt-1.5">
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                   <option value="Other">Other</option>
                 </Select>
-              </div>
+              </div> */}
 
-              {/* ---- */}
-              <div>
-                <Label>Phone number</Label>
-                <div className="mt-1.5 flex">
-                  <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
-                    <i className="text-2xl las la-phone-volume"></i>
-                  </span>
-                  <Input
-                    className="!rounded-l-none"
-                    defaultValue="003 888 232"
-                  />
+                {/* ---- */}
+                <div>
+                  <Label>
+                    Phone number <MandatoryIcon />{" "}
+                  </Label>
+                  <div className="mt-1.5 flex">
+                    <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
+                      <i className="text-2xl las la-phone-volume"></i>
+                    </span>
+                    <Input
+                      className="!rounded-l-none"
+                      {...register("phoneNumber")}
+                    />
+                  </div>
+                  {errors.phoneNumber && (
+                    <InputErrorMessage>
+                      {errors.phoneNumber.message}
+                    </InputErrorMessage>
+                  )}
                 </div>
-              </div>
-              {/* ---- */}
-              <div>
+                {/* ---- */}
+                {/* <div>
                 <Label>About you</Label>
                 <Textarea className="mt-1.5" defaultValue="..." />
-              </div>
-              <div className="pt-2">
-                <ButtonPrimary>Update account</ButtonPrimary>
-              </div>
+              </div> */}
+                <div className="pt-2">
+                  <ButtonPrimary type="submit">Update account</ButtonPrimary>
+                </div>
+              </form>
             </div>
           </div>
         </div>

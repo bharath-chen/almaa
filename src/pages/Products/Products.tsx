@@ -47,7 +47,7 @@ const Products: FC<Props> = ({ className = "" }) => {
   });
   const [close, setClose] = useState(false);
   const dispatch = useAppDispatch();
-  const wishlist = useAppSelector((state) => state.wishlist);
+  const customer = useAppSelector((state) => state.auth);
   const categoryId = queryParams.get("category_id"); // Extracts category_id (1)
   const category = queryParams.get("category");
   const natProductId = queryParams.get("nat_prod_id");
@@ -113,7 +113,11 @@ const Products: FC<Props> = ({ className = "" }) => {
   };
 
   const fetchProducts = () => {
-    const { request, cancel } = productService.getAll<Product>();
+    const { request, cancel } = customer?.customer_id
+      ? productService.getAll<Product, { customer_id: string }>({
+          customer_id: customer?.customer_id,
+        })
+      : productService.getAll<Product>();
 
     dispatch(showLoader());
 
