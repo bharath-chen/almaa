@@ -44,6 +44,7 @@ import TermsAndConditions from "../pages/TermsAndConditions/TermsAndConditions";
 import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import ThanksPage from "../pages/ThanksPage/ThanksPage";
+import Returns from "../pages/Returns/Returns";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -109,8 +110,8 @@ export const pages: Page[] = [
   { path: "/forgot-password", component: ForgotPassword },
   { path: "/faq", component: Faq },
   { path: "/subscription", component: PageSubcription },
-  { path: "/terms-of-service", component: TermsAndConditions },
-  { path: "/terms-of-use", component: TermsAndConditions },
+  { path: "/returns-&-refund-policy", component: Returns },
+  { path: "/terms-&-conditions", component: TermsAndConditions },
   { path: "/privacy-policy", component: PrivacyPolicy },
   { path: "/page-not-found", component: Page404 },
 ];

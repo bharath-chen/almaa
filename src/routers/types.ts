@@ -48,8 +48,8 @@ export interface LocationStates {
   "/forgot-pass"?: {};
   "/page404"?: {};
   "/subscription"?: {};
-  "/terms-of-service"?: {};
-  "/terms-of-use"?: {};
+  "/returns-&-refund-policy": {};
+  "/terms-&-conditions": {};
   "/privacy-policy"?: {};
   "/page-not-found"?: {};
 }

@@ -40,7 +40,7 @@ const EXPLORE_SECTION_DATA = [
     color: "bg-indigo-50",
     btnLabel: "Explore Now",
     quantityText: "",
-    href: "/doctors-team",
+    href: "/products",
   },
   {
     id: 2,
@@ -51,7 +51,8 @@ const EXPLORE_SECTION_DATA = [
     color: "bg-slate-100/80",
     btnLabel: "Explore Now",
     quantityText: "",
-    href: "/wellness-center",
+    href: "https://www.almahospital.com",
+    asExternalUrl: true,
   },
   {
     id: 3,
@@ -62,7 +63,8 @@ const EXPLORE_SECTION_DATA = [
     color: "bg-violet-50",
     btnLabel: "Explore Now",
     quantityText: "",
-    href: "/library",
+    href: "https://www.siddhafoodstech.com",
+    asExternalUrl: true,
   },
   {
     id: 4,
@@ -84,7 +86,8 @@ const EXPLORE_SECTION_DATA = [
     color: "bg-blue-50",
     btnLabel: "Explore Now",
     quantityText: "",
-    href: "/production-unit",
+    href: "http://drsiddha.com/",
+    asExternalUrl: true,
   },
   {
     id: 6,
@@ -95,7 +98,8 @@ const EXPLORE_SECTION_DATA = [
     color: "bg-orange-50",
     btnLabel: "Explore Now",
     quantityText: "",
-    href: "/blog",
+    href: "https://www.velasiddhavillageresorts.com",
+    asExternalUrl: true,
   },
 ];
 
