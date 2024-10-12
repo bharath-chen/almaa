@@ -13,8 +13,8 @@ const HealthAndLifestyleCard = ({ video }: Props) => {
 
   return (
     <div className="grid grid-cols-1 gap-3 w-full">
-      <div className="flex flex-col bg-white shadow-lg rounded-lg p-4 h-full min-h-[400px]">
-        <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
+      <div className="flex flex-col bg-white shadow-lg rounded-lg p-4 h-full min-h-[300px]">
+        <div className="relative w-full pb-[56.25%]">
           {isPlaying ? (
             <ReactPlayer
               url={video.video_url}
@@ -43,13 +43,11 @@ const HealthAndLifestyleCard = ({ video }: Props) => {
             </>
           )}
         </div>
-        <div className="flex-grow">
-          <h2 className="px-2 w-full font-semibold mt-3 mb-2 text-lg">
+
+        <div className="flex-grow-0 mt-3">
+          <h2 className="px-2 w-full font-semibold text-[17px] line-clamp-2">
             {video.title}
           </h2>
-        </div>
-        <div className="px-2 text-gray-700 flex-grow">
-          <p>{video.description}</p>
         </div>
       </div>
     </div>
