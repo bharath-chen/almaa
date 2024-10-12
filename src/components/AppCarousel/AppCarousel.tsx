@@ -94,7 +94,9 @@ const AppCarousel = () => {
               className={styles.bannerImage}
             />
             <div className={styles.bannerContent}>
-              <h2>{banner.banner_content}</h2>
+              <h2
+                dangerouslySetInnerHTML={{ __html: banner.banner_content }}
+              ></h2>
               <ButtonPrimary>
                 <Link to={banner.link}>Buy now</Link>
               </ButtonPrimary>
