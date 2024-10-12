@@ -235,7 +235,6 @@ const Navbar: FC<NavbarProps> = () => {
           {isLoggedIn && (
             <>
               <AvatarDropdown />
-              <CartDropdown />
             </>
           )}
           {!isLoggedIn && (
@@ -243,6 +242,7 @@ const Navbar: FC<NavbarProps> = () => {
               <Link to="/login">Login</Link>
             </>
           )}
+          <CartDropdown />
         </div>
       </div>
     );
