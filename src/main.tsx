@@ -3,9 +3,9 @@ import ReactDOM from "react-dom/client";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./styles/index.scss";
-import "./index.css";
 import "./fonts/line-awesome-1.3.0/css/line-awesome.css";
 import "rc-slider/assets/index.css";
+import "./index.css";
 
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";

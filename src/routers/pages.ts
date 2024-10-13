@@ -14,7 +14,7 @@ import ProductDetailPage from "../containers/ProductDetailPage/ProductDetailPage
 import ProductDetailPage2 from "../containers/ProductDetailPage/ProductDetailPage2";
 import AccountSavelists from "../containers/AccountPage/AccountSavelists";
 import AccountPass from "../containers/AccountPage/AccountPass";
-import AccountBilling from "../containers/AccountPage/AccountBilling";
+import AccountSupport from "../containers/AccountPage/AccountSupport";
 import AccountOrder from "../containers/AccountPage/AccountOrder";
 import CartPage from "../containers/ProductDetailPage/CartPage";
 import CheckoutPage from "../containers/PageCheckout/CheckoutPage";
@@ -76,7 +76,7 @@ export const pages: Page[] = [
     component: AccountPass,
     protectedRoute: true,
   },
-  { path: "/account-billing", component: AccountBilling, protectedRoute: true },
+  { path: "/account-support", component: AccountSupport, protectedRoute: true },
   { path: "/account-my-order", component: AccountOrder, protectedRoute: true },
   //
   { path: "/cart", component: CartPage, protectedRoute: true },

@@ -231,6 +231,10 @@ const AccountOrder = () => {
     setIsModalOpen(false); // Close modal
   };
 
+  const routeToProducts = () => {
+    navigate("/products");
+  };
+
   return (
     <div>
       <CommonLayout>
@@ -238,12 +242,8 @@ const AccountOrder = () => {
           {/* HEADING */}
           <h2 className="text-2xl sm:text-3xl font-semibold">Order History</h2>
 
-          {orders.orders && orders.orders.length > 0 ? (
-            orders.orders.map((o) => (
-              <Fragment key={o.order.invoice_number}>{renderOrder(o)}</Fragment>
-            ))
-          ) : (
-            <div className="flex flex-col items-center justify-center py-20">
+          {!orders?.orders?.length && (
+            <div className="flex flex-col items-center justify-center p-6 bg-gray-100 rounded-lg">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-12 w-12 text-gray-400 mb-4"
@@ -258,21 +258,26 @@ const AccountOrder = () => {
                   d="M3 7v2a9 9 0 009 9h6m-6-9h6a9 9 0 009-9V3"
                 />
               </svg>
-              <p className="text-lg text-gray-500">No orders found</p>
-              <p className="text-sm text-gray-400 mt-2">
+              <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                No orders found!
+              </h3>
+              <p className="text-gray-500 mb-4">
                 It seems you haven't placed any orders yet.
               </p>
               <ButtonPrimary
-                sizeClass="mt-4 py-2.5 px-4 sm:px-6"
-                fontSize="text-sm font-medium"
-                onClick={() => {
-                  navigate("/products");
-                }}
+                onClick={routeToProducts}
+                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
               >
                 Start Shopping
               </ButtonPrimary>
             </div>
           )}
+
+          {orders.orders &&
+            orders.orders.length > 0 &&
+            orders.orders.map((o) => (
+              <Fragment key={o.order.invoice_number}>{renderOrder(o)}</Fragment>
+            ))}
         </div>
       </CommonLayout>
 
