@@ -299,7 +299,7 @@ const Products: FC<Props> = ({ className = "" }) => {
               {location.state?.item?.name || category}
             </h2>
           )}
-          <div className="flex overflow-x-auto whitespace-nowrap sm:overflow-x-scroll">
+          <div className="flex overflow-x-auto whitespace-nowrap sm:overflow-x-auto">
             {subCategories.map((item) => (
               <Chip
                 active={
