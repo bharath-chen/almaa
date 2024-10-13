@@ -31,6 +31,9 @@ module.exports = {
     },
 
     extend: {
+      screens: {
+        xs: "375px",
+      },
       colors: {
         primary: {
           50: customColors("--c-primary-50"),

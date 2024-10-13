@@ -4,53 +4,8 @@ import { CanceledError } from "../../services/api-client";
 import carouselService from "../../services/carousel-service";
 import { Banner } from "../../models/banner";
 import NcImage from "../../shared/NcImage/NcImage";
-import styles from "./AppCarousel.module.css";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import { Link } from "react-router-dom";
-
-// const SampleNextArrow = (props) => {
-//   const { className, style, onClick } = props;
-//   return (
-//     <svg
-//       style={{ ...style, display: "block", color: "red" }}
-//       onClick={onClick}
-//       xmlns="http://www.w3.org/2000/svg"
-//       fill="none"
-//       viewBox="0 0 24 24"
-//       strokeWidth={1.5}
-//       stroke="currentColor"
-//       className={"size-6 " + className}
-//     >
-//       <path
-//         strokeLinecap="round"
-//         strokeLinejoin="round"
-//         d="m8.25 4.5 7.5 7.5-7.5 7.5"
-//       />
-//     </svg>
-//   );
-// };
-
-// const SamplePrevArrow = (props) => {
-//   const { className, style, onClick } = props;
-//   return (
-//     <svg
-//       style={{ ...style, display: "block", background: "green" }}
-//       onClick={onClick}
-//       xmlns="http://www.w3.org/2000/svg"
-//       fill="none"
-//       viewBox="0 0 24 24"
-//       strokeWidth={1.5}
-//       stroke="currentColor"
-//       className={"size-6 " + className}
-//     >
-//       <path
-//         strokeLinecap="round"
-//         strokeLinejoin="round"
-//         d="M15.75 19.5 8.25 12l7.5-7.5"
-//       />
-//     </svg>
-//   );
-// };
 
 const AppCarousel = () => {
   const settings = {
@@ -60,7 +15,6 @@ const AppCarousel = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    // lazyLoad: true,
     adaptiveHeight: true,
   };
 
@@ -84,21 +38,27 @@ const AppCarousel = () => {
   }, []);
 
   return (
-    <div className={styles.sliderContainer}>
+    <div className="w-full">
       <Slider {...settings}>
         {banners.map((banner) => (
-          <div key={banner.banner_id} className={styles.bannerSlide}>
+          <div key={banner.banner_id} className="relative w-screen">
             <NcImage
               src={banner.banner_image}
               alt={banner.banner_content}
-              className={styles.bannerImage}
+              className="w-screen h-[300px] md:h-[500px] md:h-[600px] object-cover"
             />
-            <div className={styles.bannerContent}>
+            <div className="absolute inset-0 flex flex-col justify-center items-start bg-black bg-opacity-40 text-white pl-[40px] md:pl-40">
               <h2
+                className="text-md xs:text-lg sm:text-2xl md:text-3xl lg:text-5xl font-semibold mb-4 text-left"
                 dangerouslySetInnerHTML={{ __html: banner.banner_content }}
               ></h2>
-              <ButtonPrimary>
-                <Link to={banner.link}>Buy now</Link>
+              <ButtonPrimary className="bg-white hover:bg-white">
+                <Link
+                  to={banner.link}
+                  className="text-black text-[12px] sm:text-[14px] md:text-[16px]"
+                >
+                  Buy now
+                </Link>
               </ButtonPrimary>
             </div>
           </div>
