@@ -1144,11 +1144,11 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
           <h4 className="text-3xl font-semibold mb-10">
             Frequently Asked Questions
           </h4>
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div>
               <img src={faqImg} alt="FAQ" />
             </div>
-            <div className="col-span-2">
+            <div>
               <AccordionInfo data={faqs} />
             </div>
           </div>
@@ -1180,7 +1180,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
         rating={productDetail?.product_details[0]?.almaa_ratings}
         reviews={productDetail?.product_feedback?.map((f) => ({
           id: f.prodcustfb_id,
-          name: "Stiven Hokinhs",
+          name: f.name,
           date: new Date().toString(),
           comment: f.comments,
           starPoint: +f.user_ratings,
