@@ -14,7 +14,10 @@ const NewsAndEvents = () => {
   const [newsAndEvents, setNewsAndEvents] = useState<INewsAndEvents[]>([]);
 
   useEffect(() => {
-    const { request, cancel } = newsEventsService.getAll<INewsAndEvents>();
+    const { request, cancel } = newsEventsService.getAll<
+      INewsAndEvents,
+      { gofor: string }
+    >({ gofor: "newseventslist" });
 
     dispatch(showLoader());
 

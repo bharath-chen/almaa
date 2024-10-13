@@ -9,4 +9,4 @@ export interface INewsAndEvents {
   image_url: string;
 }
 
-export default create("?gofor=newseventslist");
+export default create(null);

@@ -45,6 +45,7 @@ import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import ThanksPage from "../pages/ThanksPage/ThanksPage";
 import Returns from "../pages/Returns/Returns";
+import NewsAndEventsDetail from "../pages/Resources/NewsAndEvents/NewsAndEventsDetail";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -100,7 +101,7 @@ export const pages: Page[] = [
   { path: "/case-studies", component: CaseStudies },
   { path: "/case-study", component: CaseStudyDetail },
   { path: "/news-&-events", component: NewsAndEvents },
-  { path: "/news-detail", component: BlogSingle },
+  { path: "/news-&-events-detail", component: NewsAndEventsDetail },
   { path: "/media-&-gallery", component: Media },
   { path: "/videos", component: Videos },
   { path: "/support", component: Support },

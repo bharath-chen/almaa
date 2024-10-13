@@ -26,7 +26,7 @@ export interface LocationStates {
   "/case-studies"?: {};
   "/case-study"?: {};
   "/news-&-events"?: {};
-  "/news-detail"?: {};
+  "/news-&-events-detail"?: {};
   "/media-&-gallery"?: {};
   "/videos"?: {};
   "/almaa-groups"?: {};

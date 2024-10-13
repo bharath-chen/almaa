@@ -17,7 +17,7 @@ const CaseStudyDetail = ({ className = "" }: Props) => {
   const dispatch = useAppDispatch();
   const [caseStudyDetail, setCaseStudyDetail] = useState<ICaseStudy>(null);
 
-  function getCaseStudy() {
+  function fetchCaseStudy() {
     const { request, cancel } = caseStudyService.get<
       ICaseStudy,
       { gofor: string; case_study_id: string }
@@ -43,7 +43,7 @@ const CaseStudyDetail = ({ className = "" }: Props) => {
   }
 
   useEffect(() => {
-    const cancelGetCaseStudyDetail = getCaseStudy();
+    const cancelGetCaseStudyDetail = fetchCaseStudy();
 
     return () => cancelGetCaseStudyDetail();
   }, [state.caseStudy.case_study_id]);
@@ -68,9 +68,6 @@ const CaseStudyDetail = ({ className = "" }: Props) => {
                 __html: caseStudyDetail.description,
               }}
             ></span>
-            {/* <span className="text-md text-gray-500 dark:text-gray-400">
-              Designation: {state.caseStudy.designation}
-            </span> */}
           </div>
         </div>
         {/*  ---------- 4  QTY AND ADD TO CART BUTTON */}
@@ -117,9 +114,9 @@ const CaseStudyDetail = ({ className = "" }: Props) => {
               <div className="relative">
                 <div className="aspect-w-16 aspect-h-16">
                   <img
-                    src={state.caseStudy.image_url}
+                    src={caseStudyDetail.image_url}
                     className="w-full rounded-2xl object-cover"
-                    alt={state.caseStudy.title}
+                    alt={caseStudyDetail.title}
                   />
                 </div>
               </div>
