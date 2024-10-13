@@ -7,6 +7,7 @@ import { CanceledError } from "axios";
 import NewsAndEventCard from "./NewsAndEventCard";
 import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
 import { useAppDispatch } from "../../../hooks/hooks";
+import Heading from "../../../shared/Heading/Heading";
 
 const NewsAndEvents = () => {
   const dispatch = useAppDispatch();
@@ -37,7 +38,13 @@ const NewsAndEvents = () => {
 
   return (
     <section className="container my-20">
-      <div className="pt-12 pb-16 lg:pb-28">
+      <Heading
+        className="mb-5 md:mb-5 text-neutral-900 dark:text-neutral-50"
+        desc={null}
+      >
+        News & Events
+      </Heading>
+      <div className="pt-5 pb-16 lg:pb-28">
         <div className="nc-SectionMagazine5">
           <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
             {newsAndEvents.map((data) => (

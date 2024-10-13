@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import SectionFounder from "../../../containers/PageAbout/SectionFounder";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import galleryListService, {
   IGallery,
@@ -7,6 +6,7 @@ import galleryListService, {
 import { CanceledError } from "axios";
 import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
 import { useAppDispatch } from "../../../hooks/hooks";
+import Heading from "../../../shared/Heading/Heading";
 
 const Media = () => {
   const dispatch = useAppDispatch();
@@ -43,18 +43,16 @@ const Media = () => {
 
   return (
     <>
-      {/* <div className="container mx-auto my-20">
-        <SectionFounder />
-      </div> */}
-
       <div className="container mx-auto my-10">
-        <h2 className="text-3xl font-semibold text-center mb-8">Gallery</h2>
-
-        {/* Display Error or Loading */}
-        {error && <p className="text-red-500 text-center">{error}</p>}
+        <Heading
+          className="mb-5 md:mb-5 text-neutral-900 dark:text-neutral-50"
+          desc={null}
+        >
+          Gallery
+        </Heading>
 
         {/* Responsive Masonry Layout */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        <div className="pt-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {galleryList.map((gallery, index) => {
             // Customize column and row spans for masonry layout effect
             const colSpan = index % 7 === 0 ? "col-span-2" : "col-span-1";

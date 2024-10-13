@@ -50,9 +50,14 @@ const CaseStudies: React.FC = () => {
   return (
     <>
       <div className="container my-20">
-        <Heading desc="">Case Studies</Heading>
+        <Heading
+          className="mb-5 md:mb-5 text-neutral-900 dark:text-neutral-50"
+          desc={null}
+        >
+          Case Studies
+        </Heading>
         {/* === SECTION 1 === */}
-        <div className="pt-12 pb-16 lg:pb-28">
+        <div className="pt-5 pb-16 lg:pb-28">
           <div className="nc-SectionMagazine5">
             <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
               {caseStudies.map((item, index) => (
