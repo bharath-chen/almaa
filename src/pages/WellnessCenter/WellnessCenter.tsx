@@ -6,6 +6,8 @@ import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubsc
 import SEO from "../../shared/SEO/SEO";
 import { WELLNESS_CENTER } from "../../data/WELLNESS_CENTER";
 import wellnessCenterImg from "../../assets/03-Wellness Center/Wellness Center.jpg";
+import SectionHero from "../../pages/Library/SectionHero";
+import rightImg from "../../assets/06-Library/About.png";
 
 interface WellnessCenterProps {
   className?: string;
@@ -106,11 +108,18 @@ const WellnessCenter = ({ className = "" }: WellnessCenterProps) => {
 
         {/* NATURE AND SINDHANAI SIDDHAR SECTION */}
         <section className="container mt-40 mb-40">
-          <SectionFounder
+          <SectionHero
+            rightImg={rightImg}
+            heading="Vela Siddha Village Resorts "
+            btnText=""
+            subHeading="Epitome Of Preventive Health - Integrated Preventive Health care with the Amalgamation of Classical Siddha Principles, traditional architecture and One noble cause of “Health for All”"
+          />
+
+          {/* <SectionFounder
             heading="Vela Siddha Village Resorts - Epitome Of Preventive Health"
             desc="Integrated Preventive Health care with the Amalgamation of Classical Siddha Principles, traditional architecture and One noble cause of “Health for All” "
             // founders={FOUNDER_DEMO}
-          />
+          /> */}
         </section>
 
         {/* MD SECTION */}
