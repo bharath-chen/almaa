@@ -45,7 +45,7 @@ const AppCarousel = () => {
             <NcImage
               src={banner.banner_image}
               alt={banner.banner_content}
-              className="w-screen h-[300px] md:h-[500px] md:h-[600px] object-cover"
+              className="w-screen h-[300px] md:h-[500px] md:h-[600px] lg:h-[600px] object-cover"
             />
             <div className="absolute inset-0 flex flex-col justify-center items-start bg-black bg-opacity-40 text-white pl-[40px] md:pl-40">
               <h2
