@@ -32,6 +32,7 @@ interface ExploreType {
   btnLabel?: string;
   quantityText?: string;
   href?: string;
+  asExternalUrl?: boolean;
 }
 
 export interface SectionGridMoreExploreProps {
@@ -150,6 +151,7 @@ const SectionGridMoreExplore: FC<SectionGridMoreExploreProps> = ({
             btnLabel={item.btnLabel}
             quantityText={item.quantityText}
             href={item.href}
+            asExternalUrl={item?.asExternalUrl}
           />
         );
       case "box6":

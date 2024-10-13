@@ -424,10 +424,12 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
       </main>
 
       {/* MODAL VIEW ALL REVIEW */}
-      <ModalViewAllReviews
+      {/* <ModalViewAllReviews
         show={isOpenModalViewAllReviews}
         onCloseModalViewAllReviews={() => setIsOpenModalViewAllReviews(false)}
-      />
+        rating={""}
+        reviews={[]}
+      /> */}
     </div>
   );
 };

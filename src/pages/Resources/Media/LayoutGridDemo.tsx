@@ -5,9 +5,7 @@ export function LayoutGridDemo() {
   return (
     <div className="h-screen py-20 w-full">
       <LayoutGrid cards={cards} />
-      <div className="text-center">
-        <Pagination />
-      </div>
+      <div className="text-center">{/* <Pagination /> */}</div>
     </div>
   );
 }

@@ -50,6 +50,7 @@ import {
   clearCart,
 } from "../../features/cart/cartSlice";
 import { RootState } from "state/store";
+import { Rating } from "react-simple-star-rating";
 
 const calculateOriginalPrice = (price: number, pack: number) => price * pack;
 
@@ -573,7 +574,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 <StarIcon className="w-5 h-5 pb-[1px] text-slate-800 dark:text-slate-200" />
               </div>
               <span className="ml-1.5">
-                <span>{productDetail?.product_details[0]?.user_ratings}</span>
+                <span>{productDetail?.product_details[0]?.almaa_ratings}</span>
                 <span className="mx-1.5">·</span>
                 <span className="text-slate-700 dark:text-slate-400 underline">
                   {productDetail?.product_feedback?.length} reviews
@@ -695,11 +696,17 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       <div id="reviews" className="scroll-mt-[150px]">
         {/* HEADING */}
         <h2 className="text-2xl font-semibold flex items-center">
-          <StarIcon className="w-7 h-7 mb-0.5" />
+          <Rating
+            readonly
+            transition
+            allowFraction
+            initialValue={+productDetail?.product_details[0]?.almaa_ratings}
+            size={38}
+          />
           <span className="ml-1.5">
             {" "}
-            {productDetail?.product_details[0]?.user_ratings} ,{" "}
-            {productDetail?.product_feedback?.length} Reviews
+            {productDetail?.product_details[0]?.almaa_ratings} &nbsp;&nbsp;
+            &nbsp; {productDetail?.product_feedback?.length} Reviews
           </span>
         </h2>
 
@@ -1170,7 +1177,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       <ModalViewAllReviews
         show={isOpenModalViewAllReviews}
         onCloseModalViewAllReviews={() => setIsOpenModalViewAllReviews(false)}
-        rating={productDetail?.product_details[0]?.user_ratings}
+        rating={productDetail?.product_details[0]?.almaa_ratings}
         reviews={productDetail?.product_feedback?.map((f) => ({
           id: f.prodcustfb_id,
           name: "Stiven Hokinhs",

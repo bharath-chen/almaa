@@ -1,6 +1,5 @@
 import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import CardCategory3 from "../../components/CardCategories/CardCategory3";
 import { FC, Fragment, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { LocationStates } from "../../routers/types";
@@ -159,7 +158,24 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                 static
                 className="sub-menu absolute transform z-10 w-56 top-full left-0"
               >
-                <ul className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-white dark:ring-opacity-10 text-sm relative bg-white dark:bg-neutral-900 py-4 grid space-y-1 max-h-60 overflow-y-auto">
+                {/* <ul className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-white dark:ring-opacity-10 text-sm relative bg-white dark:bg-neutral-900 py-4 grid space-y-1 max-h-60 overflow-y-auto">
+                  {menuDropdown.children?.map((i) => {
+                    if (i.type) {
+                      return renderDropdownMenuNavlinkHasChild(i);
+                    } else {
+                      return (
+                        <li key={i.id} className="px-2">
+                          {renderDropdownMenuNavlink(i)}
+                        </li>
+                      );
+                    }
+                  })}
+                </ul> */}
+
+                <ul
+                  className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-white dark:ring-opacity-10 text-sm relative bg-white dark:bg-neutral-900 py-4 grid space-y-1 overflow-y-auto"
+                  style={{ maxHeight: "80vh" }} // Limit height to 80% of the viewport height
+                >
                   {menuDropdown.children?.map((i) => {
                     if (i.type) {
                       return renderDropdownMenuNavlinkHasChild(i);

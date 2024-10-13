@@ -2,7 +2,8 @@ import { FC, useEffect, useId, useRef } from "react";
 import Heading from "../components/Heading/Heading";
 import Glide from "@glidejs/glide";
 import ProductCard from "./ProductCard";
-import { Product, PRODUCTS } from "../data/data";
+import { PRODUCTS } from "../data/data";
+import { Product } from "../models/product";
 
 export interface SectionSliderProductCardProps {
   className?: string;
@@ -12,6 +13,7 @@ export interface SectionSliderProductCardProps {
   headingClassName?: string;
   subHeading?: string;
   data?: Product[];
+  onLike?: (id: string) => void;
 }
 
 const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
@@ -22,6 +24,7 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
   heading,
   subHeading = "REY backpacks & bags",
   data = PRODUCTS.filter((_, i) => i < 8 && i > 2),
+  onLike,
 }) => {
   const sliderRef = useRef(null);
   const id = useId();
@@ -82,7 +85,13 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
           <ul className="glide__slides">
             {data.map((item, index) => (
               <li key={index} className={`glide__slide ${itemClassName}`}>
-                <ProductCard data={item} />
+                <ProductCard
+                  data={item}
+                  isLiked={item.isLiked}
+                  onLike={() => {
+                    onLike(item.product_id as string);
+                  }}
+                />
               </li>
             ))}
           </ul>

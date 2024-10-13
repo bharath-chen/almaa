@@ -25,9 +25,7 @@ const SectionPromo1: FC<SectionPromo1Props> = ({ className = "" }) => {
           With Ciseco you will get freeship & savings combo...
         </span>
         <div className="flex space-x-2 sm:space-x-5 mt-6 sm:mt-12">
-          <ButtonPrimary href="/page-collection" className="">
-            Savings combo
-          </ButtonPrimary>
+          <ButtonPrimary className="">Savings combo</ButtonPrimary>
           <ButtonSecondary
             href="/page-search"
             className="border border-slate-100 dark:border-slate-700"

@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import NcImage from "../../shared/NcImage/NcImage";
 import { Link } from "react-router-dom";
+import AppText from "../../components/AppText/AppText";
 
 export interface CardCategory2Props {
   className?: string;
@@ -42,9 +43,9 @@ const CardCategory2: FC<CardCategory2Props> = ({
         <h2 className="text-base sm:text-lg text-neutral-900 dark:text-neutral-100 font-semibold">
           {name}
         </h2>
-        <span className="block mt-0.5 sm:mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
+        <AppText className="block mt-0.5 sm:mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
           {desc}
-        </span>
+        </AppText>
       </div>
     </Link>
   );

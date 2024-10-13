@@ -28,7 +28,7 @@ function PageHome() {
 
       <div className="container relative space-y-24 my-24 lg:space-y-32 lg:my-32">
         {/* SECTION */}
-        <SectionSliderProductCard
+        {/* <SectionSliderProductCard
           data={[
             PRODUCTS[4],
             SPORT_PRODUCTS[5],
@@ -36,7 +36,7 @@ function PageHome() {
             SPORT_PRODUCTS[1],
             PRODUCTS[6],
           ]}
-        />
+        /> */}
 
         <div className="py-24 lg:py-32 border-t border-b border-slate-200 dark:border-slate-700">
           <SectionHowItWork />

@@ -4,7 +4,8 @@ import LikeButton from "../components/LikeButton";
 import { StarIcon } from "@heroicons/react/24/solid";
 import BagIcon from "../components/BagIcon";
 import NcInputNumber from "../components/NcInputNumber";
-import { Product } from "../data/data";
+// import { Product } from "../data/data";
+import { Product } from "../models/product";
 import {
   NoSymbolIcon,
   ClockIcon,
@@ -31,12 +32,19 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({
   product,
   className = "",
 }) => {
-  const { id, name, image, price, sizes, variants, status, allOfSizes } =
-    product;
-  const LIST_IMAGES_DEMO = [image, detail2JPG, detail3JPG];
+  const {
+    product_id,
+    product_name,
+    product_image1,
+    product_image2,
+    selling_price,
+    size_id,
+    status,
+  } = product;
+  const LIST_IMAGES_DEMO = [detail2JPG, detail3JPG];
   const { addItemToCartWithQuantity } = useShoppingCartContext();
   const [variantActive, setVariantActive] = React.useState(0);
-  const [sizeSelected, setSizeSelected] = React.useState(sizes ? sizes[0] : "");
+  // const [sizeSelected, setSizeSelected] = React.useState(sizes ? sizes[0] : "");
   const [quantitySelected, setQuantitySelected] = React.useState(1);
   const [buyingOption, setBuyingOption] = React.useState({
     id: 1,
@@ -56,10 +64,10 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({
     toast.custom(
       (t) => (
         <NotifyAddTocart
-          productImage={image}
+          productImage={product_image1}
           qualitySelected={quantitySelected}
           show={t.visible}
-          sizeSelected={sizeSelected}
+          sizeSelected={"M"}
           variantActive={variantActive}
         />
       ),
@@ -67,100 +75,100 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({
     );
   };
 
-  const renderVariants = () => {
-    if (!variants || !variants.length) {
-      return null;
-    }
+  // const renderVariants = () => {
+  //   if (!variants || !variants.length) {
+  //     return null;
+  //   }
 
-    return (
-      <div>
-        <label htmlFor="">
-          <span className="text-sm font-medium">
-            Color:
-            <span className="ml-1 font-semibold">
-              {variants[variantActive].name}
-            </span>
-          </span>
-        </label>
-        <div className="flex mt-2.5">
-          {variants.map((variant, index) => (
-            <div
-              key={index}
-              onClick={() => setVariantActive(index)}
-              className={`relative flex-1 max-w-[75px] h-10 rounded-full border-2 cursor-pointer ${
-                variantActive === index
-                  ? "border-primary-6000 dark:border-primary-500"
-                  : "border-transparent"
-              }`}
-            >
-              <div className="absolute inset-0.5 rounded-full overflow-hidden z-0">
-                <img
-                  src={variant.thumbnail}
-                  alt=""
-                  className="absolute w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
+  //   return (
+  //     <div>
+  //       <label htmlFor="">
+  //         <span className="text-sm font-medium">
+  //           Color:
+  //           <span className="ml-1 font-semibold">
+  //             {variants[variantActive].name}
+  //           </span>
+  //         </span>
+  //       </label>
+  //       <div className="flex mt-2.5">
+  //         {variants.map((variant, index) => (
+  //           <div
+  //             key={index}
+  //             onClick={() => setVariantActive(index)}
+  //             className={`relative flex-1 max-w-[75px] h-10 rounded-full border-2 cursor-pointer ${
+  //               variantActive === index
+  //                 ? "border-primary-6000 dark:border-primary-500"
+  //                 : "border-transparent"
+  //             }`}
+  //           >
+  //             <div className="absolute inset-0.5 rounded-full overflow-hidden z-0">
+  //               <img
+  //                 src={variant.thumbnail}
+  //                 alt=""
+  //                 className="absolute w-full h-full object-cover"
+  //               />
+  //             </div>
+  //           </div>
+  //         ))}
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
-  const renderSizeList = () => {
-    if (!allOfSizes || !sizes || !sizes.length) {
-      return null;
-    }
-    return (
-      <div>
-        <div className="flex justify-between font-medium text-sm">
-          <label htmlFor="">
-            <span className="">
-              Size:
-              <span className="ml-1 font-semibold">{sizeSelected}</span>
-            </span>
-          </label>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="##"
-            className="text-primary-6000 hover:text-primary-500"
-          >
-            See sizing chart
-          </a>
-        </div>
-        <div className="grid grid-cols-5 sm:grid-cols-7 gap-2 mt-2.5">
-          {allOfSizes.map((size, index) => {
-            const isActive = size === sizeSelected;
-            const sizeOutStock = !sizes.includes(size);
-            return (
-              <div
-                key={index}
-                className={`relative h-10 sm:h-11 rounded-2xl border flex items-center justify-center 
-                text-sm sm:text-base uppercase font-semibold select-none overflow-hidden z-0 ${
-                  sizeOutStock
-                    ? "text-opacity-20 dark:text-opacity-20 cursor-not-allowed"
-                    : "cursor-pointer"
-                } ${
-                  isActive
-                    ? "bg-primary-6000 border-primary-6000 text-white hover:bg-primary-6000"
-                    : "border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-200 hover:bg-neutral-50 dark:hover:bg-neutral-700"
-                }`}
-                onClick={() => {
-                  if (sizeOutStock) {
-                    return;
-                  }
-                  setSizeSelected(size);
-                }}
-              >
-                {size}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    );
-  };
+  // const renderSizeList = () => {
+  //   if (!allOfSizes || !sizes || !sizes.length) {
+  //     return null;
+  //   }
+  //   return (
+  //     <div>
+  //       <div className="flex justify-between font-medium text-sm">
+  //         <label htmlFor="">
+  //           <span className="">
+  //             Size:
+  //             <span className="ml-1 font-semibold">{sizeSelected}</span>
+  //           </span>
+  //         </label>
+  //         <a
+  //           target="_blank"
+  //           rel="noopener noreferrer"
+  //           href="##"
+  //           className="text-primary-6000 hover:text-primary-500"
+  //         >
+  //           See sizing chart
+  //         </a>
+  //       </div>
+  //       <div className="grid grid-cols-5 sm:grid-cols-7 gap-2 mt-2.5">
+  //         {allOfSizes.map((size, index) => {
+  //           const isActive = size === sizeSelected;
+  //           const sizeOutStock = !sizes.includes(size);
+  //           return (
+  //             <div
+  //               key={index}
+  //               className={`relative h-10 sm:h-11 rounded-2xl border flex items-center justify-center
+  //               text-sm sm:text-base uppercase font-semibold select-none overflow-hidden z-0 ${
+  //                 sizeOutStock
+  //                   ? "text-opacity-20 dark:text-opacity-20 cursor-not-allowed"
+  //                   : "cursor-pointer"
+  //               } ${
+  //                 isActive
+  //                   ? "bg-primary-6000 border-primary-6000 text-white hover:bg-primary-6000"
+  //                   : "border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-200 hover:bg-neutral-50 dark:hover:bg-neutral-700"
+  //               }`}
+  //               onClick={() => {
+  //                 if (sizeOutStock) {
+  //                   return;
+  //                 }
+  //                 setSizeSelected(size);
+  //               }}
+  //             >
+  //               {size}
+  //             </div>
+  //           );
+  //         })}
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
   const renderStatus = () => {
     if (!status) {
@@ -219,7 +227,9 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({
         {/* ---------- 1 HEADING ----------  */}
         <div>
           <h2 className="text-2xl font-semibold hover:text-primary-6000 transition-colors">
-            <Link to={"/product-detail/" + id}>{name}</Link>
+            <Link to={"/product-detail/" + product.product_id}>
+              {product.product_name}
+            </Link>
           </h2>
 
           <div className="flex items-center mt-5 space-x-4 sm:space-x-5">
@@ -228,7 +238,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({
             </div> */}
             <Prices
               contentClass="py-1 px-2 md:py-1.5 md:px-3 text-lg font-semibold"
-              price={price}
+              price={+product.selling_price}
             />
 
             {/* <div className="h-6 border-l border-slate-300 dark:border-slate-700"></div> */}

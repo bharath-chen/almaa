@@ -14,6 +14,7 @@ export interface CardCategory4Props {
   btnLabel?: string;
   quantityText?: string;
   href?: string;
+  asExternalUrl?: boolean;
 }
 
 const CardCategory4: FC<CardCategory4Props> = ({
@@ -26,6 +27,7 @@ const CardCategory4: FC<CardCategory4Props> = ({
   btnLabel = "",
   quantityText = "",
   href,
+  asExternalUrl = false,
 }) => {
   return (
     <div
@@ -58,13 +60,25 @@ const CardCategory4: FC<CardCategory4Props> = ({
             <h2 className={`text-2xl sm:text-3xl font-semibold`}>{name}</h2>
           </div>
 
-          <Link
-            to={href}
-            className="flex items-center text-sm font-medium group-hover:text-primary-500 transition-colors"
-          >
-            <span>{btnLabel}</span>
-            <ArrowRightIcon className="w-4 h-4 ml-2.5" />
-          </Link>
+          {!asExternalUrl && (
+            <Link
+              to={href}
+              className="flex items-center text-sm font-medium group-hover:text-primary-500 transition-colors"
+            >
+              <span>{btnLabel}</span>
+              <ArrowRightIcon className="w-4 h-4 ml-2.5" />
+            </Link>
+          )}
+          {asExternalUrl && (
+            <a
+              href={`${href}`}
+              target="_blank"
+              className="flex items-center text-sm font-medium group-hover:text-primary-500 transition-colors"
+            >
+              <span>{btnLabel}</span>
+              <ArrowRightIcon className="w-4 h-4 ml-2.5" />
+            </a>
+          )}
         </div>
       </div>
 
