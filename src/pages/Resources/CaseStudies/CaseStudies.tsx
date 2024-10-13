@@ -26,7 +26,10 @@ const CaseStudies: React.FC = () => {
   };
 
   useEffect(() => {
-    const { request, cancel } = caseStudyService.getAll<ICaseStudy>();
+    const { request, cancel } = caseStudyService.getAll<
+      ICaseStudy,
+      { gofor: string }
+    >({ gofor: "casestudylist" });
 
     dispatch(showLoader());
 

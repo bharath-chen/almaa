@@ -13,4 +13,4 @@ export interface ICaseStudy {
   result: string;
 }
 
-export default create("?gofor=casestudylist");
+export default create(null);

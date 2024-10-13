@@ -1,5 +1,12 @@
+import caseStudyService, {
+  ICaseStudy,
+} from "../../../services/case-study-service";
 import AccordionInfo from "../../../containers/ProductDetailPage/AccordionInfo";
 import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useAppDispatch } from "../../../hooks/hooks";
+import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
+import { CanceledError } from "axios";
 
 export interface Props {
   className?: string;
@@ -7,12 +14,45 @@ export interface Props {
 
 const CaseStudyDetail = ({ className = "" }: Props) => {
   const { state } = useLocation();
+  const dispatch = useAppDispatch();
+  const [caseStudyDetail, setCaseStudyDetail] = useState<ICaseStudy>(null);
+
+  function getCaseStudy() {
+    const { request, cancel } = caseStudyService.get<
+      ICaseStudy,
+      { gofor: string; case_study_id: string }
+    >({
+      gofor: "getcasestudy",
+      case_study_id: state.caseStudy.case_study_id,
+    });
+
+    dispatch(showLoader());
+
+    request
+      .then((res) => {
+        dispatch(hideLoader());
+        setCaseStudyDetail(res.data);
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+
+        dispatch(hideLoader());
+      });
+
+    return cancel;
+  }
+
+  useEffect(() => {
+    const cancelGetCaseStudyDetail = getCaseStudy();
+
+    return () => cancelGetCaseStudyDetail();
+  }, [state.caseStudy.case_study_id]);
 
   const renderSectionContent = () => {
     const accordionData = [
-      { name: "Case Details", content: state.caseStudy.case_details },
-      { name: "Diagnosis", content: state.caseStudy.diagnosis },
-      { name: "Result", content: state.caseStudy.result },
+      { name: "Case Details", content: caseStudyDetail.case_details },
+      { name: "Diagnosis", content: caseStudyDetail.diagnosis },
+      { name: "Result", content: caseStudyDetail.result },
     ];
 
     return (
@@ -20,12 +60,12 @@ const CaseStudyDetail = ({ className = "" }: Props) => {
         <div className="w-full max-w bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
           <div className="flex flex-col pl-5 pb-5 mt-5">
             <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white pb-2">
-              {state.caseStudy.title}
+              {caseStudyDetail.title}
             </h5>
             <span
               className="text-md text-gray-500 dark:text-gray-400 pb-2"
               dangerouslySetInnerHTML={{
-                __html: state.caseStudy.description,
+                __html: caseStudyDetail.description,
               }}
             ></span>
             {/* <span className="text-md text-gray-500 dark:text-gray-400">
@@ -68,33 +108,35 @@ const CaseStudyDetail = ({ className = "" }: Props) => {
   return (
     <div className={`nc-ProductDetailPage ${className}`}>
       {/* Main */}
-      <main className="container mt-5 lg:mt-11">
-        <div className="lg:flex">
-          {/* CONTENT */}
-          <div className="w-full lg:w-[55%] ">
-            {/* HEADING */}
-            <div className="relative">
-              <div className="aspect-w-16 aspect-h-16">
-                <img
-                  src={state.caseStudy.image_url}
-                  className="w-full rounded-2xl object-cover"
-                  alt={state.caseStudy.title}
-                />
+      {caseStudyDetail && (
+        <main className="container mt-5 lg:mt-11">
+          <div className="lg:flex">
+            {/* CONTENT */}
+            <div className="w-full lg:w-[55%] ">
+              {/* HEADING */}
+              <div className="relative">
+                <div className="aspect-w-16 aspect-h-16">
+                  <img
+                    src={state.caseStudy.image_url}
+                    className="w-full rounded-2xl object-cover"
+                    alt={state.caseStudy.title}
+                  />
+                </div>
               </div>
+            </div>
+
+            {/* SIDEBAR */}
+            <div className="w-full lg:w-[45%] pt-10 lg:pt-0 lg:pl-7 xl:pl-9 2xl:pl-10">
+              {renderSectionContent()}
             </div>
           </div>
 
-          {/* SIDEBAR */}
-          <div className="w-full lg:w-[45%] pt-10 lg:pt-0 lg:pl-7 xl:pl-9 2xl:pl-10">
-            {renderSectionContent()}
+          {/* DETAIL AND REVIEW */}
+          <div className="mt-12 sm:mt-16 space-y-10 sm:space-y-16">
+            <div className="block xl:hidden">{/* <Policy /> */}</div>
           </div>
-        </div>
-
-        {/* DETAIL AND REVIEW */}
-        <div className="mt-12 sm:mt-16 space-y-10 sm:space-y-16">
-          <div className="block xl:hidden">{/* <Policy /> */}</div>
-        </div>
-      </main>
+        </main>
+      )}
     </div>
   );
 };
