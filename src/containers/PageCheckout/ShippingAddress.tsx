@@ -122,7 +122,7 @@ const ShippingAddress: FC<Props> = ({
   const renderShippingAddress = () => {
     return (
       <div className="border border-slate-200 dark:border-slate-700 rounded-xl mb-4">
-        <div className="p-6 flex flex-col sm:flex-row items-start">
+        <div className="p-6 flex flex-col sm:flex-row items-start space-y-3 sm:space-y-0">
           {address.address_id && (
             <Radio
               name="selectedAddress"
@@ -131,7 +131,7 @@ const ShippingAddress: FC<Props> = ({
                 selectedAddress?.address_id === address.address_id
               }
               onChange={() => onSelectedAddressChange(address)}
-              className="mr-5"
+              className="mr-3 sm:mr-5 mt-2 sm:mt-0"
             />
           )}
           <span className="hidden sm:block">
@@ -180,7 +180,7 @@ const ShippingAddress: FC<Props> = ({
           </span>
 
           <div className="sm:ml-8">
-            <h3 className=" text-slate-700 dark:text-slate-300 flex ">
+            <h3 className="text-slate-700 dark:text-slate-300 flex">
               <span className="uppercase">SHIPPING ADDRESS</span>
               <svg
                 fill="none"
@@ -226,14 +226,6 @@ const ShippingAddress: FC<Props> = ({
               Delete
             </ButtonPrimary>
           )}
-          {/* <ButtonPrimary
-            sizeClass="py-2 px-4 "
-            fontSize="text-sm font-medium"
-            className="bg-slate-50 dark:bg-slate-800 mt-5 sm:mt-0 sm:ml-auto !rounded-lg"
-            onClick={onOpenActive}
-          >
-            Delete
-          </ButtonPrimary> */}
         </div>
         <div
           className={`border-t border-slate-200 dark:border-slate-700 px-6 py-7 space-y-4 sm:space-y-6 ${
