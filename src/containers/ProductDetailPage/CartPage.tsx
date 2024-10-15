@@ -43,7 +43,7 @@ const CartPage = () => {
   const user = useAppSelector((state: RootState) => state.auth);
   const cartItems = useAppSelector((state: RootState) => state.cart.items);
   const subTotal = useAppSelector(selectCartTotal);
-  const [shippingEstimate, setShippingEstimate] = useState<number>();
+  const [shippingEstimate, setShippingEstimate] = useState<number>(0);
   const {
     register,
     handleSubmit,
@@ -188,7 +188,7 @@ const CartPage = () => {
   };
 
   const handleCheckout = (data: StateFormData) => {
-    const totalPrice = subTotal + (shippingEstimate || 0);
+    const totalPrice = subTotal + (subTotal > 2000 ? 0 : shippingEstimate || 0);
 
     if (totalPrice < 330) {
       dispatch(
@@ -218,10 +218,9 @@ const CartPage = () => {
     };
 
     cartService.create<AddCartRequest>(payload).then((res) => {
-      console.log(res);
       navigate("/checkout", {
         state: {
-          shippingEstimate,
+          shippingEstimate: subTotal > 2000 ? 0 : shippingEstimate,
         },
       });
     });
@@ -242,6 +241,13 @@ const CartPage = () => {
       setShippingEstimate(null);
     }
   }, [state]);
+
+  const shippingEstimateContent =
+    subTotal > 2000 ? "Free" : `₹ ${(shippingEstimate || 0).toFixed(2)}`;
+
+  const orderTotal = (
+    subTotal + (subTotal > 2000 ? 0 : shippingEstimate || 0)
+  ).toFixed(2);
 
   return (
     <div className="nc-CartPage">
@@ -282,17 +288,11 @@ const CartPage = () => {
                   <span>Subtotal</span>
                   <span className="font-semibold">₹ {subTotal.toFixed(2)}</span>
                 </div>
-                {/* <div className="flex justify-between py-4">
-                  <span>Tax estimate</span>
-                  <span className="font-semibold text-slate-900 dark:text-slate-200">
-                    ₹24.90
-                  </span>
-                </div> */}
                 {shippingEstimate && (
                   <div className="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-3 mt-2">
                     <span>Shipping Estimate</span>
                     <span className="font-semibold">
-                      ₹ {shippingEstimate.toFixed(2)}
+                      {shippingEstimateContent}
                     </span>
                   </div>
                 )}
@@ -326,10 +326,7 @@ const CartPage = () => {
                   </div>
                   <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
                     <span>Order total</span>
-                    <span>
-                      {/* + 24.9 */}₹
-                      {(subTotal + (shippingEstimate || 0)).toFixed(2)}
-                    </span>
+                    <span>₹{orderTotal}</span>
                   </div>
                   <ButtonPrimary type="submit" className="mt-8 w-full">
                     Proceed to Checkout

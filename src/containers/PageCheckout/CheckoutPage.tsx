@@ -58,6 +58,8 @@ const CheckoutPage = () => {
   const [discount, setDiscount] = useState(0);
   const [offerCodePrice, setOfferCodePrice] = useState(0);
 
+  console.log(location.state);
+
   useEffect(() => {
     const productDetails: Product[] =
       cartDetails && cartDetails.productDetail.length > 0
@@ -803,7 +805,7 @@ const CheckoutPage = () => {
                       ).toFixed(2)} */}
                     </span>
                   </div>
-                  {location.state?.shippingEstimate && (
+                  {location.state?.shippingEstimate !== 0 && (
                     <div className="flex justify-between py-2.5">
                       <span>Shipping estimate</span>
                       <span className="font-semibold text-slate-900 dark:text-slate-200">
