@@ -46,6 +46,7 @@ import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import ThanksPage from "../pages/ThanksPage/ThanksPage";
 import Returns from "../pages/Returns/Returns";
 import NewsAndEventsDetail from "../pages/Resources/NewsAndEvents/NewsAndEventsDetail";
+import ShippingPolicy from "../pages/ShippingPolicy/ShippingPolicy";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -114,5 +115,6 @@ export const pages: Page[] = [
   { path: "/returns-&-refund-policy", component: Returns },
   { path: "/terms-&-conditions", component: TermsAndConditions },
   { path: "/privacy-policy", component: PrivacyPolicy },
+  { path: "/shipping-policy", component: ShippingPolicy },
   { path: "/page-not-found", component: Page404 },
 ];

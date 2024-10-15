@@ -51,6 +51,7 @@ export interface LocationStates {
   "/returns-&-refund-policy": {};
   "/terms-&-conditions": {};
   "/privacy-policy"?: {};
+  "/shipping-policy"?: {};
   "/page-not-found"?: {};
 }
 

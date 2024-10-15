@@ -871,14 +871,12 @@ const CheckoutPage = () => {
                     <span>
                       {` `}and{` `}
                     </span>
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="##"
+                    <Link
+                      to="/shipping-policy"
                       className="text-slate-900 dark:text-slate-200 underline font-medium"
                     >
                       Shipping
-                    </a>
+                    </Link>
                     {` `} infomation
                   </p>
                 </div>

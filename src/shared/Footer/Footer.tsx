@@ -92,7 +92,7 @@ const policies = [
   {
     id: 1,
     label: "Shipping",
-    href: "/shipping",
+    href: "/shipping-policy",
   },
   {
     id: 2,
