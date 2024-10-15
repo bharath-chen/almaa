@@ -21,6 +21,7 @@ import filterProductsService from "../../services/filter-products-service";
 import useNatProducts from "../../hooks/useNatProducts";
 import { TabFilterItem } from "../../components/AppFilterTabs/AppFilterTabs";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
+import Pagination from "../../shared/Pagination/Pagination";
 
 interface Props {
   className?: string;
@@ -46,12 +47,14 @@ const Products: FC<Props> = ({ className = "" }) => {
     pres_req: false,
   });
   const [close, setClose] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useAppDispatch();
   const customer = useAppSelector((state) => state.auth);
   const categoryId = queryParams.get("category_id"); // Extracts category_id (1)
   const category = queryParams.get("category");
   const natProductId = queryParams.get("nat_prod_id");
   const natProduct = queryParams.get("nat_product");
+  const itemsPerPage = 9;
 
   const getSubCategories = (id: string) => {
     const { request } = subcategoryService.getAll<
@@ -164,39 +167,41 @@ const Products: FC<Props> = ({ className = "" }) => {
     return () => cancelFetchProducts();
   }, []);
 
-  useEffect(() => {
-    if (selectedSortOrder?.value) {
-      const { request } = sortProductsService.getAll<
-        Product,
-        { sortBy: string }
-      >({ sortBy: selectedSortOrder.value });
+  // useEffect(() => {
+  //   if (selectedSortOrder?.value) {
+  //     const { request } = sortProductsService.getAll<
+  //       Product,
+  //       { sortBy: string }
+  //     >({ sortBy: selectedSortOrder.value });
 
-      dispatch(showLoader());
+  //     dispatch(showLoader());
 
-      request
-        .then((res) => {
-          dispatch(hideLoader());
-          setProducts(res.data);
-        })
-        .catch((err) => {
-          dispatch(hideLoader());
-          setError(err.message);
-        });
-    }
-  }, [selectedSortOrder?.value, selectedFilter]);
+  //     request
+  //       .then((res) => {
+  //         dispatch(hideLoader());
+  //         setProducts(res.data);
+  //       })
+  //       .catch((err) => {
+  //         dispatch(hideLoader());
+  //         setError(err.message);
+  //       });
+  //   }
+  // }, [selectedSortOrder?.value]);
 
   useEffect(() => {
     if (
       selectedFilter.nat_of_prod.length > 0 ||
       selectedFilter.herb_type ||
       selectedFilter.pres_req ||
-      selectedFilter.is_nutraceutical
+      selectedFilter.is_nutraceutical ||
+      (selectedSortOrder && selectedSortOrder.id)
     ) {
       const obj = {
         nat_of_prod: selectedFilter.nat_of_prod.join(","),
         is_nutraceutical: 1,
         pres_req: 1,
         herb_type: "Single",
+        sortby: selectedSortOrder?.value || "",
       };
 
       if (selectedFilter.nat_of_prod.length === 0) delete obj.nat_of_prod;
@@ -207,6 +212,8 @@ const Products: FC<Props> = ({ className = "" }) => {
 
       if (!selectedFilter.herb_type) delete obj.herb_type;
 
+      if (!selectedSortOrder?.value) delete obj.sortby;
+
       const { request } = filterProductsService.getAll<
         Product,
         | {
@@ -214,6 +221,7 @@ const Products: FC<Props> = ({ className = "" }) => {
             herb_type?: string;
             pres_req?: number;
             is_nutraceutical?: number;
+            sortby?: string;
           }
         | {}
       >(obj);
@@ -223,14 +231,14 @@ const Products: FC<Props> = ({ className = "" }) => {
       request
         .then((res) => {
           dispatch(hideLoader());
-          setProducts(res.data);
+          setProducts(res.data["error"] ? [] : res.data);
         })
         .catch((err) => {
           dispatch(hideLoader());
           setError(err.message);
         });
     }
-  }, [selectedFilter]);
+  }, [selectedFilter, selectedSortOrder]);
 
   useEffect(() => {
     if (natProductId && natProduct) {
@@ -246,15 +254,22 @@ const Products: FC<Props> = ({ className = "" }) => {
   };
 
   const handleFilterChange = (filter: Filters, items: TabFilterItem[]) => {
-    if (filter.nat_of_prod.length === 0) navigate("/products");
+    if (filter.nat_of_prod.length === 0) {
+      setSubCategories([]);
+      setSelectedSubCategory(null);
+      navigate("/products");
+    }
 
     if (
       filter.nat_of_prod.length === 0 &&
       !filter.herb_type &&
       !filter.is_nutraceutical &&
       !filter.pres_req
-    )
+    ) {
+      setSubCategories([]);
+      setSelectedSubCategory(null);
       fetchProducts();
+    }
 
     setProductForms(items);
     setSelectedFilter(filter);
@@ -286,6 +301,13 @@ const Products: FC<Props> = ({ className = "" }) => {
     getProductsBySubCategory(item.subcategory_id);
     setSelectedSubCategory(item);
   };
+
+  // Calculate startIndex and endIndex
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage - 1, products.length - 1);
+
+  // Get current page products
+  const currentProducts = products.slice(startIndex, endIndex + 1);
 
   return (
     <div
@@ -378,22 +400,46 @@ const Products: FC<Props> = ({ className = "" }) => {
               )}
 
               <div className="flex-shrink-0 mb-10 lg:mb-0 lg:mx-4 border-t lg:border-t-0"></div>
+
               <div className="flex-1 ">
+                <div className="flex-1 grid grid-cols-1 gap-x-8 gap-y-10 ">
+                  {!currentProducts.length && (
+                    <div className="flex flex-col items-center justify-center text-center py-10 px-6 bg-gray-50 rounded-lg shadow-md w-full max-w-md mx-auto">
+                      <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                        No Products Found!
+                      </h2>
+                      <p className="text-gray-600 mb-4">
+                        Sorry, we couldn't find any products matching your
+                        search.
+                      </p>
+                      <p className="text-gray-600 mb-8">
+                        Try adjusting your filters or explore our categories for
+                        more great deals!
+                      </p>
+                    </div>
+                  )}
+                </div>
                 <div className="flex-1 grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 ">
-                  {products.length > 0 &&
-                    products.map((item, index) => (
+                  {currentProducts.length > 0 &&
+                    currentProducts.map((item, index) => (
                       <ProductCard
                         data={item}
                         isLiked={item.is_in_wishlist}
                         onLike={() => handleLike(item.product_id)}
-                        key={index}
+                        key={item.product_id}
                       />
                     ))}
-                  {/* {prod} */}
                 </div>
               </div>
             </div>
           </main>
+          <div className="flex justify-center lg:justify-end">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil(products.length / itemsPerPage)}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
+          </div>
         </div>
       </div>
 

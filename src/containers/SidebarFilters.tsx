@@ -9,7 +9,7 @@ const DATA_sortOrderRadios = [
   { name: "Most Popular", id: "most-popular", value: "popular" },
   { name: "Best Rating", id: "best-rating", value: "rating" },
   { name: "Newest", id: "newest", value: "newest" },
-  { name: "Price Low - Hight", id: "price-low-high", value: "price_low_high" },
+  { name: "Price Low - High", id: "price-low-high", value: "price_low_high" },
   { name: "Price High - Low", id: "price-high-low", value: "price_high_low" },
 ];
 

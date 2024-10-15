@@ -1,3 +1,3 @@
 import create from "./http-service";
 
-export default create("?gofor=filterproducts");
+export default create("?gofor=filterAndSortProducts");
