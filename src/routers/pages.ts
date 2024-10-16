@@ -6,10 +6,7 @@ import PageSignUp from "../containers/PageSignUp/PageSignUp";
 import Login from "../pages/Login/Login";
 import PageSubcription from "../containers/PageSubcription/PageSubcription";
 import BlogSingle from "../containers/BlogPage/BlogSingle";
-import PageCollection from "../containers/PageCollection";
 import PageSearch from "../containers/PageSearch";
-import PageHome2 from "../containers/PageHome/PageHome2";
-import PageHome3 from "../containers/PageHome/PageHome3";
 import ProductDetailPage from "../containers/ProductDetailPage/ProductDetailPage";
 import ProductDetailPage2 from "../containers/ProductDetailPage/ProductDetailPage2";
 import AccountSavelists from "../containers/AccountPage/AccountSavelists";
@@ -47,6 +44,7 @@ import ThanksPage from "../pages/ThanksPage/ThanksPage";
 import Returns from "../pages/Returns/Returns";
 import NewsAndEventsDetail from "../pages/Resources/NewsAndEvents/NewsAndEventsDetail";
 import ShippingPolicy from "../pages/ShippingPolicy/ShippingPolicy";
+import Invoice from "../components/Invoice/Invoice";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -116,5 +114,6 @@ export const pages: Page[] = [
   { path: "/terms-&-conditions", component: TermsAndConditions },
   { path: "/privacy-policy", component: PrivacyPolicy },
   { path: "/shipping-policy", component: ShippingPolicy },
+  { path: "/invoice", component: Invoice, protectedRoute: true },
   { path: "/page-not-found", component: Page404 },
 ];

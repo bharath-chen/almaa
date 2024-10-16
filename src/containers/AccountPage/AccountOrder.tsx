@@ -119,20 +119,43 @@ const AccountOrder = () => {
   };
 
   const renderOrder = (order: OrderData) => {
+    const handleViewInvoice = () => {
+      navigate("/invoice", {
+        state: {
+          order,
+        },
+      });
+    };
+
     return (
       <div className="w-full mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md transition-transform transform hover:scale-105">
-        <div className="border-b border-slate-300 dark:border-slate-700 pb-4 mb-4">
-          <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-            Order Details
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300 my-2">
-            Invoice Number:{" "}
-            <span className="font-semibold">{order.order.invoice_number}</span>
-          </p>
-          <p className="text-gray-600 dark:text-gray-300">
-            Order ID:{" "}
-            <span className="font-semibold">{order.order.order_id}</span>
-          </p>
+        <div className="flex flex-col md:flex-row justify-between md:items-center border-b border-slate-300 dark:border-slate-700 pb-4 mb-4">
+          {/* Left section: Order Details */}
+          <div className="mb-4 md:mb-0">
+            <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+              Order Details
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 my-2">
+              Invoice Number:{" "}
+              <span className="font-semibold">
+                {order.order.invoice_number}
+              </span>
+            </p>
+            <p className="text-gray-600 dark:text-gray-300">
+              Order ID:{" "}
+              <span className="font-semibold">{order.order.order_id}</span>
+            </p>
+          </div>
+
+          {/* Right section: View Invoice Button */}
+          <div className="text-left md:text-right">
+            <ButtonPrimary
+              className="px-4 w-full bg-primary-900 hover:bg-primary-900 text-white rounded-lg"
+              onClick={handleViewInvoice}
+            >
+              View Invoice
+            </ButtonPrimary>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
