@@ -27,6 +27,14 @@ interface Props {
   className?: string;
 }
 
+const DATA_sortOrderRadios = [
+  { name: "Most Popular", id: "most-popular", value: "popular" },
+  { name: "Best Rating", id: "best-rating", value: "rating" },
+  { name: "Newest", id: "newest", value: "newest" },
+  { name: "Price Low - High", id: "price-low-high", value: "price_low_high" },
+  { name: "Price High - Low", id: "price-high-low", value: "price_high_low" },
+];
+
 const Products: FC<Props> = ({ className = "" }) => {
   const [showFilters, setShowFilters] = useState(false);
   const location = useLocation();
@@ -45,6 +53,7 @@ const Products: FC<Props> = ({ className = "" }) => {
     herb_type: false,
     is_nutraceutical: false,
     pres_req: false,
+    sortBy: "",
   });
   const [close, setClose] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -156,6 +165,17 @@ const Products: FC<Props> = ({ className = "" }) => {
   useEffect(() => {
     if (location.state?.item || categoryId) {
       setSelectedSubCategory(null);
+      setSelectedFilter({
+        nat_of_prod: [],
+        herb_type: false,
+        is_nutraceutical: false,
+        pres_req: false,
+        sortBy: "",
+      });
+      setSelectedSortOrder({ name: "", id: "", value: "" });
+      setProductForms((prevProductForms) =>
+        prevProductForms.map((p) => ({ ...p, checked: false }))
+      );
       getSubCategories(location.state?.item?.id || categoryId);
       getProductsByCategory(location.state?.item?.id || categoryId);
     }
@@ -250,13 +270,13 @@ const Products: FC<Props> = ({ className = "" }) => {
   }, [natProductId, natProduct]);
 
   const handleSortingProducts = (selectedSort: SortOrder) => {
+    setSubCategories([]);
+    setSelectedSubCategory(null);
     setSelectedSortOrder(selectedSort);
   };
 
   const handleFilterChange = (filter: Filters, items: TabFilterItem[]) => {
     if (filter.nat_of_prod.length === 0) {
-      setSubCategories([]);
-      setSelectedSubCategory(null);
       navigate("/products");
     }
 
@@ -266,11 +286,11 @@ const Products: FC<Props> = ({ className = "" }) => {
       !filter.is_nutraceutical &&
       !filter.pres_req
     ) {
-      setSubCategories([]);
-      setSelectedSubCategory(null);
       fetchProducts();
     }
 
+    setSubCategories([]);
+    setSelectedSubCategory(null);
     setProductForms(items);
     setSelectedFilter(filter);
   };
@@ -316,9 +336,9 @@ const Products: FC<Props> = ({ className = "" }) => {
     >
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 sm:space-y-20 lg:space-y-28">
         <div className="space-y-10 lg:space-y-14">
-          {(location?.state?.item?.name || category) && (
+          {subCategories.length !== 0 && category && (
             <h2 className="ml-1 text-2xl md:text-3xl font-semibold">
-              {location.state?.item?.name || category}
+              {category}
             </h2>
           )}
           <div className="flex overflow-x-auto whitespace-nowrap sm:overflow-x-auto">
@@ -345,6 +365,7 @@ const Products: FC<Props> = ({ className = "" }) => {
                   selectedFilter={selectedFilter}
                   onFilterChange={handleFilterChange}
                   productForms={productForms}
+                  sortOrderRadios={DATA_sortOrderRadios}
                 />
               </div>
               {/* Filter modal/toolbar for mobile view */}
@@ -394,6 +415,7 @@ const Products: FC<Props> = ({ className = "" }) => {
                       selectedFilter={selectedFilter}
                       onFilterChange={handleFilterChange}
                       productForms={productForms}
+                      sortOrderRadios={DATA_sortOrderRadios}
                     />
                   </div>
                 </div>

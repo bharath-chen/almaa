@@ -5,19 +5,12 @@ import AppFilterTabs, {
 } from "../components/AppFilterTabs/AppFilterTabs";
 import { SortOrder } from "../models/sort-order";
 
-const DATA_sortOrderRadios = [
-  { name: "Most Popular", id: "most-popular", value: "popular" },
-  { name: "Best Rating", id: "best-rating", value: "rating" },
-  { name: "Newest", id: "newest", value: "newest" },
-  { name: "Price Low - High", id: "price-low-high", value: "price_low_high" },
-  { name: "Price High - Low", id: "price-high-low", value: "price_high_low" },
-];
-
 export interface Filters {
   is_nutraceutical: boolean;
   pres_req: boolean;
   herb_type: boolean;
   nat_of_prod: string[];
+  sortBy?: string;
 }
 
 interface Props {
@@ -26,6 +19,7 @@ interface Props {
   selectedFilter: Filters;
   onFilterChange: (filter: Filters, productForms: TabFilterItem[]) => void;
   productForms: TabFilterItem[];
+  sortOrderRadios: { name: string; id: string; value: string }[];
 }
 
 const SidebarFilters = ({
@@ -34,6 +28,7 @@ const SidebarFilters = ({
   selectedFilter,
   onFilterChange,
   productForms,
+  sortOrderRadios,
 }: Props) => {
   const handleProductFormChange = (
     productForm: TabFilterItem,
@@ -51,13 +46,13 @@ const SidebarFilters = ({
     return (
       <div className="relative flex flex-col py-8 space-y-4">
         <h3 className="font-semibold mb-2.5">Sort By</h3>
-        {DATA_sortOrderRadios.map((item) => (
+        {sortOrderRadios.map((item) => (
           <Radio
             id={item.id}
             key={item.id}
             name="radioNameSort"
             label={item.name}
-            defaultChecked={selectedSortOrder?.id === item.id}
+            checked={selectedSortOrder?.id === item.id}
             sizeClassName="w-5 h-5"
             onChange={() => onSort(item)}
             className="!text-sm"
