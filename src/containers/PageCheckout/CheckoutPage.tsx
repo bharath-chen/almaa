@@ -30,11 +30,11 @@ import { Coupon } from "../../models/Coupon";
 import paymentGatewayService from "../../services/payment-gateway-service";
 import { OrdersPayload } from "../AccountPage/AccountOrder";
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
-import { environment } from "../../environments/environment";
 import { showModal } from "../../features/modal/modalSlice";
 import { Helmet } from "react-helmet-async";
 
-const razorpayKey = environment.razorPayApiKey;
+const razorpayKey = import.meta.env.VITE_RAZORPAY_API_KEY;
+
 const CheckoutPage = () => {
   const { error, isLoading, Razorpay } = useRazorpay();
   const { cartDetails, setCartDetails } = useViewCart();
@@ -612,7 +612,8 @@ const CheckoutPage = () => {
             key: razorpayKey,
             amount: finalPrice * 100,
             currency: "INR",
-            name: "Almaa Herbal Nature Pvt Ltd",
+            // name: "Almaa Herbal Nature Pvt Ltd",
+            name: "Test Company",
             description: "Test Transaction",
             order_id: paymentResponse.data.order_id,
             handler: async (response) => {
