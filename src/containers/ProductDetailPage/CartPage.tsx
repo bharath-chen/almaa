@@ -23,6 +23,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputErrorMessage from "../../components/InputErrorMessage/InputErrorMessage";
 import { showModal } from "../../features/modal/modalSlice";
+import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
 
 const stateValues = [...states.map((state) => state.value)] as [
   string,
@@ -217,13 +218,21 @@ const CartPage = () => {
       })),
     };
 
-    cartService.create<AddCartRequest>(payload).then((res) => {
-      navigate("/checkout", {
-        state: {
-          shippingEstimate: subTotal > 2000 ? 0 : shippingEstimate,
-        },
+    dispatch(showLoader());
+
+    cartService
+      .create<AddCartRequest>(payload)
+      .then((res) => {
+        dispatch(hideLoader());
+        navigate("/checkout", {
+          state: {
+            shippingEstimate: subTotal > 2000 ? 0 : shippingEstimate,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch(hideLoader());
       });
-    });
   };
 
   useEffect(() => {
