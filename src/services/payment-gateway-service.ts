@@ -1,5 +1,6 @@
 import axios from "axios";
-import { environment } from "../environments/environment.prod";
+
+const baseUrl = import.meta.env.VITE_API_URL;
 
 class PaymentGatewayService {
   onlinePayment(customer_id: string, order_id: string) {
@@ -9,7 +10,7 @@ class PaymentGatewayService {
     };
 
     const request = axios.post<typeof payload>(
-      `${environment.apiUrl}/razorpay.php`,
+      `${baseUrl}/razorpay.php`,
       payload
     );
 
@@ -31,7 +32,7 @@ class PaymentGatewayService {
       razorpay_signature,
     };
 
-    const request = axios.post(`${environment.apiUrl}/verify.php`, payload);
+    const request = axios.post(`${baseUrl}/verify.php`, payload);
 
     return { request };
   }
