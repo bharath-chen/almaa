@@ -1,4 +1,5 @@
 import { ProductDetail } from "services/product-detail-service";
+import { Address } from "./address";
 
 export interface OrderDetail {
   order_detail_id: string;
@@ -11,6 +12,7 @@ export interface OrderDetail {
 }
 
 export interface Order {
+  address_id: string;
   order_id: string;
   customer_id: string;
   invoice_number: string;
@@ -84,6 +86,7 @@ export interface ProductDetailData {
 
 export interface OrderData {
   order: Order;
+  addressDetails: Address[];
   orderDetails: OrderDetail[];
   products: ProductDetailData[];
 }

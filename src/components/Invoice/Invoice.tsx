@@ -133,6 +133,9 @@ const Invoice = () => {
   }, 0);
   const deliveryCharge = +orderData.order.delivery_charge;
   const gstSplitUpAmount = overAllTax / 2;
+  const address = orderData.addressDetails.find(
+    (a) => orderData.order.address_id === a.address_id
+  );
 
   return (
     <div className="container mx-auto p-4 sm:p-6 max-w-full">
@@ -222,7 +225,13 @@ const Invoice = () => {
                 Name: {customer.first_name} {customer.last_name}
               </p>
               <p>Phone: {customer.mobilenumber}</p>
-              <p>Address: No 1/8 Pinjala Subramaniam St, T.nagar</p>
+              {address && (
+                <p>
+                  Address: No {address.doorno} {address.street},{" "}
+                  {address.location}, {address.city}, {address.state}{" "}
+                  {address.pincode}
+                </p>
+              )}
               <p className="mt-5 mb-5">
                 Payment Method: {orderData.order.payment_mode}
               </p>
@@ -231,8 +240,17 @@ const Invoice = () => {
               <h2 className="font-semibold">Shipping Information</h2>
               <p>Name: {customer.first_name}</p>
               <p>Phone: {customer.mobilenumber}</p>
-              <p>Address: No 1/8 Pinjala Subramaniam St, T.nagar,</p>
-              <p>Chennai, Tamil Nadu 600017</p>
+              {address && (
+                <>
+                  <p>
+                    Address: No {address.doorno} {address.street},{" "}
+                    {address.location},
+                  </p>
+                  <p>
+                    {address.city}, {address.state} {address.pincode}
+                  </p>
+                </>
+              )}
               <p className="mt-5 mb-5">Shipping Method: Courier / Postal</p>
             </div>
           </div>
