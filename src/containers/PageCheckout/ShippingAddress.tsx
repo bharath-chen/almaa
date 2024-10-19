@@ -246,7 +246,7 @@ const ShippingAddress: FC<Props> = ({
               </div>
               <div>
                 <Label className="text-sm">Last name</Label>
-                <Input className="mt-1.5" value={customer.lastName} disabled />
+                <Input className="mt-1.5" value={customer.last_name} disabled />
               </div>
             </div>
 
