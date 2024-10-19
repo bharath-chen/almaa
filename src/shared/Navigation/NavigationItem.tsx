@@ -12,6 +12,7 @@ export interface NavItemType {
   children?: NavItemType[];
   type?: "dropdown" | "megaMenu" | "subMenu" | "none";
   isNew?: boolean;
+  className?: string;
 }
 
 export interface NavigationItemProps {
@@ -132,6 +133,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
   // ===================== MENU DROPDOW =====================
   const renderDropdownMenu = (menuDropdown: NavItemType) => {
     const isHover = menuCurrentHovers.includes(menuDropdown.id);
+
     return (
       <Popover
         as="li"
@@ -156,38 +158,69 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
             >
               <Popover.Panel
                 static
-                className="sub-menu absolute transform z-10 w-56 top-full left-0"
+                className={
+                  "sub-menu absolute transform z-10 w-56 top-full left-0 " +
+                  menuDropdown.className
+                }
               >
-                {/* <ul className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-white dark:ring-opacity-10 text-sm relative bg-white dark:bg-neutral-900 py-4 grid space-y-1 max-h-60 overflow-y-auto">
-                  {menuDropdown.children?.map((i) => {
-                    if (i.type) {
-                      return renderDropdownMenuNavlinkHasChild(i);
-                    } else {
-                      return (
-                        <li key={i.id} className="px-2">
-                          {renderDropdownMenuNavlink(i)}
+                {menuDropdown.className && (
+                  <ul className="bg-white grid grid-cols-2 gap-4 p-4 text-sm">
+                    {/* Left column */}
+                    <div>
+                      {menuDropdown.children.slice(0, 8).map((item) => (
+                        <li
+                          onClick={() =>
+                            navigate(
+                              `/products?category_id=${item.id}&category=${item.name}`
+                            )
+                          }
+                          key={item.id}
+                          className="px-2"
+                        >
+                          <span className="cursor-pointer flex items-center py-2 px-4 rounded-md hover:text-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 font-normal text-neutral-600 dark:text-neutral-400">
+                            {item.name}
+                          </span>
                         </li>
-                      );
-                    }
-                  })}
-                </ul> */}
-
-                <ul
-                  className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-white dark:ring-opacity-10 text-sm relative bg-white dark:bg-neutral-900 py-4 grid space-y-1 overflow-y-auto"
-                  style={{ maxHeight: "80vh" }} // Limit height to 80% of the viewport height
-                >
-                  {menuDropdown.children?.map((i) => {
-                    if (i.type) {
-                      return renderDropdownMenuNavlinkHasChild(i);
-                    } else {
-                      return (
-                        <li key={i.id} className="px-2">
-                          {renderDropdownMenuNavlink(i)}
+                      ))}
+                    </div>
+                    {/* Right column */}
+                    <div>
+                      {menuDropdown.children.slice(8).map((item) => (
+                        <li
+                          onClick={() =>
+                            navigate(
+                              `/products?category_id=${item.id}&category=${item.name}`
+                            )
+                          }
+                          key={item.id}
+                          className="px-2"
+                        >
+                          <span className="cursor-pointer flex items-center py-2 px-4 rounded-md hover:text-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 font-normal text-neutral-600 dark:text-neutral-400">
+                            {item.name}
+                          </span>
                         </li>
-                      );
-                    }
-                  })}
-                </ul>
+                      ))}
+                    </div>
+                  </ul>
+                )}
+                {!menuDropdown.className && (
+                  <ul
+                    className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-white dark:ring-opacity-10 text-sm relative bg-white dark:bg-neutral-900 py-4 grid space-y-1 overflow-y-auto"
+                    style={{ maxHeight: "80vh" }} // Limit height to 80% of the viewport height
+                  >
+                    {menuDropdown.children?.map((i) => {
+                      if (i.type) {
+                        return renderDropdownMenuNavlinkHasChild(i);
+                      } else {
+                        return (
+                          <li key={i.id} className="px-2">
+                            {renderDropdownMenuNavlink(i)}
+                          </li>
+                        );
+                      }
+                    })}
+                  </ul>
+                )}
               </Popover.Panel>
             </Transition>
           </>

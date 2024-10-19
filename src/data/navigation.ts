@@ -224,6 +224,7 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
     name: "Products",
     type: "dropdown",
     children: PRODUCTS_TEAM_CHILD,
+    className: "w-[700px]",
   },
   {
     id: ncNanoId(),
