@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Wishlist } from "../../models/wishlist";
 import apiClient from "../../services/api-client";
+import cryptoService from "../../services/crypto-service";
 
 interface WishlistState {
   wishlist: Wishlist;
@@ -16,10 +17,23 @@ const initialState: WishlistState = {
   success: null,
 };
 
+const getAuthInfo = () => {
+  const encryptedState = localStorage.getItem("authState");
+  if (encryptedState) {
+    try {
+      // Decrypt the state using CryptoService
+      return cryptoService.decryptData(encryptedState);
+    } catch (error) {
+      console.error("Failed to decrypt auth state:", error);
+      return null;
+    }
+  }
+};
+
 export const fetchWishlist = createAsyncThunk(
   "wishlist/fetchWishList",
   async () => {
-    const authInfo = JSON.parse(localStorage.getItem("authState"));
+    const authInfo = getAuthInfo();
 
     const response = await apiClient.get<Wishlist>(
       `?gofor=wishlist&customer_id=${authInfo?.customer_id}`
@@ -31,7 +45,7 @@ export const fetchWishlist = createAsyncThunk(
 export const addItemToWishlist = createAsyncThunk(
   "wishlist/addItemToWishlist",
   async (productId: string) => {
-    const authInfo = JSON.parse(localStorage.getItem("authState"));
+    const authInfo = getAuthInfo();
     const payload = {
       gofor: "addwishlist",
       customer_id: authInfo?.customer_id,
@@ -45,7 +59,7 @@ export const addItemToWishlist = createAsyncThunk(
 export const removeItemFromWishlist = createAsyncThunk(
   "wishlist/updateItemToWishlist",
   async (productId: string) => {
-    const authInfo = JSON.parse(localStorage.getItem("authState"));
+    const authInfo = getAuthInfo();
     const payload = {
       gofor: "updatewishlist",
       customer_id: authInfo?.customer_id,

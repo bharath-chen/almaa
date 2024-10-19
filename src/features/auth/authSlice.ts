@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../state/store";
 import { AuthState } from "../../models/authState";
+import cryptoService from "../../services/crypto-service";
 
 const initialState: AuthState = {
   customer_id: "",
@@ -15,11 +16,24 @@ const initialState: AuthState = {
   modified_date: "",
 };
 
+// Check local storage for encrypted auth state and decrypt it
+const loadAuthState = (): AuthState => {
+  const encryptedState = localStorage.getItem("authState");
+  if (encryptedState) {
+    try {
+      // Decrypt the state using CryptoService
+      return cryptoService.decryptData(encryptedState);
+    } catch (error) {
+      console.error("Failed to decrypt auth state:", error);
+      return initialState;
+    }
+  }
+  return initialState;
+};
+
 const authSlice = createSlice({
   name: "auth",
-  initialState: localStorage.getItem("authState")
-    ? JSON.parse(localStorage.getItem("authState") as string)
-    : initialState,
+  initialState: loadAuthState(),
   reducers: {
     login(state, action: PayloadAction<AuthState>) {
       state.customer_id = action.payload.customer_id;
@@ -33,8 +47,9 @@ const authSlice = createSlice({
       state.created_date = action.payload.created_date;
       state.modified_date = action.payload.modified_date;
 
-      // Save auth state to local storage
-      localStorage.setItem("authState", JSON.stringify(state));
+      // Encrypt and save auth state to local storage
+      const encryptedState = cryptoService.encryptData(state);
+      localStorage.setItem("authState", encryptedState);
     },
     logout(state) {
       state.customer_id = "";
