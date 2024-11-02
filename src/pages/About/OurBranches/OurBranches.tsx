@@ -163,7 +163,6 @@ const OurBranches = () => {
             ))}
           </div>
         </div>
-        {/* <SectionGridMoreExplore onCardClick={handleCardClick} /> */}
       </div>
 
       {/* Modal */}

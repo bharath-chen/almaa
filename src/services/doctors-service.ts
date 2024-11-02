@@ -6,6 +6,8 @@ export interface IDoctor {
   specialization: string;
   qualification: string;
   profile_picture: string;
+  experience: string;
+  highlights: string;
   status: string;
 }
 

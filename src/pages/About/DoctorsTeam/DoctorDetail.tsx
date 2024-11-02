@@ -28,6 +28,14 @@ const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
       name: "Specialization",
       content: doctorDetail.specialization,
     },
+    {
+      name: "Experience",
+      content: doctorDetail.experience,
+    },
+    {
+      name: "Professional Highlights",
+      content: doctorDetail.highlights,
+    },
   ];
 
   const renderSectionContent = () => {
