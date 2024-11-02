@@ -185,39 +185,6 @@ const Home = () => {
       <section className="container-fluid mb-40">
         <AppCarousel />
       </section>
-      {/* <section className="w-full mb-20">
-        <div className="nc-PageHome relative overflow-hidden">
-          <NcImage
-            src={heroImg}
-            alt="Hero Img"
-            className="w-full h-auto object-cover"
-          />
-          <div
-            className={
-              "container absolute top-1/2 md:top-[40%] md:left-[15%] lg:top-[40%] lg:left-[17%] transform -translate-y-1/2 text-white text-center md:text-left "
-            }
-          >
-            <h2 className="text-sm md:text-2xl lg:text-4xl font-semibold leading-7 tracking-wide">
-              Live a Healthy Life with Siddha
-            </h2>
-            <h3 className="text-2xl md:text-4xl lg:text-7xl mt-3 md:mt-6 md:mb-3 sm:mb-2 font-thin">
-              <span className="pacifico-regular">Herbal for a</span> <br />
-              <span className="font-bold">HEALTHY WELLBEING</span>
-            </h3>
-            <ButtonSecondary
-              onClick={() => navigate("/products")}
-              className="focus:ring-2 focus:ring-offset-2 focus:ring-transparent md:my-6 lg:my-10 text-xs md:px-8 md:py-5 xl:px-24"
-            >
-              Explore Now
-            </ButtonSecondary>
-          </div>
-        </div>
-      </section> */}
-
-      {/* Carousel Section */}
-      {/* <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <AppCarousel images={images} />
-      </div> */}
 
       {/* ABOUT SECTION */}
       <section className="container mb-40">
