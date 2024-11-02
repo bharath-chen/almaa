@@ -23,7 +23,7 @@ import video3Img from "../assets/HOME PAGE/9-video-3.jpg";
 const ABOUTS = [
   {
     id: 1,
-    label: "25+ Doctors",
+    label: "40+ Doctors",
     descripiton: "Experienced and multispecialised doctors",
   },
   {

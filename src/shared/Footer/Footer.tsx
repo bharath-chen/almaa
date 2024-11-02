@@ -202,7 +202,7 @@ const Footer = () => {
                 <Link
                   key={item.id}
                   className="mt-3 text-sm xl:text-md hover:text-neutral-550 dark:hover:text-white after:content-['|'] after:mx-[8px] text-content-4 last:after:content-[''] desktop:text-[14px]"
-                  to="/support"
+                  to={item.href}
                 >
                   {item.label}
                 </Link>
