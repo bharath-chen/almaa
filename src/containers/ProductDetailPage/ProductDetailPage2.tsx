@@ -51,6 +51,8 @@ import {
 } from "../../features/cart/cartSlice";
 import { RootState } from "state/store";
 import { Rating } from "react-simple-star-rating";
+import ProductReviewForm from "./ProductReviewForm";
+import reviewService from "../../services/review-service";
 
 const calculateOriginalPrice = (price: number, pack: number) => price * pack;
 
@@ -60,6 +62,14 @@ const calculateDiscountedPrice = (price: number, pack: number, offer: number) =>
 export interface ProductDetailPage2Props {
   className?: string;
 }
+
+// Add Ratings
+// {
+// "gofor" : "addratings",
+// "product_id" : "2",
+// "customer_id" : "1",
+// "user_ratings" : "2"
+// }
 
 const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   className = "",
@@ -111,9 +121,12 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   const [showVideoPopup, setShowVideoPopup] = useState<boolean>(false);
   const [faqs, setFaqs] = useState<{ name: string; content: string }[]>([]);
   const [sellingPrice, setSellingPrice] = useState(0);
+  const [showReviewForm, setShowReviewForm] = useState(false);
   const cart = useAppSelector((state: RootState) => state.cart);
+  const customer = useAppSelector((state: RootState) => state.auth);
+  const [hasReviewed, setHasReviewed] = useState(false);
 
-  useEffect(() => {
+  const fetchProductDetail = () => {
     const { request, cancel } = productDetailService.get<
       ProductDetail,
       { product_id: number }
@@ -140,6 +153,10 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
           label: details.product_attributes[0].product_measuring_unit_id,
         });
         setInStock(details.product_attributes[0].attstatus === "1");
+        const index = details.product_feedback.findIndex(
+          (f) => f.customer_id === customer.customer_id
+        );
+        setHasReviewed(index !== -1);
       })
       .catch((err) => {
         if (err instanceof CanceledError) return;
@@ -148,6 +165,12 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       });
 
     return () => cancel();
+  };
+
+  useEffect(() => {
+    const cancelFetchProductDetail = fetchProductDetail();
+
+    return () => cancelFetchProductDetail();
   }, []);
 
   // Related Products
@@ -280,15 +303,6 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
         quantity: selected ? selected.pack : quantitySelected,
       })
     );
-    // addItemToCartWithQuantity(
-    //   {
-    //     ...productDetail.product_details[0],
-    //     ...productDetail.product_attributes[0],
-    //     selling_price:
-    //       `${selected.discountedPrice.toFixed(2)}` || `${sellingPrice}`,
-    //   },
-    //   quantity: selected ? selected.pack : quantitySelected
-    // );
   };
 
   const renderProductCartOnNotify = ({ size }: { size?: string }) => {
@@ -466,8 +480,6 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             {/* ---------- 3 VARIANTS AND SIZE LIST ----------  */}
             <div className="mt-6 space-y-7 lg:space-y-8">
               {inStock ? renderStatusInstock() : renderStatusSoldout()}
-              {/* <div className="">{renderVariants()}</div> */}
-              {/* <div className="">{renderSizeList()}</div> */}
             </div>
           </div>
 
@@ -603,55 +615,16 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             {
               name: "Product Info",
               content: productDetail?.product_details[0]?.short_description,
-              // "A miraculous combination of herbs in pal podi magically clears sore throat, sinus headache, running nose, sneezing, improves vision and clears the discolourization of facial skin",
             },
-            //   {
-            //     name: `Benefits of ${name}`,
-            //     content: `<ul class="list-disc list-inside leading-7">
-            //   <li>Essential to control plaque of teeth</li>
-            //   <li>
-            //    Removes odour from teeth
-            //   </li>
-            //   <li>
-            //     Brushing your teeth twice a day is good for health
-            //   </li>
-            //   <li>
-            //     Enhances immunity
-            //   </li>
-            // </ul>`,
-            //   },
             {
               name: `How to Use?`,
-              // content: `<ul class="list-disc list-inside leading-7"><li>${productDetail?.product_details[0]?.howtouse}</li></ul>`,
               content: productDetail?.product_details[0]?.howtouse,
-              //     `<ul class="list-disc list-inside leading-7">
-              //   <li>Essential to control plaque of teeth</li>
-              //   <li>
-              //    Removes odour from teeth
-              //   </li>
-              //   <li>
-              //     Brushing your teeth twice a day is good for health
-              //   </li>
-              //   <li>
-              //     Enhances immunity
-              //   </li>
-              // </ul>`,
             },
             {
               name: `Suitable For`,
               content: `<ul class="list-disc list-inside leading-7">
             <li>${productDetail?.product_details[0]?.suitablefor}</li>  
             </ul>`,
-              // <li>Essential to control plaque of teeth</li>
-              // <li>
-              //  Removes odour from teeth
-              // </li>
-              // <li>
-              //   Brushing your teeth twice a day is good for health
-              // </li>
-              // <li>
-              //   Enhances immunity
-              // </li>
             },
           ]}
           panelClassName="p-4 pt-3.5 text-slate-600 text-base dark:text-slate-300 leading-7"
@@ -671,22 +644,8 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             dangerouslySetInnerHTML={{
               __html: productDetail?.product_details[0]?.full_description,
             }}
-          >
-            {/* Apart from usual tooth cleansing, the palpodi is indicated to treat
-            45 types of tooth disorders. A miraculous combinations of herbs in
-            pal podi magically clears sore throat, sinus, headache, running
-            nose, sneezing, improves vision and clears the discolouration of
-            facial skin. */}
-            {/* {productDetail?.product_details[0]?.full_description} */}
-          </p>
-          {/* <ul className="list-inside leading-7">
-            <li>Essential to control plaque of teeth</li>
-            <li>Removes odour from teeth</li>
-            <li>Brushing your teeth twice a day is good for health</li>
-            <li>Enhances Immunity</li>
-          </ul> */}
+          ></p>
         </div>
-        {/* ---------- 6 ----------  */}
       </div>
     );
   };
@@ -724,34 +683,6 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 }}
               />
             ))}
-            {/* <ReviewItem />
-            <ReviewItem
-              data={{
-                comment: `I love the charcoal heavyweight hoodie. Still looks new after plenty of washes. 
-                  If you’re unsure which hoodie to pick.`,
-                date: "December 22, 2021",
-                name: "Stiven Hokinhs",
-                starPoint: 5,
-              }}
-            />
-            <ReviewItem
-              data={{
-                comment: `The quality and sizing mentioned were accurate and really happy with the purchase. Such a cozy and comfortable hoodie. 
-                Now that it’s colder, my husband wears his all the time. I wear hoodies all the time. `,
-                date: "August 15, 2022",
-                name: "Gropishta keo",
-                starPoint: 5,
-              }}
-            />
-            <ReviewItem
-              data={{
-                comment: `Before buying this, I didn't really know how I would tell a "high quality" sweatshirt, but after opening, I was very impressed. 
-                The material is super soft and comfortable and the sweatshirt also has a good weight to it.`,
-                date: "December 12, 2022",
-                name: "Dahon Stiven",
-                starPoint: 5,
-              }}
-            /> */}
           </div>
 
           <ButtonSecondary
@@ -877,6 +808,30 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     setRelatedProducts(updatedProducts);
   };
 
+  const handleSubmitReview = (data: { comments: string; rating: number }) => {
+    setShowReviewForm(false);
+    const payload = {
+      gofor: "addratings",
+      product_id: productDetail.product_details[0].product_id,
+      customer_id: customer.customer_id,
+      user_ratings: data.rating.toString(),
+      comments: data.comments,
+    };
+
+    dispatch(showLoader());
+
+    reviewService
+      .create<typeof payload>(payload)
+      .then((res) => {
+        dispatch(hideLoader());
+
+        fetchProductDetail();
+      })
+      .catch((err) => {
+        dispatch(hideLoader());
+      });
+  };
+
   return (
     <div
       className={`ListingDetailPage nc-ProductDetailPage2 ${className}`}
@@ -984,14 +939,6 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       <section className="container mb-10 lg:pb-28 pt-48 space-y-14">
         <div className={`nc-SectionPromo2 ${className}`}>
           <div className="relative flex flex-col lg:flex-row lg:justify-end bg-yellow-50 dark:bg-slate-800 rounded-2xl sm:rounded-[40px] p-4 pb-0 sm:p-5 sm:pb-0 lg:p-24">
-            {/* <div className="absolute inset-0">
-              <img
-                className="absolute w-full h-full object-contain dark:opacity-5"
-                src={backgroundLineSvg}
-                alt="backgroundLineSvg"
-              />
-            </div> */}
-
             <div className="lg:w-[50%] max-w-lg relative">
               <p className="font-semibold text-2xl">Key Benefits</p>
               <h2 className="font-semibold text-2xl sm:text-4xl xl:text-5xl 2xl:text-6xl mt-2 sm:mt-2 !leading-[1.13] tracking-tight">
@@ -999,13 +946,8 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 {/* Special offer <br />
                 in kids products */}
               </h2>
-              {/* <span className="block mt-6 text-slate-500 dark:text-slate-400">
-                Fashion is a form of self-expression and autonomy at a
-                particular period and place.
-              </span> */}
               {productDetail?.product_details[0]?.key_benefits && (
                 <div
-                  // className="text-lg list-disc list-inside leading-7 text-yellow-950 mt-3"
                   dangerouslySetInnerHTML={{
                     __html:
                       productDetail?.product_details[0]?.key_benefits.replace(
@@ -1013,12 +955,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                         '<ul class="text-lg list-disc list-inside leading-7 text-yellow-950 mt-3">'
                       ),
                   }}
-                >
-                  {/* <li>Essential to control plaque of teeth</li>
-                <li>Removes odour from teeth</li>
-                <li>Brushing your teeth twice a day is good for health</li>
-                <li>Enhances Immunity</li> */}
-                </div>
+                ></div>
               )}
             </div>
 
@@ -1135,8 +1072,24 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
       {/* OTHER SECTION */}
       <section className="container pb-24 lg:pb-28 mb-10 space-y-14">
-        {/* <hr className="border-slate-200 dark:border-slate-700" /> */}
-        <h4 className="text-3xl font-semibold mb-10">Customer Reviews</h4>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 place-content-between">
+          <div className="col-span-3 md:col-span-2 self-center">
+            <h4 className="text-3xl font-semibold mb-10">Customer Reviews</h4>
+          </div>
+          {!hasReviewed && (
+            <div className="col-span-3 md:col-span-1 place-self-end">
+              <ButtonPrimary onClick={() => setShowReviewForm(true)}>
+                Write Your Review
+              </ButtonPrimary>
+            </div>
+          )}
+        </div>
+        {showReviewForm && (
+          <ProductReviewForm
+            submitReview={handleSubmitReview}
+            onClose={() => setShowReviewForm(false)}
+          />
+        )}
         {renderReviews()}
 
         {/* FAQ */}
