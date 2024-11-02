@@ -146,7 +146,10 @@ const renderContactUs = () => {
           </strong>
         </p>
         <p className="mt-3 text-sm xl:text-md after:mx-[8px] text-content-4 last:after:content-[''] desktop:text-[14px]">
-          Mon-Fri: 9:00am - 5:00pm
+          Mon-Sat: 9:00am - 6:00pm
+        </p>
+        <p className="mt-3 text-sm xl:text-md after:mx-[8px] text-content-4 last:after:content-[''] desktop:text-[14px]">
+          Sun: 10:00am - 4:00pm
         </p>
       </span>
       <span>
