@@ -3,7 +3,6 @@ import { RootState } from "../../state/store";
 import { AuthState } from "../../models/authState";
 import cryptoService from "../../services/crypto-service";
 
-// Define the initial state for authentication
 const initialState: AuthState = {
   customer_id: "",
   first_name: "",
@@ -17,19 +16,26 @@ const initialState: AuthState = {
   modified_date: "",
 };
 
-// Function to load and decrypt the authentication state from local storage
-const loadAuthState = async (): Promise<AuthState> => {
-  const data = await cryptoService.getData("authState");
-  return data || initialState; // Return loaded state or initial state
+// Check local storage for encrypted auth state and decrypt it
+const loadAuthState = (): AuthState => {
+  const encryptedState = localStorage.getItem("authState");
+  if (encryptedState) {
+    try {
+      // Decrypt the state using CryptoService
+      return cryptoService.decryptData(encryptedState);
+    } catch (error) {
+      console.error("Failed to decrypt auth state:", error);
+      return initialState;
+    }
+  }
+  return initialState;
 };
 
-// Create the authentication slice
 const authSlice = createSlice({
   name: "auth",
-  initialState: initialState, // Start with initial state
+  initialState: loadAuthState(),
   reducers: {
     login(state, action: PayloadAction<AuthState>) {
-      // Update state with provided auth info
       state.customer_id = action.payload.customer_id;
       state.first_name = action.payload.first_name;
       state.last_name = action.payload.last_name;
@@ -42,10 +48,10 @@ const authSlice = createSlice({
       state.modified_date = action.payload.modified_date;
 
       // Encrypt and save auth state to local storage
-      cryptoService.setData("authState", state);
+      const encryptedState = cryptoService.encryptData(state);
+      localStorage.setItem("authState", encryptedState);
     },
     logout(state) {
-      // Reset state to initial values
       state.customer_id = "";
       state.first_name = "";
       state.last_name = "";
@@ -58,24 +64,15 @@ const authSlice = createSlice({
       state.modified_date = "";
 
       // Remove auth state from local storage
-      cryptoService.removeData("authState"); // Use the removeData method from cryptoService
+      localStorage.removeItem("authState");
     },
   },
 });
 
-// Load the initial auth state and set it in the store
-export const initializeAuthState = () => async (dispatch) => {
-  const authState = await loadAuthState();
-  dispatch(authSlice.actions.login(authState)); // Dispatch login with loaded state
-};
-
-// Export actions
 export const { login, logout } = authSlice.actions;
 
-// Export the reducer
 export default authSlice.reducer;
 
-// Selectors to access auth state
 export const selectAuthInfo = (state: RootState): AuthState => state.auth;
 
 export const selectIsLoggedIn = (state: RootState): boolean => {

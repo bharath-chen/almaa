@@ -38,7 +38,6 @@ export interface OrderHistory {
 
 const AccountOrder = () => {
   const [orders, setOrders] = useState<{ orders: OrderData[] }>({ orders: [] });
-  const [products, setProducts] = useState<Product[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<OrderData | null>(null); // For selected order
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility
   const customer = useAppSelector((state: RootState) => state.auth);
@@ -298,9 +297,13 @@ const AccountOrder = () => {
 
           {orders.orders &&
             orders.orders.length > 0 &&
-            orders.orders.map((o) => (
-              <Fragment key={o.order.invoice_number}>{renderOrder(o)}</Fragment>
-            ))}
+            orders.orders
+              .map((o) => (
+                <Fragment key={o.order.invoice_number}>
+                  {renderOrder(o)}
+                </Fragment>
+              ))
+              .reverse()}
         </div>
       </CommonLayout>
 
