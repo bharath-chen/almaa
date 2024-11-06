@@ -191,18 +191,21 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 place-content-center">
           <div>
             <h3 className="text-2xl xl:text-3xl font-semibold">
-              Take Care of you <span className="text-slate-400">in a</span>{" "}
-              <br />
-              <span className="my-2 text-slate-400">Herbal Way ...</span>
+              Buy Siddha Medicine & Products Online from{" "}
+              <span className="my-2 text-slate-400">
+                India's Largest Wellness Hub
+              </span>
             </h3>
             <p className="mt-1 text-slate-400 leading-7 tracking-wide text-sm md:text-md xl:text-lg text-justify">
-              Almaa acknowledges, abides and acts upon the principles and
-              provides right treatment for universal diseases with herbal
-              products as food supplementary, while pharmaceutical companies
-              extract active ingredients from plants and sell them as drugs, the
-              benefits of medicinal plants which cannot be replicated because of
-              their synergistic combination of hundreds of naturally occuring
-              phytochemicals that cannot be produced in laboratories.
+              As Almaa, we are known for our Quality Siddha Medicines. Almaa is
+              now your one-stop destination to buy Siddha medicines online.
+              Explore our Siddha products from the comfort of your digital
+              device. Almaa Siddha Doctors are available for online consultation
+              round the clock. We provide the best Siddha doctor consultation
+              online. From our Expert Panel, Get Online Siddha Consultation
+              absolutely Hassle-free. Experience the convenience of ordering
+              Almaa Siddha medicine online, backed by the expertise of the best
+              Siddha doctors.
             </p>
           </div>
           <div>
