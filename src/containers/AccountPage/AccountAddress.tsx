@@ -118,98 +118,100 @@ const AccountAddress = () => {
             Address List
           </h2>
           <div className="max-w-2xl prose prose-slate dark:prose-invert">
-            {addressList.map((address, index) => (
-              <div
-                key={address.address_id}
-                className="border border-slate-200 dark:border-slate-700 rounded-xl mb-4 p-4 sm:p-6 space-y-4"
-              >
-                <div className="flex items-start flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0">
-                  {/* Icon */}
-                  <span className="hidden sm:block mr-3">
-                    <svg
-                      className="w-6 h-6 text-slate-700 dark:text-slate-400"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M12.1401 15.0701V13.11C12.1401 10.59 14.1801 8.54004 16.7101 8.54004H18.6701"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M5.62012 8.55005H7.58014C10.1001 8.55005 12.1501 10.59 12.1501 13.12V13.7701V17.25"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M7.14008 6.75L5.34009 8.55L7.14008 10.35"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M16.8601 6.75L18.6601 8.55L16.8601 10.35"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-
-                  {/* Address Info */}
-                  <div className="flex-1">
-                    <h3 className="text-slate-700 dark:text-slate-300 flex items-center">
-                      <span className="uppercase">Shipping Address</span>
+            {addressList.length === 0 && <p>No address list</p>}
+            {addressList &&
+              addressList.map((address) => (
+                <div
+                  key={address.address_id}
+                  className="border border-slate-200 dark:border-slate-700 rounded-xl mb-4 p-4 sm:p-6 space-y-4"
+                >
+                  <div className="flex items-start flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0">
+                    {/* Icon */}
+                    <span className="hidden sm:block mr-3">
                       <svg
-                        fill="none"
+                        className="w-6 h-6 text-slate-700 dark:text-slate-400"
                         viewBox="0 0 24 24"
-                        strokeWidth="2.5"
-                        stroke="currentColor"
-                        className="w-5 h-5 ml-2 text-slate-900 dark:text-slate-100"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
+                          d="M12.1401 15.0701V13.11C12.1401 10.59 14.1801 8.54004 16.7101 8.54004H18.6701"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          d="M4.5 12.75l6 6 9-13.5"
+                        />
+                        <path
+                          d="M5.62012 8.55005H7.58014C10.1001 8.55005 12.1501 10.59 12.1501 13.12V13.7701V17.25"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M7.14008 6.75L5.34009 8.55L7.14008 10.35"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M16.8601 6.75L18.6601 8.55L16.8601 10.35"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         />
                       </svg>
-                    </h3>
-                    {address.address_id && (
-                      <p className="font-semibold mt-1 text-sm">
-                        {`${address?.doorno || ""}, ${address.street || ""}, ${
-                          address.location
-                        }, ${address.city || ""}, ${
-                          address?.state || ""
-                        }, India - ${address.pincode || ""}`}
-                      </p>
-                    )}
-                  </div>
+                    </span>
 
-                  {/* Buttons */}
-                  <div className="flex gap-2 mt-4 sm:mt-0 sm:ml-auto">
-                    <ButtonSecondary
-                      sizeClass="py-2 px-4"
-                      fontSize="text-sm font-medium"
-                      className="bg-slate-50 dark:bg-slate-800 !rounded-lg"
-                      onClick={() => handleAddressChange(address)}
-                    >
-                      Change
-                    </ButtonSecondary>
-                    {/* {address?.address_id && (
+                    {/* Address Info */}
+                    <div className="flex-1">
+                      <h3 className="text-slate-700 dark:text-slate-300 flex items-center">
+                        <span className="uppercase">Shipping Address</span>
+                        <svg
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="2.5"
+                          stroke="currentColor"
+                          className="w-5 h-5 ml-2 text-slate-900 dark:text-slate-100"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M4.5 12.75l6 6 9-13.5"
+                          />
+                        </svg>
+                      </h3>
+                      {address.address_id && (
+                        <p className="font-semibold mt-1 text-sm">
+                          {`${address?.doorno || ""}, ${
+                            address.street || ""
+                          }, ${address.location}, ${address.city || ""}, ${
+                            address?.state || ""
+                          }, India - ${address.pincode || ""}`}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Buttons */}
+                    <div className="flex gap-2 mt-4 sm:mt-0 sm:ml-auto">
+                      <ButtonSecondary
+                        sizeClass="py-2 px-4"
+                        fontSize="text-sm font-medium"
+                        className="bg-slate-50 dark:bg-slate-800 !rounded-lg"
+                        onClick={() => handleAddressChange(address)}
+                      >
+                        Change
+                      </ButtonSecondary>
+                      {/* {address?.address_id && (
                       <ButtonPrimary
                         sizeClass="py-2 px-4"
                         fontSize="text-sm font-medium"
@@ -218,10 +220,10 @@ const AccountAddress = () => {
                         Delete
                       </ButtonPrimary>
                     )} */}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
         {showAddressModal && (
