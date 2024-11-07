@@ -50,6 +50,10 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
                 name: "Support",
                 link: "/account-support",
               },
+              {
+                name: "Address List",
+                link: "/account-my-address",
+              },
             ].map((item, index) => (
               <NavLink
                 key={index}

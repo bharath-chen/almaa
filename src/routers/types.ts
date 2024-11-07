@@ -18,6 +18,7 @@ export interface LocationStates {
   "/account-change-password"?: {};
   "/account-support"?: {};
   "/account-my-order"?: {};
+  "/account-my-address"?: {};
   "/cart"?: {};
   "/checkout"?: {};
   "/thanks"?: {};

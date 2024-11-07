@@ -45,6 +45,7 @@ import Returns from "../pages/Returns/Returns";
 import NewsAndEventsDetail from "../pages/Resources/NewsAndEvents/NewsAndEventsDetail";
 import ShippingPolicy from "../pages/ShippingPolicy/ShippingPolicy";
 import Invoice from "../components/Invoice/Invoice";
+import AccountAddress from "../containers/AccountPage/AccountAddress";
 
 export const pages: Page[] = [
   { path: "/", component: Home },
@@ -78,6 +79,11 @@ export const pages: Page[] = [
   },
   { path: "/account-support", component: AccountSupport, protectedRoute: true },
   { path: "/account-my-order", component: AccountOrder, protectedRoute: true },
+  {
+    path: "/account-my-address",
+    component: AccountAddress,
+    protectedRoute: true,
+  },
   //
   { path: "/cart", component: CartPage, protectedRoute: true },
   { path: "/checkout", component: CheckoutPage, protectedRoute: true },
