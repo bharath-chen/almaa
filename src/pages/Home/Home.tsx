@@ -62,6 +62,7 @@ import {
 } from "../../features/wishlist/wishlistSlice";
 import AudioPlayerPopup from "../../components/Audio/AudioPlayerPopup";
 import VideoPopup from "../../pages/Resources/Videos/VideoPopup";
+import ProductCategroyCard from "./ProductCategoryCard";
 
 export const pageAnimation = {
   initial: { opacity: 0, y: 100 },
@@ -114,6 +115,16 @@ const Home = () => {
         href={`/products${item.search}`}
       />
     );
+  };
+
+  const renderProductCategoryCard = (item: {
+    name: string;
+    desc: string;
+    featuredImage: string;
+    color: string;
+    search: any;
+  }) => {
+    return <ProductCategroyCard item={item} />;
   };
 
   const renderHealthAndLifestyleCard = (item: IVideo) => {
@@ -458,7 +469,7 @@ const Home = () => {
               };
             })}
             className="nc-DiscoverMoreSlider nc-p-l-container "
-            renderChildren={renderCategoryCard}
+            renderChildren={renderProductCategoryCard}
           >
             <Heading
               className="mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 nc-p-r-container "
