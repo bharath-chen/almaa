@@ -651,6 +651,13 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   };
 
   const renderReviews = () => {
+    if (!productDetail?.product_feedback?.length)
+      return (
+        <h2 className="text-xl text-slate-600 text-center items-center">
+          No Customer Reviews!
+        </h2>
+      );
+
     return (
       <div id="reviews" className="scroll-mt-[150px]">
         {/* HEADING */}
