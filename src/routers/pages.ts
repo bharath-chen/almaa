@@ -15,7 +15,6 @@ import AccountSupport from "../containers/AccountPage/AccountSupport";
 import AccountOrder from "../containers/AccountPage/AccountOrder";
 import CartPage from "../containers/ProductDetailPage/CartPage";
 import CheckoutPage from "../containers/PageCheckout/CheckoutPage";
-import PageCollection2 from "../containers/PageCollection2";
 import Home from "../pages/Home/Home";
 import Products from "../pages/Products/Products";
 import Page404 from "../containers/Page404/Page404";
@@ -56,16 +55,9 @@ export const pages: Page[] = [
     path: "/product-detail/:name",
     component: ProductDetailPage2,
   },
-  // { path: "/home2", component: PageHome2 },
-  // { path: "/home3", component: PageHome3 },
-  //
   { path: "/home-header-2", component: PageHome },
   { path: "/product-detail-2", component: ProductDetailPage },
-  //
-  // { path: "/page-collection-2", component: PageCollection2 },
-  // { path: "/page-collection", component: PageCollection },
   { path: "/page-search", component: PageSearch },
-  //
   { path: "/account", component: AccountPage, protectedRoute: true },
   {
     path: "/account-savelists",
@@ -84,14 +76,11 @@ export const pages: Page[] = [
     component: AccountAddress,
     protectedRoute: true,
   },
-  //
   { path: "/cart", component: CartPage, protectedRoute: true },
   { path: "/checkout", component: CheckoutPage, protectedRoute: true },
   { path: "/thanks", component: ThanksPage, protectedRoute: true },
-  //
   { path: "/blog", component: Blog },
   { path: "/blog/:id", component: BlogSingle },
-  //
   { path: "/almaa-groups", component: AlmaaGroups },
   { path: "/founder", component: Founder },
   { path: "/doctors-team", component: DoctorsTeam },
@@ -99,7 +88,6 @@ export const pages: Page[] = [
   { path: "/our-branches", component: OurBranches },
   { path: "/our-concepts", component: OurConcepts },
   { path: "/siddha-science", component: SiddhaScience },
-  //
   { path: "/wellness-center", component: WellnessCenter },
   { path: "/production-unit", component: ProductionUnit },
   { path: "/library", component: Library },
