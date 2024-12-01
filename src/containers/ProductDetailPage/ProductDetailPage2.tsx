@@ -729,10 +729,10 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       <div key={item.ingredient_id}>
         <NcImage className="rounded-2xl " src={item.image} alt={item.name} />
         <div className="grid justify-items-stretch">
-          <h5 className="font-semibold justify-self-center text-dark-900 dark:text-white text-2xl mt-2">
+          <h5 className="font-semibold justify-self-left text-dark-900 dark:text-white text-2xl my-2">
             {item.name}
           </h5>
-          <p className="justify-self-center text-sm font-semibold text-slate-500 dark:text-white">
+          <p className="justify-self-center text-sm text-slate-500 dark:text-white">
             {item.desc}
           </p>
         </div>
