@@ -8,7 +8,6 @@ import { Product } from "../../models/product";
 import { CanceledError } from "axios";
 import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
 import { SortOrder } from "../../models/sort-order";
-import sortProductsService from "../../services/sort-products-service";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import {
   addItemToWishlist,
@@ -59,6 +58,7 @@ const Products: FC<Props> = ({ className = "" }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useAppDispatch();
   const customer = useAppSelector((state) => state.auth);
+  const loading = useAppSelector((state) => state.loader.loading);
   const categoryId = queryParams.get("category_id"); // Extracts category_id (1)
   const category = queryParams.get("category");
   const natProductId = queryParams.get("nat_prod_id");
@@ -424,8 +424,8 @@ const Products: FC<Props> = ({ className = "" }) => {
               <div className="flex-shrink-0 mb-10 lg:mb-0 lg:mx-4 border-t lg:border-t-0"></div>
 
               <div className="flex-1 ">
-                <div className="flex-1 grid grid-cols-1 gap-x-8 gap-y-10 ">
-                  {!currentProducts.length && (
+                {/* <div className="flex-1 grid grid-cols-1 gap-x-8 gap-y-10 ">
+                  {!loading && currentProducts.length === 0 && (
                     <div className="flex flex-col items-center justify-center text-center py-10 px-6 bg-gray-50 rounded-lg shadow-md w-full max-w-md mx-auto">
                       <h2 className="text-xl font-semibold text-gray-800 mb-4">
                         No Products Found!
@@ -440,9 +440,10 @@ const Products: FC<Props> = ({ className = "" }) => {
                       </p>
                     </div>
                   )}
-                </div>
+                </div> */}
                 <div className="flex-1 grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 ">
-                  {currentProducts.length > 0 &&
+                  {!loading &&
+                    currentProducts.length > 0 &&
                     currentProducts.map((item, index) => (
                       <ProductCard
                         data={item}
