@@ -301,7 +301,7 @@ const PaymentMethod: FC<Props> = ({
           {/* <div>{renderDebitCredit()}</div> */}
 
           {/* ==================== */}
-          {/* <div>{renderInterNetBanking()}</div> */}
+          <div>{renderInterNetBanking()}</div>
 
           {/* ==================== */}
           <div>{renderWallet()}</div>
