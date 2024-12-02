@@ -183,9 +183,11 @@ const Products: FC<Props> = ({ className = "" }) => {
 
   // Products
   useEffect(() => {
-    const cancelFetchProducts = fetchProducts();
-    return () => cancelFetchProducts();
-  }, []);
+    if (queryParams.size === 0) {
+      const cancelFetchProducts = fetchProducts();
+      return () => cancelFetchProducts();
+    }
+  }, [queryParams.size === 0]);
 
   // useEffect(() => {
   //   if (selectedSortOrder?.value) {
