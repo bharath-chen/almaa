@@ -62,6 +62,13 @@ const ShippingPolicy = () => {
               Respective Postal/ Courier
             </p>
             <h3 className="text-xl font-semibold mb-2">
+              <strong>Estimated Delivery</strong>
+            </h3>
+            <p className="mb-4">
+              Delivery for the orders confirmed by customers will be done
+              between [5-7] working days.
+            </p>
+            <h3 className="text-xl font-semibold mb-2">
               <strong>International Shipping</strong>
             </h3>
             <p className="mb-4">We are not shipping outside India currently.</p>
