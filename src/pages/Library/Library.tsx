@@ -4,7 +4,6 @@ import { Helmet } from "react-helmet-async";
 import BgGlassmorphism from "../../components/BgGlassmorphism/BgGlassmorphism";
 import SectionHero from "./SectionHero";
 import Heading from "../../components/Heading/Heading";
-import CardCategory3 from "../../components/CardCategories/CardCategory3";
 import NcImage from "../../shared/NcImage/NcImage";
 import uyirvazhiImg from "../../assets/06-Library/Uyirvazhi.png";
 import SectionSliderCategories from "../../components/SectionSliderCategories/SectionSliderCategories";
@@ -74,24 +73,6 @@ artilces o every aspect of health`,
 ];
 
 const Library: FC<PageAboutProps> = ({ className = "" }) => {
-  const renderCategoryCard = (item: {
-    name: string;
-    desc: string;
-    featuredImage: string;
-    color: string;
-  }) => {
-    return (
-      <CardCategory3
-        name={item.name}
-        desc={item.desc}
-        featuredImage={item.featuredImage}
-        color={item.color}
-        btnText="View Products"
-        href="/products"
-      />
-    );
-  };
-
   return (
     <div
       className={`nc-PageAbout overflow-hidden relative ${className}`}
