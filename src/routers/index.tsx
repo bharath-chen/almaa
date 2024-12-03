@@ -1,16 +1,16 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import ScrollToTop from "./ScrollToTop";
-import Footer from "../shared/Footer/Footer";
-// import Page404 from "../containers/Page404/Page404";
-import AppHeader from "../components/AppHeader";
 import { pages } from "./pages";
 import { Toaster } from "react-hot-toast";
-import MiniOfferBanner from "../components/MiniOfferBanner";
 import { ShoppingCartProvider } from "../store/shopping-cart-context";
-import AuthGuard from "../components/AuthGuard/AuthGuard";
 import { useAppSelector } from "../hooks/hooks";
 import { selectIsLoggedIn } from "../features/auth/authSlice";
 import Products from "../pages/Products/Products";
+import MiniOfferBanner from "../components/MiniOfferBanner";
+import AuthGuard from "../components/AuthGuard/AuthGuard";
+import AppHeader from "../components/AppHeader";
+import ScrollToTop from "./ScrollToTop";
+import Footer from "../shared/Footer/Footer";
+import WhatsAppFloatIcon from "../components/WhatsAppFloatIcon/WhatsAppFloatIcon";
 
 const MyRoutes = () => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
@@ -55,6 +55,7 @@ const MyRoutes = () => {
           <Route element={<Products />} />
           <Route path="*" Component={Products} />
         </Routes>
+        <WhatsAppFloatIcon />
         <Footer />
       </ShoppingCartProvider>
     </BrowserRouter>

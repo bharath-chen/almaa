@@ -81,6 +81,7 @@ module.exports = {
       },
       zIndex: {
         999: "999",
+        100: "100",
       },
       spacing: {
         "30%": "30%",
