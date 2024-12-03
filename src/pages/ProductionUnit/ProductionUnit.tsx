@@ -99,11 +99,6 @@ Our production unit is equipped with state-of-the-art manufacturing tools and la
           />
         </section>
 
-        {/* ENQUIRE NOW */}
-        {/* <section className="container mb-40">
-          <SectionPromo2 />
-        </section> */}
-
         {/* EMAIL SUBSCRIBE SECTION */}
         <EmailSubscribeSection />
       </div>
