@@ -11,8 +11,6 @@ const Faq = () => {
   const dispatch = useAppDispatch();
 
   const [faqs, setFaqs] = useState<IFaq[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     const { request, cancel } = faqService.getAll<IFaq>();
@@ -28,7 +26,6 @@ const Faq = () => {
         if (err instanceof CanceledError) return;
 
         dispatch(hideLoader());
-        setError(err.message);
       });
 
     return () => cancel();
