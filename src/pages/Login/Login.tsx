@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -11,7 +11,6 @@ import { login } from "../../features/auth/authSlice";
 import loginService from "../../services/login-service";
 import { AuthState } from "../../models/authState";
 import { showModal } from "../../features/modal/modalSlice";
-import { Alert } from "../../shared/Alert/Alert";
 import InputErrorMessage from "../../components/InputErrorMessage/InputErrorMessage";
 import MandatoryIcon from "../../components/MandatoryIcon/MandatoryIcon";
 
