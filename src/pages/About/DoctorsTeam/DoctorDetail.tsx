@@ -11,9 +11,7 @@ export interface ProductDetailPageProps {
 const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
   const { state } = useLocation();
 
-  const [doctorDetail, setDoctorDetail] = useState<IDoctor | null>(
-    state.doctor
-  );
+  const [doctorDetail] = useState<IDoctor | null>(state.doctor);
 
   const handleConnect = () => {
     console.log("Connect!");
@@ -73,7 +71,6 @@ const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
               />
             </svg>
 
-            {/* <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" /> */}
             <span className="ml-3">Call us</span>
           </ButtonPrimary>
           <ButtonPrimary
@@ -101,7 +98,6 @@ const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
               />
             </svg>
 
-            {/* <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" /> */}
             <span className="ml-3">Whatsapp</span>
           </ButtonPrimary>
         </div>
@@ -111,89 +107,6 @@ const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
       </div>
     );
   };
-
-  //   const renderDetailSection = () => {
-  //     return (
-  //       <div className="">
-  //         <h2 className="text-2xl font-semibold">Doctor Details</h2>
-  //         <div className="prose prose-sm sm:prose dark:prose-invert sm:max-w-4xl mt-7">
-  //           <p>
-  //             The patented eighteen-inch hardwood Arrowhead deck --- finely
-  //             mortised in, makes this the strongest and most rigid canoe ever
-  //             built. You cannot buy a canoe that will afford greater satisfaction.
-  //           </p>
-  //           <p>
-  //             The St. Louis Meramec Canoe Company was founded by Alfred Wickett in
-  //             1922. Wickett had previously worked for the Old Town Canoe Co from
-  //             1900 to 1914. Manufacturing of the classic wooden canoes in Valley
-  //             Park, Missouri ceased in 1978.
-  //           </p>
-  //           <ul>
-  //             <li>Regular fit, mid-weight t-shirt</li>
-  //             <li>Natural color, 100% premium combed organic cotton</li>
-  //             <li>
-  //               Quality cotton grown without the use of herbicides or pesticides -
-  //               GOTS certified
-  //             </li>
-  //             <li>Soft touch water based printed in the USA</li>
-  //           </ul>
-  //         </div>
-  //       </div>
-  //     );
-  //   };
-
-  //   const renderReviews = () => {
-  //     return (
-  //       <div className="">
-  //         {/* HEADING */}
-  //         <h2 className="text-2xl font-semibold flex items-center">
-  //           <StarIcon className="w-7 h-7 mb-0.5" />
-  //           <span className="ml-1.5"> 4,87 · 142 Reviews</span>
-  //         </h2>
-
-  //         {/* comment */}
-  //         <div className="mt-10">
-  //           <div className="grid grid-cols-1 md:grid-cols-2 gap-y-11 gap-x-28">
-  //             <ReviewItem />
-  //             <ReviewItem
-  //               data={{
-  //                 comment: `I love the charcoal heavyweight hoodie. Still looks new after plenty of washes.
-  //                   If you’re unsure which hoodie to pick.`,
-  //                 date: "December 22, 2021",
-  //                 name: "Stiven Hokinhs",
-  //                 starPoint: 5,
-  //               }}
-  //             />
-  //             <ReviewItem
-  //               data={{
-  //                 comment: `The quality and sizing mentioned were accurate and really happy with the purchase. Such a cozy and comfortable hoodie.
-  //                 Now that it’s colder, my husband wears his all the time. I wear hoodies all the time. `,
-  //                 date: "August 15, 2022",
-  //                 name: "Gropishta keo",
-  //                 starPoint: 5,
-  //               }}
-  //             />
-  //             <ReviewItem
-  //               data={{
-  //                 comment: `Before buying this, I didn't really know how I would tell a "high quality" sweatshirt, but after opening, I was very impressed.
-  //                 The material is super soft and comfortable and the sweatshirt also has a good weight to it.`,
-  //                 date: "December 12, 2022",
-  //                 name: "Dahon Stiven",
-  //                 starPoint: 5,
-  //               }}
-  //             />
-  //           </div>
-
-  //           <ButtonSecondary
-  //             onClick={() => setIsOpenModalViewAllReviews(true)}
-  //             className="mt-10 border border-slate-300 dark:border-slate-700 "
-  //           >
-  //             Show me all 142 reviews
-  //           </ButtonSecondary>
-  //         </div>
-  //       </div>
-  //     );
-  //   };
 
   return (
     <div className={`nc-ProductDetailPage ${className}`}>
@@ -223,35 +136,8 @@ const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
         {/* DETAIL AND REVIEW */}
         <div className="mt-12 sm:mt-16 space-y-10 sm:space-y-16">
           <div className="block xl:hidden">{/* <Policy /> */}</div>
-
-          {/* {renderDetailSection()} */}
-
-          {/* <hr className="border-slate-200 dark:border-slate-700" />
-
-          {renderReviews()} */}
-
-          {/* <hr className="border-slate-200 dark:border-slate-700" /> */}
-
-          {/* OTHER SECTION */}
-          {/* <SectionSliderProductCard
-            heading="Customers also purchased"
-            subHeading=""
-            headingFontClassName="text-2xl font-semibold"
-            headingClassName="mb-10 text-neutral-900 dark:text-neutral-50"
-          /> */}
-
-          {/* SECTION */}
-          {/* <div className="pb-20 xl:pb-28 lg:pt-14">
-            <SectionPromo2 />
-          </div> */}
         </div>
       </main>
-
-      {/* MODAL VIEW ALL REVIEW */}
-      {/* <ModalViewAllReviews
-        show={isOpenModalViewAllReviews}
-        onCloseModalViewAllReviews={() => setIsOpenModalViewAllReviews(false)}
-      /> */}
     </div>
   );
 };

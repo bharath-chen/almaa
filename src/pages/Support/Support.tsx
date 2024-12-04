@@ -294,10 +294,6 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
       {/* OTHER SECTIONS */}
       <div className="container my-20">
         <GMap height="400px" />
-        {/* <div className="relative my-24 lg:my-32 py-24 lg:py-32">
-          <BackgroundSection />
-          <SectionPromo1 />
-        </div> */}
       </div>
 
       {/* EMAIL SUBSCRIBE SECTION */}

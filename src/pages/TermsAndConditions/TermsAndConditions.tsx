@@ -1,5 +1,3 @@
-import Heading from "../../shared/Heading/Heading";
-
 const TermsAndConditions = () => {
   return (
     <div className="container mx-auto px-4 my-20">

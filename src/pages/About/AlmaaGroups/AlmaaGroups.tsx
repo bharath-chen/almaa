@@ -1,10 +1,5 @@
-import { Helmet } from "react-helmet-async";
 import BackgroundSection from "../../../components/BackgroundSection/BackgroundSection";
-import BgGlassmorphism from "../../../components/BgGlassmorphism/BgGlassmorphism";
-import SectionHero from "../../Library/SectionHero";
-import rightImg from "../../../images/hero-right1.png";
 import SectionSliderCategories from "../../../components/SectionSliderCategories/SectionSliderCategories";
-import { ACCORDION_INFO, MEDICAL_CONSULTANTS } from "../../../data/home";
 import SectionGridMoreExplore from "../../../components/SectionGridMoreExplore/SectionGridMoreExplore";
 import Heading from "../../../components/Heading/Heading";
 import NcImage from "../../../shared/NcImage/NcImage";
@@ -24,7 +19,6 @@ import award2 from "../../../assets/01-About/1-Almaa Groups/Awards/Award 1.jpg";
 import award3 from "../../../assets/01-About/1-Almaa Groups/Awards/Award 2.jpg";
 import award4 from "../../../assets/01-About/1-Almaa Groups/Awards/Award 3.jpg";
 import mdSectionImg from "../../../assets/HOME PAGE/5-md-section.png";
-import subscribeImg from "../../../assets/01-About/1-Almaa Groups/14-subscribe-CiUj4EyT.png";
 
 interface AlmaaGroupProps {
   className?: string;
@@ -211,9 +205,6 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
           rightDescText="& Accolades"
           data={AWARDS_AND_ACCOLADES}
         />
-        {/* <ButtonSecondary className="focus:ring-2 focus:ring-offset-2 focus:ring-transparent tracking-tight ml-3 mt-6 md:text-2xl sm:px-14 border sm:py-5 sm:text-dark sm:bg-white-900 sm:hover:bg-white sm:hover:text-primary-900 border border-slate-300 dark:border-slate-700">
-          Visit all Doctors
-        </ButtonSecondary> */}
       </section>
       {/* OUR COMPANIES SECTIONS */}
       <section className="container mb-40">
@@ -228,10 +219,7 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
           >
             Our Companies
           </Heading>
-          <SectionGridMoreExplore
-            data={EXPLORE_SECTION_DATA}
-            // className="bg-neutral-100/70 dark:bg-black/20 rounded-2xl px-16 py-20"
-          />
+          <SectionGridMoreExplore data={EXPLORE_SECTION_DATA} />
         </div>
       </section>
       {/* WHY ALMAA SECTION */}
