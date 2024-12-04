@@ -1,10 +1,8 @@
-import PageHome from "../containers/PageHome/PageHome";
 import { Page } from "./types";
 import AccountPage from "../containers/AccountPage/AccountPage";
 import PageAbout from "../containers/PageAbout/PageAbout";
 import PageSignUp from "../containers/PageSignUp/PageSignUp";
 import Login from "../pages/Login/Login";
-import PageSubcription from "../containers/PageSubcription/PageSubcription";
 import BlogSingle from "../containers/BlogPage/BlogSingle";
 import PageSearch from "../containers/PageSearch";
 import ProductDetailPage from "../containers/ProductDetailPage/ProductDetailPage";
@@ -55,7 +53,6 @@ export const pages: Page[] = [
     path: "/product-detail/:name",
     component: ProductDetailPage2,
   },
-  { path: "/home-header-2", component: PageHome },
   { path: "/product-detail-2", component: ProductDetailPage },
   { path: "/page-search", component: PageSearch },
   { path: "/account", component: AccountPage, protectedRoute: true },
@@ -103,7 +100,6 @@ export const pages: Page[] = [
   { path: "/login", component: Login },
   { path: "/forgot-password", component: ForgotPassword },
   { path: "/faq", component: Faq },
-  { path: "/subscription", component: PageSubcription },
   { path: "/returns-&-refund-policy", component: Returns },
   { path: "/terms-&-conditions", component: TermsAndConditions },
   { path: "/privacy-policy", component: PrivacyPolicy },
