@@ -1,4 +1,3 @@
-import Heading from "../../../components/Heading/Heading";
 import { IDoctor } from "../../../services/doctors-service";
 import NcImage from "../../../shared/NcImage/NcImage";
 
