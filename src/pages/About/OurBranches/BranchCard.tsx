@@ -15,22 +15,7 @@ const BranchCard = ({ branch, className, onCardClick }: Props) => {
       onClick={onCardClick}
     >
       <div>
-        {/* <div className="absolute bottom-0 right-0 max-w-[280px] opacity-80">
-          <img src={bgSVG} alt="" />
-        </div> */}
-
         <div className="absolute inset-5 sm:inset-8 flex flex-col justify-between">
-          {/* <div className="flex justify-between items-center">
-            <NcImage
-              src={featuredImage}
-              containerClassName={`w-20 h-20 rounded-full overflow-hidden z-0 ${color}`}
-            />
-            <span className="text-xs text-slate-700 dark:text-neutral-300 font-medium">
-              {Math.floor(Math.random() * 200 + 125)} products
-              {branch.branch_name}
-            </span>
-          </div> */}
-
           <div className="mb-3">
             <h2 className={`text-xl sm:text-2xl font-semibold`}>
               {branch.branch_name}
@@ -42,15 +27,9 @@ const BranchCard = ({ branch, className, onCardClick }: Props) => {
             </span>
           </div>
 
-          {/* <Link
-            // to={href}
-            className="flex items-center text-sm font-medium group-hover:text-primary-500 transition-colors"
-          > */}
-          {/* <span>{btnLabel}</span> */}
           <div className="cursor-pointer">
             <ArrowRightIcon className="w-4 h-4 ml-2.5" />
           </div>
-          {/* </Link> */}
         </div>
       </div>
     </div>
