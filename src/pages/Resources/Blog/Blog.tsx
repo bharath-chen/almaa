@@ -1,8 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
-import SectionLatestPosts from "./SectionLatestPosts";
 import BgGlassmorphism from "../../../components/BgGlassmorphism/BgGlassmorphism";
-import SectionPromo3 from "../../../components/SectionPromo3";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import BlogCard from "./BlogCard";
 import MainCard from "./MainCard";

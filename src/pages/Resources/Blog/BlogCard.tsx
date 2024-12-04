@@ -1,6 +1,5 @@
 import { FC } from "react";
 import NcImage from "../../../shared/NcImage/NcImage";
-import { Link } from "react-router-dom";
 import { _getImgRd, _getTitleRd } from "../../../contains/fakeData";
 import PostCardMeta from "../../../components/PostCardMeta/PostCardMeta";
 import { Blog } from "../../../models/blog";
@@ -12,12 +11,7 @@ export interface BlogCardProps {
   blog?: Blog;
 }
 
-const BlogCard: FC<BlogCardProps> = ({
-  className = "",
-  src,
-  blog,
-  onClick,
-}) => {
+const BlogCard: FC<BlogCardProps> = ({ className = "", blog, onClick }) => {
   return (
     <div
       className={`nc-Card13 relative flex cursor-pointer ${className}`}

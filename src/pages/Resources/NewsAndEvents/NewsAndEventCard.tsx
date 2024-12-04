@@ -1,5 +1,5 @@
 import NcImage from "../../../shared/NcImage/NcImage";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { INewsAndEvents } from "../../../services/news-events-service";
 import { getFormattedDate } from "../../../utils/date-utils";
 

@@ -4,9 +4,7 @@ import BlogCard from "./BlogCard";
 import { featuredImgs } from "../../../contains/fakeData";
 import { useNavigate } from "react-router-dom";
 
-export interface SectionMagazine5Props {}
-
-const SectionMagazine5: FC<SectionMagazine5Props> = () => {
+const SectionMagazine5: FC = () => {
   const navigate = useNavigate();
 
   const routeToBlogDetailPage = () => {

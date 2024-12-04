@@ -1,8 +1,7 @@
 import PostCardMeta from "../../../components/PostCardMeta/PostCardMeta";
 import { _getImgRd, _getTitleRd } from "../../../contains/fakeData";
-import React, { FC } from "react";
+import { FC } from "react";
 import { Link } from "react-router-dom";
-import NcImage from "../../../shared/NcImage/NcImage";
 
 export interface Card3SmallProps {
   className?: string;
