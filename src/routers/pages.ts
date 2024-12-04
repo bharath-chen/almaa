@@ -5,7 +5,6 @@ import PageSignUp from "../containers/PageSignUp/PageSignUp";
 import Login from "../pages/Login/Login";
 import BlogSingle from "../containers/BlogPage/BlogSingle";
 import PageSearch from "../containers/PageSearch";
-import ProductDetailPage from "../containers/ProductDetailPage/ProductDetailPage";
 import ProductDetailPage2 from "../containers/ProductDetailPage/ProductDetailPage2";
 import AccountSavelists from "../containers/AccountPage/AccountSavelists";
 import AccountPass from "../containers/AccountPage/AccountPass";
@@ -53,7 +52,6 @@ export const pages: Page[] = [
     path: "/product-detail/:name",
     component: ProductDetailPage2,
   },
-  { path: "/product-detail-2", component: ProductDetailPage },
   { path: "/page-search", component: PageSearch },
   { path: "/account", component: AccountPage, protectedRoute: true },
   {

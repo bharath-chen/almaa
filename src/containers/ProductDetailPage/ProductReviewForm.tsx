@@ -68,23 +68,6 @@ const ProductReviewForm = ({ submitReview, onClose }: Props) => {
         <h2 className="text-2xl font-semibold mb-4">Product Review</h2>
 
         <form onSubmit={handleSubmit(submit)} className="space-y-4">
-          {/* Title Field */}
-          {/* <div>
-            <Label className="block text-sm font-medium text-gray-700">
-              Title
-            </Label>
-            <Input
-              type="text"
-              id="title"
-              className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              placeholder="Enter a title for your review"
-              {...register("title")}
-            />
-            {errors.title && (
-              <InputErrorMessage>{errors.title.message}</InputErrorMessage>
-            )}
-          </div> */}
-
           {/* Comments Field */}
           <div>
             <Label className="block text-sm font-medium text-gray-700">
