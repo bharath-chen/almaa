@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import ButtonPrimary from "../shared/Button/ButtonPrimary";
 import LikeButton from "../components/LikeButton";
-import { StarIcon } from "@heroicons/react/24/solid";
 import BagIcon from "../components/BagIcon";
 import NcInputNumber from "../components/NcInputNumber";
 // import { Product } from "../data/data";
@@ -14,13 +13,11 @@ import {
 import IconDiscount from "../components/IconDiscount";
 import Prices from "../components/Prices";
 import toast from "react-hot-toast";
-import detail1JPG from "../assets/PRODUCT DETAIL/1-product-pic-1.jpg";
 import detail2JPG from "../assets/PRODUCT DETAIL/1-product-pic-2.jpg";
 import detail3JPG from "../assets/PRODUCT DETAIL/1-product-pic-3.jpg";
 import NotifyAddTocart from "./NotifyAddTocart";
 import AccordionInfo from "../containers/ProductDetailPage/AccordionInfo";
 import { Link } from "react-router-dom";
-import { useShoppingCartContext } from "../store/shopping-cart-context";
 import AppProductChip from "./AppProductChip/AppProductChip";
 
 export interface ProductQuickViewProps {
@@ -42,7 +39,6 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({
     status,
   } = product;
   const LIST_IMAGES_DEMO = [detail2JPG, detail3JPG];
-  const { addItemToCartWithQuantity } = useShoppingCartContext();
   const [variantActive, setVariantActive] = React.useState(0);
   // const [sizeSelected, setSizeSelected] = React.useState(sizes ? sizes[0] : "");
   const [quantitySelected, setQuantitySelected] = React.useState(1);
@@ -57,7 +53,6 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({
 
   const addToCart = () => {
     notifyAddTocart();
-    addItemToCartWithQuantity(product, quantitySelected);
   };
 
   const notifyAddTocart = () => {
