@@ -3,14 +3,14 @@ import { Page } from "./types";
 
 import Home from "../pages/Home/Home";
 import Products from "../pages/Products/Products";
-import ProductDetailPage2 from "containers/ProductDetailPage/ProductDetailPage2";
+import ProductDetailPage2 from "../containers/ProductDetailPage/ProductDetailPage2";
 import PageSearch from "../containers/PageSearch";
 import AccountPage from "../containers/AccountPage/AccountPage";
 import AccountSavelists from "../containers/AccountPage/AccountSavelists";
 import AccountPass from "../containers/AccountPage/AccountPass";
 import AccountSupport from "../containers/AccountPage/AccountSupport";
 import AccountOrder from "../containers/AccountPage/AccountOrder";
-import AccountAddress from "containers/AccountPage/AccountAddress";
+import AccountAddress from "../containers/AccountPage/AccountAddress";
 import CartPage from "../containers/ProductDetailPage/CartPage";
 import CheckoutPage from "../containers/PageCheckout/CheckoutPage";
 import ThanksPage from "../pages/ThanksPage/ThanksPage";
@@ -33,7 +33,7 @@ import NewsAndEventsDetail from "../pages/Resources/NewsAndEvents/NewsAndEventsD
 import Media from "../pages/Resources/Media/Media";
 import Videos from "../pages/Resources/Videos/Videos";
 import PageAbout from "../containers/PageAbout/PageAbout";
-import PageSignUp from "containers/PageSignUp/PageSignUp";
+import PageSignUp from "../containers/PageSignUp/PageSignUp";
 import Login from "../pages/Login/Login";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import Faq from "../pages/Faq";
@@ -43,7 +43,7 @@ import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
 import ShippingPolicy from "../pages/ShippingPolicy/ShippingPolicy";
 import Invoice from "../components/Invoice/Invoice";
 import Support from "../pages/Support/Support";
-import Page404 from "containers/Page404/Page404";
+import Page404 from "../containers/Page404/Page404";
 
 // const lazyComponent = (path: string) => lazy(() => import(path));
 
