@@ -10,7 +10,7 @@ import AppHeader from "../components/AppHeader";
 import ScrollToTop from "./ScrollToTop";
 import Footer from "../shared/Footer/Footer";
 import WhatsAppFloatIcon from "../components/WhatsAppFloatIcon/WhatsAppFloatIcon";
-import { Suspense } from "react";
+// import { Suspense } from "react";
 
 const MyRoutes = () => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
@@ -22,40 +22,38 @@ const MyRoutes = () => {
       <MiniOfferBanner />
       {/* <SiteHeader /> */}
       <AppHeader />
-      <Suspense fallback={""}>
-        <Routes>
-          {pages.map(
-            ({ component: Component, path, protectedRoute }, index) => {
-              if (path === "/login" || path === "/signup") {
-                return (
-                  <Route
-                    key={index}
-                    path={path}
-                    element={isLoggedIn ? <Navigate to="/" /> : <Component />}
-                  />
-                );
-              }
+      {/* <Suspense fallback={""}> */}
+      <Routes>
+        {pages.map(({ component: Component, path, protectedRoute }, index) => {
+          if (path === "/login" || path === "/signup") {
+            return (
+              <Route
+                key={index}
+                path={path}
+                element={isLoggedIn ? <Navigate to="/" /> : <Component />}
+              />
+            );
+          }
 
-              if (protectedRoute) {
-                return (
-                  <Route
-                    key={index}
-                    element={
-                      <AuthGuard>
-                        <Component />
-                      </AuthGuard>
-                    }
-                    path={path}
-                  />
-                );
-              }
-              return <Route key={index} element={<Component />} path={path} />;
-            }
-          )}
-          <Route element={<Products />} />
-          <Route path="*" Component={Products} />
-        </Routes>
-      </Suspense>
+          if (protectedRoute) {
+            return (
+              <Route
+                key={index}
+                element={
+                  <AuthGuard>
+                    <Component />
+                  </AuthGuard>
+                }
+                path={path}
+              />
+            );
+          }
+          return <Route key={index} element={<Component />} path={path} />;
+        })}
+        <Route element={<Products />} />
+        <Route path="*" Component={Products} />
+      </Routes>
+      {/* </Suspense> */}
       <WhatsAppFloatIcon />
       <Footer />
     </BrowserRouter>
