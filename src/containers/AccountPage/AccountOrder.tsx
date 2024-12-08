@@ -11,7 +11,7 @@ import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import { getFormattedDate } from "../../utils/date-utils";
 import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
 import { useNavigate } from "react-router-dom";
-import { Order, OrderData, ProductDetailData } from "models/order";
+import { OrderData, ProductDetailData } from "models/order";
 
 export interface ViewOrder {
   order_detail_id: string;
@@ -117,6 +117,14 @@ const AccountOrder = () => {
     );
   };
 
+  const renderOrderStatus = (status: string) => {
+    if (status === "PEN") return "Pending";
+    if (status === "CAN") return "Cancelled";
+    if (status === "DEL") return "Delivered";
+    if (status === "PRO") return "Order Processed";
+    if (status === "CON") return "Order Confirmed";
+  };
+
   const renderOrder = (order: OrderData) => {
     const handleViewInvoice = () => {
       navigate("/invoice", {
@@ -134,12 +142,14 @@ const AccountOrder = () => {
             <h2 className="text-xl font-bold text-gray-800 dark:text-white">
               Order Details
             </h2>
-            <p className="text-gray-600 dark:text-gray-300 my-2">
-              Invoice Number:{" "}
-              <span className="font-semibold">
-                {order.order.invoice_number}
-              </span>
-            </p>
+            {order.order.order_status !== "CAN" && (
+              <p className="text-gray-600 dark:text-gray-300 my-2">
+                Invoice Number:{" "}
+                <span className="font-semibold">
+                  {order.order.invoice_number}
+                </span>
+              </p>
+            )}
             <p className="text-gray-600 dark:text-gray-300">
               Order ID:{" "}
               <span className="font-semibold">{order.order.order_id}</span>
@@ -147,14 +157,16 @@ const AccountOrder = () => {
           </div>
 
           {/* Right section: View Invoice Button */}
-          <div className="text-left md:text-right">
-            <ButtonPrimary
-              className="px-4 w-full bg-primary-900 hover:bg-primary-900 text-white rounded-lg"
-              onClick={handleViewInvoice}
-            >
-              View Invoice
-            </ButtonPrimary>
-          </div>
+          {order.order.order_status !== "CAN" && (
+            <div className="text-left md:text-right">
+              <ButtonPrimary
+                className="px-4 w-full bg-primary-900 hover:bg-primary-900 text-white rounded-lg"
+                onClick={handleViewInvoice}
+              >
+                View Invoice
+              </ButtonPrimary>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -216,8 +228,14 @@ const AccountOrder = () => {
             <span className="font-medium text-gray-700 dark:text-gray-300">
               Order Status:
             </span>
-            <span className="text-gray-600 dark:text-gray-400">
-              {order.order.order_status === "PEN" ? "Pending" : "Order Placed"}
+            <span
+              className={
+                order.order.order_status === "CAN"
+                  ? "text-red-600"
+                  : "text-gray-600 dark:text-gray-400"
+              }
+            >
+              {renderOrderStatus(order.order.order_status)}
             </span>
           </div>
           <div className="flex justify-between">

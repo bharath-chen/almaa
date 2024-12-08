@@ -28,10 +28,10 @@ import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
 import coupounService from "../../services/coupoun-service";
 import { Coupon } from "../../models/Coupon";
 import paymentGatewayService from "../../services/payment-gateway-service";
-import { OrdersPayload } from "../AccountPage/AccountOrder";
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 import { showModal } from "../../features/modal/modalSlice";
 import { Helmet } from "react-helmet-async";
+import { OrderData } from "models/order";
 
 const razorpayKey = import.meta.env.VITE_RAZORPAY_API_KEY;
 
@@ -57,8 +57,6 @@ const CheckoutPage = () => {
   const [offerCodeApplied, setOfferCodeApplied] = useState(false);
   const [discount, setDiscount] = useState(0);
   const [offerCodePrice, setOfferCodePrice] = useState(0);
-
-  console.log(location.state);
 
   useEffect(() => {
     const productDetails: Product[] =
@@ -275,7 +273,6 @@ const CheckoutPage = () => {
   };
 
   const handleAddressChange = (updatedAddress: Address, index: number) => {
-    console.log(updatedAddress);
     setAddressList((prevAddress) =>
       prevAddress.map((address, idx) => {
         if (index === idx) return { ...address, ...updatedAddress };
@@ -389,7 +386,6 @@ const CheckoutPage = () => {
         if (err instanceof CanceledError) return;
 
         dispatch(hideLoader());
-        console.log(err.message);
       });
   };
 
@@ -501,7 +497,6 @@ const CheckoutPage = () => {
 
       request
         .then((res) => {
-          console.log(res.data);
           dispatch(hideLoader());
           getAddressList();
         })
@@ -528,6 +523,9 @@ const CheckoutPage = () => {
     const isLessThan330 = +calculatedTotalAmount() < 330;
 
     const finalPrice = +calculatedTotalAmount();
+
+    console.log("Sub Total: ", subTotal);
+    console.log("Final Price:", finalPrice);
 
     if (isLessThan330) {
       dispatch(
@@ -587,22 +585,22 @@ const CheckoutPage = () => {
 
       if (selectedPaymentMethod === "onlinePayment") {
         const ordersRes = await orderService.get<
-          OrdersPayload,
+          { orders: OrderData[] },
           { gofor: string; customer_id: string }
         >({
           gofor: "vieworders",
           customer_id: customer?.customer_id,
         }).request;
 
-        const filteredOrders = ordersRes.data.viewOrders.filter(
-          (o) => o.order_id
+        const filteredOrders = ordersRes.data.orders.filter(
+          (o) => o.order.order_id
         );
         dispatch(hideLoader());
 
         if (filteredOrders.length > 0) {
           const { request } = paymentGatewayService.onlinePayment(
             user.customer_id,
-            filteredOrders[0].order_id
+            filteredOrders[filteredOrders.length - 1].order.order_id
           );
 
           dispatch(showLoader());
