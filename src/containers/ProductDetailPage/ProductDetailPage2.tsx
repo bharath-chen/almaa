@@ -63,14 +63,6 @@ export interface ProductDetailPage2Props {
   className?: string;
 }
 
-// Add Ratings
-// {
-// "gofor" : "addratings",
-// "product_id" : "2",
-// "customer_id" : "1",
-// "user_ratings" : "2"
-// }
-
 const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   className = "",
 }) => {
