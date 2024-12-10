@@ -13,7 +13,7 @@ import {
   addItemToWishlist,
   removeItemFromWishlist,
 } from "../../features/wishlist/wishlistSlice";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import subcategoryService from "../../services/subcategory-service";
 import { type SubCategory } from "../../models/subCategory";
 import filterProductsService from "../../services/filter-products-service";
@@ -59,8 +59,8 @@ const Products: FC<Props> = ({ className = "" }) => {
   const dispatch = useAppDispatch();
   const customer = useAppSelector((state) => state.auth);
   const loading = useAppSelector((state) => state.loader.loading);
-  const categoryId = queryParams.get("category_id"); // Extracts category_id (1)
-  const category = queryParams.get("category");
+  const categoryId = location?.state?.categoryId; // Extracts category_id (1)
+  const category = location?.state?.categoryName;
   const natProductId = queryParams.get("nat_prod_id");
   const natProduct = queryParams.get("nat_product");
   const itemsPerPage = 9;

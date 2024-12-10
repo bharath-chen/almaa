@@ -112,8 +112,9 @@ import Page404 from "../containers/Page404/Page404";
 export const pages: Page[] = [
   { path: "/", component: Home },
   { path: "/products", component: Products },
-  { path: "/products/:natProductId/:natProduct", component: Products },
-  { path: "/products/:categoryId/:category", component: Products },
+  { path: "/products/:category", component: Products },
+  // { path: "/products/:natProductId/:natProduct", component: Products },
+  // { path: "/products/:categoryId/:category", component: Products },
   {
     path: "/product-detail/:name",
     component: ProductDetailPage2,

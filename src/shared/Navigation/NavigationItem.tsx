@@ -169,10 +169,23 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                     <div>
                       {menuDropdown.children.slice(0, 8).map((item) => (
                         <li
-                          onClick={() =>
-                            navigate(
-                              `/products?category_id=${item.id}&category=${item.name}`
-                            )
+                          onClick={
+                            () =>
+                              navigate(
+                                `/products/${item.name
+                                  .toLocaleLowerCase()
+                                  .trim()
+                                  .replace(/\s+/g, "-")}`,
+                                {
+                                  state: {
+                                    categoryId: item.id,
+                                    categoryName: item.name,
+                                  },
+                                }
+                              )
+                            // navigate(
+                            //   `/products?category_id=${item.id}&category=${item.name}`
+                            // )
                           }
                           key={item.id}
                           className="px-2"
@@ -187,10 +200,23 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                     <div>
                       {menuDropdown.children.slice(8).map((item) => (
                         <li
-                          onClick={() =>
-                            navigate(
-                              `/products?category_id=${item.id}&category=${item.name}`
-                            )
+                          onClick={
+                            () =>
+                              navigate(
+                                `/products/${item.name
+                                  .toLocaleLowerCase()
+                                  .trim()
+                                  .replace(/\s+/g, "-")}`,
+                                {
+                                  state: {
+                                    categoryId: item.id,
+                                    categoryName: item.name,
+                                  },
+                                }
+                              )
+                            // navigate(
+                            //   `/products?category_id=${item.id}&category=${item.name}`
+                            // )
                           }
                           key={item.id}
                           className="px-2"
