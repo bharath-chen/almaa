@@ -2,11 +2,9 @@ import { ComponentType } from "react";
 
 export interface LocationStates {
   "/"?: {};
-  "/products"?: {};
-  "/products/:category"?: {};
-  "/products/:natProductId/:natProduct": {};
-  "/products/:categoryId/:category": {};
-  "/product-detail/:name"?: {};
+  "/category"?: {};
+  "/category/:category"?: {};
+  "/products/:name"?: {};
   "/product-detail-2"?: {};
   "/page-search"?: {};
   "/account"?: {};

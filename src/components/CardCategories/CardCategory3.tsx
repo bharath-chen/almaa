@@ -1,6 +1,6 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import NcImage from "../../shared/NcImage/NcImage";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ButtonSecondary from "../../shared/Button/ButtonSecondary";
 import { CATS_DISCOVER } from "../../components/DiscoverMoreSlider";
 
@@ -13,6 +13,7 @@ export interface CardCategory3Props {
   href?: string;
   btnText?: string;
   onBtnClick?: () => void;
+  options?: { [key: string]: string };
 }
 
 const CardCategory3: FC<CardCategory3Props> = ({
@@ -23,15 +24,25 @@ const CardCategory3: FC<CardCategory3Props> = ({
   color = CATS_DISCOVER[2].color,
   btnText = "Show me all",
   href = "/page-collection",
+  options = {},
 }) => {
+  const navigate = useNavigate();
   const formattedDesc =
     desc.split(" ").length > 1 ? desc.split(" ").join("<br />") : desc;
 
+  const routeToUrl = () => {
+    if (Object.keys(options).length > 0) {
+      navigate(href, { state: { ...options } });
+    } else {
+      navigate(href);
+    }
+  };
+
   return (
-    <Link
-      to={href}
+    <div
       className={`nc-CardCategory3 block ${className}`}
       data-nc-id="CardCategory3"
+      onClick={routeToUrl}
     >
       <div
         className={`relative w-full aspect-w-16 aspect-h-11 sm:aspect-h-9 h-0 rounded-2xl overflow-hidden group ${color}`}
@@ -70,7 +81,7 @@ const CardCategory3: FC<CardCategory3Props> = ({
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

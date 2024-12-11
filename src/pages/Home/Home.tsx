@@ -99,6 +99,7 @@ const Home = () => {
   };
 
   const renderCategoryCard = (item: {
+    id: string;
     name: string;
     desc: string;
     featuredImage: string;
@@ -112,12 +113,17 @@ const Home = () => {
         featuredImage={item.featuredImage}
         color={item.color}
         btnText="View Products"
-        href={`/products${item.search}`}
+        href={`/category/${item.desc
+          ?.toLocaleLowerCase()
+          .trim()
+          .replace(/\s+/g, "-")}`}
+        options={{ categoryId: item.id, categoryName: item.desc }}
       />
     );
   };
 
   const renderProductCategoryCard = (item: {
+    id: string;
     name: string;
     desc: string;
     featuredImage: string;
@@ -247,6 +253,7 @@ const Home = () => {
             className="nc-DiscoverMoreSlider nc-p-l-container "
             // data={MEDIC_SLIDERS}
             data={categories.map((c, index) => ({
+              id: c.category_id,
               name: c.tagline,
               desc: c.cat_name,
               featuredImage: c.cat_image,
@@ -461,6 +468,7 @@ const Home = () => {
             // data={CATEGORY_SLIDERS}
             data={natProducts.map((p) => {
               return {
+                id: p.natprod_id,
                 name: p.tagline,
                 desc: p.name,
                 featuredImage: p.image,

@@ -691,7 +691,7 @@ const CheckoutPage = () => {
               Homepage
             </Link>
             <span className="text-xs mx-1 sm:mx-1.5">/</span>
-            <Link to={"/products"} className="">
+            <Link to={"/category"} className="">
               Products
             </Link>
             <span className="text-xs mx-1 sm:mx-1.5">/</span>
@@ -716,7 +716,7 @@ const CheckoutPage = () => {
                   <p className="text-md font-semibold text-center">
                     No Items were added in the cart
                   </p>
-                  <ButtonPrimary href="/products" className="mt-8 w-full">
+                  <ButtonPrimary href="/category" className="mt-8 w-full">
                     Back To Products
                   </ButtonPrimary>
                 </>

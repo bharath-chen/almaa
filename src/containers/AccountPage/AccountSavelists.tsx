@@ -25,7 +25,7 @@ const AccountSavelists = () => {
 
   const renderSection1 = () => {
     const routeToProducts = () => {
-      navigate("/products");
+      navigate("/category");
     };
 
     return (

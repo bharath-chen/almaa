@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface Item {
+  id: string;
   name: string;
   desc: string;
   featuredImage: string;
@@ -13,8 +14,22 @@ interface Props {
 }
 
 const ProductCategroyCard = ({ item }: Props) => {
+  const navigate = useNavigate();
+
+  const routeToUrl = () => {
+    navigate(
+      `/category/${item.desc?.toLocaleLowerCase().trim().replace(/\s+/g, "-")}`,
+      {
+        state: {
+          natId: item.id,
+          natProductName: item.desc,
+        },
+      }
+    );
+  };
+
   return (
-    <Link className="cursor-pointer" to={`/products${item.search}`}>
+    <div className="cursor-pointer" onClick={routeToUrl}>
       <article className="relative m-5 border rounded-2xl">
         <img src={item.featuredImage} alt={item.name} />
         <div className="absolute inset-0 flex items-center justify-center">
@@ -23,7 +38,7 @@ const ProductCategroyCard = ({ item }: Props) => {
           </h3>
         </div>
       </article>
-    </Link>
+    </div>
   );
 };
 

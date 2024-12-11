@@ -21,7 +21,7 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
     children: [
       // { id: ncNanoId(), href: "/page-collection", name: "Category Page 1" },
       // { id: ncNanoId(), href: "/page-collection-2", name: "Category Page 2" },
-      { id: ncNanoId(), href: "/product-detail/:name", name: "Product Page 1" },
+      { id: ncNanoId(), href: "/products/:name", name: "Product Page 1" },
       { id: ncNanoId(), href: "/product-detail-2", name: "Product Page 2" },
       { id: ncNanoId(), href: "/cart", name: "Cart Page" },
       { id: ncNanoId(), href: "/checkout", name: "Checkout Page" },
@@ -86,13 +86,13 @@ const OTHER_PAGE_CHILD: NavItemType[] = [
   // },
   {
     id: ncNanoId(),
-    href: "/product-detail/:name",
+    href: "/products/:name",
     name: "Product Pages",
     type: "dropdown",
     children: [
       {
         id: ncNanoId(),
-        href: "/product-detail/:name",
+        href: "/products/:name",
         name: "Product detail 1",
       },
       {
@@ -194,12 +194,12 @@ const ABOUT_TEAM_CHILD: NavItemType[] = [
 ];
 
 const PRODUCTS_TEAM_CHILD: NavItemType[] = [
-  { id: ncNanoId(), href: "/products", name: "Health Conditions" },
-  { id: ncNanoId(), href: "/products", name: "Nature Of Product" },
-  { id: ncNanoId(), href: "/products", name: "Combos" },
-  { id: ncNanoId(), href: "/products", name: "Nutraceuticals" },
-  { id: ncNanoId(), href: "/products", name: "Cosmetics" },
-  { id: ncNanoId(), href: "/products", name: "Single Herbs" },
+  { id: ncNanoId(), href: "/category", name: "Health Conditions" },
+  { id: ncNanoId(), href: "/category", name: "Nature Of Product" },
+  { id: ncNanoId(), href: "/category", name: "Combos" },
+  { id: ncNanoId(), href: "/category", name: "Nutraceuticals" },
+  { id: ncNanoId(), href: "/category", name: "Cosmetics" },
+  { id: ncNanoId(), href: "/category", name: "Single Herbs" },
 ];
 
 const RESOURCES_TEAM_CHILD: NavItemType[] = [
@@ -220,7 +220,7 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
   },
   {
     id: ncNanoId(),
-    href: "/products",
+    href: "/category",
     name: "Products",
     type: "dropdown",
     children: PRODUCTS_TEAM_CHILD,

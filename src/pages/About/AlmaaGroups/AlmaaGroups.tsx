@@ -34,7 +34,7 @@ const EXPLORE_SECTION_DATA = [
     color: "bg-indigo-50",
     btnLabel: "Explore Now",
     quantityText: "",
-    href: "/products",
+    href: "/category",
   },
   {
     id: 2,

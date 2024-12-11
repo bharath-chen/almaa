@@ -32,7 +32,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
                 <span
                   className={`py-2.5 ${!i.children ? "block w-full" : ""}`}
                   onClick={() => {
-                    navigate("/products", {
+                    navigate("/category", {
                       state: {
                         item: { ...i },
                       },

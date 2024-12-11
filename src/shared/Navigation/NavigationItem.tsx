@@ -172,7 +172,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                           onClick={
                             () =>
                               navigate(
-                                `/products/${item.name
+                                `/category/${item.name
                                   .toLocaleLowerCase()
                                   .trim()
                                   .replace(/\s+/g, "-")}`,
@@ -203,7 +203,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                           onClick={
                             () =>
                               navigate(
-                                `/products/${item.name
+                                `/category/${item.name
                                   .toLocaleLowerCase()
                                   .trim()
                                   .replace(/\s+/g, "-")}`,
@@ -310,7 +310,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
       return (
         <span
           onClick={() =>
-            navigate(`/products?category_id=${item.id}&category=${item.name}`)
+            navigate(`/category?category_id=${item.id}&category=${item.name}`)
           }
           className="cursor-pointer flex items-center py-2 px-4 rounded-md hover:text-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 font-normal text-neutral-6000 dark:text-neutral-400"
         >

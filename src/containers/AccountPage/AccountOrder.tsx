@@ -272,7 +272,7 @@ const AccountOrder = () => {
   };
 
   const routeToProducts = () => {
-    navigate("/products");
+    navigate("/category");
   };
 
   return (

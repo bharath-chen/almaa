@@ -120,10 +120,7 @@ const ProductCard: FC<ProductCardProps> = ({
 
   const routeToProductDetail = () => {
     navigate(
-      `/product-detail/${product_name
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, "-")}`,
+      `/products/${product_name.toLowerCase().trim().replace(/\s+/g, "-")}`,
       {
         state: {
           id: product_id,

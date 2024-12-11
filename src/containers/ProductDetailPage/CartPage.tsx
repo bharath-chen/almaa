@@ -270,7 +270,7 @@ const CartPage = () => {
               Homepage
             </Link>
             <span className="text-xs mx-1 sm:mx-1.5">/</span>
-            <Link to={"/products"} className="">
+            <Link to={"/category"} className="">
               Products
             </Link>
             <span className="text-xs mx-1 sm:mx-1.5">/</span>

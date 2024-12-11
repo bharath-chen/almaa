@@ -5,7 +5,7 @@ const MiniOfferBanner = () => {
   return (
     <div className="sticky top-0 w-full z-40">
       <div className="flex items-center justify-center bg-primary-900 text-white dark:bg-white dark:text-slate-900">
-        <Link to="/products">
+        <Link to="/category">
           <p className="py-2 px-3 font-medium text-xs sm:text-base">
             Welcome to Almaa Siddha official website.{" "}
             <span

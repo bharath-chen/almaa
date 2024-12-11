@@ -61,8 +61,8 @@ const Products: FC<Props> = ({ className = "" }) => {
   const loading = useAppSelector((state) => state.loader.loading);
   const categoryId = location?.state?.categoryId; // Extracts category_id (1)
   const category = location?.state?.categoryName;
-  const natProductId = queryParams.get("nat_prod_id");
-  const natProduct = queryParams.get("nat_product");
+  const natProductId = location?.state?.natId;
+  const natProduct = location?.state?.natProductName;
   const itemsPerPage = 9;
 
   const getSubCategories = (id: string) => {
@@ -279,7 +279,7 @@ const Products: FC<Props> = ({ className = "" }) => {
 
   const handleFilterChange = (filter: Filters, items: TabFilterItem[]) => {
     if (filter.nat_of_prod.length === 0) {
-      navigate("/products");
+      navigate("/category");
     }
 
     if (

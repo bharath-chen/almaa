@@ -59,7 +59,7 @@ const quickLinks = [
   {
     id: 5,
     label: "Products",
-    href: "/products",
+    href: "/category",
   },
   {
     id: 6,
