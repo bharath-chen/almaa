@@ -122,7 +122,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     const { request, cancel } = productDetailService.get<
       ProductDetail,
       { product_id: number }
-    >({ product_id: +location.state.id });
+    >({ product_id: +location?.state?.id });
 
     dispatch(showLoader());
 
@@ -454,14 +454,14 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
                 href="#reviews"
                 className="flex items-center text-sm font-medium"
               >
-                <div className="">
+                {/* <div className="">
                   <StarIcon className="w-5 h-5 pb-[1px] text-orange-400" />
-                </div>
+                </div> */}
                 <span className="ml-1.5 flex">
-                  <span>
+                  {/* <span>
                     {productDetail?.product_details[0]?.almaa_ratings}{" "}
                   </span>
-                  <span className="mx-1.5">·</span>
+                  <span className="mx-1.5">·</span> */}
                   <span className="text-slate-700 dark:text-slate-400 underline">
                     {productDetail?.product_feedback.length} reviews
                   </span>
@@ -574,12 +574,12 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
               href="#reviews"
               className="hidden sm:flex items-center text-sm font-medium "
             >
-              <div className="">
+              {/* <div className="">
                 <StarIcon className="w-5 h-5 pb-[1px] text-slate-800 dark:text-slate-200" />
-              </div>
+              </div> */}
               <span className="ml-1.5">
-                <span>{productDetail?.product_details[0]?.almaa_ratings}</span>
-                <span className="mx-1.5">·</span>
+                {/* <span>{productDetail?.product_details[0]?.almaa_ratings}</span> */}
+                {/* <span className="mx-1.5">·</span> */}
                 <span className="text-slate-700 dark:text-slate-400 underline">
                   {productDetail?.product_feedback?.length} reviews
                 </span>
@@ -654,16 +654,16 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       <div id="reviews" className="scroll-mt-[150px]">
         {/* HEADING */}
         <h2 className="text-2xl font-semibold flex items-center">
-          <Rating
+          {/* <Rating
             readonly
             transition
             allowFraction
             initialValue={+productDetail?.product_details[0]?.almaa_ratings}
             size={38}
-          />
+          /> */}
           <span className="ml-1.5">
             {" "}
-            {productDetail?.product_details[0]?.almaa_ratings} &nbsp;&nbsp;
+            {/* {productDetail?.product_details[0]?.almaa_ratings} &nbsp;&nbsp; */}
             &nbsp; {productDetail?.product_feedback?.length} Reviews
           </span>
         </h2>
