@@ -31,7 +31,6 @@ const useViewCart = () => {
       )
       .then((res) => {
         dispatch(hideLoader());
-        console.log("Product details:", res.data);
         setCartDetails(res.data);
       })
       .catch((err) => {

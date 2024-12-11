@@ -524,9 +524,6 @@ const CheckoutPage = () => {
 
     const finalPrice = +calculatedTotalAmount();
 
-    console.log("Sub Total: ", subTotal);
-    console.log("Final Price:", finalPrice);
-
     if (isLessThan330) {
       dispatch(
         showModal({
