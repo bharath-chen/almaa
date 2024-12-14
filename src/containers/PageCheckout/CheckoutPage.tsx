@@ -42,7 +42,7 @@ const CheckoutPage = () => {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     "onlinePayment" | "cod"
-  >("cod");
+  >();
   const navigate = useNavigate();
   const location = useLocation();
   const user = useAppSelector((state: RootState) => state.auth);
@@ -553,6 +553,16 @@ const CheckoutPage = () => {
         showModal({
           type: "error",
           message: "Kindly select a primary address",
+        })
+      );
+      return;
+    }
+
+    if (!selectedPaymentMethod) {
+      dispatch(
+        showModal({
+          type: "error",
+          message: "Kindly choose a payment method",
         })
       );
       return;
