@@ -17,7 +17,7 @@ export interface LocationStates {
   "/checkout"?: {};
   "/thanks"?: {};
   "/blog"?: {};
-  "/blog/:id"?: {};
+  "/blog/:name"?: {};
   "/case-studies"?: {};
   "/case-study"?: {};
   "/news-&-events"?: {};

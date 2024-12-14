@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Avatar from "../../shared/Avatar/Avatar";
 import NcImage from "../../shared/NcImage/NcImage";
 import SocialsList from "../../shared/SocialsList/SocialsList";
@@ -12,7 +12,7 @@ import { CanceledError } from "axios";
 import { getFormattedDate } from "../../utils/date-utils";
 
 const BlogSingle = () => {
-  const params = useParams();
+  const location = useLocation();
   const [blogDetail, setBlogDetail] = useState<BlogDetail>();
   const [error, setError] = useState("");
   const dispatch = useAppDispatch();
@@ -21,7 +21,7 @@ const BlogSingle = () => {
     const { request, cancel } = blogDetailService.get<
       BlogDetail,
       { blog_id: string }
-    >({ blog_id: params.id });
+    >({ blog_id: location?.state?.id });
 
     dispatch(showLoader());
 
