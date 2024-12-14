@@ -17,11 +17,11 @@ export interface LocationStates {
   "/checkout"?: {};
   "/thanks"?: {};
   "/blog"?: {};
-  "/blog/:name"?: {};
+  "/blog/:title"?: {};
   "/case-studies"?: {};
-  "/case-study"?: {};
+  "/case-studies/:title"?: {};
   "/news-&-events"?: {};
-  "/news-&-events-detail"?: {};
+  "/news-&-events/:title"?: {};
   "/media-&-gallery"?: {};
   "/videos"?: {};
   "/almaa-groups"?: {};
