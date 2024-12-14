@@ -17,6 +17,7 @@ const Blog: React.FC = () => {
     navigate(`/blog/${Utils.urlFormatter(title)}`, {
       state: {
         id: id,
+        title: title,
       },
     });
   };

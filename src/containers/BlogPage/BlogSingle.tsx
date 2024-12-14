@@ -86,15 +86,23 @@ const BlogSingle = () => {
                 <FacebookIcon size={30} />
               </FacebookShareButton>
 
-              <TwitterShareButton className="mx-3" url={pageUrl}>
+              <TwitterShareButton
+                title={location?.state?.title}
+                className="mx-3"
+                url={pageUrl}
+              >
                 <XIcon size={30} />
               </TwitterShareButton>
 
-              <TelegramShareButton className="mr-3" url={pageUrl}>
+              <TelegramShareButton
+                title={location?.state?.title}
+                className="mr-3"
+                url={pageUrl}
+              >
                 <TelegramIcon size={30} />
               </TelegramShareButton>
 
-              <WhatsappShareButton url={pageUrl}>
+              <WhatsappShareButton title={location?.state?.title} url={pageUrl}>
                 <WhatsappIcon size={30} />
               </WhatsappShareButton>
             </div>

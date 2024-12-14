@@ -26,7 +26,7 @@ const socialsDemo: {
   {
     name: "Youtube",
     icon: <FaSquareYoutube color="#FF0000" size={30} />,
-    href: "https://www.youtube.com/@almaaherbalnature",
+    href: "https://www.youtube.com/@AlmaaSiddhaTV",
   },
   {
     name: "X",
