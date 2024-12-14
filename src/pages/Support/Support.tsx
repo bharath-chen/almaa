@@ -31,11 +31,11 @@ const info = [
   },
   {
     title: "EMAIL",
-    desc: "almaahospital@gmail.com",
+    desc: `<a class="decoration-emerald-700" href='mailto:almaahospital@gmail.com'>almaahospital@gmail.com</a>`,
   },
   {
     title: "PHONE",
-    desc: "+91-7401403000",
+    desc: `<a class="decoration-emerald-700" href='tel:+917401403000'>+91-7401403000</a>`,
   },
 ];
 const mobilePattern = /^\d{10}$/;
@@ -142,9 +142,10 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
                   <h3 className="uppercase font-semibold text-sm dark:text-neutral-200 tracking-wider">
                     {item.title}
                   </h3>
-                  <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
-                    {item.desc}
-                  </span>
+                  <span
+                    className="cursor-pointer block mt-2 text-neutral-500 dark:text-neutral-400"
+                    dangerouslySetInnerHTML={{ __html: item.desc }}
+                  ></span>
                 </div>
               ))}
               <div>
