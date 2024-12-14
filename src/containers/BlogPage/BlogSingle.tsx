@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Avatar from "../../shared/Avatar/Avatar";
 import NcImage from "../../shared/NcImage/NcImage";
-import SocialsList from "../../shared/SocialsList/SocialsList";
 import { Helmet } from "react-helmet-async";
 import { BlogDetail } from "../../models/blogDetail";
 import blogDetailService from "../../services/blog-detail-service";
@@ -10,8 +9,19 @@ import { useAppDispatch } from "../../hooks/hooks";
 import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
 import { CanceledError } from "axios";
 import { getFormattedDate } from "../../utils/date-utils";
+import {
+  WhatsappShareButton,
+  WhatsappIcon,
+  FacebookShareButton,
+  FacebookIcon,
+  TwitterShareButton,
+  XIcon,
+  TelegramShareButton,
+  TelegramIcon,
+} from "react-share";
 
 const BlogSingle = () => {
+  const pageUrl = window.location.href;
   const location = useLocation();
   const [blogDetail, setBlogDetail] = useState<BlogDetail>();
   const [error, setError] = useState("");
@@ -72,7 +82,21 @@ const BlogSingle = () => {
               </div>
             </div>
             <div className="mt-3 sm:mt-1.5 sm:ml-3">
-              <SocialsList />
+              <FacebookShareButton url={pageUrl}>
+                <FacebookIcon size={30} />
+              </FacebookShareButton>
+
+              <TwitterShareButton className="mx-3" url={pageUrl}>
+                <XIcon size={30} />
+              </TwitterShareButton>
+
+              <TelegramShareButton className="mr-3" url={pageUrl}>
+                <TelegramIcon size={30} />
+              </TelegramShareButton>
+
+              <WhatsappShareButton url={pageUrl}>
+                <WhatsappIcon size={30} />
+              </WhatsappShareButton>
             </div>
           </div>
         </div>

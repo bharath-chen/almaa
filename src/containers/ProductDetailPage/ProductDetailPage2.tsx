@@ -592,6 +592,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
             <div className="ml-auto">
               <LikeSaveBtns
+                title={productDetail?.product_details[0].product_name}
                 audioUrl={productDetail?.product_details[0]?.audio}
                 onClick={handleWishlist}
               />

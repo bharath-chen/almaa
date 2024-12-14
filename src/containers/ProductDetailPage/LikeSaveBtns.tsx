@@ -3,11 +3,12 @@ import AudioPlayerPopup from "../../components/Audio/AudioPlayerPopup";
 import SharePopup from "../../components/SharePopup/SharePopup"; // Adjust the import path accordingly
 
 interface Props {
+  title?: string;
   audioUrl?: string;
   onClick?: (liked: boolean) => void;
 }
 
-const LikeSaveBtns = ({ audioUrl = "", onClick }: Props) => {
+const LikeSaveBtns = ({ audioUrl = "", title = "", onClick }: Props) => {
   const [isLiked, setIsLiked] = useState(false);
   const [showAudioPlayer, setShowAudioPlayer] = useState(false);
   const [showSharePopup, setShowSharePopup] = useState(false);
@@ -107,7 +108,9 @@ const LikeSaveBtns = ({ audioUrl = "", onClick }: Props) => {
       )}
 
       {/* Conditionally render share popup */}
-      {showSharePopup && <SharePopup onClose={handleCloseSharePopup} />}
+      {showSharePopup && (
+        <SharePopup title={title} onClose={handleCloseSharePopup} />
+      )}
     </div>
   );
 };

@@ -1,44 +1,50 @@
 import React, { useState } from "react";
 import styles from "./SharePopup.module.css";
 import SocialsList from "../../shared/SocialsList/SocialsList";
-import { FaFacebookSquare, FaWhatsappSquare } from "react-icons/fa";
 import {
-  FaSquareInstagram,
-  FaSquareYoutube,
-  FaSquareXTwitter,
-} from "react-icons/fa6";
+  FacebookShareButton,
+  FacebookIcon,
+  XIcon,
+  TwitterShareButton,
+  WhatsappShareButton,
+  WhatsappIcon,
+  FacebookShareCount,
+} from "react-share";
 
 interface SharePopupProps {
+  title?: string;
   onClose: () => void;
 }
 
-const socialIcons = [
-  {
-    name: "Facebook",
-    icon: <FaFacebookSquare color="#1877F2" size={30} />,
-  },
-  //   {
-  //     name: "Instagram",
-  //     icon: <FaSquareInstagram color="#E1306C" size={30} />,
-  //   },
-  //   {
-  //     name: "Youtube",
-  //     icon: <FaSquareYoutube color="#FF0000" size={30} />,
-  //   },
-  {
-    name: "X",
-    icon: <FaSquareXTwitter color="#000000" size={30} />,
-  },
-  {
-    name: "WhatsApp",
-    icon: <FaWhatsappSquare color="#25D366" size={30} />,
-  },
-];
-
-const SharePopup: React.FC<SharePopupProps> = ({ onClose }) => {
-  const [notificationVisible, setNotificationVisible] = useState(false);
+const SharePopup: React.FC<SharePopupProps> = ({ title = "", onClose }) => {
   const pageUrl = window.location.href;
-
+  const socialIcons = [
+    {
+      name: "Facebook",
+      icon: (
+        <FacebookShareButton url={pageUrl}>
+          <FacebookIcon size={32} round />
+        </FacebookShareButton>
+      ),
+    },
+    {
+      name: "X",
+      icon: (
+        <TwitterShareButton url={pageUrl} title={title}>
+          <XIcon size={30} round />
+        </TwitterShareButton>
+      ),
+    },
+    {
+      name: "WhatsApp",
+      icon: (
+        <WhatsappShareButton url={pageUrl} title={title}>
+          <WhatsappIcon size={30} round />
+        </WhatsappShareButton>
+      ),
+    },
+  ];
+  const [notificationVisible, setNotificationVisible] = useState(false);
   const handleCopyLink = () => {
     navigator.clipboard.writeText(pageUrl).then(() => {
       setNotificationVisible(true);
@@ -83,7 +89,6 @@ const SharePopup: React.FC<SharePopupProps> = ({ onClose }) => {
     }
 
     if (shareUrl) {
-      console.log(shareUrl);
       window.open(shareUrl, "_blank");
     }
   };
@@ -130,10 +135,29 @@ const SharePopup: React.FC<SharePopupProps> = ({ onClose }) => {
             />
           </svg>
 
-          <SocialsList
-            socials={socialIcons}
-            onClick={({ name }) => handleShare(name)}
-          />
+          <FacebookShareButton url={pageUrl}>
+            <FacebookIcon
+              className="cursor-pointer hover:opacity-75"
+              size={30}
+              round
+            />
+          </FacebookShareButton>
+
+          <TwitterShareButton title={title} url={pageUrl}>
+            <XIcon
+              className="cursor-pointer hover:opacity-75"
+              size={30}
+              round
+            />
+          </TwitterShareButton>
+
+          <WhatsappShareButton url={pageUrl}>
+            <WhatsappIcon
+              className="cursor-pointer hover:opacity-75"
+              size={30}
+              round
+            />
+          </WhatsappShareButton>
         </div>
       </div>
     </div>
