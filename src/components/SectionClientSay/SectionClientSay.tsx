@@ -119,7 +119,7 @@ const SectionClientSay: FC<SectionClientSayProps> = ({
       <div className="relative md:mb-16 max-w-2xl mx-auto">
         {renderBg()}
 
-        <img className="mx-auto" src={clientSayMain} alt="" />
+        <img className="mx-auto" src={c7} alt="" />
         <div className={`mt-12 lg:mt-16 relative ${UNIQUE_CLASS}`}>
           <img
             className="opacity-50 md:opacity-100 absolute -mr-16 lg:mr-3 right-full top-1"
