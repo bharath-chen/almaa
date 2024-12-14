@@ -10,25 +10,27 @@ interface Props {
 const BranchCard = ({ branch, className, onCardClick }: Props) => {
   return (
     <div
-      className={`nc-CardCategory4 relative w-full aspect-w-12 aspect-h-6 h-0 rounded-3xl overflow-hidden bg-white dark:bg-neutral-900 group hover:nc-shadow-lg transition-shadow ${className}`}
+      className={`cursor-pointer nc-CardCategory4 relative w-full aspect-w-12 aspect-h-6 h-fit rounded-3xl overflow-hidden bg-white dark:bg-neutral-900 group hover:nc-shadow-lg transition-shadow ${className}`}
       data-nc-id="CardCategory4"
       onClick={onCardClick}
     >
       <div>
         <div className="absolute inset-5 sm:inset-8 flex flex-col justify-between">
           <div className="mb-3">
-            <h2 className={`text-xl sm:text-2xl font-semibold`}>
-              {branch.branch_name}
-            </h2>
-            <span
-              className={`block mb-2 text-sm text-slate-500 dark:text-slate-400 mt-3`}
+            <div className="flex flex-row justify-between items-center">
+              <h2 className={`text-xl font-semibold`}>{branch.branch_name}</h2>
+              <span className="cursor-pointer">
+                <ArrowRightIcon className="w-4 h-4 ml-2.5" />
+              </span>
+            </div>
+            <p
+              className={`mb-1 text-sm text-slate-500 dark:text-slate-400 mt-3`}
             >
               {branch.location}
-            </span>
-          </div>
-
-          <div className="cursor-pointer">
-            <ArrowRightIcon className="w-4 h-4 ml-2.5" />
+            </p>
+            <p className={`text-sm text-slate-500 dark:text-slate-400 mt-3`}>
+              {branch.contact_number}{" "}
+            </p>
           </div>
         </div>
       </div>
