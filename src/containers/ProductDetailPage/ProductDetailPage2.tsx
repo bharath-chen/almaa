@@ -534,7 +534,9 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
               Free shipping above ₹2000
             </p>
             <p className="text-md text-slate-500 dark:text-slate-300">
-              Cash on delivery available at ₹50 COD Charges
+              {/* Cash on delivery available at ₹50 COD Charges */}
+              Cash on Delivery available starting at ₹50 (charges vary based on
+              location)
             </p>
             {/* <div className="space-y-2.5">
               <div className="flex justify-between text-slate-600 dark:text-slate-300">
