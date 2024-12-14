@@ -63,6 +63,7 @@ import {
 import AudioPlayerPopup from "../../components/Audio/AudioPlayerPopup";
 import VideoPopup from "../../pages/Resources/Videos/VideoPopup";
 import ProductCategroyCard from "./ProductCategoryCard";
+import { Utils } from "../../utils/utils";
 
 export const pageAnimation = {
   initial: { opacity: 0, y: 100 },
@@ -113,10 +114,7 @@ const Home = () => {
         featuredImage={item.featuredImage}
         color={item.color}
         btnText="View Products"
-        href={`/category/${item.desc
-          ?.toLocaleLowerCase()
-          .trim()
-          .replace(/\s+/g, "-")}`}
+        href={`/category/${Utils.urlFormatter(item.desc)}`}
         options={{ categoryId: item.id, categoryName: item.desc }}
       />
     );

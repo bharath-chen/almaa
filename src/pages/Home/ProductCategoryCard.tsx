@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { Utils } from "../../utils/utils";
 
 interface Item {
   id: string;
@@ -17,15 +18,12 @@ const ProductCategroyCard = ({ item }: Props) => {
   const navigate = useNavigate();
 
   const routeToUrl = () => {
-    navigate(
-      `/category/${item.desc?.toLocaleLowerCase().trim().replace(/\s+/g, "-")}`,
-      {
-        state: {
-          natId: item.id,
-          natProductName: item.desc,
-        },
-      }
-    );
+    navigate(`/category/${Utils.urlFormatter(item.desc)}`, {
+      state: {
+        natId: item.id,
+        natProductName: item.desc,
+      },
+    });
   };
 
   return (

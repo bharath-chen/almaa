@@ -3,6 +3,7 @@ import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { FC, Fragment, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { LocationStates } from "../../routers/types";
+import { Utils } from "../../utils/utils";
 
 export interface NavItemType {
   id: string;
@@ -172,10 +173,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                           onClick={
                             () =>
                               navigate(
-                                `/category/${item.name
-                                  .toLocaleLowerCase()
-                                  .trim()
-                                  .replace(/\s+/g, "-")}`,
+                                `/category/${Utils.urlFormatter(item.name)}`,
                                 {
                                   state: {
                                     categoryId: item.id,
@@ -203,10 +201,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                           onClick={
                             () =>
                               navigate(
-                                `/category/${item.name
-                                  .toLocaleLowerCase()
-                                  .trim()
-                                  .replace(/\s+/g, "-")}`,
+                                `/category/${Utils.urlFormatter(item.name)}`,
                                 {
                                   state: {
                                     categoryId: item.id,

@@ -15,6 +15,7 @@ import ProductQuickView from "./ProductQuickView";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { RootState } from "../state/store";
 import AppText from "./AppText/AppText";
+import { Utils } from "../utils/utils";
 
 export interface ProductCardProps {
   className?: string;
@@ -119,14 +120,11 @@ const ProductCard: FC<ProductCardProps> = ({
   // };
 
   const routeToProductDetail = () => {
-    navigate(
-      `/products/${product_name.toLowerCase().trim().replace(/\s+/g, "-")}`,
-      {
-        state: {
-          id: product_id,
-        },
-      }
-    );
+    navigate(`/products/${Utils.urlFormatter(product_name)}`, {
+      state: {
+        id: product_id,
+      },
+    });
   };
 
   const renderGroupButtons = () => {
