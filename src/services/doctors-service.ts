@@ -9,6 +9,8 @@ export interface IDoctor {
   experience: string;
   highlights: string;
   status: string;
+  mobile: string;
+  whatsapp: string;
 }
 
 export default create("?gofor=doctorslist");

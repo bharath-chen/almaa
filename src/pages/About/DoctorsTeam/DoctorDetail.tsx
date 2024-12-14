@@ -13,12 +13,12 @@ const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
 
   const [doctorDetail] = useState<IDoctor | null>(state.doctor);
 
-  const handleConnect = () => {
-    console.log("Connect!");
+  const handleWhatsapp = () => {
+    window.open(`https://wa.me/${doctorDetail.whatsapp}`, "_blank");
   };
 
-  const connectThroughWhatsapp = () => {
-    console.log("Whatsapp Clicked!");
+  const handleCall = () => {
+    window.location.href = `tel:${doctorDetail.mobile}`;
   };
 
   const accordionData = [
@@ -52,10 +52,7 @@ const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
 
         {/*  ---------- 4  QTY AND ADD TO CART BUTTON */}
         <div className="flex space-x-3.5">
-          <ButtonPrimary
-            className="flex-1 flex-shrink-0"
-            onClick={handleConnect}
-          >
+          <ButtonPrimary className="flex-1 flex-shrink-0" onClick={handleCall}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -75,7 +72,7 @@ const DoctorDetail: FC<ProductDetailPageProps> = ({ className = "" }) => {
           </ButtonPrimary>
           <ButtonPrimary
             className="flex-1 flex-shrink-0"
-            onClick={connectThroughWhatsapp}
+            onClick={handleWhatsapp}
           >
             <svg
               className="w-6 h-6 text-gray-800 text-white dark:text-white"

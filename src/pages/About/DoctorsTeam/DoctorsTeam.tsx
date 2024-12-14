@@ -18,7 +18,6 @@ const DoctorsTeam = ({ className = "" }: DoctorsTeamProps) => {
   const navigate = useNavigate();
 
   const routeToDoctorDetail = (doctor: IDoctor) => {
-    console.log(doctor);
     navigate("/doctor-detail", { state: { doctor } });
   };
 
