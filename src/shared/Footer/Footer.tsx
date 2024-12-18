@@ -142,7 +142,8 @@ const renderContactUs = () => {
         <p className="mt-3 text-sm xl:text-md after:mx-[8px] text-content-4 last:after:content-[''] desktop:text-[14px]">
           Call Us:{" "}
           <strong className="cursor-pointer">
-            044-4354 6873, 91-740 140 3000.
+            <a href="tel:+04443546873">044-4354 6873</a>,{" "}
+            <a href="tel:+917401403000">91-740 140 3000</a>.
           </strong>
         </p>
         <p className="mt-3 text-sm xl:text-md after:mx-[8px] text-content-4 last:after:content-[''] desktop:text-[14px]">
@@ -155,13 +156,20 @@ const renderContactUs = () => {
       <span>
         <p className="mt-3 text-sm xl:text-md after:mx-[8px] text-content-4 last:after:content-[''] desktop:text-[14px]">
           Email Us:{" "}
-          <strong className="cursor-pointer">almaahospital@gmail.com</strong>
+          <strong className="cursor-pointer">
+            <a href="mailto:almaahospital@gmail.com">almaahospital@gmail.com</a>
+          </strong>
         </p>
       </span>
       <span>
         <p className="mt-3 text-sm xl:text-md after:mx-[8px] text-content-4 last:after:content-[''] desktop:text-[14px]">
           WhatsApp Us:{" "}
-          <strong className="cursor-pointer">91-900 300 0888.</strong>
+          <strong className="cursor-pointer">
+            <a href="https://wa.me/+919003000888" target="_blank">
+              91-900 300 0888
+            </a>
+            .
+          </strong>
         </p>
       </span>
       <span className="mt-4 text-sm xl:text-md text-content-4 last:after:content-[''] desktop:text-[14px]">
