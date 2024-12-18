@@ -37,7 +37,6 @@ const DATA_sortOrderRadios = [
 const Products: FC<Props> = ({ className = "" }) => {
   const [showFilters, setShowFilters] = useState(false);
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
   const navigate = useNavigate();
   const { natProducts } = useNatProducts();
   const [productForms, setProductForms] = useState<TabFilterItem[]>([]);
@@ -183,11 +182,11 @@ const Products: FC<Props> = ({ className = "" }) => {
 
   // Products
   useEffect(() => {
-    if (queryParams.size === 0) {
+    if (!location.state) {
       const cancelFetchProducts = fetchProducts();
       return () => cancelFetchProducts();
     }
-  }, [queryParams.size === 0]);
+  }, [!location.state]);
 
   // useEffect(() => {
   //   if (selectedSortOrder?.value) {
