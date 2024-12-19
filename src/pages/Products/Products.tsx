@@ -13,7 +13,7 @@ import {
   addItemToWishlist,
   removeItemFromWishlist,
 } from "../../features/wishlist/wishlistSlice";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import subcategoryService from "../../services/subcategory-service";
 import { type SubCategory } from "../../models/subCategory";
 import filterProductsService from "../../services/filter-products-service";
@@ -37,7 +37,6 @@ const DATA_sortOrderRadios = [
 const Products: FC<Props> = ({ className = "" }) => {
   const [showFilters, setShowFilters] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
   const { natProducts } = useNatProducts();
   const [productForms, setProductForms] = useState<TabFilterItem[]>([]);
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
@@ -184,30 +183,11 @@ const Products: FC<Props> = ({ className = "" }) => {
   useEffect(() => {
     if (!location.state) {
       const cancelFetchProducts = fetchProducts();
+      setSubCategories([]);
+      setSelectedSubCategory(null);
       return () => cancelFetchProducts();
     }
   }, [!location.state]);
-
-  // useEffect(() => {
-  //   if (selectedSortOrder?.value) {
-  //     const { request } = sortProductsService.getAll<
-  //       Product,
-  //       { sortBy: string }
-  //     >({ sortBy: selectedSortOrder.value });
-
-  //     dispatch(showLoader());
-
-  //     request
-  //       .then((res) => {
-  //         dispatch(hideLoader());
-  //         setProducts(res.data);
-  //       })
-  //       .catch((err) => {
-  //         dispatch(hideLoader());
-  //         setError(err.message);
-  //       });
-  //   }
-  // }, [selectedSortOrder?.value]);
 
   useEffect(() => {
     if (
@@ -215,7 +195,8 @@ const Products: FC<Props> = ({ className = "" }) => {
       selectedFilter.herb_type ||
       selectedFilter.pres_req ||
       selectedFilter.is_nutraceutical ||
-      (selectedSortOrder && selectedSortOrder.id)
+      (selectedSortOrder && selectedSortOrder.id) ||
+      categoryId
     ) {
       const obj = {
         nat_of_prod: selectedFilter.nat_of_prod.join(","),
@@ -223,7 +204,10 @@ const Products: FC<Props> = ({ className = "" }) => {
         pres_req: 1,
         herb_type: "Single",
         sortby: selectedSortOrder?.value || "",
+        category_id: categoryId,
       };
+
+      if (!categoryId) delete obj.category_id;
 
       if (selectedFilter.nat_of_prod.length === 0) delete obj.nat_of_prod;
 
@@ -259,7 +243,7 @@ const Products: FC<Props> = ({ className = "" }) => {
           setError(err.message);
         });
     }
-  }, [selectedFilter, selectedSortOrder]);
+  }, [selectedFilter, selectedSortOrder, categoryId]);
 
   useEffect(() => {
     if (natProductId && natProduct) {
@@ -271,27 +255,27 @@ const Products: FC<Props> = ({ className = "" }) => {
   }, [natProductId, natProduct]);
 
   const handleSortingProducts = (selectedSort: SortOrder) => {
-    setSubCategories([]);
-    setSelectedSubCategory(null);
+    // setSubCategories([]);
+    // setSelectedSubCategory(null);
     setSelectedSortOrder(selectedSort);
   };
 
   const handleFilterChange = (filter: Filters, items: TabFilterItem[]) => {
-    if (filter.nat_of_prod.length === 0) {
-      navigate("/category");
-    }
+    // if (filter.nat_of_prod.length === 0) {
+    //   navigate("/category");
+    // }
 
-    if (
-      filter.nat_of_prod.length === 0 &&
-      !filter.herb_type &&
-      !filter.is_nutraceutical &&
-      !filter.pres_req
-    ) {
-      fetchProducts();
-    }
+    // if (
+    //   filter.nat_of_prod.length === 0 &&
+    //   !filter.herb_type &&
+    //   !filter.is_nutraceutical &&
+    //   !filter.pres_req
+    // ) {
+    //   fetchProducts();
+    // }
 
-    setSubCategories([]);
-    setSelectedSubCategory(null);
+    // setSubCategories([]);
+    // setSelectedSubCategory(null);
     setProductForms(items);
     setSelectedFilter(filter);
   };
