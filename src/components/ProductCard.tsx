@@ -120,7 +120,7 @@ const ProductCard: FC<ProductCardProps> = ({
   // };
 
   const routeToProductDetail = () => {
-    navigate(`/products/${Utils.urlFormatter(product_name)}`, {
+    navigate(`/products/${Utils.urlFormatter(product_name)}/${product_id}`, {
       state: {
         id: product_id,
       },

@@ -116,7 +116,7 @@ export const pages: Page[] = [
   // { path: "/products/:natProductId/:natProduct", component: Products },
   // { path: "/products/:categoryId/:category", component: Products },
   {
-    path: "/products/:name",
+    path: "/products/:name/:id",
     component: ProductDetailPage2,
   },
   { path: "/page-search", component: PageSearch },

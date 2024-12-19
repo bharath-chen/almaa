@@ -66,7 +66,7 @@ export interface ProductDetailPage2Props {
 const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   className = "",
 }) => {
-  const location = useLocation();
+  const params = useParams();
   const dispatch = useAppDispatch();
   const [buyingOptions, setBuyingOptions] = useState([
     {
@@ -118,11 +118,13 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   const customer = useAppSelector((state: RootState) => state.auth);
   const [hasReviewed, setHasReviewed] = useState(false);
 
+  console.log(params);
+
   const fetchProductDetail = () => {
     const { request, cancel } = productDetailService.get<
       ProductDetail,
       { product_id: number }
-    >({ product_id: +location?.state?.id });
+    >({ product_id: +params?.id });
 
     dispatch(showLoader());
 
@@ -170,7 +172,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     const { request, cancel } = relatedProductsService.getAll<
       Product,
       { product_id: number }
-    >({ product_id: +location.state.id });
+    >({ product_id: +params.id });
 
     request
       .then((res) => {
@@ -188,7 +190,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
   useEffect(() => {
     const { request, cancel } = faqService.get<IFaq[], { product_id: number }>({
-      product_id: +location.state.id,
+      product_id: +params.id,
     });
 
     dispatch(showLoader());
