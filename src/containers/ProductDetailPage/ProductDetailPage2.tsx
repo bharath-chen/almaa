@@ -16,10 +16,10 @@ import BagIcon from "../../components/BagIcon";
 import AccordionInfo from "./AccordionInfo";
 import Policy from "./Policy";
 import toast from "react-hot-toast";
-import { CheckIcon, StarIcon } from "@heroicons/react/24/solid";
+import { CheckIcon } from "@heroicons/react/24/solid";
 import SectionSliderProductCard from "../../components/SectionSliderProductCard";
-import ModalViewAllReviews, { Review } from "./ModalViewAllReviews";
-import { Link, useLocation, useParams } from "react-router-dom";
+import ModalViewAllReviews from "./ModalViewAllReviews";
+import { Link, useParams } from "react-router-dom";
 import AppProductChip from "../../components/AppProductChip/AppProductChip";
 import faqImg from "../../assets/02-Products/FAQ.jpg";
 import Expert from "../../assets/PRODUCT DETAIL/4-Expert.jpg";
@@ -50,7 +50,6 @@ import {
   clearCart,
 } from "../../features/cart/cartSlice";
 import { RootState } from "state/store";
-import { Rating } from "react-simple-star-rating";
 import ProductReviewForm from "./ProductReviewForm";
 import reviewService from "../../services/review-service";
 
@@ -117,8 +116,6 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   const cart = useAppSelector((state: RootState) => state.cart);
   const customer = useAppSelector((state: RootState) => state.auth);
   const [hasReviewed, setHasReviewed] = useState(false);
-
-  console.log(params);
 
   const fetchProductDetail = () => {
     const { request, cancel } = productDetailService.get<
