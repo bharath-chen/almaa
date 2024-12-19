@@ -1,9 +1,7 @@
 import { Address } from "models/address";
-import ShippingAddress from "../../containers/PageCheckout/ShippingAddress";
 import useViewAddressess from "../../hooks/useViewAddress";
 import CommonLayout from "./CommonLayout";
 import { useState } from "react";
-import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import ButtonSecondary from "../../shared/Button/ButtonSecondary";
 import AddressFormModal from "../../containers/PageCheckout/AddressFormModal";
 import { useAppDispatch } from "../../hooks/hooks";
@@ -59,6 +57,7 @@ const AccountAddress = () => {
     setShowAddressModal(false);
     const payload = {
       gofor: "editaddress",
+      address_id: selectedAddress.address_id,
       customer_id: customer.customer_id,
       doorno: address.doorno,
       street: address.street,
