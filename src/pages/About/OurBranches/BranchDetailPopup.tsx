@@ -56,7 +56,7 @@ const BranchDetailPopup = ({ branch, onClose }: BranchDetailPopupProps) => {
           <p className="text-center text-gray-600 mb-4">
             {branch.contact_number}
           </p>
-          <GMap />
+          <GMap src={branch.map_link} />
           <div className="flex flex-col justify-between mt-5">
             <div className="flex sm:flex-col md:flex-row justify-center">
               <ButtonPrimary className="mr-5 w-full" onClick={handleWhatsapp}>

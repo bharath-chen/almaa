@@ -6,6 +6,7 @@ export interface IBranch {
   location: string;
   contact_number: string;
   status: string;
+  map_link: string;
 }
 
 export default create("?gofor=brancheslist");

@@ -1,5 +1,6 @@
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import { IBranch } from "../../../services/branches-service";
+import GMap from "../../../components/GMap/GMap";
 
 interface Props {
   branch: IBranch;
@@ -10,7 +11,7 @@ interface Props {
 const BranchCard = ({ branch, className, onCardClick }: Props) => {
   return (
     <div
-      className={`cursor-pointer nc-CardCategory4 relative w-full aspect-w-12 aspect-h-6 h-fit rounded-3xl overflow-hidden bg-white dark:bg-neutral-900 group hover:nc-shadow-lg transition-shadow ${className}`}
+      className={`cursor-pointer nc-CardCategory4 relative w-full aspect-w-12 aspect-h-12 h-auto rounded-3xl overflow-hidden bg-white dark:bg-neutral-900 group hover:nc-shadow-lg transition-shadow ${className}`}
       data-nc-id="CardCategory4"
       onClick={onCardClick}
     >
@@ -32,6 +33,7 @@ const BranchCard = ({ branch, className, onCardClick }: Props) => {
               {branch.contact_number}{" "}
             </p>
           </div>
+          <GMap src={branch.map_link} height="60%" />
         </div>
       </div>
     </div>
