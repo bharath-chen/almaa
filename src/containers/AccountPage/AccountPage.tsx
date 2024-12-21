@@ -205,7 +205,7 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
                     </span>
                     <Input
                       className="!rounded-l-none"
-                      // placeholder="example@email.com"
+                      disabled
                       {...register("email")}
                     />
                   </div>
