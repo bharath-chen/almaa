@@ -209,7 +209,12 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
               <Label className="text-sm">
                 Email address <MandatoryIcon />
               </Label>
-              <Input className="mt-1.5" type="email" {...register("email")} />
+              <Input
+                className="mt-1.5"
+                type="email"
+                disabled
+                {...register("email")}
+              />
               {errors.email && (
                 <InputErrorMessage>{errors.email.message}</InputErrorMessage>
               )}
