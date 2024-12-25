@@ -1,10 +1,17 @@
+import useShippingPolicy from "../../hooks/useShippingPolicy";
+
 const ShippingPolicy = () => {
+  const { htmlContent } = useShippingPolicy();
+
   return (
     <div className="container mx-auto px-4 my-20">
       <div className="row">
         <div className="col-xs-12">
-          <div className="row grid-offer-row">
-            <h2 className="text-center text-2xl font-bold mb-6">
+          <div
+            className="row grid-offer-row"
+            dangerouslySetInnerHTML={{ __html: htmlContent }}
+          >
+            {/* <h2 className="text-center text-2xl font-bold mb-6">
               <strong>Shipping Policy</strong>
             </h2>
             <p className="mb-4">
@@ -81,8 +88,6 @@ const ShippingPolicy = () => {
               receive this information within 3 working days from the date of
               ordering, please contact our customer service @ 9003000888.
             </p>
-            {/* <p>&nbsp;</p>
-            <p>&nbsp;</p> */}
             <h3 className="text-xl font-semibold mb-2">
               <strong>Lost or Damaged Packages</strong>
             </h3>
@@ -104,7 +109,7 @@ const ShippingPolicy = () => {
             <p>
               If you have any questions about our shipping policy, please
               contact us at almaahospital@gmail.com or 9003000888.
-            </p>
+            </p> */}
           </div>
         </div>
       </div>
