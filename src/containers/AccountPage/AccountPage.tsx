@@ -1,12 +1,9 @@
 import Label from "../../components/Label/Label";
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import Input from "../../shared/Input/Input";
-import Select from "../../shared/Select/Select";
-import Textarea from "../../shared/Textarea/Textarea";
 import CommonLayout from "./CommonLayout";
 import { Helmet } from "react-helmet-async";
-import { avatarImgs } from "../../contains/fakeData";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { RootState } from "../../state/store";
 import { useForm } from "react-hook-form";
@@ -31,13 +28,13 @@ const mobilePattern = /^\d{10}$/;
 const schema = z.object({
   firstName: z.string().nonempty("First Name is required"),
   lastName: z.string().nonempty("Last Name is required"),
-  email: z
-    .string()
-    .nonempty("Email is required")
-    .refine(
-      (value) => emailPattern.test(value),
-      "Please enter a valid email address"
-    ),
+  // email: z
+  //   .string()
+  //   .nonempty("Email is required")
+  //   .refine(
+  //     (value) => emailPattern.test(value),
+  //     "Please enter a valid email address"
+  //   ),
   dateOfBirth: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format. Use dd/mm/yyyy."),
@@ -77,7 +74,7 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
         setValue("firstName", data.first_name);
         setValue("lastName", data.last_name);
         setValue("dateOfBirth", data.dob);
-        setValue("email", data.email);
+        // setValue("email", data.email);
         setValue("phoneNumber", data.mobilenumber);
       })
       .catch((err) => {
@@ -100,7 +97,7 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
       customer_id: customer.customer_id,
       first_name: data.firstName,
       last_name: data.lastName,
-      email: data.email,
+      // email: data.email,
       mobilenumber: data.phoneNumber,
       dob: data.dateOfBirth,
     };
@@ -195,7 +192,7 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
                 {/* ---- */}
 
                 {/* ---- */}
-                <div>
+                {/* <div>
                   <Label>
                     Email <MandatoryIcon />
                   </Label>
@@ -214,7 +211,7 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
                       {errors.email.message}
                     </InputErrorMessage>
                   )}
-                </div>
+                </div> */}
 
                 {/* ---- */}
                 <div>
