@@ -63,6 +63,13 @@ const Products: FC<Props> = ({ className = "" }) => {
   const natProduct = location?.state?.natProductName;
   const itemsPerPage = 9;
 
+  const removeDuplicates = (products: Product[]) => {
+    return products.filter(
+      (obj, index, self) =>
+        index === self.findIndex((t) => t.product_id === obj.product_id)
+    );
+  };
+
   const getSubCategories = (id: string) => {
     const { request } = subcategoryService.getAll<
       SubCategory,
@@ -95,7 +102,7 @@ const Products: FC<Props> = ({ className = "" }) => {
     request
       .then((res) => {
         dispatch(hideLoader());
-        setProducts(res.data);
+        setProducts(removeDuplicates(res.data));
       })
       .catch((err) => {
         dispatch(hideLoader());
@@ -114,7 +121,7 @@ const Products: FC<Props> = ({ className = "" }) => {
     request
       .then((res) => {
         dispatch(hideLoader());
-        setProducts(res.data);
+        setProducts(removeDuplicates(res.data));
       })
       .catch((err) => {
         dispatch(hideLoader());
@@ -134,12 +141,7 @@ const Products: FC<Props> = ({ className = "" }) => {
     request
       .then((res) => {
         dispatch(hideLoader());
-        setProducts(
-          res.data.filter(
-            (obj, index, self) =>
-              index === self.findIndex((t) => t.product_id === obj.product_id)
-          )
-        );
+        setProducts(removeDuplicates(res.data));
       })
       .catch((err) => {
         if (err instanceof CanceledError) return;
@@ -236,7 +238,7 @@ const Products: FC<Props> = ({ className = "" }) => {
       request
         .then((res) => {
           dispatch(hideLoader());
-          setProducts(res.data["error"] ? [] : res.data);
+          setProducts(res.data["error"] ? [] : removeDuplicates(res.data));
         })
         .catch((err) => {
           dispatch(hideLoader());
@@ -281,7 +283,7 @@ const Products: FC<Props> = ({ className = "" }) => {
   };
 
   const handleLike = (id: string) => {
-    const updatedProducts = [...products].map((p) =>
+    const updatedProducts = removeDuplicates([...products]).map((p) =>
       p.product_id === id
         ? {
             ...p,
