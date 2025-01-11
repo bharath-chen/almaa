@@ -12,6 +12,10 @@ import { getFormattedDate } from "../../utils/date-utils";
 import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
 import { useNavigate } from "react-router-dom";
 import { OrderData, ProductDetailData } from "models/order";
+import Badge from "../../shared/Badge/Badge";
+import { TwMainColor } from "data/types";
+
+type PaymentStatus = "Paid" | "Pending";
 
 export interface ViewOrder {
   order_detail_id: string;
@@ -69,7 +73,7 @@ const AccountOrder = () => {
       });
 
     return () => cancel();
-  }, []);
+  }, [customer?.customer_id, dispatch]);
 
   const renderProductItem = (product: ProductDetailData, index: number) => {
     const {
@@ -134,6 +138,10 @@ const AccountOrder = () => {
       });
     };
 
+    const status: PaymentStatus =
+      order.order.payment_status === "Paid" ? "Paid" : "Pending";
+    const color: TwMainColor = status === "Paid" ? "green" : "red";
+
     return (
       <div className="w-full mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md transition-transform transform hover:scale-105">
         <div className="flex flex-col md:flex-row justify-between md:items-center border-b border-slate-300 dark:border-slate-700 pb-4 mb-4">
@@ -152,7 +160,10 @@ const AccountOrder = () => {
             )}
             <p className="text-gray-600 dark:text-gray-300">
               Order ID:{" "}
-              <span className="font-semibold">{order.order.order_id}</span>
+              <span className="font-semibold">
+                {order.order.order_id}{" "}
+                <Badge className="relative ml-2" name={status} color={color} />
+              </span>
             </p>
           </div>
 

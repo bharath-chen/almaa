@@ -1,4 +1,3 @@
-import { ProductDetail } from "services/product-detail-service";
 import { Address } from "./address";
 
 export interface OrderDetail {
@@ -27,6 +26,7 @@ export interface Order {
   delivery_status: string;
   delivered_date: string;
   payment_mode: string;
+  payment_status: string;
   coupon_id: string;
   tracking_id: string;
   order_status: string;
