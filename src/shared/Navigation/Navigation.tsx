@@ -11,6 +11,7 @@ function Navigation() {
       categories && categories.length > 0
         ? categories?.map((c) => ({
             id: c.category_id,
+            code: c.cat_code,
             name: c.cat_name,
             href: undefined,
           }))

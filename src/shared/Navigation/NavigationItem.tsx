@@ -7,6 +7,7 @@ import { Utils } from "../../utils/utils";
 
 export interface NavItemType {
   id: string;
+  code?: string;
   name: string;
   href: keyof LocationStates;
   targetBlank?: boolean;
@@ -173,13 +174,15 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                           onClick={
                             () =>
                               navigate(
-                                `/category/${Utils.urlFormatter(item.name)}`,
-                                {
-                                  state: {
-                                    categoryId: item.id,
-                                    categoryName: item.name,
-                                  },
-                                }
+                                `/category/${Utils.urlFormatter(
+                                  item.code + "_" + item.name
+                                )}`
+                                // {
+                                //   state: {
+                                //     categoryId: item.id,
+                                //     categoryName: item.name,
+                                //   },
+                                // }
                               )
                             // navigate(
                             //   `/products?category_id=${item.id}&category=${item.name}`
@@ -201,13 +204,15 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                           onClick={
                             () =>
                               navigate(
-                                `/category/${Utils.urlFormatter(item.name)}`,
-                                {
-                                  state: {
-                                    categoryId: item.id,
-                                    categoryName: item.name,
-                                  },
-                                }
+                                `/category/${Utils.urlFormatter(
+                                  item.code + "_" + item.name
+                                )}`
+                                // {
+                                //   state: {
+                                //     categoryId: item.id,
+                                //     categoryName: item.name,
+                                //   },
+                                // }
                               )
                             // navigate(
                             //   `/products?category_id=${item.id}&category=${item.name}`

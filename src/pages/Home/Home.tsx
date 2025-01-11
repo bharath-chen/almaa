@@ -65,11 +65,10 @@ import VideoPopup from "../../pages/Resources/Videos/VideoPopup";
 import ProductCategroyCard from "./ProductCategoryCard";
 import { Utils } from "../../utils/utils";
 
-export const pageAnimation = {
+const pageAnimation = {
   initial: { opacity: 0, y: 100 },
   animate: { opacity: 1, y: 0 },
 };
-
 const audioUrl = "https://www.almaherbal.top/App/assets/audio/md-general.mp3";
 const videoUrl = "https://youtu.be/n58PFwrmxsg";
 
@@ -114,7 +113,7 @@ const Home = () => {
         featuredImage={item.featuredImage}
         color={item.color}
         btnText="View Products"
-        href={`/category/${Utils.urlFormatter(item.desc)}`}
+        href={`/category/${Utils.urlFormatter(item.id + "_" + item.desc)}`}
         options={{ categoryId: item.id, categoryName: item.desc }}
       />
     );
@@ -123,6 +122,7 @@ const Home = () => {
   const renderProductCategoryCard = (item: {
     id: string;
     name: string;
+    code: string;
     desc: string;
     featuredImage: string;
     color: string;
@@ -468,6 +468,7 @@ const Home = () => {
               return {
                 id: p.natprod_id,
                 name: p.tagline,
+                code: p.natcode,
                 desc: p.name,
                 featuredImage: p.image,
                 color: "bg-slate-50",

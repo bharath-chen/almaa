@@ -6,6 +6,7 @@ import { NavItemType } from "./NavigationItem";
 import { NAVIGATION_DEMO_2 } from "../../data/navigation";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import almaaLogo from "../../assets/almaa-logo-small.png";
+import { Utils } from "../../utils/utils";
 
 export interface NavMobileProps {
   data?: NavItemType[];
@@ -32,11 +33,14 @@ const NavMobile: React.FC<NavMobileProps> = ({
                 <span
                   className={`py-2.5 ${!i.children ? "block w-full" : ""}`}
                   onClick={() => {
-                    navigate("/category", {
-                      state: {
-                        item: { ...i },
-                      },
-                    });
+                    navigate(
+                      `/category/${Utils.urlFormatter(i.code + "_" + i.name)}`,
+                      {
+                        state: {
+                          item: { ...i },
+                        },
+                      }
+                    );
                     onClickClose();
                   }}
                 >

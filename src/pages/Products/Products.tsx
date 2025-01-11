@@ -13,7 +13,7 @@ import {
   addItemToWishlist,
   removeItemFromWishlist,
 } from "../../features/wishlist/wishlistSlice";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import subcategoryService from "../../services/subcategory-service";
 import { type SubCategory } from "../../models/subCategory";
 import filterProductsService from "../../services/filter-products-service";
@@ -21,6 +21,8 @@ import useNatProducts from "../../hooks/useNatProducts";
 import { TabFilterItem } from "../../components/AppFilterTabs/AppFilterTabs";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import Pagination from "../../shared/Pagination/Pagination";
+import { RootState } from "../../state/store";
+import { Utils } from "../../utils/utils";
 
 interface Props {
   className?: string;
@@ -35,8 +37,8 @@ const DATA_sortOrderRadios = [
 ];
 
 const Products: FC<Props> = ({ className = "" }) => {
+  const loading = useAppSelector((state: RootState) => state.loader.loading);
   const [showFilters, setShowFilters] = useState(false);
-  const location = useLocation();
   const { natProducts } = useNatProducts();
   const [productForms, setProductForms] = useState<TabFilterItem[]>([]);
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
@@ -56,11 +58,20 @@ const Products: FC<Props> = ({ className = "" }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useAppDispatch();
   const customer = useAppSelector((state) => state.auth);
-  const loading = useAppSelector((state) => state.loader.loading);
-  const categoryId = location?.state?.categoryId; // Extracts category_id (1)
-  const category = location?.state?.categoryName;
-  const natProductId = location?.state?.natId;
-  const natProduct = location?.state?.natProductName;
+  const params = useParams();
+  const categoryParams = Utils.getIdAndNameFromUrl(params?.category);
+  const categoryId = categoryParams?.code.includes("10")
+    ? categoryParams?.code?.slice(2)
+    : null; // Extracts category_id (1)
+  const category = categoryParams?.code.includes("10")
+    ? categoryParams?.name
+    : null;
+  const natProductId = categoryParams?.code.includes("n")
+    ? categoryParams?.code?.slice(1)
+    : null;
+  const natProduct = categoryParams?.code.includes("n")
+    ? categoryParams?.name
+    : null;
   const itemsPerPage = 9;
 
   const removeDuplicates = (products: Product[]) => {
@@ -163,7 +174,7 @@ const Products: FC<Props> = ({ className = "" }) => {
   }, [natProducts, natProductId, natProduct]);
 
   useEffect(() => {
-    if (location.state?.item || categoryId) {
+    if (categoryId) {
       setSelectedSubCategory(null);
       setSelectedFilter({
         nat_of_prod: [],
@@ -176,20 +187,20 @@ const Products: FC<Props> = ({ className = "" }) => {
       setProductForms((prevProductForms) =>
         prevProductForms.map((p) => ({ ...p, checked: false }))
       );
-      getSubCategories(location.state?.item?.id || categoryId);
-      getProductsByCategory(location.state?.item?.id || categoryId);
+      getSubCategories(categoryId);
+      getProductsByCategory(categoryId);
     }
-  }, [location.state, categoryId]);
+  }, [categoryId]);
 
   // Products
   useEffect(() => {
-    if (!location.state) {
+    if (!categoryParams) {
       const cancelFetchProducts = fetchProducts();
       setSubCategories([]);
       setSelectedSubCategory(null);
       return () => cancelFetchProducts();
     }
-  }, [!location.state]);
+  }, [categoryParams]);
 
   useEffect(() => {
     if (
@@ -410,9 +421,25 @@ const Products: FC<Props> = ({ className = "" }) => {
 
               <div className="flex-shrink-0 mb-10 lg:mb-0 lg:mx-4 border-t lg:border-t-0"></div>
 
-              <div className="flex-1 ">
-                {/* <div className="flex-1 grid grid-cols-1 gap-x-8 gap-y-10 ">
-                  {!loading && currentProducts.length === 0 && (
+              {!loading && (
+                <div className="flex-1 ">
+                  <div className="flex-1 grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 ">
+                    {currentProducts.length > 0 &&
+                      currentProducts.map((item, index) => (
+                        <ProductCard
+                          data={item}
+                          isLiked={item.is_in_wishlist}
+                          onLike={() => handleLike(item.product_id)}
+                          key={item.product_id}
+                        />
+                      ))}
+                  </div>
+
+                  <div
+                    className={`flex-1 grid grid-cols-1 gap-x-8 gap-y-10 ${
+                      currentProducts.length > 0 ? "hidden" : ""
+                    }`}
+                  >
                     <div className="flex flex-col items-center justify-center text-center py-10 px-6 bg-gray-50 rounded-lg shadow-md w-full max-w-md mx-auto">
                       <h2 className="text-xl font-semibold text-gray-800 mb-4">
                         No Products Found!
@@ -426,21 +453,9 @@ const Products: FC<Props> = ({ className = "" }) => {
                         more great deals!
                       </p>
                     </div>
-                  )}
-                </div> */}
-                <div className="flex-1 grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 ">
-                  {!loading &&
-                    currentProducts.length > 0 &&
-                    currentProducts.map((item, index) => (
-                      <ProductCard
-                        data={item}
-                        isLiked={item.is_in_wishlist}
-                        onLike={() => handleLike(item.product_id)}
-                        key={item.product_id}
-                      />
-                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </main>
           <div className="flex justify-center lg:justify-end">

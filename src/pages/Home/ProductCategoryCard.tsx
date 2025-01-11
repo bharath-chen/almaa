@@ -3,6 +3,7 @@ import { Utils } from "../../utils/utils";
 
 interface Item {
   id: string;
+  code: string;
   name: string;
   desc: string;
   featuredImage: string;
@@ -18,7 +19,7 @@ const ProductCategroyCard = ({ item }: Props) => {
   const navigate = useNavigate();
 
   const routeToUrl = () => {
-    navigate(`/category/${Utils.urlFormatter(item.desc)}`, {
+    navigate(`/category/${Utils.urlFormatter(item.code + "_" + item.desc)}`, {
       state: {
         natId: item.id,
         natProductName: item.desc,
