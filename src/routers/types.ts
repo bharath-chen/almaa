@@ -4,7 +4,7 @@ export interface LocationStates {
   "/"?: {};
   "/category"?: {};
   "/category/:category"?: {};
-  "/products/:name/:id"?: {};
+  "/products/:name"?: {};
   "/product-detail-2"?: {};
   "/page-search"?: {};
   "/account"?: {};

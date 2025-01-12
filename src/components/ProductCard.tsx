@@ -120,11 +120,9 @@ const ProductCard: FC<ProductCardProps> = ({
   // };
 
   const routeToProductDetail = () => {
-    navigate(`/products/${Utils.urlFormatter(product_name)}/${product_id}`, {
-      state: {
-        id: product_id,
-      },
-    });
+    navigate(
+      `/products/${Utils.urlFormatter("p10" + product_id + "_" + product_name)}`
+    );
   };
 
   const renderGroupButtons = () => {

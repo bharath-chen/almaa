@@ -52,6 +52,7 @@ import {
 import { RootState } from "state/store";
 import ProductReviewForm from "./ProductReviewForm";
 import reviewService from "../../services/review-service";
+import { Utils } from "../../utils/utils";
 
 const calculateOriginalPrice = (price: number, pack: number) => price * pack;
 
@@ -116,12 +117,15 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   const cart = useAppSelector((state: RootState) => state.cart);
   const customer = useAppSelector((state: RootState) => state.auth);
   const [hasReviewed, setHasReviewed] = useState(false);
+  const productId = params?.name
+    ? Utils.getIdAndNameFromUrl(params?.name)?.code?.slice(2)
+    : null;
 
   const fetchProductDetail = () => {
     const { request, cancel } = productDetailService.get<
       ProductDetail,
       { product_id: number }
-    >({ product_id: +params?.id });
+    >({ product_id: +productId });
 
     dispatch(showLoader());
 
@@ -169,7 +173,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     const { request, cancel } = relatedProductsService.getAll<
       Product,
       { product_id: number }
-    >({ product_id: +params.id });
+    >({ product_id: +productId });
 
     request
       .then((res) => {
@@ -187,7 +191,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
 
   useEffect(() => {
     const { request, cancel } = faqService.get<IFaq[], { product_id: number }>({
-      product_id: +params.id,
+      product_id: +productId,
     });
 
     dispatch(showLoader());
