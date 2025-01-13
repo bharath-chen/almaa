@@ -42,7 +42,7 @@ const CheckoutPage = () => {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     "onlinePayment" | "cod"
-  >("onlinePayment");
+  >();
   const navigate = useNavigate();
   const location = useLocation();
   const user = useAppSelector((state: RootState) => state.auth);
@@ -336,7 +336,7 @@ const CheckoutPage = () => {
 
         <div id="PaymentMethod" className="scroll-mt-24">
           <PaymentMethod
-            isActive={tabActive === "PaymentMethod"}
+            isActive
             method={selectedPaymentMethod}
             onChange={setSelectedPaymentMethod}
             onOpenActive={() => {
