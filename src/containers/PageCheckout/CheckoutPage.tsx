@@ -42,7 +42,7 @@ const CheckoutPage = () => {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     "onlinePayment" | "cod"
-  >();
+  >("onlinePayment");
   const navigate = useNavigate();
   const location = useLocation();
   const user = useAppSelector((state: RootState) => state.auth);
@@ -618,7 +618,7 @@ const CheckoutPage = () => {
             amount: finalPrice * 100,
             currency: "INR",
             // name: "Almaa Herbal Nature Pvt Ltd",
-            name: "Test Company",
+            name: "Almaa Herbal",
             description: "Test Transaction",
             order_id: paymentResponse.data.order_id,
             handler: async (response) => {
