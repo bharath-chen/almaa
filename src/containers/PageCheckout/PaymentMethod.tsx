@@ -282,14 +282,14 @@ const PaymentMethod: FC<Props> = ({
               <span className="ml-3">xxx-xxx-xx55</span>
             </div> */}
           </div>
-          <ButtonSecondary
+          {/* <ButtonSecondary
             sizeClass="py-2 px-4 "
             fontSize="text-sm font-medium"
             className="bg-slate-50 dark:bg-slate-800 mt-5 sm:mt-0 sm:ml-auto !rounded-lg"
             onClick={onOpenActive}
           >
             Choose
-          </ButtonSecondary>
+          </ButtonSecondary> */}
         </div>
 
         <div
