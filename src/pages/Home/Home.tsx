@@ -105,6 +105,7 @@ const Home = () => {
     featuredImage: string;
     color: string;
     search: any;
+    code?: string;
   }) => {
     return (
       <CardCategory3
@@ -113,7 +114,7 @@ const Home = () => {
         featuredImage={item.featuredImage}
         color={item.color}
         btnText="View Products"
-        href={`/category/${Utils.urlFormatter(item.id + "-" + item.desc)}`}
+        href={`/category/${Utils.urlFormatter(item.code + "-" + item.desc)}`}
         options={{ categoryId: item.id, categoryName: item.desc }}
       />
     );
@@ -258,6 +259,7 @@ const Home = () => {
               color: "bg-slate-50",
               search: `?category_id=${c.category_id}&category=${c.cat_name}`,
               // color: MEDIC_SLIDERS,
+              code: c.cat_code,
             }))}
             renderChildren={renderCategoryCard}
           >

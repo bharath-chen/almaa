@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import { Transition } from "@headlessui/react";
 import ModalQuickView from "./ModalQuickView";
 import ProductQuickView from "./ProductQuickView";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { useAppSelector } from "../hooks/hooks";
 import { RootState } from "../state/store";
 import AppText from "./AppText/AppText";
 import { Utils } from "../utils/utils";
@@ -38,9 +38,7 @@ const ProductCard: FC<ProductCardProps> = ({
     suitablefor,
   } = data;
   const navigate = useNavigate();
-  const [variantActive, setVariantActive] = React.useState(0);
   const [showModalQuickView, setShowModalQuickView] = React.useState(false);
-  const dispatch = useAppDispatch(); // Get the dispatch function from Redux
   const customer = useAppSelector((state: RootState) => state.auth);
 
   const notifyAddTocart = ({ size }: { size?: string }) => {
@@ -108,20 +106,9 @@ const ProductCard: FC<ProductCardProps> = ({
     );
   };
 
-  // const handleAddToCart = () => {
-  //   const cartProduct: CartProduct = {
-  //     ...data, // Add the image property
-  //     quantity: 1, // Default quantity
-  //     // qty: qty,
-  //   };
-
-  //   dispatch(addToCart(cartProduct));
-  //   notifyAddTocart({ size: "XL" });
-  // };
-
   const routeToProductDetail = () => {
     navigate(
-      `/products/${Utils.urlFormatter("p10" + product_id + "_" + product_name)}`
+      `/products/${Utils.urlFormatter("p10" + product_id + "-" + product_name)}`
     );
   };
 
@@ -213,24 +200,6 @@ const ProductCard: FC<ProductCardProps> = ({
                     d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                   />
                 </svg>
-
-                {/* <svg
-                  className="w-6 h-6 text-primary-900 dark:text-white"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4"
-                  />
-                </svg> */}
               </button>
             </div>
           </div>
