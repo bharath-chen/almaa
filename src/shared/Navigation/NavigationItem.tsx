@@ -175,7 +175,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                             () =>
                               navigate(
                                 `/category/${Utils.urlFormatter(
-                                  item.code + "_" + item.name
+                                  item.code + "-" + item.name
                                 )}`
                                 // {
                                 //   state: {
@@ -205,7 +205,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                             () =>
                               navigate(
                                 `/category/${Utils.urlFormatter(
-                                  item.code + "_" + item.name
+                                  item.code + "-" + item.name
                                 )}`
                                 // {
                                 //   state: {

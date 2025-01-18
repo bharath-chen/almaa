@@ -19,7 +19,7 @@ const ProductCategroyCard = ({ item }: Props) => {
   const navigate = useNavigate();
 
   const routeToUrl = () => {
-    navigate(`/category/${Utils.urlFormatter(item.code + "_" + item.desc)}`, {
+    navigate(`/category/${Utils.urlFormatter(item.code + "-" + item.desc)}`, {
       state: {
         natId: item.id,
         natProductName: item.desc,

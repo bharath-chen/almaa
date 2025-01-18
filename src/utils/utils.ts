@@ -6,9 +6,9 @@ export class Utils {
   static getIdAndNameFromUrl(text: string) {
     if (!text) return;
 
-    const parts = text.split("_");
-    const code = parts[0];
-    const name = parts[1];
+    const hypenIndex = text.indexOf("-");
+    const code = text.slice(0, hypenIndex);
+    const name = text.slice(hypenIndex + 1);
 
     return {
       code: code,

@@ -113,7 +113,7 @@ const Home = () => {
         featuredImage={item.featuredImage}
         color={item.color}
         btnText="View Products"
-        href={`/category/${Utils.urlFormatter(item.id + "_" + item.desc)}`}
+        href={`/category/${Utils.urlFormatter(item.id + "-" + item.desc)}`}
         options={{ categoryId: item.id, categoryName: item.desc }}
       />
     );
