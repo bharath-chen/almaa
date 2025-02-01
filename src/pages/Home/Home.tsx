@@ -94,8 +94,13 @@ const Home = () => {
     });
   };
 
-  const routeToBlogDetailPage = (blogId: string) => {
-    navigate(`/blog/${blogId}`);
+  const routeToBlogDetailPage = (blogId: string, blogTitle: string) => {
+    navigate(`/blog/${Utils.urlFormatter(blogTitle)}`, {
+      state: {
+        id: blogId,
+        title: blogTitle,
+      },
+    });
   };
 
   const renderCategoryCard = (item: {
@@ -655,7 +660,12 @@ const Home = () => {
                   {blogList[0] && (
                     <MainCard
                       blog={blogList[0]}
-                      onClick={() => routeToBlogDetailPage(blogList[0].blog_id)}
+                      onClick={() =>
+                        routeToBlogDetailPage(
+                          blogList[0].blog_id,
+                          blogList[0].title
+                        )
+                      }
                     />
                   )}
                   <div className="grid gap-6 md:gap-8">
@@ -664,7 +674,9 @@ const Home = () => {
                         key={index}
                         // src={item}
                         blog={item}
-                        onClick={() => routeToBlogDetailPage(item.blog_id)}
+                        onClick={() =>
+                          routeToBlogDetailPage(item.blog_id, item.title)
+                        }
                       />
                     ))}
                   </div>
