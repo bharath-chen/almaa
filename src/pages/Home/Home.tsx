@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import heroImg from "../../assets/HOME PAGE/1-slider-image.jpg";
 import ButtonSecondary from "../../shared/Button/ButtonSecondary";
 import aboutSectionImg from "../../assets/HOME PAGE/2-about-section.jpg";
 import faqImg from "../../assets/00-Home/FAQ.jpg";
@@ -145,16 +144,6 @@ const Home = () => {
 
   const [featuredProducts, setFeaturedProducts] =
     useState<FeatureProductResponse>();
-  const images = [
-    heroImg,
-    heroImg,
-    heroImg,
-    // "https://via.placeholder.com/600x400/ff7f7f/333333?text=Slide+1",
-    // "https://via.placeholder.com/600x400/ffbf7f/333333?text=Slide+2",
-    // "https://via.placeholder.com/600x400/ffff7f/333333?text=Slide+3",
-    // "https://via.placeholder.com/600x400/7fff7f/333333?text=Slide+4",
-    // "https://via.placeholder.com/600x400/7fbfff/333333?text=Slide+5",
-  ];
 
   useEffect(() => {
     const { request, cancel } = homeService.get<FeatureProductResponse>();
@@ -165,8 +154,6 @@ const Home = () => {
       })
       .catch((err) => {
         if (err instanceof CanceledError) return;
-
-        console.log(err.message);
       });
 
     return () => cancel();
@@ -255,7 +242,6 @@ const Home = () => {
         {categories && categories.length > 0 && (
           <AppSlider
             className="nc-DiscoverMoreSlider nc-p-l-container "
-            // data={MEDIC_SLIDERS}
             data={categories.map((c, index) => ({
               id: c.category_id,
               name: c.tagline,
@@ -263,7 +249,6 @@ const Home = () => {
               featuredImage: c.cat_image,
               color: "bg-slate-50",
               search: `?category_id=${c.category_id}&category=${c.cat_name}`,
-              // color: MEDIC_SLIDERS,
               code: c.cat_code,
             }))}
             renderChildren={renderCategoryCard}
@@ -335,7 +320,7 @@ const Home = () => {
                 Siddha Medicine
               </h3>
               <div className="block mt-6">
-                <ul className="pl-5 leading-relaxed dashed list-inside leading-7 text-xl text-slate-500 dark:text-slate-400">
+                <ul className="pl-5 dashed list-inside leading-7 text-xl text-slate-500 dark:text-slate-400">
                   <li>2000 Years Tradition</li>
                   <li>100% Scientific</li>
                   <li>Solutions for 4448 diseases</li>
@@ -460,7 +445,7 @@ const Home = () => {
             }))}
             onClick={handleSliderCardClick}
           />
-          <ButtonSecondary className="focus:ring-2 focus:ring-offset-2 focus:ring-transparent tracking-tight ml-3 mt-6 md:text-xl sm:px-14 border sm:py-5 sm:text-dark sm:bg-white-900 sm:hover:bg-white sm:hover:text-primary-900 border border-slate-300 dark:border-slate-700">
+          <ButtonSecondary className="focus:ring-2 focus:ring-offset-2 focus:ring-transparent tracking-tight ml-3 mt-6 md:text-xl sm:px-14 sm:py-5 sm:text-dark sm:bg-white-900 sm:hover:bg-white sm:hover:text-primary-900 border border-slate-300 dark:border-slate-700">
             <Link to="/doctors-team">Visit all Doctors</Link>
           </ButtonSecondary>
         </section>
@@ -669,7 +654,7 @@ const Home = () => {
                     />
                   )}
                   <div className="grid gap-6 md:gap-8">
-                    {blogList.map((item, index) => (
+                    {blogList.slice(1, 5).map((item, index) => (
                       <BlogCard
                         key={index}
                         // src={item}

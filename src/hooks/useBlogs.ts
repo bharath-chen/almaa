@@ -12,13 +12,12 @@ const useBlogs = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const { request, cancel } = blogListService.getAll<Blog>();
-
     dispatch(showLoader());
+
+    const { request, cancel } = blogListService.getAll<Blog>();
 
     request
       .then((res) => {
-        dispatch(hideLoader());
         const data =
           res.data.map((d) => ({
             ...d,
@@ -26,6 +25,7 @@ const useBlogs = () => {
           })) || [];
 
         setBlogList(data);
+        dispatch(hideLoader());
       })
       .catch((err) => {
         dispatch(hideLoader());
@@ -34,7 +34,7 @@ const useBlogs = () => {
       });
 
     return () => cancel();
-  }, []);
+  }, [dispatch]);
 
   return { blogList, error };
 };
