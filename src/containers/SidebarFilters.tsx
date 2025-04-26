@@ -4,6 +4,7 @@ import AppFilterTabs, {
   TabFilterItem,
 } from "../components/AppFilterTabs/AppFilterTabs";
 import { SortOrder } from "../models/sort-order";
+import { FC } from "react";
 
 export interface Filters {
   is_nutraceutical: boolean;
@@ -22,14 +23,14 @@ interface Props {
   sortOrderRadios: { name: string; id: string; value: string }[];
 }
 
-const SidebarFilters = ({
+const SidebarFilters: FC<Props> = ({
   selectedSortOrder,
   onSort,
   selectedFilter,
   onFilterChange,
   productForms,
   sortOrderRadios,
-}: Props) => {
+}) => {
   const handleProductFormChange = (
     productForm: TabFilterItem,
     checked: boolean

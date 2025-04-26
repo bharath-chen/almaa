@@ -4,7 +4,7 @@ import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { FC, useState } from "react";
 import InputErrorMessage from "../../components/InputErrorMessage/InputErrorMessage";
 import Label from "../../components/Label/Label";
 
@@ -30,7 +30,7 @@ const schema = z.object({
 
 type Review = z.infer<typeof schema>;
 
-const ProductReviewForm = ({ submitReview, onClose }: Props) => {
+const ProductReviewForm: FC<Props> = ({ submitReview, onClose }) => {
   const {
     register,
     handleSubmit,
