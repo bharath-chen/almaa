@@ -18,7 +18,7 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
     } else {
       setProducts([]);
     }
-  }, [location?.state?.products]);
+  }, [location.state.products, location.state?.searchText]);
 
   return (
     <div className={`nc-PageSearch  ${className}`} data-nc-id="PageSearch">
@@ -88,7 +88,9 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
         <main>
           {/* FILTER */}
           {/* <HeaderFilterSearchPage /> */}
-          <Heading desc="">Keyword: {location?.state?.searchText}</Heading>
+          <Heading textClasses="text-xl md:text-3xl font-semibold" desc="">
+            Keyword: {location?.state?.searchText}
+          </Heading>
 
           {/* LOOP ITEMS */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">

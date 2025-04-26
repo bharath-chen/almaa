@@ -6,6 +6,7 @@ export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
   desc?: ReactNode;
   hasNextPrev?: boolean;
   isCenter?: boolean;
+  textClasses?: string;
 }
 
 const Heading: React.FC<HeadingProps> = ({
@@ -14,6 +15,7 @@ const Heading: React.FC<HeadingProps> = ({
   className = "mb-10 md:mb-12 text-neutral-900 dark:text-neutral-50",
   isCenter = false,
   hasNextPrev = false,
+  textClasses = "text-3xl md:text-4xl font-semibold",
   ...args
 }) => {
   return (
@@ -23,7 +25,7 @@ const Heading: React.FC<HeadingProps> = ({
       <div
         className={isCenter ? "text-center w-full max-w-2xl mx-auto mb-4" : ""}
       >
-        <h2 className={`text-3xl md:text-4xl font-semibold`} {...args}>
+        <h2 className={`${textClasses}`} {...args}>
           {children || `Section Heading`}
         </h2>
         {desc && (
