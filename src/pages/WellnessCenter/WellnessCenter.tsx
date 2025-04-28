@@ -2,7 +2,7 @@ import Heading from "../../components/Heading/Heading";
 import NcImage from "../../shared/NcImage/NcImage";
 import AccordionInfo from "../../containers/ProductDetailPage/AccordionInfo";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import SEO from "../../shared/SEO/SEO";
+import MetaTags from "../../shared/MetaTags/MetaTags";
 import { WELLNESS_CENTER } from "../../data/WELLNESS_CENTER";
 import wellnessCenterImg from "../../assets/03-Wellness Center/Wellness Center.jpg";
 import SectionHero from "../../pages/Library/SectionHero";
@@ -20,11 +20,11 @@ const WellnessCenter = ({ className = "" }: WellnessCenterProps) => {
         data-nc-id="PageAbout"
       >
         {/*SEO*/}
-        <SEO
+        <MetaTags
           title="Vela Siddha Village Resort | Rejuvenation Resort & Therapy"
           description="Embrace the Serenity of Siddha Medicine and Modern Wellness | Wellness Treatments and Retreats | Luxurious Accommodations | Siddha Medical Treatments "
           keywords="vela siddha village resort, heritage village resort & spa, rejuvenation therapy, rejuvenation resort"
-          canonical="/wellness-centre"
+          canonical="https://www.almaherbal.com/wellness-centre"
           robots="INDEX, FOLLOW"
         />
 
@@ -47,7 +47,7 @@ const WellnessCenter = ({ className = "" }: WellnessCenterProps) => {
                   Sindhanai Sitthar Almaa Velayudham
                 </h2>
                 <div className="block mt-6">
-                  <ul className="pl-5 leading-relaxed dashed list-inside leading-7 text-md text-slate-500 dark:text-slate-400">
+                  <ul className="pl-5 dashed list-inside leading-7 text-md text-slate-500 dark:text-slate-400">
                     <li>
                       Spanning over an area of 11 acres, with the Javadhu Malai
                       foothills as its natural boundary Vela Siddha Village

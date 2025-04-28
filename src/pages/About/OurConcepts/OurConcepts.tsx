@@ -5,7 +5,7 @@ import SectionGridMoreExplore from "../../../components/SectionGridMoreExplore/S
 import ConceptDetailPopup from "./ConceptDetailPopup";
 import { EXPLORE_SECTION_DATA } from "../../../data/home";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import SEO from "../../../shared/SEO/SEO";
+import MetaTags from "../../../shared/MetaTags/MetaTags";
 
 const OurConcepts = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -25,7 +25,7 @@ const OurConcepts = () => {
   return (
     <div className="container my-20">
       {/* SEO */}
-      <SEO
+      <MetaTags
         title="Almaa Herbal Velayutham | Pournami Poojai, Amavasai Poojai, Cow Pooja"
         description="Our Concepts -  Experience the profound serenity of our sacred poojai rituals, Join us for personalised blessings that connect you with divine energies and enrich your holistic retreat."
         keywords="alma velayutham siddha maruthuvam, almaa siddha hospital, alma velayutham, almaa herbal velayutham, pournami poojai, amavasai poojai, cow pooja"

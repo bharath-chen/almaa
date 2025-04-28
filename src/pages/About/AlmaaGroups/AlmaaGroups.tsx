@@ -6,7 +6,7 @@ import NcImage from "../../../shared/NcImage/NcImage";
 import AccordionInfo from "../../../containers/ProductDetailPage/AccordionInfo";
 import whyAlmaaImg from "../../../assets/HOME PAGE/10-why-section.jpg";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import SEO from "../../../shared/SEO/SEO";
+import MetaTags from "../../../shared/MetaTags/MetaTags";
 import { ALMAA_GROUP } from "./ALMAA_GROUP";
 import almaHerbalImg from "../../../assets/01-About/1-Almaa Groups/Our Companies/Almaa Herbal.png";
 import almaHospitalImg from "../../../assets/01-About/1-Almaa Groups/Our Companies/Almaa hospital.png";
@@ -131,12 +131,13 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
       data-nc-id="PageAbout"
     >
       {/* SEO */}
-      <SEO
-        title="About Us - Unveiling the Siddha Wisdom: The Almaa Journey"
-        description="Embark on the journey of Siddha wisdom with Almaa, your trusted source for holistic healing online."
-        keywords="siddha doctor online, siddha medicine online, siddha products online"
-        canonical="/about-us"
-        robots="INDEX, FOLLOW"
+      <MetaTags
+        title="Almaa Groups"
+        description="Alma Herbal Extractions focuses on providing comprehensive health solutions through food-based formulas that combine the benefits of natural chemicals found in nature."
+        keywords="Almaa Products, Almaa Herbal"
+        canonical="https://www.almaherbal.com/almaa-groups"
+        robots="noindex, nofollow"
+        image="https://almaherbal.top/App/assets/meta_tags/meta_tags_2025-04-26_15-55-15_000000_680cb48b83a19.jpg"
       />
 
       <section className="container mt-20 mb-40">
@@ -147,7 +148,7 @@ const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
                 Almaa Groups
               </h2>
               <div className="block mt-6">
-                <ul className="pl-5 leading-relaxed dashed list-inside leading-7 text-md text-slate-500 dark:text-slate-400">
+                <ul className="pl-5 dashed list-inside leading-7 text-md text-slate-500 dark:text-slate-400">
                   <li>
                     Founded by the esteemed Naturalist & Tamizh entrepreneur
                     Thiru.Sindhanai Sitthar Velayudham avargal.{" "}

@@ -2,7 +2,7 @@ import NcImage from "../../../shared/NcImage/NcImage";
 import sindhanaiSiddharImg from "../../../assets/01-About/2- Founder/Who is Sindhanai Siddhar.jpg";
 import SectionFounder, { People } from "../../Library/SectionFounder";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import SEO from "../../../shared/SEO/SEO";
+import MetaTags from "../../../shared/MetaTags/MetaTags";
 import environmentConferenceImg from "../../../assets/01-About/2- Founder/Environment Conference.jpg";
 import coimbatoreConferenceImg from "../../../assets/01-About/2- Founder/Coimbatore.jpg";
 import malaysiaConferenceImg from "../../../assets/01-About/2- Founder/Malaysia.jpg";
@@ -67,7 +67,7 @@ const Founder = () => {
   return (
     <>
       {/* SEO */}
-      <SEO
+      <MetaTags
         title="About Us - Unveiling the Siddha Wisdom: The Almaa Journey"
         description="Embark on the journey of Siddha wisdom with Almaa, your trusted source for holistic healing online."
         keywords="siddha doctor online, siddha medicine online, siddha products online"
@@ -87,7 +87,7 @@ const Founder = () => {
               between Body, Mind, Food, Lifestyle & diseases made him stand out
               in the health fraternity. This hardworking 53-year-old young man
               has single-handedly created a huge impact on the traditional
-              medicines sector.  Sindhanai Siddhar's work focused on the
+              medicines sector. Sindhanai Siddhar's work focused on the
               fundamental aspects of nature, body and the application of the
               above to relieve people from their health issues. His
               groundbreaking research revolutionized our understanding of the

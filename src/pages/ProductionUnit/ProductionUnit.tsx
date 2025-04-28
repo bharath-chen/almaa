@@ -2,7 +2,7 @@ import SectionHero from "../Library/SectionHero";
 import rightImg from "../../assets/04-Production Unit/About Us.png";
 import SectionSliderCategories from "../../components/SectionSliderCategories/SectionSliderCategories";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import SEO from "../../shared/SEO/SEO";
+import MetaTags from "../../shared/MetaTags/MetaTags";
 import fssaiCertifiedImg from "../../assets/04-Production Unit/Certificate 2.jpg";
 import gmpCertifiedImg from "../../assets/04-Production Unit/Certificate 1.jpg";
 import twentyFirstCenturyMillenniumAwardImg from "../../assets/04-Production Unit/Award 1.jpg";
@@ -69,7 +69,7 @@ const ProductionUnit = ({ className = "" }: ProductionUnitProps) => {
         data-nc-id="PageAbout"
       >
         {/* SEO */}
-        <SEO
+        <MetaTags
           title="Best Siddha Medicine Manufacturers | Siddha Foods Tech & Almaa Herbal Nature"
           description=".With a focus on purity, sustainability, and innovation, we offer a wide range of herbal solutions that cater to various health and wellness needs. Trust Nature’s Essence for reliable and effective herbal products."
           keywords="best siddha medicine manufacturers in tamilnadu, siddha medicine manufacturers in tamilnadu, siddha medicine manufacturers, siddha drug manufacturers, best herbal supplement manufacturers, natural medicine manufacturers"
