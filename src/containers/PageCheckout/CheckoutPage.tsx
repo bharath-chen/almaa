@@ -307,7 +307,7 @@ const CheckoutPage = () => {
         <div id="ShippingAddress" className="scroll-mt-24">
           <button
             onClick={handleAddAddress}
-            className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium py-3 px-4 sm:py-3.5 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-90 bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 text-slate-50 dark:text-slate-800 shadow-xl sm:!px-7 shadow-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 mb-4"
+            className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium py-3 px-4 sm:py-3.5 ttnc-ButtonPrimary disabled:bg-opacity-90 bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 text-slate-50 dark:text-slate-800 sm:!px-7 shadow-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 mb-4"
           >
             Add Address
           </button>
@@ -742,7 +742,7 @@ const CheckoutPage = () => {
                     <Label className="text-sm my-3">Discount code</Label>
 
                     {offerCodeApplied && (
-                      <div className="flex mt-1.5 py-4 px-4 justify-between w-full border border-2 rounded-lg border-slate-200 bg-slate-200">
+                      <div className="flex mt-1.5 py-4 px-4 justify-between w-full border-2 rounded-lg border-slate-200 bg-slate-200">
                         <span className="text-md ">
                           <span className="text-primary-900 font-semibold pr-2">
                             '{offerCode}' applied successfully!
@@ -794,7 +794,7 @@ const CheckoutPage = () => {
                     )}
                   </div>
 
-                  {!offerCodeApplied && (
+                  {!offerCodeApplied && offerCodes.length > 0 && (
                     <AppOfferCodes
                       offerCodes={offerCodes}
                       onApply={applyOfferCode}
