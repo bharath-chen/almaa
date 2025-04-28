@@ -811,14 +811,15 @@ const CheckoutPage = () => {
                       ).toFixed(2)} */}
                     </span>
                   </div>
-                  {location.state?.shippingEstimate !== 0 && (
-                    <div className="flex justify-between py-2.5">
-                      <span>Shipping estimate</span>
-                      <span className="font-semibold text-slate-900 dark:text-slate-200">
-                        ₹{location.state?.shippingEstimate.toFixed(2)}
-                      </span>
-                    </div>
-                  )}
+                  {location?.state?.shippingEstimate &&
+                    location.state?.shippingEstimate !== 0 && (
+                      <div className="flex justify-between py-2.5">
+                        <span>Shipping estimate</span>
+                        <span className="font-semibold text-slate-900 dark:text-slate-200">
+                          ₹{location.state?.shippingEstimate.toFixed(2)}
+                        </span>
+                      </div>
+                    )}
                   {/* <div className="flex justify-between py-2.5">
                     <span>Tax estimate</span>
                     <span className="font-semibold text-slate-900 dark:text-slate-200">
