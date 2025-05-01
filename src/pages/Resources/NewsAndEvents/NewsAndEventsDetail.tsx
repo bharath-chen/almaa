@@ -39,9 +39,9 @@ const NewsAndEventsDetail = () => {
   }
 
   useEffect(() => {
-    const cancelGetCaseStudyDetail = fetchEventsDetail();
+    const cancelFetchEventsDetail = fetchEventsDetail();
 
-    return () => cancelGetCaseStudyDetail();
+    return () => cancelFetchEventsDetail();
   }, []);
 
   const renderSectionContent = () => {
