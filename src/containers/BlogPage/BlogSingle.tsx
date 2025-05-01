@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Avatar from "../../shared/Avatar/Avatar";
 import NcImage from "../../shared/NcImage/NcImage";
-import { Helmet } from "react-helmet-async";
 import { BlogDetail } from "../../models/blogDetail";
 import blogDetailService from "../../services/blog-detail-service";
 import { useAppDispatch } from "../../hooks/hooks";
@@ -19,19 +18,20 @@ import {
   TelegramShareButton,
   TelegramIcon,
 } from "react-share";
+import MetaTags from "../../shared/MetaTags/MetaTags";
 
 const BlogSingle = () => {
   const pageUrl = window.location.href;
-  const location = useLocation();
-  const [blogDetail, setBlogDetail] = useState<BlogDetail>();
+  const params = useParams();
+  const [blogDetail, setBlogDetail] = useState<BlogDetail | null>(null);
   const [error, setError] = useState("");
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     const { request, cancel } = blogDetailService.get<
       BlogDetail,
-      { blog_id: string }
-    >({ blog_id: location?.state?.id });
+      { url_name: string }
+    >({ url_name: params?.title });
 
     dispatch(showLoader());
 
@@ -87,7 +87,7 @@ const BlogSingle = () => {
               </FacebookShareButton>
 
               <TwitterShareButton
-                title={location?.state?.title}
+                title={blogDetail?.title}
                 className="mx-3"
                 url={pageUrl}
               >
@@ -95,14 +95,14 @@ const BlogSingle = () => {
               </TwitterShareButton>
 
               <TelegramShareButton
-                title={location?.state?.title}
+                title={blogDetail?.title}
                 className="mr-3"
                 url={pageUrl}
               >
                 <TelegramIcon size={30} />
               </TelegramShareButton>
 
-              <WhatsappShareButton title={location?.state?.title} url={pageUrl}>
+              <WhatsappShareButton title={blogDetail?.title} url={pageUrl}>
                 <WhatsappIcon size={30} />
               </WhatsappShareButton>
             </div>
@@ -123,24 +123,24 @@ const BlogSingle = () => {
   };
 
   return (
-    <div className="nc-PageSingle pt-8 lg:pt-16 ">
-      <Helmet>
-        <title>Single Blog || Ciseco Ecommerce React Template</title>
-      </Helmet>
-      {renderHeader()}
-      <div className="flex items-center justify-center p-4 sm:p-6 lg:p-8">
-        <NcImage
-          className="w-full sm:w-[400px] md:w-[500px] lg:w-[650px] h-auto rounded-xl"
-          containerClassName="my-0"
-          src={blogDetail?.image_url}
-        />
-      </div>
+    <>
+      {blogDetail && <MetaTags metaTagProps={blogDetail} />}
+      <div className="nc-PageSingle pt-8 lg:pt-16 ">
+        {renderHeader()}
+        <div className="flex items-center justify-center p-4 sm:p-6 lg:p-8">
+          <NcImage
+            className="w-full sm:w-[400px] md:w-[500px] lg:w-[650px] h-auto rounded-xl"
+            containerClassName="my-0"
+            src={blogDetail?.image_url}
+          />
+        </div>
 
-      <div className="nc-SingleContent container space-y-10">
-        {renderContent()}
-        <div className="max-w-screen-md mx-auto border-b border-t border-neutral-100 dark:border-neutral-700"></div>
+        <div className="nc-SingleContent container space-y-10">
+          {renderContent()}
+          <div className="max-w-screen-md mx-auto border-b border-t border-neutral-100 dark:border-neutral-700"></div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -8,16 +8,15 @@ import { type Blog } from "../../../models/blog";
 import useBlogs from "../../../hooks/useBlogs";
 import { useNavigate } from "react-router-dom";
 import Heading from "../../../shared/Heading/Heading";
-import { Utils } from "../../../utils/utils";
 
 const Blog: React.FC = () => {
   const { blogList } = useBlogs();
   const navigate = useNavigate();
-  const routeToBlogDetailPage = (id: string, title: string) => {
-    navigate(`/blog/${Utils.urlFormatter(title)}`, {
+  const routeToBlogDetailPage = (blog: Blog) => {
+    navigate(`/blog/${blog.url_name}`, {
       state: {
-        id: id,
-        title: title,
+        id: blog.blog_id,
+        title: blog.title,
       },
     });
   };
@@ -42,9 +41,7 @@ const Blog: React.FC = () => {
             {mainCard && (
               <MainCard
                 blog={mainCard}
-                onClick={() =>
-                  routeToBlogDetailPage(mainCard.blog_id, mainCard.title)
-                }
+                onClick={() => routeToBlogDetailPage(mainCard)}
               />
             )}
             <div className="grid gap-6 md:gap-8">
@@ -52,9 +49,7 @@ const Blog: React.FC = () => {
                 <BlogCard
                   key={index}
                   blog={item}
-                  onClick={() =>
-                    routeToBlogDetailPage(item.blog_id, item.title)
-                  }
+                  onClick={() => routeToBlogDetailPage(item)}
                 />
               ))}
             </div>

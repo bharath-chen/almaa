@@ -7,4 +7,5 @@ export interface Blog {
   status: string;
   image_url: string;
   category?: string;
+  url_name?: string;
 }
