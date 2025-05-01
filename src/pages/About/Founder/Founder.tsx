@@ -2,7 +2,7 @@ import NcImage from "../../../shared/NcImage/NcImage";
 import sindhanaiSiddharImg from "../../../assets/01-About/2- Founder/Who is Sindhanai Siddhar.jpg";
 import SectionFounder, { People } from "../../Library/SectionFounder";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import MetaTags from "../../../shared/MetaTags/MetaTags";
+import MetaTags, { MetaTag } from "../../../shared/MetaTags/MetaTags";
 import environmentConferenceImg from "../../../assets/01-About/2- Founder/Environment Conference.jpg";
 import coimbatoreConferenceImg from "../../../assets/01-About/2- Founder/Coimbatore.jpg";
 import malaysiaConferenceImg from "../../../assets/01-About/2- Founder/Malaysia.jpg";
@@ -63,17 +63,21 @@ const FOUNDER_DEMO: People[] = [
   },
 ];
 
+const metaTagProps: MetaTag = {
+  meta_title: "About Us - Unveiling the Siddha Wisdom: The Almaa Journey",
+  meta_description:
+    "Embark on the journey of Siddha wisdom with Almaa, your trusted source for holistic healing online.",
+  keywords:
+    "siddha doctor online, siddha medicine online, siddha products online",
+  og_url: "https://almaherbal.com/founder",
+  robots: "INDEX, FOLLOW",
+};
+
 const Founder = () => {
   return (
     <>
       {/* SEO */}
-      <MetaTags
-        title="About Us - Unveiling the Siddha Wisdom: The Almaa Journey"
-        description="Embark on the journey of Siddha wisdom with Almaa, your trusted source for holistic healing online."
-        keywords="siddha doctor online, siddha medicine online, siddha products online"
-        canonical="/about-us"
-        robots="INDEX, FOLLOW"
-      />
+      <MetaTags metaTagProps={metaTagProps} />
       {/* MISSION AND VISION SECTION */}
       <section className="container mt-40 mb-40">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 place-content-center">

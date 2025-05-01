@@ -5,7 +5,18 @@ import SectionGridMoreExplore from "../../../components/SectionGridMoreExplore/S
 import ConceptDetailPopup from "./ConceptDetailPopup";
 import { EXPLORE_SECTION_DATA } from "../../../data/home";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import MetaTags from "../../../shared/MetaTags/MetaTags";
+import MetaTags, { MetaTag } from "../../../shared/MetaTags/MetaTags";
+
+const metaTagProps: MetaTag = {
+  meta_title:
+    "Almaa Herbal Velayutham | Pournami Poojai, Amavasai Poojai, Cow Pooja",
+  meta_description:
+    "Our Concepts -  Experience the profound serenity of our sacred poojai rituals, Join us for personalised blessings that connect you with divine energies and enrich your holistic retreat.",
+  keywords:
+    "alma velayutham siddha maruthuvam, almaa siddha hospital, alma velayutham, almaa herbal velayutham, pournami poojai, amavasai poojai, cow pooja",
+  og_url: "https://almaherbal.com/our-concepts",
+  robots: "INDEX, FOLLOW",
+};
 
 const OurConcepts = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -25,13 +36,7 @@ const OurConcepts = () => {
   return (
     <div className="container my-20">
       {/* SEO */}
-      <MetaTags
-        title="Almaa Herbal Velayutham | Pournami Poojai, Amavasai Poojai, Cow Pooja"
-        description="Our Concepts -  Experience the profound serenity of our sacred poojai rituals, Join us for personalised blessings that connect you with divine energies and enrich your holistic retreat."
-        keywords="alma velayutham siddha maruthuvam, almaa siddha hospital, alma velayutham, almaa herbal velayutham, pournami poojai, amavasai poojai, cow pooja"
-        canonical="/our-concepts"
-        robots="INDEX, FOLLOW"
-      />
+      <MetaTags metaTagProps={metaTagProps} />
 
       {/* EXPLORE SECTIONS */}
       <section className="container mb-40">
