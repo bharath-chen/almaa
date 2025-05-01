@@ -2,28 +2,29 @@ import caseStudyService, {
   ICaseStudy,
 } from "../../../services/case-study-service";
 import AccordionInfo from "../../../containers/ProductDetailPage/AccordionInfo";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../../hooks/hooks";
 import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
 import { CanceledError } from "axios";
+import MetaTags from "../../../shared/MetaTags/MetaTags";
 
 export interface Props {
   className?: string;
 }
 
 const CaseStudyDetail = ({ className = "" }: Props) => {
-  const { state } = useLocation();
+  const params = useParams();
   const dispatch = useAppDispatch();
   const [caseStudyDetail, setCaseStudyDetail] = useState<ICaseStudy>(null);
 
   function fetchCaseStudy() {
     const { request, cancel } = caseStudyService.get<
       ICaseStudy,
-      { gofor: string; case_study_id: string }
+      { gofor: string; url_name: string }
     >({
       gofor: "getcasestudy",
-      case_study_id: state.caseStudy.case_study_id,
+      url_name: params?.title,
     });
 
     dispatch(showLoader());
@@ -46,7 +47,7 @@ const CaseStudyDetail = ({ className = "" }: Props) => {
     const cancelGetCaseStudyDetail = fetchCaseStudy();
 
     return () => cancelGetCaseStudyDetail();
-  }, [state.caseStudy.case_study_id]);
+  }, []);
 
   const renderSectionContent = () => {
     const accordionData = [
@@ -76,38 +77,41 @@ const CaseStudyDetail = ({ className = "" }: Props) => {
   };
 
   return (
-    <div className={`nc-ProductDetailPage ${className}`}>
-      {/* Main */}
-      {caseStudyDetail && (
-        <main className="container mt-5 lg:mt-11">
-          <div className="lg:flex">
-            {/* CONTENT */}
-            <div className="w-full lg:w-[55%] ">
-              {/* HEADING */}
-              <div className="relative">
-                <div className="aspect-w-16 aspect-h-16">
-                  <img
-                    src={caseStudyDetail.image_url}
-                    className="w-full rounded-2xl object-cover"
-                    alt={caseStudyDetail.title}
-                  />
+    <>
+      {caseStudyDetail && <MetaTags metaTagProps={caseStudyDetail} />}
+      <div className={`nc-ProductDetailPage ${className}`}>
+        {/* Main */}
+        {caseStudyDetail && (
+          <main className="container mt-5 lg:mt-11">
+            <div className="lg:flex">
+              {/* CONTENT */}
+              <div className="w-full lg:w-[55%] ">
+                {/* HEADING */}
+                <div className="relative">
+                  <div className="aspect-w-16 aspect-h-16">
+                    <img
+                      src={caseStudyDetail.image_url}
+                      className="w-full rounded-2xl object-cover"
+                      alt={caseStudyDetail.title}
+                    />
+                  </div>
                 </div>
+              </div>
+
+              {/* SIDEBAR */}
+              <div className="w-full lg:w-[45%] pt-10 lg:pt-0 lg:pl-7 xl:pl-9 2xl:pl-10">
+                {renderSectionContent()}
               </div>
             </div>
 
-            {/* SIDEBAR */}
-            <div className="w-full lg:w-[45%] pt-10 lg:pt-0 lg:pl-7 xl:pl-9 2xl:pl-10">
-              {renderSectionContent()}
+            {/* DETAIL AND REVIEW */}
+            <div className="mt-12 sm:mt-16 space-y-10 sm:space-y-16">
+              <div className="block xl:hidden">{/* <Policy /> */}</div>
             </div>
-          </div>
-
-          {/* DETAIL AND REVIEW */}
-          <div className="mt-12 sm:mt-16 space-y-10 sm:space-y-16">
-            <div className="block xl:hidden">{/* <Policy /> */}</div>
-          </div>
-        </main>
-      )}
-    </div>
+          </main>
+        )}
+      </div>
+    </>
   );
 };
 

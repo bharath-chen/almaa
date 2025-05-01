@@ -9,7 +9,6 @@ import { CanceledError } from "axios";
 import CaseStudyCard from "./CaseStudyCard";
 import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
 import { useAppDispatch } from "../../../hooks/hooks";
-import { Utils } from "../../../utils/utils";
 
 const CaseStudies: React.FC = () => {
   const navigate = useNavigate();
@@ -19,7 +18,7 @@ const CaseStudies: React.FC = () => {
   const [error, setError] = useState("");
 
   const routeToCaseStudy = (item?: ICaseStudy) => {
-    navigate(`/case-studies/${Utils.urlFormatter(item?.title)}`, {
+    navigate(`/case-studies/${item.url_name}`, {
       state: {
         caseStudy: { ...item },
       },
