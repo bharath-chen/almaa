@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Helmet } from "react-helmet-async";
 
 export interface MetaTag {
+  meta_id?: string;
   meta_title?: string;
   meta_description?: string;
   keywords?: string;
@@ -12,6 +13,9 @@ export interface MetaTag {
   og_type?: string;
   og_url?: string;
   robots?: string;
+  alt_tags?: string;
+  title?: string;
+  description?: string;
 }
 
 interface MetaTagProps {
@@ -38,14 +42,18 @@ const MetaTags: FC<MetaTagProps> = ({ metaTagProps }) => {
     og_type,
     og_url,
     robots: rbts,
+    title,
+    description,
   } = metaTagProps;
 
   return (
     <Helmet>
       {meta_title && <title>{meta_title}</title>}
+      {title && <title>{title}</title>}
       {meta_description && (
         <meta name="description" content={meta_description} />
       )}
+      {description && <meta name="description" content={description} />}
       {kws && <meta name="keywords" content={kws} />}
       {rbts && <meta name="robots" content={rbts} />}
 
