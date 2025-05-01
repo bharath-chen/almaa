@@ -1,6 +1,19 @@
 import { FC } from "react";
 import { Helmet } from "react-helmet-async";
 
+export interface MetaTag {
+  meta_title?: string;
+  meta_description?: string;
+  keywords?: string;
+  og_title?: string;
+  og_desc?: string;
+  og_image?: string;
+  og_sitename?: string;
+  og_type?: string;
+  og_url?: string;
+  robots?: string;
+}
+
 interface MetaTagProps {
   title?: string;
   description?: string;
@@ -8,37 +21,44 @@ interface MetaTagProps {
   canonical?: string;
   robots?: string;
   image?: string;
+  metaTagProps?: MetaTag;
 }
 
-const MetaTags: FC<MetaTagProps> = ({
-  title,
-  description,
-  keywords,
-  canonical,
-  robots,
-  image,
-}) => {
+const MetaTags: FC<MetaTagProps> = ({ metaTagProps }) => {
   const defaultUrl = "https://www.almaaherbal.com";
+
+  const {
+    meta_title,
+    meta_description,
+    keywords: kws,
+    og_title,
+    og_desc,
+    og_image,
+    og_sitename,
+    og_type,
+    og_url,
+    robots: rbts,
+  } = metaTagProps;
 
   return (
     <Helmet>
-      {title && <title>{title}</title>}
-      {description && <meta name="description" content={description} />}
-      {keywords && <meta name="keywords" content={keywords} />}
-      {robots && <meta name="robots" content={robots} />}
+      {meta_title && <title>{meta_title}</title>}
+      {meta_description && (
+        <meta name="description" content={meta_description} />
+      )}
+      {kws && <meta name="keywords" content={kws} />}
+      {rbts && <meta name="robots" content={rbts} />}
 
       {/* Open Graph tags */}
-      {title && <meta property="og:title" content={title} />}
-      {description && <meta property="og:description" content={description} />}
-      {canonical && (
-        <meta property="og:url" content={canonical || defaultUrl} />
-      )}
-      {image && <meta property="og:image" content={image} />}
-      <meta property="og:site_name" content="Almaa" />
-      <meta property="og:type" content="website" />
+      {og_title && <meta property="og:title" content={og_title} />}
+      {og_desc && <meta property="og:description" content={og_desc} />}
+      {og_url && <meta property="og:url" content={og_url || defaultUrl} />}
+      {og_image && <meta property="og:image" content={og_image} />}
+      {og_sitename && <meta property="og:site_name" content={og_sitename} />}
+      {og_type && <meta property="og:type" content={og_type} />}
 
       {/* Canonical link */}
-      {canonical && <link rel="canonical" href={canonical || defaultUrl} />}
+      {og_url && <link rel="canonical" href={og_url || defaultUrl} />}
     </Helmet>
   );
 };
