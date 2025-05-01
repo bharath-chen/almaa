@@ -19,12 +19,6 @@ export interface MetaTag {
 }
 
 interface MetaTagProps {
-  title?: string;
-  description?: string;
-  keywords?: string;
-  canonical?: string;
-  robots?: string;
-  image?: string;
   metaTagProps?: MetaTag;
 }
 
@@ -34,28 +28,31 @@ const MetaTags: FC<MetaTagProps> = ({ metaTagProps }) => {
   const {
     meta_title,
     meta_description,
-    keywords: kws,
+    keywords,
     og_title,
     og_desc,
     og_image,
     og_sitename,
     og_type,
     og_url,
-    robots: rbts,
+    robots,
     title,
     description,
   } = metaTagProps;
 
+  const metaTitle = meta_title ? meta_title : title ? title : null;
+  const metaDescription = meta_description
+    ? meta_description
+    : description
+    ? description
+    : null;
+
   return (
     <Helmet>
-      {meta_title && <title>{meta_title}</title>}
-      {title && <title>{title}</title>}
-      {meta_description && (
-        <meta name="description" content={meta_description} />
-      )}
-      {description && <meta name="description" content={description} />}
-      {kws && <meta name="keywords" content={kws} />}
-      {rbts && <meta name="robots" content={rbts} />}
+      {metaTitle && <title>{metaTitle}</title>}
+      {metaDescription && <meta name="description" content={metaDescription} />}
+      {keywords && <meta name="keywords" content={keywords} />}
+      {robots && <meta name="robots" content={robots} />}
 
       {/* Open Graph tags */}
       {og_title && <meta property="og:title" content={og_title} />}
