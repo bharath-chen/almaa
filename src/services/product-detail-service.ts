@@ -1,3 +1,4 @@
+import { MetaTag } from "../shared/MetaTags/MetaTags";
 import create from "./http-service";
 
 interface ProductDetails {
@@ -95,6 +96,7 @@ export interface ProductDetail {
   product_experttalk: ProductExpertTalk[];
   product_feedback: ProductFeedback[];
   product_tags: ProductTag[];
+  products_meta: MetaTag[];
   product_ingred: ProductIngredient[];
 }
 

@@ -45,4 +45,5 @@ export interface Product {
   qty?: number;
   suitablefor?: string;
   measurement_name?: string;
+  url_name?: string;
 }

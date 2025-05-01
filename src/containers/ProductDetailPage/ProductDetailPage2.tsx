@@ -52,7 +52,7 @@ import {
 import { RootState } from "state/store";
 import ProductReviewForm from "./ProductReviewForm";
 import reviewService from "../../services/review-service";
-import { Utils } from "../../utils/utils";
+import MetaTags from "../../shared/MetaTags/MetaTags";
 
 const calculateOriginalPrice = (price: number, pack: number) => price * pack;
 
@@ -109,7 +109,9 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   const [openFocusIndex, setOpenFocusIndex] = useState(0);
 
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
-  const [productDetail, setProductDetail] = useState<ProductDetail>();
+  const [productDetail, setProductDetail] = useState<ProductDetail | null>(
+    null
+  );
   const [showVideoPopup, setShowVideoPopup] = useState<boolean>(false);
   const [faqs, setFaqs] = useState<{ name: string; content: string }[]>([]);
   const [sellingPrice, setSellingPrice] = useState(0);
@@ -117,15 +119,13 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   const cart = useAppSelector((state: RootState) => state.cart);
   const customer = useAppSelector((state: RootState) => state.auth);
   const [hasReviewed, setHasReviewed] = useState(false);
-  const productId = params?.name
-    ? Utils.getIdAndNameFromUrl(params?.name)?.code?.slice(2)
-    : null;
+  const productName = params?.name;
 
   const fetchProductDetail = () => {
     const { request, cancel } = productDetailService.get<
       ProductDetail,
-      { product_id: number }
-    >({ product_id: +productId });
+      { url_name: string }
+    >({ url_name: productName });
 
     dispatch(showLoader());
 
@@ -172,8 +172,8 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   useEffect(() => {
     const { request, cancel } = relatedProductsService.getAll<
       Product,
-      { product_id: number }
-    >({ product_id: +productId });
+      { product_name: string }
+    >({ product_name: productName });
 
     request
       .then((res) => {
@@ -190,8 +190,11 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   }, []);
 
   useEffect(() => {
-    const { request, cancel } = faqService.get<IFaq[], { product_id: number }>({
-      product_id: +productId,
+    const { request, cancel } = faqService.get<
+      IFaq[],
+      { product_name: string }
+    >({
+      product_name: productName,
     });
 
     dispatch(showLoader());
@@ -230,7 +233,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   );
 
   const handleWishlist = (liked: boolean) => {
-    const productId = productDetail.product_details[0].product_id;
+    const productId = productDetail?.product_details[0]?.product_id;
     if (liked) dispatch(addItemToWishlist(productId));
     else dispatch(removeItemFromWishlist(productId));
   };
@@ -283,7 +286,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     }
 
     const productPayload = {
-      ...productDetail.product_details[0],
+      ...productDetail?.product_details[0],
       selling_price: originalPrice,
       product_measuring_unit_id: quantityOption.label,
     };
@@ -307,8 +310,8 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
       <div className="flex ">
         <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
-            src={productDetail.product_details[0].product_image1}
-            alt={productDetail.product_details[0].product_name}
+            src={productDetail?.product_details[0]?.product_image1}
+            alt={productDetail?.product_details[0]?.product_name}
             className="h-full w-full object-cover object-center"
           />
         </div>
@@ -318,7 +321,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
             <div className="flex justify-between ">
               <div>
                 <h3 className="text-base font-medium ">
-                  {productDetail.product_details[0].product_name}
+                  {productDetail?.product_details[0]?.product_name}
                 </h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                   <span>
@@ -801,7 +804,6 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   };
 
   const handleLike = (id: string) => {
-    console.log(relatedProducts);
     const updatedProducts = relatedProducts.map((p) =>
       p.product_id === id ? { ...p, isLiked: (p.isLiked = !p.isLiked) } : p
     );
@@ -817,7 +819,7 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     setShowReviewForm(false);
     const payload = {
       gofor: "addratings",
-      product_id: productDetail.product_details[0].product_id,
+      product_id: productDetail?.product_details[0]?.product_id,
       customer_id: customer.customer_id,
       user_ratings: data.rating.toString(),
       comments: data.comments,
@@ -838,143 +840,147 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
   };
 
   return (
-    <div
-      className={`ListingDetailPage nc-ProductDetailPage2 ${className}`}
-      data-nc-id="ProductDetailPage2"
-    >
-      {/* SINGLE HEADER */}
-      <>
-        <header className="container mt-8 sm:mt-10">
-          <div className="relative ">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 lg:gap-6">
+    <>
+      {productDetail?.products_meta[0] && (
+        <MetaTags metaTagProps={productDetail?.products_meta[0]} />
+      )}
+      <div
+        className={`ListingDetailPage nc-ProductDetailPage2 ${className}`}
+        data-nc-id="ProductDetailPage2"
+      >
+        {/* SINGLE HEADER */}
+        <>
+          <header className="container mt-8 sm:mt-10">
+            <div className="relative ">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 lg:gap-6">
+                <div
+                  className="col-span-2 md:col-span-1 row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
+                  onClick={() => handleOpenModal(0)}
+                >
+                  <NcImage
+                    containerClassName="aspect-w-6 aspect-h-6 lg:aspect-h-6 md:absolute md:inset-0"
+                    className="object-cover w-full h-full rounded-md sm:rounded-xl"
+                    // src={LIST_IMAGES_DEMO[0]}
+                    src={productDetail?.product_details[0]?.product_image1}
+                  />
+                  <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
+                </div>
+
+                <div
+                  className="col-span-1 row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
+                  onClick={() => handleOpenModal(1)}
+                >
+                  <NcImage
+                    containerClassName="aspect-w-6 aspect-h-6 lg:aspect-h-6"
+                    className="object-cover w-full h-full rounded-md sm:rounded-xl"
+                    // src={LIST_IMAGES_DEMO[1]}
+                    src={productDetail?.product_details[0]?.product_image2}
+                  />
+                  <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
+                </div>
+
+                <div
+                  className="col-span-1 row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
+                  onClick={() => handleOpenModal(2)}
+                >
+                  <NcImage
+                    containerClassName="aspect-w-6 aspect-h-6 lg:aspect-h-6"
+                    className="object-cover w-full h-full rounded-md sm:rounded-xl"
+                    // src={LIST_IMAGES_DEMO[2]}
+                    src={productDetail?.product_details[0]?.product_image3}
+                  />
+                  <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
+                </div>
+              </div>
               <div
-                className="col-span-2 md:col-span-1 row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
+                className="absolute hidden md:flex md:items-center md:justify-center left-3 bottom-3 px-4 py-2 rounded-xl bg-white text-slate-500 cursor-pointer hover:bg-slate-200 z-10"
                 onClick={() => handleOpenModal(0)}
               >
-                <NcImage
-                  containerClassName="aspect-w-6 aspect-h-6 lg:aspect-h-6 md:absolute md:inset-0"
-                  className="object-cover w-full h-full rounded-md sm:rounded-xl"
-                  // src={LIST_IMAGES_DEMO[0]}
-                  src={productDetail?.product_details[0]?.product_image1}
-                />
-                <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
-              </div>
-
-              <div
-                className="col-span-1 row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
-                onClick={() => handleOpenModal(1)}
-              >
-                <NcImage
-                  containerClassName="aspect-w-6 aspect-h-6 lg:aspect-h-6"
-                  className="object-cover w-full h-full rounded-md sm:rounded-xl"
-                  // src={LIST_IMAGES_DEMO[1]}
-                  src={productDetail?.product_details[0]?.product_image2}
-                />
-                <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
-              </div>
-
-              <div
-                className="col-span-1 row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
-                onClick={() => handleOpenModal(2)}
-              >
-                <NcImage
-                  containerClassName="aspect-w-6 aspect-h-6 lg:aspect-h-6"
-                  className="object-cover w-full h-full rounded-md sm:rounded-xl"
-                  // src={LIST_IMAGES_DEMO[2]}
-                  src={productDetail?.product_details[0]?.product_image3}
-                />
-                <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-40 transition-opacity"></div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                  />
+                </svg>
+                <span className="ml-2 text-neutral-800 text-sm font-medium">
+                  Show all photos
+                </span>
               </div>
             </div>
-            <div
-              className="absolute hidden md:flex md:items-center md:justify-center left-3 bottom-3 px-4 py-2 rounded-xl bg-white text-slate-500 cursor-pointer hover:bg-slate-200 z-10"
-              onClick={() => handleOpenModal(0)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                />
-              </svg>
-              <span className="ml-2 text-neutral-800 text-sm font-medium">
-                Show all photos
-              </span>
+          </header>
+          {/* MODAL PHOTOS */}
+          <ModalPhotos
+            imgs={[
+              productDetail?.product_details[0]?.product_image1,
+              productDetail?.product_details[0]?.product_image2,
+              productDetail?.product_details[0]?.product_image3,
+              productDetail?.product_details[0]?.product_image4,
+            ]}
+            isOpen={isOpen}
+            onClose={handleCloseModal}
+            initFocus={openFocusIndex}
+            uniqueClassName="nc-ProductDetailPage2__modalPhotos"
+          />
+        </>
+
+        {/* MAIN */}
+        <main className="container relative z-10 mt-9 sm:mt-11 flex ">
+          {/* CONTENT */}
+          <section className="w-full lg:w-3/5 xl:w-2/3 space-y-10 lg:pr-14 lg:space-y-14">
+            {renderSection1()}
+            {renderSection2()}
+          </section>
+
+          {/* SIDEBAR */}
+          <aside className="flex-grow">
+            <div className="hidden lg:block sticky top-28">
+              {renderSectionSidebar()}
+            </div>
+          </aside>
+        </main>
+        {/* KEY BENEFITS SECTION */}
+        <section className="container mb-10 lg:pb-28 pt-48 space-y-14">
+          <div className={`nc-SectionPromo2 ${className}`}>
+            <div className="relative flex flex-col lg:flex-row lg:justify-end bg-yellow-50 dark:bg-slate-800 rounded-2xl sm:rounded-[40px] p-4 pb-0 sm:p-5 sm:pb-0 lg:p-24">
+              <div className="lg:w-[50%] max-w-lg relative">
+                <p className="font-semibold text-2xl">Key Benefits</p>
+                <h2 className="font-semibold text-2xl sm:text-4xl xl:text-5xl 2xl:text-6xl mt-2 sm:mt-2 !leading-[1.13] tracking-tight">
+                  {productDetail?.product_details[0]?.product_name}
+                  {/* Special offer <br />
+                in kids products */}
+                </h2>
+                {productDetail?.product_details[0]?.key_benefits && (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        productDetail?.product_details[0]?.key_benefits.replace(
+                          "<ul>",
+                          '<ul class="text-lg list-disc list-inside leading-7 text-yellow-950 mt-3">'
+                        ),
+                    }}
+                  ></div>
+                )}
+              </div>
+
+              <NcImage
+                containerClassName="relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(52%-42px)]"
+                src={productDetail?.product_details[0]?.bottom_image}
+              />
             </div>
           </div>
-        </header>
-        {/* MODAL PHOTOS */}
-        <ModalPhotos
-          imgs={[
-            productDetail?.product_details[0]?.product_image1,
-            productDetail?.product_details[0]?.product_image2,
-            productDetail?.product_details[0]?.product_image3,
-            productDetail?.product_details[0]?.product_image4,
-          ]}
-          isOpen={isOpen}
-          onClose={handleCloseModal}
-          initFocus={openFocusIndex}
-          uniqueClassName="nc-ProductDetailPage2__modalPhotos"
-        />
-      </>
-
-      {/* MAIN */}
-      <main className="container relative z-10 mt-9 sm:mt-11 flex ">
-        {/* CONTENT */}
-        <section className="w-full lg:w-3/5 xl:w-2/3 space-y-10 lg:pr-14 lg:space-y-14">
-          {renderSection1()}
-          {renderSection2()}
         </section>
 
-        {/* SIDEBAR */}
-        <aside className="flex-grow">
-          <div className="hidden lg:block sticky top-28">
-            {renderSectionSidebar()}
-          </div>
-        </aside>
-      </main>
-      {/* KEY BENEFITS SECTION */}
-      <section className="container mb-10 lg:pb-28 pt-48 space-y-14">
-        <div className={`nc-SectionPromo2 ${className}`}>
-          <div className="relative flex flex-col lg:flex-row lg:justify-end bg-yellow-50 dark:bg-slate-800 rounded-2xl sm:rounded-[40px] p-4 pb-0 sm:p-5 sm:pb-0 lg:p-24">
-            <div className="lg:w-[50%] max-w-lg relative">
-              <p className="font-semibold text-2xl">Key Benefits</p>
-              <h2 className="font-semibold text-2xl sm:text-4xl xl:text-5xl 2xl:text-6xl mt-2 sm:mt-2 !leading-[1.13] tracking-tight">
-                {productDetail?.product_details[0]?.product_name}
-                {/* Special offer <br />
-                in kids products */}
-              </h2>
-              {productDetail?.product_details[0]?.key_benefits && (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html:
-                      productDetail?.product_details[0]?.key_benefits.replace(
-                        "<ul>",
-                        '<ul class="text-lg list-disc list-inside leading-7 text-yellow-950 mt-3">'
-                      ),
-                  }}
-                ></div>
-              )}
-            </div>
-
-            <NcImage
-              containerClassName="relative block lg:absolute lg:left-0 lg:bottom-0 mt-10 lg:mt-0 max-w-xl lg:max-w-[calc(52%-42px)]"
-              src={productDetail?.product_details[0]?.bottom_image}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* KEY INGREDIENTS */}
-      <section className="container mb-24 overflow-hidden">
-        {/* <h4 className="text-3xl font-semibold mb-10">Key Ingredients</h4>
+        {/* KEY INGREDIENTS */}
+        <section className="container mb-24 overflow-hidden">
+          {/* <h4 className="text-3xl font-semibold mb-10">Key Ingredients</h4>
         <div className="grid grid-cols-1 gap-y-10 gap-x-5 md:grid-cols-2 lg:grid-cols-4 mb-10">
           {ingredients.map((ing) => (
             <div key={ing.id}>
@@ -991,163 +997,170 @@ const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
           ))}
         </div> */}
 
-        {/* SLIDER SECTION */}
-        {productDetail?.product_ingred && (
-          <AppSlider
-            data={productDetail?.product_ingred}
-            renderChildren={renderIngredients}
-            glideOptions={{
-              perView: 4,
-              gap: 32,
-              bound: true,
-              breakpoints: {
-                1280: {
-                  perView: 4,
+          {/* SLIDER SECTION */}
+          {productDetail?.product_ingred && (
+            <AppSlider
+              data={productDetail?.product_ingred}
+              renderChildren={renderIngredients}
+              glideOptions={{
+                perView: 4,
+                gap: 32,
+                bound: true,
+                breakpoints: {
+                  1280: {
+                    perView: 4,
+                  },
+                  1024: {
+                    gap: 20,
+                    perView: 4,
+                  },
+                  768: {
+                    gap: 20,
+                    perView: 3,
+                  },
+                  640: {
+                    gap: 20,
+                    perView: 1,
+                  },
+                  500: {
+                    gap: 20,
+                    perView: 1,
+                  },
                 },
-                1024: {
-                  gap: 20,
-                  perView: 4,
-                },
-                768: {
-                  gap: 20,
-                  perView: 3,
-                },
-                640: {
-                  gap: 20,
-                  perView: 1,
-                },
-                500: {
-                  gap: 20,
-                  perView: 1,
-                },
-              },
-            }}
-          >
-            <Heading fontClass="text-3xl md:text-3xl font-semibold" hasNextPrev>
-              Key Ingredients
-            </Heading>
-          </AppSlider>
-        )}
-        {/* <ButtonSecondary className="border border-slate-300 dark:border-slate-700 md:text-lg md:px-20 md:py-4">
+              }}
+            >
+              <Heading
+                fontClass="text-3xl md:text-3xl font-semibold"
+                hasNextPrev
+              >
+                Key Ingredients
+              </Heading>
+            </AppSlider>
+          )}
+          {/* <ButtonSecondary className="border border-slate-300 dark:border-slate-700 md:text-lg md:px-20 md:py-4">
           Show all ingredients
         </ButtonSecondary> */}
-      </section>
-
-      {/* EXPERT TALK */}
-      <section className="container mb-10 overflow-hidden">
-        {/* SLIDER SECTION */}
-        {productDetail?.product_experttalk && (
-          <AppSlider
-            data={productDetail.product_experttalk}
-            renderChildren={renderExperts}
-            glideOptions={expertSlideGlideOptions}
-          >
-            <Heading fontClass="text-3xl md:text-3xl font-semibold" hasNextPrev>
-              Expert Talk
-            </Heading>
-          </AppSlider>
-        )}
-
-        {/* VIDEO */}
-        <div
-          className="group aspect-w-16 aspect-h-16 sm:aspect-h-9 bg-neutral-800 rounded-3xl overflow-hidden border-4 border-white dark:border-neutral-900 sm:rounded-[50px] sm:border-[10px] z-0"
-          title={"expert Meditating"}
-          onClick={() => setShowVideoPopup(!showVideoPopup)}
-        >
-          <div className="cursor-pointer absolute inset-0 flex items-center justify-center z-10">
-            <img src={videoIcon} alt="icon" />
-          </div>
-          <NcImage
-            containerClassName="absolute inset-0 rounded-3xl overflow-hidden z-0"
-            className="object-cover w-full h-full transition-transform group-hover:scale-105 duration-300  "
-            src={video}
-            title={"expert Meditating"}
-            alt={"expert Meditating"}
-          />
-        </div>
-      </section>
-      {showVideoPopup && (
-        <VideoPopup
-          url={productDetail?.product_details[0]?.video}
-          isOpen={showVideoPopup}
-          closeModal={() => setShowVideoPopup(false)}
-          backdropClick={() => setShowVideoPopup(false)}
-        />
-      )}
-
-      {/* OTHER SECTION */}
-      <section className="container pb-24 lg:pb-28 mb-10 space-y-14">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 place-content-between">
-          <div className="col-span-3 md:col-span-2 self-center">
-            <h4 className="text-3xl font-semibold mb-10">Customer Reviews</h4>
-          </div>
-          {!hasReviewed && (
-            <div className="col-span-3 md:col-span-1 place-self-end">
-              <ButtonPrimary onClick={() => setShowReviewForm(true)}>
-                Write Your Review
-              </ButtonPrimary>
-            </div>
-          )}
-        </div>
-        {showReviewForm && (
-          <ProductReviewForm
-            submitReview={handleSubmitReview}
-            onClose={() => setShowReviewForm(false)}
-          />
-        )}
-        {renderReviews()}
-
-        {/* FAQ */}
-        <section>
-          <h4 className="text-3xl font-semibold mb-10">
-            Frequently Asked Questions
-          </h4>
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-            <div>
-              <img src={faqImg} alt="FAQ" />
-            </div>
-            <div>
-              <AccordionInfo data={faqs} />
-            </div>
-          </div>
         </section>
 
-        {/* <hr className="border-slate-200 dark:border-slate-700" /> */}
+        {/* EXPERT TALK */}
+        <section className="container mb-10 overflow-hidden">
+          {/* SLIDER SECTION */}
+          {productDetail?.product_experttalk && (
+            <AppSlider
+              data={productDetail?.product_experttalk}
+              renderChildren={renderExperts}
+              glideOptions={expertSlideGlideOptions}
+            >
+              <Heading
+                fontClass="text-3xl md:text-3xl font-semibold"
+                hasNextPrev
+              >
+                Expert Talk
+              </Heading>
+            </AppSlider>
+          )}
 
-        {relatedProducts.length > 0 && (
-          <SectionSliderProductCard
-            heading="Related Products"
-            subHeading=""
-            headingFontClassName="text-3xl font-semibold"
-            headingClassName="mb-10 text-neutral-900 dark:text-neutral-50"
-            data={relatedProducts}
-            onLike={handleLike}
+          {/* VIDEO */}
+          <div
+            className="group aspect-w-16 aspect-h-16 sm:aspect-h-9 bg-neutral-800 rounded-3xl overflow-hidden border-4 border-white dark:border-neutral-900 sm:rounded-[50px] sm:border-[10px] z-0"
+            title={"expert Meditating"}
+            onClick={() => setShowVideoPopup(!showVideoPopup)}
+          >
+            <div className="cursor-pointer absolute inset-0 flex items-center justify-center z-10">
+              <img src={videoIcon} alt="icon" />
+            </div>
+            <NcImage
+              containerClassName="absolute inset-0 rounded-3xl overflow-hidden z-0"
+              className="object-cover w-full h-full transition-transform group-hover:scale-105 duration-300  "
+              src={video}
+              title={"expert Meditating"}
+              alt={"expert Meditating"}
+            />
+          </div>
+        </section>
+        {showVideoPopup && (
+          <VideoPopup
+            url={productDetail?.product_details[0]?.video}
+            isOpen={showVideoPopup}
+            closeModal={() => setShowVideoPopup(false)}
+            backdropClick={() => setShowVideoPopup(false)}
           />
         )}
-      </section>
 
-      {/* POLICY SECTION */}
-      <section className="container mb-40">
-        <Policy />
-      </section>
+        {/* OTHER SECTION */}
+        <section className="container pb-24 lg:pb-28 mb-10 space-y-14">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 place-content-between">
+            <div className="col-span-3 md:col-span-2 self-center">
+              <h4 className="text-3xl font-semibold mb-10">Customer Reviews</h4>
+            </div>
+            {!hasReviewed && (
+              <div className="col-span-3 md:col-span-1 place-self-end">
+                <ButtonPrimary onClick={() => setShowReviewForm(true)}>
+                  Write Your Review
+                </ButtonPrimary>
+              </div>
+            )}
+          </div>
+          {showReviewForm && (
+            <ProductReviewForm
+              submitReview={handleSubmitReview}
+              onClose={() => setShowReviewForm(false)}
+            />
+          )}
+          {renderReviews()}
 
-      {/* MODAL VIEW ALL REVIEW */}
-      <ModalViewAllReviews
-        show={isOpenModalViewAllReviews}
-        onCloseModalViewAllReviews={() => setIsOpenModalViewAllReviews(false)}
-        rating={productDetail?.product_details[0]?.almaa_ratings}
-        reviews={productDetail?.product_feedback?.map((f) => ({
-          id: f.prodcustfb_id,
-          name: f.name,
-          date: new Date().toString(),
-          comment: f.comments,
-          starPoint: +f.user_ratings,
-        }))}
-      />
+          {/* FAQ */}
+          <section>
+            <h4 className="text-3xl font-semibold mb-10">
+              Frequently Asked Questions
+            </h4>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div>
+                <img src={faqImg} alt="FAQ" />
+              </div>
+              <div>
+                <AccordionInfo data={faqs} />
+              </div>
+            </div>
+          </section>
 
-      {/* EMAIL SUBSCRIBE SECTION */}
-      <EmailSubscribeSection />
-    </div>
+          {/* <hr className="border-slate-200 dark:border-slate-700" /> */}
+
+          {relatedProducts.length > 0 && (
+            <SectionSliderProductCard
+              heading="Related Products"
+              subHeading=""
+              headingFontClassName="text-3xl font-semibold"
+              headingClassName="mb-10 text-neutral-900 dark:text-neutral-50"
+              data={relatedProducts}
+              onLike={handleLike}
+            />
+          )}
+        </section>
+
+        {/* POLICY SECTION */}
+        <section className="container mb-40">
+          <Policy />
+        </section>
+
+        {/* MODAL VIEW ALL REVIEW */}
+        <ModalViewAllReviews
+          show={isOpenModalViewAllReviews}
+          onCloseModalViewAllReviews={() => setIsOpenModalViewAllReviews(false)}
+          rating={productDetail?.product_details[0]?.almaa_ratings}
+          reviews={productDetail?.product_feedback?.map((f) => ({
+            id: f.prodcustfb_id,
+            name: f.name,
+            date: new Date().toString(),
+            comment: f.comments,
+            starPoint: +f.user_ratings,
+          }))}
+        />
+
+        {/* EMAIL SUBSCRIBE SECTION */}
+        <EmailSubscribeSection />
+      </div>
+    </>
   );
 };
 
