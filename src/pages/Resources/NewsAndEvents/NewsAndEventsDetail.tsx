@@ -1,24 +1,25 @@
 import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
 import { useAppDispatch } from "../../../hooks/hooks";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import newsEventsService, {
   INewsAndEvents,
 } from "../../../services/news-events-service";
 import { CanceledError } from "axios";
+import MetaTags from "../../../shared/MetaTags/MetaTags";
 
 const NewsAndEventsDetail = () => {
-  const { state } = useLocation();
+  const params = useParams();
   const dispatch = useAppDispatch();
   const [eventDetil, setEventDetail] = useState<INewsAndEvents>(null);
 
   function fetchEventsDetail() {
     const { request, cancel } = newsEventsService.get<
       INewsAndEvents,
-      { gofor: string; event_id: string }
+      { gofor: string; url_name: string }
     >({
       gofor: "getevent",
-      event_id: state.eventsDetail.event_id,
+      url_name: params?.title,
     });
 
     dispatch(showLoader());
@@ -41,7 +42,7 @@ const NewsAndEventsDetail = () => {
     const cancelGetCaseStudyDetail = fetchEventsDetail();
 
     return () => cancelGetCaseStudyDetail();
-  }, [state.eventsDetail.event_id]);
+  }, []);
 
   const renderSectionContent = () => {
     return (
@@ -65,6 +66,8 @@ const NewsAndEventsDetail = () => {
 
   return (
     <div className={`nc-ProductDetailPage`}>
+      {/* SEO */}
+      {eventDetil && <MetaTags metaTagProps={eventDetil} />}
       {/* Main */}
       {eventDetil && (
         <main className="container mt-5 lg:mt-11">

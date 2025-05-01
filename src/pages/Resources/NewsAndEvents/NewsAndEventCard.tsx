@@ -2,7 +2,6 @@ import NcImage from "../../../shared/NcImage/NcImage";
 import { useNavigate } from "react-router-dom";
 import { INewsAndEvents } from "../../../services/news-events-service";
 import { getFormattedDate } from "../../../utils/date-utils";
-import { Utils } from "../../../utils/utils";
 
 interface Props {
   newsAndEvent: INewsAndEvents;
@@ -13,11 +12,7 @@ const NewsAndEventCard = ({ newsAndEvent, className }: Props) => {
   const navigate = useNavigate();
 
   const routeToNewsAndEventsDetailPage = () => {
-    navigate(`/news-&-events/${Utils.urlFormatter(newsAndEvent.title)}`, {
-      state: {
-        eventsDetail: newsAndEvent,
-      },
-    });
+    navigate(`/news-&-events/${newsAndEvent.url_name}`);
   };
 
   return (
