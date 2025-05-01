@@ -16,7 +16,9 @@ export interface Props {
 const CaseStudyDetail = ({ className = "" }: Props) => {
   const params = useParams();
   const dispatch = useAppDispatch();
-  const [caseStudyDetail, setCaseStudyDetail] = useState<ICaseStudy>(null);
+  const [caseStudyDetail, setCaseStudyDetail] = useState<ICaseStudy | null>(
+    null
+  );
 
   function fetchCaseStudy() {
     const { request, cancel } = caseStudyService.get<
