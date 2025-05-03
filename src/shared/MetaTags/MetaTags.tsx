@@ -2,6 +2,8 @@ import { FC } from "react";
 import { Helmet } from "react-helmet-async";
 
 export interface MetaTag {
+  mid?: string;
+  page_id?: string;
   meta_id?: string;
   meta_title?: string;
   meta_description?: string;
@@ -16,6 +18,7 @@ export interface MetaTag {
   alt_tags?: string;
   title?: string;
   description?: string;
+  url_name?: string;
 }
 
 interface MetaTagProps {
