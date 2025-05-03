@@ -1,13 +1,15 @@
+import { FC } from "react";
 import SectionHero from "../Library/SectionHero";
 import rightImg from "../../assets/04-Production Unit/About Us.png";
 import SectionSliderCategories from "../../components/SectionSliderCategories/SectionSliderCategories";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import MetaTags, { MetaTag } from "../../shared/MetaTags/MetaTags";
+import MetaTags from "../../shared/MetaTags/MetaTags";
 import fssaiCertifiedImg from "../../assets/04-Production Unit/Certificate 2.jpg";
 import gmpCertifiedImg from "../../assets/04-Production Unit/Certificate 1.jpg";
 import twentyFirstCenturyMillenniumAwardImg from "../../assets/04-Production Unit/Award 1.jpg";
 import internationalAyushNaturalAwardImg from "../../assets/04-Production Unit/Award 2.jpg";
 import AccordionInfo from "../../containers/ProductDetailPage/AccordionInfo";
+import useMetaTags from "../../hooks/useMetaTags";
 
 interface ProductionUnitProps {
   className?: string;
@@ -61,18 +63,9 @@ const AWARDS_AND_CERTIFICATIONS = [
   },
 ];
 
-const metaTagProps: MetaTag = {
-  meta_title:
-    "Best Siddha Medicine Manufacturers | Siddha Foods Tech & Almaa Herbal Nature",
-  meta_description:
-    ".With a focus on purity, sustainability, and innovation, we offer a wide range of herbal solutions that cater to various health and wellness needs. Trust Nature’s Essence for reliable and effective herbal products.",
-  keywords:
-    "best siddha medicine manufacturers in tamilnadu, siddha medicine manufacturers in tamilnadu, siddha medicine manufacturers, siddha drug manufacturers, best herbal supplement manufacturers, natural medicine manufacturers",
-  og_url: "https://almaherbal.com/production-unit",
-  robots: "INDEX, FOLLOW",
-};
+const ProductionUnit: FC<ProductionUnitProps> = ({ className = "" }) => {
+  const { metaTag: metaTagProps } = useMetaTags();
 
-const ProductionUnit = ({ className = "" }: ProductionUnitProps) => {
   return (
     <div className="nc-PageHome2 relative overflow-hidden">
       <div
@@ -80,7 +73,7 @@ const ProductionUnit = ({ className = "" }: ProductionUnitProps) => {
         data-nc-id="PageAbout"
       >
         {/* SEO */}
-        <MetaTags metaTagProps={metaTagProps} />
+        {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
 
         {/* ======== BG GLASS ======== */}
 

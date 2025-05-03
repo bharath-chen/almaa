@@ -1,28 +1,22 @@
+import { FC } from "react";
 import Heading from "../../components/Heading/Heading";
 import NcImage from "../../shared/NcImage/NcImage";
 import AccordionInfo from "../../containers/ProductDetailPage/AccordionInfo";
 import EmailSubscribeSection from "../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import MetaTags, { MetaTag } from "../../shared/MetaTags/MetaTags";
+import MetaTags from "../../shared/MetaTags/MetaTags";
 import { WELLNESS_CENTER } from "../../data/WELLNESS_CENTER";
 import wellnessCenterImg from "../../assets/03-Wellness Center/Wellness Center.jpg";
 import SectionHero from "../../pages/Library/SectionHero";
 import rightImg from "../../assets/06-Library/About.png";
+import useMetaTags from "../../hooks/useMetaTags";
 
 interface WellnessCenterProps {
   className?: string;
 }
 
-const metaTagProps: MetaTag = {
-  meta_title: "Vela Siddha Village Resort | Rejuvenation Resort & Therapy",
-  meta_description:
-    "Embrace the Serenity of Siddha Medicine and Modern Wellness | Wellness Treatments and Retreats | Luxurious Accommodations | Siddha Medical Treatments ",
-  keywords:
-    "vela siddha village resort, heritage village resort & spa, rejuvenation therapy, rejuvenation resort",
-  og_url: "https://www.almaherbal.com/wellness-centre",
-  robots: "INDEX, FOLLOW",
-};
+const WellnessCenter: FC<WellnessCenterProps> = ({ className = "" }) => {
+  const { metaTag: metaTagProps } = useMetaTags();
 
-const WellnessCenter = ({ className = "" }: WellnessCenterProps) => {
   return (
     <div className="nc-PageHome2 relative overflow-hidden">
       <div
@@ -30,7 +24,7 @@ const WellnessCenter = ({ className = "" }: WellnessCenterProps) => {
         data-nc-id="PageAbout"
       >
         {/*SEO*/}
-        <MetaTags metaTagProps={metaTagProps} />
+        {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
 
         {/* NATURE AND SINDHANAI SIDDHAR SECTION */}
         <section className="container mt-40 mb-40">

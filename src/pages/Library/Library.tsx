@@ -1,6 +1,5 @@
-import rightImg from "../../assets/06-Library/About.png";
 import { FC } from "react";
-import { Helmet } from "react-helmet-async";
+import rightImg from "../../assets/06-Library/About.png";
 import BgGlassmorphism from "../../components/BgGlassmorphism/BgGlassmorphism";
 import SectionHero from "./SectionHero";
 import Heading from "../../components/Heading/Heading";
@@ -15,6 +14,8 @@ import sugarImg from "../../assets/06-Library/Our CDs/Sugar.jpg";
 import unavaeUyirImg from "../../assets/06-Library/Our CDs/Unave Uyir.jpg";
 import whyAlmaaImg from "../../assets/HOME PAGE/10-why-section.jpg";
 import AccordionInfo from "../../containers/ProductDetailPage/AccordionInfo";
+import useMetaTags from "../../hooks/useMetaTags";
+import MetaTags from "../../shared/MetaTags/MetaTags";
 
 export interface PageAboutProps {
   className?: string;
@@ -73,14 +74,15 @@ artilces o every aspect of health`,
 ];
 
 const Library: FC<PageAboutProps> = ({ className = "" }) => {
+  const { metaTag: metaTagProps } = useMetaTags();
+
   return (
     <div
       className={`nc-PageAbout overflow-hidden relative ${className}`}
       data-nc-id="PageAbout"
     >
-      <Helmet>
-        <title>Almaa</title>
-      </Helmet>
+      {/* METATAGS */}
+      {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
 
       {/* ======== BG GLASS ======== */}
       <BgGlassmorphism />
@@ -130,7 +132,7 @@ informed decisions for your well-being.
                 Uyirvazhi
               </h3>
               <div className="block mt-6">
-                <ul className="pl-5 leading-relaxed dashed list-inside leading-7 text-md text-slate-500 dark:text-slate-400">
+                <ul className="pl-5 dashed list-inside leading-7 text-md text-slate-500 dark:text-slate-400">
                   <li>
                     Welcome to Uyrivazhi, your trusted source for holistic
                     health and wellness! Our magazine is dedicated to empowering

@@ -19,6 +19,8 @@ import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
 import { showModal } from "../../features/modal/modalSlice";
 import { CanceledError } from "axios";
 import Select from "../../shared/Select/Select";
+import useMetaTags from "../../hooks/useMetaTags";
+import MetaTags from "../../shared/MetaTags/MetaTags";
 
 export interface PageContactProps {
   className?: string;
@@ -70,6 +72,7 @@ const schema = z.object({
 type SupportFormInputs = z.infer<typeof schema>;
 
 const Support: FC<PageContactProps> = ({ className = "" }) => {
+  const { metaTag: metaTagProps } = useMetaTags();
   const {
     register,
     handleSubmit,
@@ -122,9 +125,8 @@ const Support: FC<PageContactProps> = ({ className = "" }) => {
       className={`nc-PageContact overflow-hidden ${className}`}
       data-nc-id="PageContact"
     >
-      <Helmet>
-        <title>Almaa</title>
-      </Helmet>
+      {/* METATAGS */}
+      {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
       <div className="">
         <h2 className="my-20 flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
           Support
