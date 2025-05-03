@@ -1,5 +1,4 @@
-import React from "react";
-import { Helmet } from "react-helmet-async";
+import { FC } from "react";
 import BgGlassmorphism from "../../../components/BgGlassmorphism/BgGlassmorphism";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import BlogCard from "./BlogCard";
@@ -8,8 +7,11 @@ import { type Blog } from "../../../models/blog";
 import useBlogs from "../../../hooks/useBlogs";
 import { useNavigate } from "react-router-dom";
 import Heading from "../../../shared/Heading/Heading";
+import useMetaTags from "../../../hooks/useMetaTags";
+import MetaTags from "../../../shared/MetaTags/MetaTags";
 
-const Blog: React.FC = () => {
+const Blog: FC = () => {
+  const { metaTag: metaTagProps } = useMetaTags();
   const { blogList } = useBlogs();
   const navigate = useNavigate();
   const routeToBlogDetailPage = (blog: Blog) => {
@@ -30,7 +32,7 @@ const Blog: React.FC = () => {
     return result;
   };
 
-  const renderBlogSection = (blogs: Blog[], heading?: string) => {
+  const renderBlogSection: FC = (blogs: Blog[], heading?: string) => {
     const [mainCard, ...list] = blogs;
 
     return (
@@ -64,9 +66,8 @@ const Blog: React.FC = () => {
 
   return (
     <div className="nc-BlogPage overflow-hidden relative">
-      <Helmet>
-        <title>Almaa</title>
-      </Helmet>
+      {/* METATAGS */}
+      {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
 
       {/* ======== BG GLASS ======== */}
       {/* Place the BgGlassmorphism here to cover the entire blog list section */}

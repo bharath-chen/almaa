@@ -2,12 +2,17 @@ import Video from "./Video";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import useVideos from "../../../hooks/useVideos";
 import Heading from "../../../shared/Heading/Heading";
+import MetaTags from "../../../shared/MetaTags/MetaTags";
+import useMetaTags from "../../../hooks/useMetaTags";
 
 const Videos = () => {
   const { videos } = useVideos();
+  const { metaTag: metaTagProps } = useMetaTags();
 
   return (
     <div className="container my-20">
+      {/* METATAGS */}
+      {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
       <Heading
         className="mb-5 md:mb-5 text-neutral-900 dark:text-neutral-50"
         desc={null}

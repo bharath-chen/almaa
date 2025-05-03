@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import galleryListService, {
   IGallery,
@@ -7,8 +7,11 @@ import { CanceledError } from "axios";
 import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
 import { useAppDispatch } from "../../../hooks/hooks";
 import Heading from "../../../shared/Heading/Heading";
+import useMetaTags from "../../../hooks/useMetaTags";
+import MetaTags from "../../../shared/MetaTags/MetaTags";
 
-const Media = () => {
+const Media: FC = () => {
+  const { metaTag: metaTagProps } = useMetaTags();
   const dispatch = useAppDispatch();
   const [galleryList, setGalleryList] = useState<IGallery[]>([]);
   const [error, setError] = useState("");
@@ -43,6 +46,7 @@ const Media = () => {
 
   return (
     <>
+      {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
       <div className="container mx-auto my-10">
         <Heading
           className="mb-5 md:mb-5 text-neutral-900 dark:text-neutral-50"

@@ -23,6 +23,8 @@ import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import Pagination from "../../shared/Pagination/Pagination";
 import { RootState } from "../../state/store";
 import { Utils } from "../../utils/utils";
+import useMetaTags from "../../hooks/useMetaTags";
+import MetaTags from "../../shared/MetaTags/MetaTags";
 
 interface Props {
   className?: string;
@@ -37,6 +39,7 @@ const DATA_sortOrderRadios = [
 ];
 
 const Products: FC<Props> = ({ className = "" }) => {
+  const { metaTag: metaTagProps } = useMetaTags();
   const loading = useAppSelector((state: RootState) => state.loader.loading);
   const [showFilters, setShowFilters] = useState(false);
   const { natProducts } = useNatProducts();
@@ -332,6 +335,8 @@ const Products: FC<Props> = ({ className = "" }) => {
       className={`nc-PageCollection2 ${className}`}
       data-nc-id="PageCollection2"
     >
+      {/* METATAGS */}
+      {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 sm:space-y-20 lg:space-y-28">
         <div className="space-y-10 lg:space-y-14">
           {subCategories.length !== 0 && category && (

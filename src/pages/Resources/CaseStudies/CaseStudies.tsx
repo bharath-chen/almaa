@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Heading from "../../../shared/Heading/Heading";
 import { useNavigate } from "react-router-dom";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
@@ -9,8 +9,11 @@ import { CanceledError } from "axios";
 import CaseStudyCard from "./CaseStudyCard";
 import { hideLoader, showLoader } from "../../../features/loader/loaderSlice";
 import { useAppDispatch } from "../../../hooks/hooks";
+import useMetaTags from "../../../hooks/useMetaTags";
+import MetaTags from "../../../shared/MetaTags/MetaTags";
 
-const CaseStudies: React.FC = () => {
+const CaseStudies: FC = () => {
+  const { metaTag: metaTagProps } = useMetaTags();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -49,6 +52,9 @@ const CaseStudies: React.FC = () => {
 
   return (
     <>
+      {/* METATAGS */}
+      {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
+
       <div className="container my-20">
         <Heading
           className="mb-5 md:mb-5 text-neutral-900 dark:text-neutral-50"
