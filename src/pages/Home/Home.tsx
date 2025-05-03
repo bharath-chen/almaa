@@ -63,6 +63,8 @@ import AudioPlayerPopup from "../../components/Audio/AudioPlayerPopup";
 import VideoPopup from "../../pages/Resources/Videos/VideoPopup";
 import ProductCategroyCard from "./ProductCategoryCard";
 import { Utils } from "../../utils/utils";
+import useMetaTags from "../../hooks/useMetaTags";
+import MetaTags from "../../shared/MetaTags/MetaTags";
 
 const pageAnimation = {
   initial: { opacity: 0, y: 100 },
@@ -82,6 +84,7 @@ const Home = () => {
   const { testimonials } = useTestimonials();
   const [showAudioPlayer, setShowAudioPlayer] = useState(false);
   const [showVideoPopup, setShowVideoPopup] = useState(false);
+  const { metaTag: metaTagProps } = useMetaTags();
 
   const handleSliderCardClick = (item: CardCategoryData) => {
     const selectedDoctor = doctors.find((doc) => doc.doctor_id === item.id);
@@ -189,6 +192,9 @@ const Home = () => {
         delay: 0.3,
       }}
     >
+      {/* METATAG */}
+      {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
+
       {/* HERO SECTION */}
       <section className="container-fluid mb-40">
         <AppCarousel />

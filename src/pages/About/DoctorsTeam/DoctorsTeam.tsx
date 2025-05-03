@@ -8,6 +8,8 @@ import { IDoctor } from "../../../services/doctors-service";
 import Doctors from "./Doctors";
 import Heading from "../../../shared/Heading/Heading";
 import useDoctors from "../../../hooks/useDoctors";
+import useMetaTags from "../../../hooks/useMetaTags";
+import MetaTags from "../../../shared/MetaTags/MetaTags";
 
 interface DoctorsTeamProps {
   className?: string;
@@ -16,6 +18,7 @@ interface DoctorsTeamProps {
 const DoctorsTeam = ({ className = "" }: DoctorsTeamProps) => {
   const { doctors } = useDoctors();
   const navigate = useNavigate();
+  const { metaTag: metaTagProps } = useMetaTags();
 
   const routeToDoctorDetail = (doctor: IDoctor) => {
     navigate("/doctor-detail", { state: { doctor } });
@@ -26,9 +29,8 @@ const DoctorsTeam = ({ className = "" }: DoctorsTeamProps) => {
       className={`nc-PageAbout overflow-hidden relative ${className}`}
       data-nc-id="PageAbout"
     >
-      <Helmet>
-        <title>Almaa</title>
-      </Helmet>
+      {/* METATAGS */}
+      {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
 
       {/* ======== BG GLASS ======== */}
       <BgGlassmorphism />
@@ -54,7 +56,7 @@ const DoctorsTeam = ({ className = "" }: DoctorsTeamProps) => {
             </li>
             <li>
               Our Quality & experience with unmatched professionalism carry us
-              forward 
+              forward
             </li>
           </ul>
 

@@ -7,10 +7,17 @@ import Heading from "../../../components/Heading/Heading";
 import AccordionInfo from "../../../containers/ProductDetailPage/AccordionInfo";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import { SIDDHA_SCIENCE } from "./SIDDHA_SCIENCE";
+import useMetaTags from "../../../hooks/useMetaTags";
+import MetaTags from "../../../shared/MetaTags/MetaTags";
 
 const SiddhaScience = () => {
+  const { metaTag: metaTagProps } = useMetaTags();
+
   return (
     <>
+      {/* METATAGS */}
+      {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
+
       {/* HISTORY OF SIDDHA SECTION */}
       <section className="container mt-10 mb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 place-content-center">
@@ -25,13 +32,13 @@ const SiddhaScience = () => {
               the most advanced civilization - the Tamizh people. It is a simple
               yet complex strategy that engages life with the surrounding
               atmosphere extending up to the effects of planets on the physical
-              body.  The history that is available in writings from the 18
+              body. The history that is available in writings from the 18
               siddhargal lineages almost contributes to less than 5% of the
               total history of the Siddha medicine system. Siddha Has come a
               long way from Lemuria to today where we can get Siddha medicine
               online from the comfort of our home. Siddha doctors Available
               online can diagnose and prescribe from remote places to every nook
-              & corner of the country.  Concepts like Kaya-Kalpam, Varmam, Vaasi
+              & corner of the country. Concepts like Kaya-Kalpam, Varmam, Vaasi
               & Muppu are not only unique to Siddha but curious idea pages for
               the modern medical system.
             </p>
@@ -73,7 +80,7 @@ const SiddhaScience = () => {
                 <h4 className="font-semibold mb-3 text-2xl sm:text-2xl mt-2 sm:mt-2 !leading-[1.13] tracking-tight">
                   Siddhargal
                 </h4>
-                <ul className="pl-5 leading-relaxed dashed list-inside leading-7 text-md text-slate-500 dark:text-slate-400">
+                <ul className="pl-5 dashed list-inside leading-7 text-md text-slate-500 dark:text-slate-400">
                   <li>
                     The term Siddhar often misunderstood or mostly
                     misinterpreted, actually means one who perfected the art of

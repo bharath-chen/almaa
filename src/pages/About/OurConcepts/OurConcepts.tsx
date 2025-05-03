@@ -5,18 +5,8 @@ import SectionGridMoreExplore from "../../../components/SectionGridMoreExplore/S
 import ConceptDetailPopup from "./ConceptDetailPopup";
 import { EXPLORE_SECTION_DATA } from "../../../data/home";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import MetaTags, { MetaTag } from "../../../shared/MetaTags/MetaTags";
-
-const metaTagProps: MetaTag = {
-  meta_title:
-    "Almaa Herbal Velayutham | Pournami Poojai, Amavasai Poojai, Cow Pooja",
-  meta_description:
-    "Our Concepts -  Experience the profound serenity of our sacred poojai rituals, Join us for personalised blessings that connect you with divine energies and enrich your holistic retreat.",
-  keywords:
-    "alma velayutham siddha maruthuvam, almaa siddha hospital, alma velayutham, almaa herbal velayutham, pournami poojai, amavasai poojai, cow pooja",
-  og_url: "https://almaherbal.com/our-concepts",
-  robots: "INDEX, FOLLOW",
-};
+import MetaTags from "../../../shared/MetaTags/MetaTags";
+import useMetaTags from "hooks/useMetaTags";
 
 const OurConcepts = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -28,6 +18,7 @@ const OurConcepts = () => {
     contactInfo:
       "For more information, contact us at example@example.com or call +1234567890.",
   });
+  const { metaTag: metaTagProps } = useMetaTags();
 
   const handleClose = () => {
     setShowPopup(false);
@@ -35,8 +26,8 @@ const OurConcepts = () => {
 
   return (
     <div className="container my-20">
-      {/* SEO */}
-      <MetaTags metaTagProps={metaTagProps} />
+      {/* METATAGS */}
+      {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
 
       {/* EXPLORE SECTIONS */}
       <section className="container mb-40">

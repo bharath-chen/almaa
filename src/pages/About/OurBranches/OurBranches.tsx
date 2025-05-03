@@ -6,12 +6,15 @@ import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSu
 import BranchCard from "./BranchCard";
 import branchesService, { IBranch } from "../../../services/branches-service";
 import { CanceledError } from "axios";
+import useMetaTags from "../../../hooks/useMetaTags";
+import MetaTags from "../../../shared/MetaTags/MetaTags";
 
 const OurBranches = () => {
   const [branches, setBranches] = useState<IBranch[]>([]);
   const [error, setError] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [branch, setBranch] = useState<IBranch | null>(null);
+  const { metaTag: metaTagProps } = useMetaTags();
 
   const handleCardClick = (item: IBranch) => {
     console.log(item);
@@ -42,6 +45,8 @@ const OurBranches = () => {
 
   return (
     <div className="container mt-10 mb-10">
+      {/* METATAGS */}
+      {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
       {/* SECTION */}
       <div className="relative py-20 lg:py-20 mb-40">
         <BackgroundSection />

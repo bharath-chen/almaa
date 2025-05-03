@@ -1,3 +1,4 @@
+import { FC } from "react";
 import BackgroundSection from "../../../components/BackgroundSection/BackgroundSection";
 import SectionSliderCategories from "../../../components/SectionSliderCategories/SectionSliderCategories";
 import SectionGridMoreExplore from "../../../components/SectionGridMoreExplore/SectionGridMoreExplore";
@@ -6,7 +7,7 @@ import NcImage from "../../../shared/NcImage/NcImage";
 import AccordionInfo from "../../../containers/ProductDetailPage/AccordionInfo";
 import whyAlmaaImg from "../../../assets/HOME PAGE/10-why-section.jpg";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import MetaTags, { MetaTag } from "../../../shared/MetaTags/MetaTags";
+import MetaTags from "../../../shared/MetaTags/MetaTags";
 import { ALMAA_GROUP } from "./ALMAA_GROUP";
 import almaHerbalImg from "../../../assets/01-About/1-Almaa Groups/Our Companies/Almaa Herbal.png";
 import almaHospitalImg from "../../../assets/01-About/1-Almaa Groups/Our Companies/Almaa hospital.png";
@@ -19,6 +20,7 @@ import award2 from "../../../assets/01-About/1-Almaa Groups/Awards/Award 1.jpg";
 import award3 from "../../../assets/01-About/1-Almaa Groups/Awards/Award 2.jpg";
 import award4 from "../../../assets/01-About/1-Almaa Groups/Awards/Award 3.jpg";
 import mdSectionImg from "../../../assets/HOME PAGE/5-md-section.png";
+import useMetaTags from "../../../hooks/useMetaTags";
 
 interface AlmaaGroupProps {
   className?: string;
@@ -124,21 +126,13 @@ const AWARDS_AND_ACCOLADES = [
   },
 ];
 
-const metaTagProps: MetaTag = {
-  meta_title: "Almaa Groups",
-  meta_description:
-    "Alma Herbal Extractions focuses on providing comprehensive health solutions through food-based formulas that combine the benefits of natural chemicals found in nature.",
-  keywords: "Almaa Products, Almaa Herbal",
-  og_url: "https://www.almaherbal.com/almaa-groups",
-  robots: "noindex, nofollow",
-  og_image:
-    "https://almaherbal.top/App/assets/meta_tags/meta_tags_2025-04-26_15-55-15_000000_680cb48b83a19.jpg",
-};
+const AlmaaGroups: FC<AlmaaGroupProps> = ({ className = "" }) => {
+  const { metaTag: metaTagProps } = useMetaTags("almaa-groups");
 
-const AlmaaGroups = ({ className = "" }: AlmaaGroupProps) => {
   return (
     <>
-      <MetaTags metaTagProps={metaTagProps} />
+      {/* METATAGS */}
+      {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
       <div
         className={`nc-PageAbout overflow-hidden relative ${className}`}
         data-nc-id="PageAbout"

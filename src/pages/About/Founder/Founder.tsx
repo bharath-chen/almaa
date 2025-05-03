@@ -2,7 +2,7 @@ import NcImage from "../../../shared/NcImage/NcImage";
 import sindhanaiSiddharImg from "../../../assets/01-About/2- Founder/Who is Sindhanai Siddhar.jpg";
 import SectionFounder, { People } from "../../Library/SectionFounder";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
-import MetaTags, { MetaTag } from "../../../shared/MetaTags/MetaTags";
+import MetaTags from "../../../shared/MetaTags/MetaTags";
 import environmentConferenceImg from "../../../assets/01-About/2- Founder/Environment Conference.jpg";
 import coimbatoreConferenceImg from "../../../assets/01-About/2- Founder/Coimbatore.jpg";
 import malaysiaConferenceImg from "../../../assets/01-About/2- Founder/Malaysia.jpg";
@@ -11,6 +11,8 @@ import maduraiConferenceImg from "../../../assets/01-About/2- Founder/Madurai.jp
 import velloreConferenceImg from "../../../assets/01-About/2- Founder/Vellore.jpg";
 import chennaiConferenceImg from "../../../assets/01-About/2- Founder/Chennai Conference.jpg";
 import siddharThiruvizhaImg from "../../../assets/01-About/2- Founder/Siddhar Thiruvizha.jpg";
+import useMetaTags from "../../../hooks/useMetaTags";
+import { FC } from "react";
 
 const FOUNDER_DEMO: People[] = [
   {
@@ -63,21 +65,13 @@ const FOUNDER_DEMO: People[] = [
   },
 ];
 
-const metaTagProps: MetaTag = {
-  meta_title: "About Us - Unveiling the Siddha Wisdom: The Almaa Journey",
-  meta_description:
-    "Embark on the journey of Siddha wisdom with Almaa, your trusted source for holistic healing online.",
-  keywords:
-    "siddha doctor online, siddha medicine online, siddha products online",
-  og_url: "https://almaherbal.com/founder",
-  robots: "INDEX, FOLLOW",
-};
+const Founder: FC = () => {
+  const { metaTag: metaTagProps } = useMetaTags();
 
-const Founder = () => {
   return (
     <>
-      {/* SEO */}
-      <MetaTags metaTagProps={metaTagProps} />
+      {/* METATAGS */}
+      {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
       {/* MISSION AND VISION SECTION */}
       <section className="container mt-40 mb-40">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 place-content-center">
