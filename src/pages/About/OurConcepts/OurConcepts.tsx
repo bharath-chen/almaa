@@ -6,7 +6,7 @@ import ConceptDetailPopup from "./ConceptDetailPopup";
 import { EXPLORE_SECTION_DATA } from "../../../data/home";
 import EmailSubscribeSection from "../../../shared/EmailSubscribeSection/EmailSubscribeSection";
 import MetaTags from "../../../shared/MetaTags/MetaTags";
-import useMetaTags from "hooks/useMetaTags";
+import useMetaTags from "../../../hooks/useMetaTags";
 
 const OurConcepts = () => {
   const [showPopup, setShowPopup] = useState(false);
