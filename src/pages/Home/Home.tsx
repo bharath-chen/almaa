@@ -113,6 +113,7 @@ const Home = () => {
     color: string;
     search: any;
     code?: string;
+    url_name?: string;
   }) => {
     return (
       <CardCategory3
@@ -121,7 +122,7 @@ const Home = () => {
         featuredImage={item.featuredImage}
         color={item.color}
         btnText="View Products"
-        href={`/category/${Utils.urlFormatter(item.code + "-" + item.desc)}`}
+        href={`/category/${Utils.urlFormatter(item.url_name)}`}
         options={{ categoryId: item.id, categoryName: item.desc }}
       />
     );
@@ -135,6 +136,7 @@ const Home = () => {
     featuredImage: string;
     color: string;
     search: any;
+    urlName?: string;
   }) => {
     return <ProductCategroyCard item={item} />;
   };
@@ -256,6 +258,7 @@ const Home = () => {
               color: "bg-slate-50",
               search: `?category_id=${c.category_id}&category=${c.cat_name}`,
               code: c.cat_code,
+              url_name: c.url_name,
             }))}
             renderChildren={renderCategoryCard}
           >
@@ -471,6 +474,7 @@ const Home = () => {
                 featuredImage: p.image,
                 color: "bg-slate-50",
                 search: `?nat_prod_id=${p.natprod_id}&nat_product=${p.name}`,
+                urlName: p.urlName,
               };
             })}
             className="nc-DiscoverMoreSlider nc-p-l-container "

@@ -7,4 +7,5 @@ export interface Category {
   created_date: string;
   modified_date: string;
   tagline: string;
+  url_name?: string;
 }

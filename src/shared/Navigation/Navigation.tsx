@@ -14,6 +14,7 @@ function Navigation() {
             code: c.cat_code,
             name: c.cat_name,
             href: undefined,
+            url_name: c.url_name,
           }))
         : [];
     NAVIGATION_DEMO_2[1].children = modifiedCategories;

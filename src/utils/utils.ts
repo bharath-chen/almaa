@@ -17,4 +17,15 @@ export class Utils {
         .replace(/\b\w/g, (char) => char.toUpperCase()),
     };
   }
+
+  static transformToTitleCase(input: string) {
+    if (input === "bone--muscular-function-ortho-care") {
+      return "Bone & Muscular Function (Ortho Care)";
+    }
+
+    return input
+      .split("-") // Split by hyphens
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+      .join(" "); // Join with spaces
+  }
 }

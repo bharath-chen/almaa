@@ -8,6 +8,7 @@ export interface NatProduct {
   created_date: string;
   tagline: string;
   image: string;
+  urlName?: string;
 }
 
 export default create("?gofor=natprodlist");

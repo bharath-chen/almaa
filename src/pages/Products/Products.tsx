@@ -40,9 +40,9 @@ const DATA_sortOrderRadios = [
 
 const Products: FC<Props> = ({ className = "" }) => {
   const { metaTag: metaTagProps } = useMetaTags();
+  const { natProducts, natProductSelected } = useNatProducts();
   const loading = useAppSelector((state: RootState) => state.loader.loading);
   const [showFilters, setShowFilters] = useState(false);
-  const { natProducts } = useNatProducts();
   const [productForms, setProductForms] = useState<TabFilterItem[]>([]);
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
   const [selectedSubCategory, setSelectedSubCategory] =
@@ -63,19 +63,12 @@ const Products: FC<Props> = ({ className = "" }) => {
   const customer = useAppSelector((state) => state.auth);
   const params = useParams();
   const categoryParams = Utils.getIdAndNameFromUrl(params?.category);
-  const categoryId = categoryParams?.code.includes("10")
-    ? categoryParams?.code?.slice(2)
-    : null; // Extracts category_id (1)
-  const category = categoryParams?.code.includes("10")
-    ? categoryParams?.name
-    : null;
-  const natProductId = categoryParams?.code.includes("n")
-    ? categoryParams?.code?.slice(1)
-    : null;
-  const natProduct = categoryParams?.code.includes("n")
-    ? categoryParams?.name
-    : null;
   const itemsPerPage = 9;
+  const categoryName = natProductSelected.isSelected
+    ? ""
+    : params?.category
+    ? params.category
+    : "";
 
   const removeDuplicates = (products: Product[]) => {
     return products.filter(
@@ -84,12 +77,12 @@ const Products: FC<Props> = ({ className = "" }) => {
     );
   };
 
-  const getSubCategories = (id: string) => {
+  const getSubCategories = (urlName: string) => {
     const { request } = subcategoryService.getAll<
       SubCategory,
-      { category_id: string }
+      { url_name: string }
     >({
-      category_id: id,
+      url_name: urlName,
     });
 
     dispatch(showLoader());
@@ -106,12 +99,12 @@ const Products: FC<Props> = ({ className = "" }) => {
       });
   };
 
-  const getProductsByCategory = (id: string) => {
+  const getProductsByCategory = (urlName: string) => {
     dispatch(showLoader());
 
-    const { request } = productService.getAll<Product, { category_id: string }>(
-      { category_id: id }
-    );
+    const { request } = productService.getAll<Product, { url_name: string }>({
+      url_name: urlName,
+    });
 
     request
       .then((res) => {
@@ -171,13 +164,18 @@ const Products: FC<Props> = ({ className = "" }) => {
       natProducts.map((natProduct) => ({
         id: natProduct.natprod_id,
         name: natProduct.name,
-        checked: natProduct.natprod_id === natProductId,
+        checked:
+          natProduct.natprod_id === natProductSelected?.natProduct?.natprod_id,
       }))
     );
-  }, [natProducts, natProductId, natProduct]);
+  }, [
+    natProducts,
+    natProductSelected?.natProduct?.natprod_id,
+    natProductSelected?.natProduct?.name,
+  ]);
 
   useEffect(() => {
-    if (categoryId) {
+    if (categoryName) {
       setSelectedSubCategory(null);
       setSelectedFilter({
         nat_of_prod: [],
@@ -190,10 +188,10 @@ const Products: FC<Props> = ({ className = "" }) => {
       setProductForms((prevProductForms) =>
         prevProductForms.map((p) => ({ ...p, checked: false }))
       );
-      getSubCategories(categoryId);
-      getProductsByCategory(categoryId);
+      getSubCategories(categoryName);
+      getProductsByCategory(categoryName);
     }
-  }, [categoryId]);
+  }, [categoryName]);
 
   // Products
   useEffect(() => {
@@ -212,7 +210,7 @@ const Products: FC<Props> = ({ className = "" }) => {
       selectedFilter.pres_req ||
       selectedFilter.is_nutraceutical ||
       (selectedSortOrder && selectedSortOrder.id) ||
-      categoryId
+      categoryName
     ) {
       const obj = {
         nat_of_prod: selectedFilter.nat_of_prod.join(","),
@@ -220,10 +218,10 @@ const Products: FC<Props> = ({ className = "" }) => {
         pres_req: 1,
         herb_type: "Single",
         sortby: selectedSortOrder?.value || "",
-        category_id: categoryId,
+        url_name: categoryName,
       };
 
-      if (!categoryId) delete obj.category_id;
+      if (!categoryName || categoryName === "") delete obj.url_name;
 
       if (selectedFilter.nat_of_prod.length === 0) delete obj.nat_of_prod;
 
@@ -259,16 +257,22 @@ const Products: FC<Props> = ({ className = "" }) => {
           setError(err.message);
         });
     }
-  }, [selectedFilter, selectedSortOrder, categoryId]);
+  }, [selectedFilter, selectedSortOrder, categoryName]);
 
   useEffect(() => {
-    if (natProductId && natProduct) {
+    if (
+      natProductSelected?.natProduct?.natprod_id &&
+      natProductSelected?.natProduct?.name
+    ) {
       setSelectedFilter((prevSelectedFilter) => ({
         ...prevSelectedFilter,
-        nat_of_prod: [natProductId],
+        nat_of_prod: [natProductSelected?.natProduct?.natprod_id],
       }));
     }
-  }, [natProductId, natProduct]);
+  }, [
+    natProductSelected?.natProduct?.natprod_id,
+    natProductSelected?.natProduct?.name,
+  ]);
 
   const handleSortingProducts = (selectedSort: SortOrder) => {
     // setSubCategories([]);
@@ -330,6 +334,8 @@ const Products: FC<Props> = ({ className = "" }) => {
   // Get current page products
   const currentProducts = products.slice(startIndex, endIndex + 1);
 
+  const selectedCategory = Utils.transformToTitleCase(categoryName) || null;
+
   return (
     <div
       className={`nc-PageCollection2 ${className}`}
@@ -339,9 +345,9 @@ const Products: FC<Props> = ({ className = "" }) => {
       {metaTagProps && <MetaTags metaTagProps={metaTagProps} />}
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 sm:space-y-20 lg:space-y-28">
         <div className="space-y-10 lg:space-y-14">
-          {subCategories.length !== 0 && category && (
+          {subCategories.length !== 0 && selectedCategory && (
             <h2 className="ml-1 text-2xl md:text-3xl font-semibold">
-              {category}
+              {selectedCategory}
             </h2>
           )}
           <div className="flex overflow-x-auto whitespace-nowrap sm:overflow-x-auto">

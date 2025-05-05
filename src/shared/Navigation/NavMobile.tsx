@@ -34,14 +34,11 @@ const NavMobile: React.FC<NavMobileProps> = ({
                 <span
                   className={`py-2.5 ${!i.children ? "block w-full" : ""}`}
                   onClick={() => {
-                    navigate(
-                      `/category/${Utils.urlFormatter(i.code + "-" + i.name)}`,
-                      {
-                        state: {
-                          item: { ...i },
-                        },
-                      }
-                    );
+                    navigate(`/category/${Utils.urlFormatter(i.url_name)}`, {
+                      state: {
+                        item: { ...i },
+                      },
+                    });
                     onClickClose();
                   }}
                 >

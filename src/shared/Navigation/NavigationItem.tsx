@@ -15,6 +15,7 @@ export interface NavItemType {
   type?: "dropdown" | "megaMenu" | "subMenu" | "none";
   isNew?: boolean;
   className?: string;
+  url_name?: string;
 }
 
 export interface NavigationItemProps {
@@ -174,9 +175,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                           onClick={
                             () =>
                               navigate(
-                                `/category/${Utils.urlFormatter(
-                                  item.code + "-" + item.name
-                                )}`
+                                `/category/${Utils.urlFormatter(item.url_name)}`
                                 // {
                                 //   state: {
                                 //     categoryId: item.id,
@@ -204,9 +203,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                           onClick={
                             () =>
                               navigate(
-                                `/category/${Utils.urlFormatter(
-                                  item.code + "-" + item.name
-                                )}`
+                                `/category/${Utils.urlFormatter(item.url_name)}`
                                 // {
                                 //   state: {
                                 //     categoryId: item.id,

@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { Utils } from "../../utils/utils";
 
 interface Item {
   id: string;
@@ -9,6 +8,7 @@ interface Item {
   featuredImage: string;
   color: string;
   search: any;
+  urlName?: string;
 }
 
 interface Props {
@@ -19,7 +19,7 @@ const ProductCategroyCard = ({ item }: Props) => {
   const navigate = useNavigate();
 
   const routeToUrl = () => {
-    navigate(`/category/${Utils.urlFormatter(item.code + "-" + item.desc)}`, {
+    navigate(`/category/${item.urlName}`, {
       state: {
         natId: item.id,
         natProductName: item.desc,
