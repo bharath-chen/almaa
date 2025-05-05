@@ -1,3 +1,4 @@
+import { FC } from "react";
 import Heading from "../../components/Heading/Heading";
 import NcImage from "../../shared/NcImage/NcImage";
 
@@ -16,12 +17,12 @@ interface FounderProps {
   desc?: string;
 }
 
-const SectionFounder = ({
+const SectionFounder: FC<FounderProps> = ({
   onClick,
   founders = [],
   heading = "",
   desc = "",
-}: FounderProps) => {
+}) => {
   return (
     <div className="nc-SectionFounder relative">
       <Heading
@@ -36,7 +37,9 @@ const SectionFounder = ({
       <div className="grid sm:grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4 xl:gap-x-8">
         {founders.map((item) => (
           <div
-            onClick={() => onClick(item)}
+            onClick={() => {
+              if (onClick) onClick(item);
+            }}
             key={item.id}
             className="max-w-sm cursor-pointer"
           >
