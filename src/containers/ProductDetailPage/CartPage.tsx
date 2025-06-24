@@ -79,6 +79,7 @@ const CartPage = () => {
       quantity,
       suitablefor,
       product_measuring_unit_id,
+      url_name,
     } = item;
 
     return (
@@ -93,7 +94,7 @@ const CartPage = () => {
             className="h-full w-full object-contain object-center"
           />
           <Link
-            to={"/product-detail/" + product_name}
+            to={"/products/" + url_name}
             className="absolute inset-0"
           ></Link>
         </div>
@@ -103,7 +104,7 @@ const CartPage = () => {
             <div className="flex justify-between ">
               <div className="flex-[1.5] ">
                 <h3 className="text-base font-semibold">
-                  <Link to={"/product-detail/" + product_name}>
+                  <Link to={"/products/" + url_name}>
                     {product_name} ({product_measuring_unit_id})
                   </Link>
                 </h3>

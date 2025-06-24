@@ -30,12 +30,12 @@ export default function CartDropdown() {
       selling_price,
       product_image1,
       quantity,
-      qty,
       product_measuring_unit_id,
+      url_name,
     } = item;
 
     const routeToProductDetail = () => {
-      navigate(`/product-detail/${product_name}`, {
+      navigate(`/products/${url_name}`, {
         state: {
           id: product_id,
         },

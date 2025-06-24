@@ -186,12 +186,13 @@ const CheckoutPage = () => {
       product_name,
       quantity,
       qty,
+      url_name,
     } = item;
 
     if (!item) return;
 
     const routeToProductDetail = () => {
-      navigate(`/product-detail/${product_name}`, {
+      navigate(`/products/${url_name}`, {
         state: {
           id: product_id,
         },
